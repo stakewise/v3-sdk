@@ -1,0 +1,29 @@
+{
+  "name": "Stakewise GraphQL",
+  "projects": {
+    "subgraph": {
+      "includes": ["src/graphql/subgraph/**/*.graphql"]
+    },
+    "backend": {
+      "includes": ["src/graphql/backend/**/*.graphql"]
+    }
+  },
+  "extensions": {
+    "endpoints": {
+      "Subgraph GraphQL": {
+        "url": "https://graph-goerli.stakewise.io/subgraphs/name/stakewise/stakewise",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      },
+      "Backend GraphQL": {
+        "url": "https://api-goerli.stakewise.io/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-export { graphqlFetch } from './graphqlFetch'
+export { default as graphqlFetch } from './graphqlFetch'

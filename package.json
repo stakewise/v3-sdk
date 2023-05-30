@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "prepare": "npm i lerna && lerna bootstrap",
-    "_prepare": "npm i lerna && lerna bootstrap && lerna run typechain",
+    "todo_prepare": "npm i lerna && lerna bootstrap && lerna run generate",
     "build": "npm run build --prefix=./packages/stakewise-dev",
     "test": "lerna run test",
     "test-coverage": "lerna run test-coverage"

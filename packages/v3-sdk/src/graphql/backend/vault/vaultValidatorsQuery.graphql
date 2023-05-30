@@ -1,0 +1,10 @@
+query VaultValidators($address: String!) {
+  vaults(id: $address) {
+    validators {
+      apy: apr
+      earned
+      createdAt
+      publicKey
+    }
+  }
+}

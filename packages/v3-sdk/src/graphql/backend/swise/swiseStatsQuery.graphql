@@ -1,0 +1,5 @@
+query SwiseStats {
+  swiseStats {
+    price
+  }
+}
