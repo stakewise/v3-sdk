@@ -5,10 +5,10 @@ type ExitQueueQueryVariables = SubgraphGraph.Exact<{
   owner: SubgraphGraph.InputMaybe<SubgraphGraph.Scalars['Bytes']>
   vault: SubgraphGraph.Scalars['String']
 }>
-type ExitQueueQueryPayload = { exitRequests: Array<{ positionCounter: string, totalShares: string }> }
+type ExitQueueQueryPayload = { exitRequests: Array<{ positionTicket: string, totalShares: string }> }
 
 
-const query = 'query exitQueue($owner: Bytes, $vault: String!) { exitRequests(where: { owner: $owner, vault: $vault, }) { positionCounter totalShares }}'
+const query = 'query exitQueue($owner: Bytes, $vault: String!) { exitRequests(where: { owner: $owner, vault: $vault, }) { positionTicket totalShares }}'
 
 
 const fetchExitQueueQuery = <ModifiedData = ExitQueueQueryPayload>(

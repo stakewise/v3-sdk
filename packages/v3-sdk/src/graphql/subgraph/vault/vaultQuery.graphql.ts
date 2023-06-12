@@ -6,7 +6,7 @@ import { vaultFullFragment } from 'graphql/subgraph/fragments'
 type VaultQueryVariables = SubgraphGraph.Exact<{
   address: SubgraphGraph.Scalars['ID']
 }>
-type VaultQueryPayload = { vault: { admin: string, proof: Array<string>, operator: string, capacity: string, mevEscrow: string, createdAt: string, feePercent: number, rewardsRoot: string, proofReward: string, totalShares: string, feeRecipient: string, queuedShares: string, validatorsRoot: string, unclaimedAssets: string, metadataIpfsHash: string, score: string, imageUrl: string, isPrivate: boolean, tokenName: string, tokenSymbol: string, totalAssets: string, displayName: string, description: string, whitelister: string, avgRewardPerAsset: string, address: string }, privateVaultAccounts: Array<{ createdAt: string, address: string }> }
+type VaultQueryPayload = { vault: { admin: string, proof: Array<string>, keysManager: string, capacity: string, mevEscrow: string, createdAt: string, feePercent: number, rewardsRoot: string, proofReward: string, totalShares: string, feeRecipient: string, queuedShares: string, validatorsRoot: string, unclaimedAssets: string, metadataIpfsHash: string, score: string, imageUrl: string, isPrivate: boolean, tokenName: string, tokenSymbol: string, totalAssets: string, displayName: string, description: string, whitelister: string, avgRewardPerAsset: string, address: string }, privateVaultAccounts: Array<{ createdAt: string, address: string }> }
 
 
 const query = 'query Vault($address: ID!) { vault(id: $address) { ...VaultFull } privateVaultAccounts( where: { vault: $address } ) { createdAt address }}'.concat(vaultFullFragment)

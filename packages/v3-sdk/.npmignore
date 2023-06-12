@@ -1,6 +1,10 @@
 src
 cache
 tests
+scripts
+.gqlconfig
+.graphqlconfig
+codegen.ts
 hardhat.config.js
 jest.config.js
 package-lock.json

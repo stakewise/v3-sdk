@@ -153,11 +153,11 @@ enum AllocatorAction_orderBy {
   vault__id
   vault__imageUrl
   vault__isPrivate
+  vault__keysManager
   vault__lockedMevReward
   vault__metadataIpfsHash
   vault__metadataUpdatedAt
   vault__mevEscrow
-  vault__operator
   vault__principalAssets
   vault__proofReward
   vault__proofUnlockedMevReward
@@ -247,11 +247,11 @@ enum Allocator_orderBy {
   vault__id
   vault__imageUrl
   vault__isPrivate
+  vault__keysManager
   vault__lockedMevReward
   vault__metadataIpfsHash
   vault__metadataUpdatedAt
   vault__mevEscrow
-  vault__operator
   vault__principalAssets
   vault__proofReward
   vault__proofUnlockedMevReward
@@ -381,11 +381,11 @@ enum DaySnapshot_orderBy {
   vault__id
   vault__imageUrl
   vault__isPrivate
+  vault__keysManager
   vault__lockedMevReward
   vault__metadataIpfsHash
   vault__metadataUpdatedAt
   vault__mevEscrow
-  vault__operator
   vault__principalAssets
   vault__proofReward
   vault__proofUnlockedMevReward
@@ -411,8 +411,8 @@ type ExitRequest {
   """The exiting shares owner"""
   owner: Bytes!
 
-  """The exit queue position counter"""
-  positionCounter: BigInt!
+  """The exit queue position ticket"""
+  positionTicket: BigInt!
 
   """The exited assets receiver"""
   receiver: Bytes!
@@ -447,14 +447,14 @@ input ExitRequest_filter {
   owner_not: Bytes
   owner_not_contains: Bytes
   owner_not_in: [Bytes!]
-  positionCounter: BigInt
-  positionCounter_gt: BigInt
-  positionCounter_gte: BigInt
-  positionCounter_in: [BigInt!]
-  positionCounter_lt: BigInt
-  positionCounter_lte: BigInt
-  positionCounter_not: BigInt
-  positionCounter_not_in: [BigInt!]
+  positionTicket: BigInt
+  positionTicket_gt: BigInt
+  positionTicket_gte: BigInt
+  positionTicket_in: [BigInt!]
+  positionTicket_lt: BigInt
+  positionTicket_lte: BigInt
+  positionTicket_not: BigInt
+  positionTicket_not_in: [BigInt!]
   receiver: Bytes
   receiver_contains: Bytes
   receiver_gt: Bytes
@@ -499,7 +499,7 @@ input ExitRequest_filter {
 enum ExitRequest_orderBy {
   id
   owner
-  positionCounter
+  positionTicket
   receiver
   totalShares
   vault
@@ -516,11 +516,11 @@ enum ExitRequest_orderBy {
   vault__id
   vault__imageUrl
   vault__isPrivate
+  vault__keysManager
   vault__lockedMevReward
   vault__metadataIpfsHash
   vault__metadataUpdatedAt
   vault__mevEscrow
-  vault__operator
   vault__principalAssets
   vault__proofReward
   vault__proofUnlockedMevReward
@@ -668,11 +668,11 @@ enum PrivateVaultAccount_orderBy {
   vault__id
   vault__imageUrl
   vault__isPrivate
+  vault__keysManager
   vault__lockedMevReward
   vault__metadataIpfsHash
   vault__metadataUpdatedAt
   vault__mevEscrow
-  vault__operator
   vault__principalAssets
   vault__proofReward
   vault__proofUnlockedMevReward
@@ -1226,6 +1226,9 @@ type Vault {
   """Indicates whether the Vault is private"""
   isPrivate: Boolean!
 
+  """The address of the vault's keys manager"""
+  keysManager: Bytes!
+
   """The vault locked MEV reward"""
   lockedMevReward: BigInt
 
@@ -1239,9 +1242,6 @@ type Vault {
   The MEV and priority fees escrow address. If it's null, then the vault uses shared MEV escrow.
   """
   mevEscrow: Bytes
-
-  """The address of the vault's operator"""
-  operator: Bytes!
 
   """The number of assets used for rewardPerAsset calculation"""
   principalAssets: BigInt!
@@ -1454,6 +1454,16 @@ input Vault_filter {
   isPrivate_in: [Boolean!]
   isPrivate_not: Boolean
   isPrivate_not_in: [Boolean!]
+  keysManager: Bytes
+  keysManager_contains: Bytes
+  keysManager_gt: Bytes
+  keysManager_gte: Bytes
+  keysManager_in: [Bytes!]
+  keysManager_lt: Bytes
+  keysManager_lte: Bytes
+  keysManager_not: Bytes
+  keysManager_not_contains: Bytes
+  keysManager_not_in: [Bytes!]
   lockedMevReward: BigInt
   lockedMevReward_gt: BigInt
   lockedMevReward_gte: BigInt
@@ -1500,16 +1510,6 @@ input Vault_filter {
   mevEscrow_not: Bytes
   mevEscrow_not_contains: Bytes
   mevEscrow_not_in: [Bytes!]
-  operator: Bytes
-  operator_contains: Bytes
-  operator_gt: Bytes
-  operator_gte: Bytes
-  operator_in: [Bytes!]
-  operator_lt: Bytes
-  operator_lte: Bytes
-  operator_not: Bytes
-  operator_not_contains: Bytes
-  operator_not_in: [Bytes!]
   or: [Vault_filter]
   principalAssets: BigInt
   principalAssets_gt: BigInt
@@ -1699,11 +1699,11 @@ enum Vault_orderBy {
   id
   imageUrl
   isPrivate
+  keysManager
   lockedMevReward
   metadataIpfsHash
   metadataUpdatedAt
   mevEscrow
-  operator
   principalAssets
   proof
   proofReward

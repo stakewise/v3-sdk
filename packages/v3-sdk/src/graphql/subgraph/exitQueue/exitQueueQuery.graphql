@@ -3,7 +3,7 @@ query exitQueue($owner: Bytes, $vault: String!) {
     owner: $owner,
     vault: $vault,
   }) {
-    positionCounter
+    positionTicket
     totalShares
   }
 }

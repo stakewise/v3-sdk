@@ -2,7 +2,7 @@ fragment VaultFull on Vault {
   ...VaultShort
   admin
   proof
-  operator
+  keysManager
   capacity
   mevEscrow
   createdAt

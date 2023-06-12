@@ -1,5 +1,3 @@
-
-
 type UploadMetadataMutationVariables = BackendGraph.Exact<{
   payload: BackendGraph.PayloadType
 }>

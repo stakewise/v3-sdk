@@ -1,3 +1,3 @@
-declare module '@stakewise/v3' {
+declare module '@stakewise/v3-sdk' {
 
 }

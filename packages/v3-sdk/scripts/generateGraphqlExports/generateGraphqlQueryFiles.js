@@ -111,7 +111,12 @@ const getFileTypes = ({ client, tsFilePath }) => {
 }
 
 const generateGraphqlQueryFiles = (dirPath, client) => {
-  const gqlFolders = fs.readdirSync(dirPath).filter((dirName) => 'schema.graphql' !== dirName)
+  const gqlFolders = fs.readdirSync(dirPath)
+    .filter((gqlModelName) => {
+      const gqlModelDir = path.resolve(dirPath, gqlModelName)
+
+      return fs.lstatSync(gqlModelDir).isDirectory()
+    })
 
   gqlFolders.forEach((gqlModelName) => {
     const gqlModelDir = path.resolve(dirPath, gqlModelName)
@@ -155,6 +160,7 @@ const generateGraphqlQueryFiles = (dirPath, client) => {
           fileContent,
           fileExports,
         ]
+          .filter(Boolean)
           .join('\n\n')
           .concat('\n')
       }
@@ -173,6 +179,17 @@ const generateGraphqlQueryFiles = (dirPath, client) => {
 
     fs.writeFileSync(indexFilePath, indexFileString, 'utf8')
   })
+
+  const rootIndexFileContent = gqlFolders
+    .filter((folder) => folder !== 'fragments')
+    .map((folder) => `export * as ${folder} from './${folder}'`)
+    .sort((a, b) => a.length < b.length ? -1 : 1)
+    .join('\n')
+    .concat('\n')
+
+  const rootIndexFilePath = path.resolve(dirPath, 'index.ts')
+
+  fs.writeFileSync(rootIndexFilePath, rootIndexFileContent, 'utf8')
 }
 
 

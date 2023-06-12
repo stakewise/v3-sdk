@@ -1,5 +1,3 @@
-
-
 type FaucetMutationVariables = BackendGraph.Exact<{
   address: BackendGraph.Scalars['String']
   amount: BackendGraph.Scalars['Decimal']
