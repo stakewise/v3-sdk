@@ -22,4 +22,3 @@ const fetchBlacklistedVaultsQuery = <ModifiedData = BlacklistedVaultsQueryPayloa
 
 export { fetchBlacklistedVaultsQuery }
 export type { BlacklistedVaultsQueryPayload, BlacklistedVaultsQueryVariables }
-

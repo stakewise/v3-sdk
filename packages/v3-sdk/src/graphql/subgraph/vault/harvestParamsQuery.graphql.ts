@@ -24,4 +24,3 @@ const fetchHarvestParamsQuery = <ModifiedData = HarvestParamsQueryPayload>(
 
 export { fetchHarvestParamsQuery }
 export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables }
-

@@ -24,4 +24,3 @@ const fetchPublicKeysValidationQuery = <ModifiedData = PublicKeysValidationQuery
 
 export { fetchPublicKeysValidationQuery }
 export type { PublicKeysValidationQueryPayload, PublicKeysValidationQueryVariables }
-

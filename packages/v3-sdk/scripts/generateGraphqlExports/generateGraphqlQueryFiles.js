@@ -163,7 +163,6 @@ const generateGraphqlQueryFiles = (dirPath, client) => {
         ]
           .filter(Boolean)
           .join('\n\n')
-          .concat('\n')
       }
 
       indexExports.push(indexFileExports)

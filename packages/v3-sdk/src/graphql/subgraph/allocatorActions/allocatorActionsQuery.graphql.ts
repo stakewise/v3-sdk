@@ -26,4 +26,3 @@ const fetchAllocatorActionsQuery = <ModifiedData = AllocatorActionsQueryPayload>
 
 export { fetchAllocatorActionsQuery }
 export type { AllocatorActionsQueryPayload, AllocatorActionsQueryVariables }
-

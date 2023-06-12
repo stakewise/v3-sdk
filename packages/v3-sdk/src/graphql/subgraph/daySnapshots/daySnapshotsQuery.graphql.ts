@@ -25,4 +25,3 @@ const fetchDaySnapshotsQuery = <ModifiedData = DaySnapshotsQueryPayload>(
 
 export { fetchDaySnapshotsQuery }
 export type { DaySnapshotsQueryPayload, DaySnapshotsQueryVariables }
-

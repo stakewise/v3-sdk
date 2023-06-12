@@ -29,4 +29,3 @@ const fetchVaultsQuery = <ModifiedData = VaultsQueryPayload>(
 
 export { fetchVaultsQuery }
 export type { VaultsQueryPayload, VaultsQueryVariables }
-
