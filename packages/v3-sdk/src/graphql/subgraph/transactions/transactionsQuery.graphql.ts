@@ -24,3 +24,4 @@ const fetchTransactionsQuery = <ModifiedData = TransactionsQueryPayload>(
 
 export { fetchTransactionsQuery }
 export type { TransactionsQueryPayload, TransactionsQueryVariables }
+

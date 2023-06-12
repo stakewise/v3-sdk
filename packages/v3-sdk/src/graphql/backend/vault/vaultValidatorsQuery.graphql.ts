@@ -24,3 +24,4 @@ const fetchVaultValidatorsQuery = <ModifiedData = VaultValidatorsQueryPayload>(
 
 export { fetchVaultValidatorsQuery }
 export type { VaultValidatorsQueryPayload, VaultValidatorsQueryVariables }
+

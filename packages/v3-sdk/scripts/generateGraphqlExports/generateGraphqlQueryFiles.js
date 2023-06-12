@@ -64,7 +64,7 @@ const getQueryContent = ({ client, queryName, tsFilePath }) => {
     .replace(/\{clientName}/g, client)
 
   const fragmentImports = fragments.length
-    ? `import { ${fragments.join(', ')} } from 'graphql/${client}/fragments'`
+    ? `import { ${fragments.join(', ')} } from '../fragments'`
     : ''
 
   return {
@@ -93,6 +93,7 @@ const getFileExports = (queryName) => {
   const fileExports = [
     `export { ${fetchTitle} }`,
     `export type { ${payloadTitle}, ${variablesTitle} }`,
+    '',
   ]
 
   const indexFileExports = fileExports

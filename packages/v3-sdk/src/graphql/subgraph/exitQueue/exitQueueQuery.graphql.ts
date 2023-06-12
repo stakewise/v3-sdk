@@ -25,3 +25,4 @@ const fetchExitQueueQuery = <ModifiedData = ExitQueueQueryPayload>(
 
 export { fetchExitQueueQuery }
 export type { ExitQueueQueryPayload, ExitQueueQueryVariables }
+

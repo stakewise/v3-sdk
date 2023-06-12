@@ -22,3 +22,4 @@ const fetchSwiseStatsQuery = <ModifiedData = SwiseStatsQueryPayload>(
 
 export { fetchSwiseStatsQuery }
 export type { SwiseStatsQueryPayload, SwiseStatsQueryVariables }
+

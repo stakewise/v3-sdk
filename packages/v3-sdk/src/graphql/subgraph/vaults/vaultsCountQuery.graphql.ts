@@ -24,3 +24,4 @@ const fetchVaultsCountQuery = <ModifiedData = VaultsCountQueryPayload>(
 
 export { fetchVaultsCountQuery }
 export type { VaultsCountQueryPayload, VaultsCountQueryVariables }
+

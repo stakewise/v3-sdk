@@ -25,3 +25,4 @@ const submitUploadMetadataMutation = ({ url, variables }: SubmitInput) =>
 
 export { submitUploadMetadataMutation }
 export type { UploadMetadataMutationPayload, UploadMetadataMutationVariables }
+

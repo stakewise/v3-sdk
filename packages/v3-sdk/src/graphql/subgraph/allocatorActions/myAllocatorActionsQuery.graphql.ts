@@ -24,3 +24,4 @@ const fetchMyAllocatorActionsQuery = <ModifiedData = MyAllocatorActionsQueryPayl
 
 export { fetchMyAllocatorActionsQuery }
 export type { MyAllocatorActionsQueryPayload, MyAllocatorActionsQueryVariables }
+

@@ -22,6 +22,6 @@
     "ts-jest": "29.1.0"
   },
   "dependencies": {
-    "lerna": "^6.6.2"
+    "lerna": "6.6.2"
   }
 }

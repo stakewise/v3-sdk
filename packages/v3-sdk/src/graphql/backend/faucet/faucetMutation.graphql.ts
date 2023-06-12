@@ -26,3 +26,4 @@ const submitFaucetMutation = ({ url, variables }: SubmitInput) =>
 
 export { submitFaucetMutation }
 export type { FaucetMutationPayload, FaucetMutationVariables }
+

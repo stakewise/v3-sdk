@@ -1,6 +1,6 @@
 import { graphqlFetch } from '../../../modules/gql-module'
 
-import { vaultFullFragment } from 'graphql/subgraph/fragments'
+import { vaultFullFragment } from '../fragments'
 
 
 type VaultQueryVariables = SubgraphGraph.Exact<{
@@ -26,3 +26,4 @@ const fetchVaultQuery = <ModifiedData = VaultQueryPayload>(
 
 export { fetchVaultQuery }
 export type { VaultQueryPayload, VaultQueryVariables }
+
