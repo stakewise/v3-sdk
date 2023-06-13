@@ -1,0 +1,15 @@
+query DaySnapshots(
+  $where: DaySnapshot_filter
+  $whereFirstSnapshots: DaySnapshot_filter
+) {
+  daySnapshots(where: $where) {
+    date
+    totalAssets
+    rewardPerAsset
+  }
+  firstSnapshots: daySnapshots(where: $whereFirstSnapshots, first: 1) {
+    date
+    totalAssets
+    rewardPerAsset
+  }
+}

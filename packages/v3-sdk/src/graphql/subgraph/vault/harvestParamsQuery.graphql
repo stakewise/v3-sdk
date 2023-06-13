@@ -1,0 +1,8 @@
+query HarvestParams($address: ID!) {
+  harvestParams: vault(id: $address) {
+    proof
+    rewardsRoot
+    reward: proofReward
+    unlockedMevReward: proofUnlockedMevReward
+  }
+}

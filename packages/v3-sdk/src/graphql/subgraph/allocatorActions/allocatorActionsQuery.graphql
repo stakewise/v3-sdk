@@ -1,0 +1,18 @@
+query AllocatorActions(
+  $skip: Int!
+  $first: Int!
+  $where: AllocatorAction_filter
+) {
+  allocatorActions(
+    skip: $skip,
+    first: $first,
+    orderBy: createdAt,
+    orderDirection: desc,
+    where: $where,
+  ) {
+    id
+    assets
+    createdAt
+    actionType
+  }
+}

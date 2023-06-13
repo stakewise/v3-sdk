@@ -1,0 +1,51 @@
+{
+  "name": "@stakewise/v3-sdk",
+  "version": "0.1.0",
+  "description": "StakeWise v3 SDK",
+  "main": "dist/index.js",
+  "typings": "types.d.ts",
+  "scripts": {
+    "test": "jest",
+    "test-coverage": "jest --coverage",
+    "graphql": "graphql-codegen && node ./scripts/generateGraphqlExports",
+    "typechain": "typechain --target ethers-v5 --out-dir src/util/types 'src/util/abis/*.json'",
+    "transpile": "babel ./src --out-dir dist --extensions .ts,.tsx --config-file ../../babel.config.js --delete-dir-on-start --no-comments --copy-files --no-copy-ignored",
+    "generate": "npm run graphql",
+    "todo_generate": "npm run graphql && npm run typechain",
+    "build": "npm run generate && npm run transpile"
+  },
+  "license": "AGPL-3.0-only",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://v3.stakewise.io",
+  "keywords": [
+    "ethereum",
+    "staking"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@ethersproject/bignumber": "5.7.0",
+    "@ethersproject/contracts": "5.7.0",
+    "@ethersproject/providers": "5.7.2",
+    "@ethersproject/units": "5.7.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.21.5",
+    "@babel/core": "7.22.1",
+    "@graphql-codegen/cli": "2.16.1",
+    "@graphql-codegen/near-operation-file-preset": "2.4.4",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@faker-js/faker": "6.3.1",
+    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "@openzeppelin/test-environment": "0.1.9",
+    "@typechain/ethers-v5": "11.0.0",
+    "hardhat": "2.14.0",
+    "hardhat-jest-plugin": "0.0.6",
+    "jest-fetch-mock": "3.0.3",
+    "regenerator-runtime": "0.13.11",
+    "typechain": "8.2.0",
+    "typescript": "5.0.4"
+  }
+}

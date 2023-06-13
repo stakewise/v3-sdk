@@ -1,0 +1,11 @@
+query Vault($address: ID!) {
+  vault(id: $address) {
+    ...VaultFull
+  }
+  privateVaultAccounts(
+    where: { vault: $address }
+  ) {
+    createdAt
+    address
+  }
+}

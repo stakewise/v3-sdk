@@ -1,0 +1,18 @@
+fragment VaultFull on Vault {
+  ...VaultShort
+  admin
+  proof
+  keysManager
+  capacity
+  mevEscrow
+  createdAt
+  feePercent
+  rewardsRoot
+  proofReward
+  totalShares
+  feeRecipient
+  queuedShares
+  validatorsRoot
+  unclaimedAssets
+  metadataIpfsHash
+}

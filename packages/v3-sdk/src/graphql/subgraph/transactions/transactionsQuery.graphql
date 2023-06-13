@@ -1,0 +1,7 @@
+query Transactions(
+  $where: Transaction_filter
+) {
+  transactions(where: $where) {
+    id
+  }
+}

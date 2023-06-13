@@ -1,0 +1,16 @@
+query Vaults(
+  $skip: Int,
+  $first: Int,
+  $where: Vault_filter,
+  $orderBy: Vault_orderBy,
+) {
+  vaults(
+    skip: $skip,
+    first: $first,
+    where: $where,
+    orderBy: $orderBy
+    orderDirection: desc,
+  ) {
+    ...VaultShort
+  }
+}

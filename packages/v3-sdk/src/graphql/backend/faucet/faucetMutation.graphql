@@ -1,0 +1,20 @@
+mutation Faucet (
+  $address: String!,
+  $amount: Decimal!
+) {
+  faucet(
+    payload: {
+      address: $address,
+      amount: $amount
+    }
+  ) {
+    ...on FaucetError {
+      message
+      code
+      value
+    }
+    ...on FaucetStatus {
+      txHash
+    }
+  }
+}

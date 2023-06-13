@@ -1,0 +1,9 @@
+query exitQueue($owner: Bytes, $vault: String!) {
+  exitRequests(where: {
+    owner: $owner,
+    vault: $vault,
+  }) {
+    positionTicket
+    totalShares
+  }
+}

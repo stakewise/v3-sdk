@@ -1,0 +1,12 @@
+query MyAllocatorActions(
+  $where: AllocatorAction_filter
+) {
+  allocatorActions(
+    first: 1,
+    orderBy: createdAt,
+    orderDirection: desc,
+    where: $where,
+  ) {
+    id
+  }
+}
