@@ -1,4 +1,5 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type DaySnapshotsQueryVariables = SubgraphGraph.Exact<{
@@ -12,10 +13,10 @@ const query = 'query DaySnapshots( $where: DaySnapshot_filter $whereFirstSnapsho
 
 
 const fetchDaySnapshotsQuery = <ModifiedData = DaySnapshotsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<DaySnapshotsQueryPayload, DaySnapshotsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<DaySnapshotsQueryPayload, DaySnapshotsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<DaySnapshotsQueryPayload, DaySnapshotsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.subgraph,
     query,
     variables,
     modifyResult,

@@ -2,11 +2,13 @@ fragment VaultFull on Vault {
   ...VaultShort
   admin
   proof
-  keysManager
+  isErc20
   capacity
   mevEscrow
-  createdAt
+  tokenName
   feePercent
+  keysManager
+  tokenSymbol
   rewardsRoot
   proofReward
   totalShares

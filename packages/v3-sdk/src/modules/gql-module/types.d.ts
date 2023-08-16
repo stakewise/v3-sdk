@@ -8,7 +8,6 @@ declare namespace ModuleGQL {
   }
 
   type FetchCodegenInput<Data, Variables, ModifiedData> = {
-    url: string
     variables?: Variables
     modifyResult?: (data: Data) => ModifiedData
   }

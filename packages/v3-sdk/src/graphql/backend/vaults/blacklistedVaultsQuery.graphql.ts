@@ -1,4 +1,5 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type BlacklistedVaultsQueryVariables = BackendGraph.Exact<{ [key: string]: never; }>
@@ -9,10 +10,10 @@ const query = 'query BlacklistedVaults { vaults(blacklisted: true) { address: id
 
 
 const fetchBlacklistedVaultsQuery = <ModifiedData = BlacklistedVaultsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<BlacklistedVaultsQueryPayload, BlacklistedVaultsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<BlacklistedVaultsQueryPayload, BlacklistedVaultsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<BlacklistedVaultsQueryPayload, BlacklistedVaultsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.backend,
     query,
     variables,
     modifyResult,

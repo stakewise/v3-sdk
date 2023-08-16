@@ -36,22 +36,8 @@ input PayloadType {
 
 type Query {
   publicKeysValidation(publicKeys: [String!]!): Boolean!
-  scoreSnapshot(days: Int!, id: String!): [ScoreSnapshotQL!]!
   swiseStats: SwiseStatsQL!
-  vaults(blacklisted: Boolean = null, first: Int = null, id: String = "", skip: Int = null, sort: SortItem = Score): [VaultQL!]!
-}
-
-type ScoreDetailsQL {
-  total: Int!
-}
-
-type ScoreSnapshotQL {
-  date: Date!
-  value: BigInt!
-}
-
-enum SortItem {
-  Score
+  vaults(blacklisted: Boolean = null, first: Int = null, id: String = "", skip: Int = null): [VaultQL!]!
 }
 
 type SwiseStatsQL {
@@ -65,7 +51,6 @@ type UploadMetadataQL {
 type VaultQL {
   blacklisted: Boolean
   id: String!
-  score: ScoreDetailsQL
   validators: [VaultValidatorQL!]
 }
 

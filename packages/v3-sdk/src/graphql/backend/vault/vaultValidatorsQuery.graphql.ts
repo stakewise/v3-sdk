@@ -1,8 +1,9 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type VaultValidatorsQueryVariables = BackendGraph.Exact<{
-  address: BackendGraph.Scalars['String']
+  address: BackendGraph.Scalars['String']['input']
 }>
 type VaultValidatorsQueryPayload = { vaults: Array<{ validators: Array<{ earned: string, createdAt: string, publicKey: string, apy: string }> }> }
 
@@ -11,10 +12,10 @@ const query = 'query VaultValidators($address: String!) { vaults(id: $address) {
 
 
 const fetchVaultValidatorsQuery = <ModifiedData = VaultValidatorsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<VaultValidatorsQueryPayload, VaultValidatorsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<VaultValidatorsQueryPayload, VaultValidatorsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<VaultValidatorsQueryPayload, VaultValidatorsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.backend,
     query,
     variables,
     modifyResult,

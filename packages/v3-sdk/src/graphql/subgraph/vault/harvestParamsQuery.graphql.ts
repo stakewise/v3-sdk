@@ -1,8 +1,9 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type HarvestParamsQueryVariables = SubgraphGraph.Exact<{
-  address: SubgraphGraph.Scalars['ID']
+  address: SubgraphGraph.Scalars['ID']['input']
 }>
 type HarvestParamsQueryPayload = { harvestParams: { proof: Array<string>, rewardsRoot: string, reward: string, unlockedMevReward: string } }
 
@@ -11,10 +12,10 @@ const query = 'query HarvestParams($address: ID!) { harvestParams: vault(id: $ad
 
 
 const fetchHarvestParamsQuery = <ModifiedData = HarvestParamsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<HarvestParamsQueryPayload, HarvestParamsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<HarvestParamsQueryPayload, HarvestParamsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<HarvestParamsQueryPayload, HarvestParamsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.subgraph,
     query,
     variables,
     modifyResult,

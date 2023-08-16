@@ -1,8 +1,9 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type PublicKeysValidationQueryVariables = BackendGraph.Exact<{
-  publicKeys: Array<BackendGraph.Scalars['String']>
+  publicKeys: Array<BackendGraph.Scalars['String']['input']>
 }>
 type PublicKeysValidationQueryPayload = { publicKeysValidation: boolean }
 
@@ -11,10 +12,10 @@ const query = 'query PublicKeysValidation( $publicKeys: [String!]!) { publicKeys
 
 
 const fetchPublicKeysValidationQuery = <ModifiedData = PublicKeysValidationQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<PublicKeysValidationQueryPayload, PublicKeysValidationQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<PublicKeysValidationQueryPayload, PublicKeysValidationQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<PublicKeysValidationQueryPayload, PublicKeysValidationQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.backend,
     query,
     variables,
     modifyResult,

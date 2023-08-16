@@ -1,4 +1,5 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type TransactionsQueryVariables = SubgraphGraph.Exact<{
@@ -11,10 +12,10 @@ const query = 'query Transactions( $where: Transaction_filter) { transactions(wh
 
 
 const fetchTransactionsQuery = <ModifiedData = TransactionsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<TransactionsQueryPayload, TransactionsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<TransactionsQueryPayload, TransactionsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<TransactionsQueryPayload, TransactionsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.subgraph,
     query,
     variables,
     modifyResult,

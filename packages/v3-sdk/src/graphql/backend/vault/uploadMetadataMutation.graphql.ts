@@ -6,13 +6,15 @@ type UploadMetadataMutationPayload = { uploadMetadata: { ipfsHash: string } }
 
 const query = 'mutation UploadMetadata ( $payload: PayloadType!) { uploadMetadata( payload: $payload ) { ipfsHash }}'
 
+import constants from '../../../constants'
+
+
 type SubmitInput = {
-  url: string
   variables: UploadMetadataMutationVariables
 }
 
-const submitUploadMetadataMutation = ({ url, variables }: SubmitInput) =>
-  fetch(url, {
+const submitUploadMetadataMutation = ({ variables }: SubmitInput) =>
+  fetch(constants.url.backend, {
     method: 'POST',
     body: JSON.stringify({
       query,

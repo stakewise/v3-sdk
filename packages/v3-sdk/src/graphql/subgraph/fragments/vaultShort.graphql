@@ -1,10 +1,10 @@
 fragment VaultShort on Vault {
   address: id
-  score
+  performance: score
   imageUrl
+  mevEscrow
   isPrivate
-  tokenName
-  tokenSymbol
+  createdAt
   totalAssets
   displayName
   description

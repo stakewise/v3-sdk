@@ -1,3 +1,3 @@
-const vaultShortFragment = 'fragment VaultShort on Vault { address: id score imageUrl isPrivate tokenName tokenSymbol totalAssets displayName description whitelister avgRewardPerAsset}'
+const vaultShortFragment = 'fragment VaultShort on Vault { address: id performance: score imageUrl mevEscrow isPrivate createdAt totalAssets displayName description whitelister avgRewardPerAsset}'
 
 export { vaultShortFragment }

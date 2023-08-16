@@ -1,20 +1,21 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type VaultsCountQueryVariables = SubgraphGraph.Exact<{
-  address: SubgraphGraph.InputMaybe<SubgraphGraph.Scalars['Bytes']>
+  address: SubgraphGraph.InputMaybe<SubgraphGraph.Scalars['Bytes']['input']>
 }>
-type VaultsCountQueryPayload = { all: { vaultsTotal: number }, deposits: Array<{ id: string }>, created: Array<{ id: string }> }
+type VaultsCountQueryPayload = { all: { vaultsTotal: number }, deposits: Array<{ id: string }> }
 
 
-const query = 'query VaultsCount($address: Bytes) { all: network(id: 0) { vaultsTotal } deposits: vaults(where: { or: [ { allocators_: { address: $address } } { exitRequests_: { owner: $address } } ] }) { id } created: vaults(where: { admin: $address }) { id }}'
+const query = 'query VaultsCount($address: Bytes) { all: network(id: 0) { vaultsTotal } deposits: vaults(where: { or: [ { allocators_: { address: $address } } { exitRequests_: { owner: $address } } ] }) { id }}'
 
 
 const fetchVaultsCountQuery = <ModifiedData = VaultsCountQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<VaultsCountQueryPayload, VaultsCountQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<VaultsCountQueryPayload, VaultsCountQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<VaultsCountQueryPayload, VaultsCountQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.subgraph,
     query,
     variables,
     modifyResult,

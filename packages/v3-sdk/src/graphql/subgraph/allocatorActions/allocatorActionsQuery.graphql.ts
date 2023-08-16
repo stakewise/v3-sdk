@@ -1,9 +1,10 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type AllocatorActionsQueryVariables = SubgraphGraph.Exact<{
-  skip: SubgraphGraph.Scalars['Int']
-  first: SubgraphGraph.Scalars['Int']
+  skip: SubgraphGraph.Scalars['Int']['input']
+  first: SubgraphGraph.Scalars['Int']['input']
   where: SubgraphGraph.InputMaybe<SubgraphGraph.AllocatorAction_Filter>
 }>
 type AllocatorActionsQueryPayload = { allocatorActions: Array<{ id: string, assets: string, createdAt: string, actionType: SubgraphGraph.AllocatorActionType }> }
@@ -13,10 +14,10 @@ const query = 'query AllocatorActions( $skip: Int! $first: Int! $where: Allocato
 
 
 const fetchAllocatorActionsQuery = <ModifiedData = AllocatorActionsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<AllocatorActionsQueryPayload, AllocatorActionsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<AllocatorActionsQueryPayload, AllocatorActionsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<AllocatorActionsQueryPayload, AllocatorActionsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.subgraph,
     query,
     variables,
     modifyResult,

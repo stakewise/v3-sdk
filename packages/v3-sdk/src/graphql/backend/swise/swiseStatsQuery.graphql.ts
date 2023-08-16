@@ -1,4 +1,5 @@
 import { graphqlFetch } from '../../../modules/gql-module'
+import constants from '../../../constants'
 
 
 type SwiseStatsQueryVariables = BackendGraph.Exact<{ [key: string]: never; }>
@@ -9,10 +10,10 @@ const query = 'query SwiseStats { swiseStats { price }}'
 
 
 const fetchSwiseStatsQuery = <ModifiedData = SwiseStatsQueryPayload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<SwiseStatsQueryPayload, SwiseStatsQueryVariables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<SwiseStatsQueryPayload, SwiseStatsQueryVariables, ModifiedData>
 ) => (
   graphqlFetch<SwiseStatsQueryPayload, SwiseStatsQueryVariables, ModifiedData>({
-    url,
+    url: constants.url.backend,
     query,
     variables,
     modifyResult,

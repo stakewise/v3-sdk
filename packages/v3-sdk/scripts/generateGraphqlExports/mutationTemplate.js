@@ -1,11 +1,13 @@
 const mutationTemplate = `
+import constants from '../../../constants'
+
+
 type SubmitInput = {
-  url: string
   variables: {QueryName}Variables
 }
 
-const submit{QueryName} = ({ url, variables }: SubmitInput) =>
-  fetch(url, {
+const submit{QueryName} = ({ variables }: SubmitInput) =>
+  fetch(constants.url.{clientName}, {
     method: 'POST',
     body: JSON.stringify({
       query,
