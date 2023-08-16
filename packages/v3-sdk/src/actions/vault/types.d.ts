@@ -46,26 +46,28 @@ declare global {
       createdAt: AllocatorAction['createdAt']
     }>
 
-    type Data = Pick<
-      ModifiedSubgraphData,
-      'apy' | 'totalAssets' | 'imageUrl' | 'tokenName' | 'isPrivate' | 'isErc20'
-      | 'tokenSymbol' | 'whitelister' | 'description' | 'displayName'
-      | 'feeRecipient' | 'capacity' | 'createdAt' | 'validatorsRoot'
+    type FetchVaultData = Pick<
+      ModifiedData,
+      'apy' | 'isErc20' | 'imageUrl' | 'isPrivate' | 'tokenName' | 'createdAt'
+      | 'tokenSymbol' | 'displayName' | 'description' | 'whitelister'
+      | 'validatorsRoot' | 'feeRecipient' | 'totalAssets' | 'capacity'
     > & {
-      totalPerformance: ModifiedSubgraphData['performance']['total']
-      vaultKeysManager: ModifiedSubgraphData['keysManager']
-      mevRecipient: ModifiedSubgraphData['mevEscrow']
-      vaultAddress: ModifiedSubgraphData['address']
-      vaultAdmin: ModifiedSubgraphData['admin']
-      isValidatorsFetching: boolean
-      isVaultKeysManager: boolean
+      totalPerformance: ModifiedData['performance']['total']
+      vaultKeysManager: ModifiedData['keysManager']
+      mevRecipient: ModifiedData['mevEscrow']
+      vaultAddress: ModifiedData['address']
+      vaultAdmin: ModifiedData['admin']
       performance: Performance
       isSmoothingPool: boolean
-      validators: Validator[]
-      createdAtTime: string
+      createdAt: string
       whitelist: Whitelist
       feePercent: string
-      isPrivate: boolean
+    }
+
+    type FetchValidatorsData = Validator[]
+
+    type Data = FetchVaultData & {
+      validators: FetchValidatorsData
     }
   }
 }

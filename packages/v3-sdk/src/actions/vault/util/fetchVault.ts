@@ -7,7 +7,7 @@ import modifyVaultData from './modifyVaultData'
 import validateVaultAddress from './validateVaultAddress'
 
 
-const fetchVault = async (vaultAddress: string) => {
+const fetchVault = async (vaultAddress: string): Promise<Vault.FetchVaultData> => {
   const address = validateVaultAddress(vaultAddress)
 
   try {
@@ -59,8 +59,8 @@ const fetchVault = async (vaultAddress: string) => {
       description,
       whitelister,
       validatorsRoot,
-      admin: getAddress(admin),
       whitelist: vault.privateVaultAccounts || [],
+      vaultAdmin: getAddress(admin),
       feePercent: `${vault.feePercent / 100}%`,
       totalAssets: formatEther(vault.totalAssets),
       vaultAddress: getAddress(vault.address),

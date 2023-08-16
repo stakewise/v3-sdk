@@ -4,7 +4,7 @@ import validateVaultAddress from './validateVaultAddress'
 import modifyValidatorsData from './modifyValidatorsData'
 
 
-const fetchValidators = async (vaultAddress: string) => {
+const fetchValidators = async (vaultAddress: string): Promise<Vault.Validator[]> => {
   const address = validateVaultAddress(vaultAddress)
 
   try {

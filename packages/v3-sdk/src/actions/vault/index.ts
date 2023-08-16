@@ -1,7 +1,7 @@
 import { fetchVault, fetchValidators, validateVaultAddress } from './util'
 
 
-const fetch = async (vaultAddress: string) => {
+const fetch = async (vaultAddress: string): Promise<Vault.Data> => {
   const address = validateVaultAddress(vaultAddress)
 
   const [ vault, validators ] = await Promise.all([
