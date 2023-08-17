@@ -1,23 +1,29 @@
-import { fetchVault, fetchValidators, validateVaultAddress } from './util'
+import { subgraph } from '../../graphql'
+import { validateObject, validateVaultAddress } from '../helpers'
+
+import modifyVaultData from './modifyVaultData'
+import { Variables, Output } from './types'
 
 
-const fetch = async (vaultAddress: string): Promise<Vault.Data> => {
-  const address = validateVaultAddress(vaultAddress)
+const fetchVault = async (variables: Variables) => {
+  validateObject(variables)
 
-  const [ vault, validators ] = await Promise.all([
-    fetchVault(address),
-    fetchValidators(address),
-  ])
+  const address = validateVaultAddress(variables.address)
 
-  return {
-    ...vault,
-    validators,
+  try {
+    const data = await subgraph.vault.fetchVaultQuery<Output>({
+      variables: { address },
+      modifyResult: modifyVaultData,
+    })
+
+    return data
+  }
+  catch (error) {
+    console.log('Fetch vault failed', error)
+
+    return Promise.reject(error)
   }
 }
 
 
-export {
-  fetch,
-  fetchVault,
-  fetchValidators,
-}
+export default fetchVault

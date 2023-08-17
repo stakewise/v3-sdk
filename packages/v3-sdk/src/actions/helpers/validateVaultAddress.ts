@@ -1,4 +1,4 @@
-const validateVaultAddress = (vaultAddress: string) => {
+const validateVaultAddress = (vaultAddress: string): string => {
   if (!vaultAddress) {
     throw new Error('Vault address is required')
   }

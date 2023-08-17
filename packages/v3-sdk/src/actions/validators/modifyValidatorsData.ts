@@ -1,10 +1,12 @@
 import { formatEther } from 'ethers'
 
-import { shortenAddress } from '../../helpers'
-import constants from '../../../constants'
+import { shortenAddress } from '../helpers'
+import constants from '../../constants'
+
+import { Input, Output } from './types'
 
 
-const modifyValidatorsData = (data: Vault.SubgraphValidatorsData): Vault.Validator[] => {
+const modifyValidatorsData = (data: Input): Output => {
   const validators = data?.vaults?.[0]?.validators || []
 
   return validators.map(({ apy, createdAt, earned, publicKey }) => ({

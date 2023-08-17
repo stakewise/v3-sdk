@@ -1,73 +1,38 @@
-import { VaultQueryPayload } from '../../graphql/subgraph/vault'
-import { VaultValidatorsQueryPayload } from '../../graphql/backend/vault'
-
-import { ModifiedData as ModifyData } from './util/modifyVaultData'
+import { VaultQueryVariables, VaultQueryPayload } from '../../graphql/subgraph/vault'
 
 
-declare global {
+type SubgraphVault = VaultQueryPayload['vault']
 
-  declare namespace Vault {
+type Performance = {
+  mev: number
+  total: number
+  insurance: number
+  ownCapital: number
+  validators: number
+  networkShare: number
+  geoDiversity: number
+  clientDiversity: number
+  validationPerformance: number
+}
 
-    type SubgraphData = VaultQueryPayload
-    type SubgraphValidatorsData = VaultValidatorsQueryPayload
+export type Variables = VaultQueryVariables
 
-    type ModifiedData = ModifyData<SubgraphData['vault']> & {
-      privateVaultAccounts: SubgraphData['privateVaultAccounts']
-    }
+export type Input = VaultQueryPayload
 
-    type Whitelist = VaultQueryPayload['privateVaultAccounts']
-    type ValidatorData = SubgraphValidatorsData['vaults'][number]['validators'][number]
-    type AllocatorAction = AllocatorActionsQueryPayload['allocatorActions'][number]
-
-    type Validator = {
-      apy: string
-      link: string
-      createdAt: number
-      earned: ValidatorData['earned']
-      publicKey: ValidatorData['publicKey']
-    }
-
-    type Performance = {
-      mev: number
-      total: number
-      insurance: number
-      ownCapital: number
-      validators: number
-      networkShare: number
-      geoDiversity: number
-      clientDiversity: number
-      validationPerformance: number
-    }
-
-    type AllocatorActions = Array<{
-      link: string
-      assets: AllocatorAction['assets']
-      actionType: AllocatorAction['actionType']
-      createdAt: AllocatorAction['createdAt']
-    }>
-
-    type FetchVaultData = Pick<
-      ModifiedData,
-      'apy' | 'isErc20' | 'imageUrl' | 'isPrivate' | 'tokenName' | 'createdAt'
-      | 'tokenSymbol' | 'displayName' | 'description' | 'whitelister'
-      | 'validatorsRoot' | 'feeRecipient' | 'totalAssets' | 'capacity'
-    > & {
-      totalPerformance: ModifiedData['performance']['total']
-      vaultKeysManager: ModifiedData['keysManager']
-      mevRecipient: ModifiedData['mevEscrow']
-      vaultAddress: ModifiedData['address']
-      vaultAdmin: ModifiedData['admin']
-      performance: Performance
-      isSmoothingPool: boolean
-      createdAt: string
-      whitelist: Whitelist
-      feePercent: string
-    }
-
-    type FetchValidatorsData = Validator[]
-
-    type Data = FetchVaultData & {
-      validators: FetchValidatorsData
-    }
-  }
+export type Output = Pick<
+  SubgraphVault,
+  'apy' | 'isErc20' | 'imageUrl' | 'isPrivate' | 'tokenName' | 'createdAt'
+  | 'tokenSymbol' | 'displayName' | 'description' | 'whitelister'
+  | 'validatorsRoot' | 'feeRecipient' | 'totalAssets' | 'capacity'
+> & {
+  totalPerformance: SubgraphVault['performance']['total']
+  vaultKeysManager: SubgraphVault['keysManager']
+  mevRecipient: SubgraphVault['mevEscrow']
+  vaultAddress: SubgraphVault['address']
+  vaultAdmin: SubgraphVault['admin']
+  performance: Performance
+  createdAt: string
+  feePercent: string
+  isSmoothingPool: boolean
+  whitelist: VaultQueryPayload['privateVaultAccounts']
 }
