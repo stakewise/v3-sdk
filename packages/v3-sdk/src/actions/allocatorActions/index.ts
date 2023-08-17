@@ -1,13 +1,10 @@
 import { subgraph } from '../../graphql'
-import { validateObject } from '../helpers'
 
 import modifyAllocatorActionsData from './modifyAllocatorActionsData'
 import { Output, Variables } from './types'
 
 
 const fetchAllocatorActions = async (variables: Variables) => {
-  validateObject(variables)
-
   try {
     const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<Output>({
       variables,

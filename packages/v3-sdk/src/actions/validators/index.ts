@@ -1,18 +1,18 @@
 import { backend } from '../../graphql'
-import { validateObject, validateVaultAddress } from '../helpers'
+import { validateAddress } from '../helpers'
 
 import modifyValidatorsData from './modifyValidatorsData'
 import { Output, Variables } from './types'
 
 
 const fetchValidators = async (variables: Variables) => {
-  validateObject(variables)
-
-  const address = validateVaultAddress(variables.address)
+  validateAddress(variables.address)
 
   try {
     const data = await backend.vault.fetchVaultValidatorsQuery<Output>({
-      variables: { address },
+      variables: {
+        address: variables.address.toLowerCase(),
+      },
       modifyResult: modifyValidatorsData,
     })
 

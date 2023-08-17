@@ -1,18 +1,18 @@
 import { subgraph } from '../../graphql'
-import { validateObject, validateVaultAddress } from '../helpers'
+import { validateAddress } from '../helpers'
 
 import modifyVaultData from './modifyVaultData'
 import { Variables, Output } from './types'
 
 
 const fetchVault = async (variables: Variables) => {
-  validateObject(variables)
-
-  const address = validateVaultAddress(variables.address)
+  validateAddress(variables.address)
 
   try {
     const data = await subgraph.vault.fetchVaultQuery<Output>({
-      variables: { address },
+      variables: {
+        address: variables.address.toLowerCase(),
+      },
       modifyResult: modifyVaultData,
     })
 
