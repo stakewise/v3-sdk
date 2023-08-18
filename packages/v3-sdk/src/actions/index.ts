@@ -1,9 +1,9 @@
 import { backend, subgraph } from '../graphql'
 
 
-export { default as fetchVault } from './vault'
-
 // Subgraph vault
+
+export { default as fetchVault } from './vault'
 export const fetchAllocatorActions = subgraph.allocatorActions.fetchAllocatorActionsQuery
 
 // Backend vault
