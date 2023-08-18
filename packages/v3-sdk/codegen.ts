@@ -1,11 +1,6 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
+import constants from '../v3-sdk/src/constants'
 
-
-const urls = {
-  backend: 'https://api-goerli.stakewise.io/graphql',
-  // TODO temporary api
-  subgraph: 'https://graph-pretest.stakewise.io/subgraphs/name/stakewise/stakewise',
-}
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {
@@ -31,18 +26,18 @@ const hooksConfig = {
   arrayInputCoercion: false, // strict array types
 }
 
-type Source = keyof typeof urls
+type Source = keyof typeof constants.url
 
 const getSchemaOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
-    schema: urls[source],
+    schema: constants.url[source],
     plugins: [ 'schema-ast' ],
   }
 }
 
 const getTypesOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
-    schema: urls[source],
+    schema: constants.url[source],
     config: typesConfig,
     plugins: [ 'typescript' ],
   }
@@ -50,7 +45,7 @@ const getTypesOutput = (source: Source): CodegenConfig['generates'][string] => {
 
 const getHooksOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
-    schema: urls[source],
+    schema: constants.url[source],
     config: hooksConfig,
     plugins: [
       'typescript-operations',
@@ -67,7 +62,7 @@ const getHooksOutput = (source: Source): CodegenConfig['generates'][string] => {
 const generateConfig = (): CodegenConfig => {
   const generates: CodegenConfig['generates'] = {}
 
-  Object.keys(urls).forEach((source) => {
+  Object.keys(constants.url).forEach((source) => {
     const outputs = {
       schema: {
         path: `src/graphql/${source}/schema.graphql`,

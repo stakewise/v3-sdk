@@ -11,14 +11,14 @@
   "extensions": {
     "endpoints": {
       "Subgraph GraphQL": {
-        "url": "https://graph-goerli.stakewise.io/subgraphs/name/stakewise/stakewise",
+        "url": "https://graph-testnet.stakewise.io/subgraphs/name/stakewise/stakewise",
         "headers": {
           "user-agent": "JS GraphQL"
         },
         "introspect": false
       },
       "Backend GraphQL": {
-        "url": "https://api-goerli.stakewise.io/graphql",
+        "url": "https://api-testnet.stakewise.io/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
         },

@@ -10,7 +10,4 @@ query VaultsCount($address: Bytes) {
   }) {
     id
   }
-  created: vaults(where: { admin: $address }) {
-    id
-  }
 }

@@ -97,6 +97,7 @@ const getFileExports = (queryName) => {
   ]
 
   const indexFileExports = fileExports
+    .filter(Boolean)
     .map((fileExport) => `${fileExport} from './${fileName}'`)
 
   return [ fileExports, indexFileExports ].map((fileExports) => fileExports.join('\n'))

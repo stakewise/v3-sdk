@@ -1,12 +1,15 @@
-const queryImport = 'import { graphqlFetch } from \'../../../modules/gql-module\'\n'
+const queryImport = [
+  'import { graphqlFetch } from \'../../../modules/gql-module\'',
+  'import constants from \'../../../constants\'\n',
+].join('\n')
 
 const queryTemplate = `
 
 const fetch{QueryName} = <ModifiedData = {QueryName}Payload>(
-  { url, variables, modifyResult }: ModuleGQL.FetchCodegenInput<{QueryName}Payload, {QueryName}Variables, ModifiedData>
+  { variables, modifyResult }: ModuleGQL.FetchCodegenInput<{QueryName}Payload, {QueryName}Variables, ModifiedData>
 ) => (
   graphqlFetch<{QueryName}Payload, {QueryName}Variables, ModifiedData>({
-    url,
+    url: constants.url.{clientName},
     query,
     variables,
     modifyResult,
