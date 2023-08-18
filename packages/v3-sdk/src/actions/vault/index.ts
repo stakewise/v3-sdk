@@ -1,28 +1,21 @@
 import { subgraph } from '../../graphql'
-import { validateAddress } from '../helpers'
+import { VaultQueryPayload, VaultQueryVariables } from '../../graphql/subgraph/vault'
 
 import modifyVaultData from './modifyVaultData'
-import { Variables, Output } from './types'
+import { Output } from './types'
 
 
-const fetchVault = async (variables: Variables) => {
-  validateAddress(variables.address)
+const fetchVault = async <T = Output>(props: ModuleGQL.FetchCodegenInput<VaultQueryPayload, VaultQueryVariables, T>) => {
+  const { variables, modifyResult } = props
 
-  try {
-    const data = await subgraph.vault.fetchVaultQuery<Output>({
-      variables: {
-        address: variables.address.toLowerCase(),
-      },
-      modifyResult: modifyVaultData,
-    })
+  const data = await subgraph.vault.fetchVaultQuery<Output>({
+    variables: {
+      address: variables.address.toLowerCase(),
+    },
+    modifyResult: modifyVaultData,
+  })
 
-    return data
-  }
-  catch (error) {
-    console.log('Fetch vault failed', error)
-
-    return Promise.reject(error)
-  }
+  return typeof modifyResult === 'function' ? modifyResult(data) : data
 }
 
 
