@@ -1,8 +1,0 @@
-dist
-types
-cache
-coverage
-
-# Types
-schema.graphql
-*.graphql.ts
