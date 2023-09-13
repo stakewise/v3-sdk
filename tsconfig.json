@@ -3,8 +3,8 @@
     "baseUrl": ".",
     "strict": true,
     "jsx": "react",
+    "rootDir": ".",
     "allowJs": true,
-    "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true,
     "target": "esnext",
@@ -32,7 +32,9 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.d.ts",
-    "src/global.d.ts"
+    "jest.config.ts",
+    "src/global.d.ts",
+    "rollup.config.ts"
   ],
   "exclude": [
     "node_modules"

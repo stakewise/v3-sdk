@@ -1,4 +1,4 @@
-import path from 'path'
+import { RollupOptions } from 'rollup'
 import json from '@rollup/plugin-json'
 import { dts } from 'rollup-plugin-dts'
 import terser from '@rollup/plugin-terser'
@@ -10,7 +10,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import packageJson from './package.json'
 
 
-const config = [
+const config: RollupOptions[] = [
   {
     input: 'src/index.ts',
     output: [
@@ -21,13 +21,8 @@ const config = [
         format: 'cjs',
       },
     ],
-    resolve: {
-      alias: {
-        'graphql': path.resolve(__dirname, 'src/graphql'),
-        'helpers': path.resolve(__dirname, 'src/helpers')
-      },
-    },
     plugins: [
+      // @ts-ignore
       peerDepsExternal(),
       resolve(),
       commonjs(),

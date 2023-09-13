@@ -11,9 +11,9 @@
   "scripts": {
     "test": "jest --clearCache && jest",
     "test-coverage": "jest --coverage",
-    "build": "npm run prepare && rm -rf ./dist && rollup -c --bundleConfigAsCjs",
+    "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
     "graphql": "graphql-codegen && node ./scripts/generateGraphqlExports",
-    "minify": "minify dist/index.js --out-file dist/index.js --mangle.keepClassName",
+    "build": "npm run prepare && rm -rf ./dist && rollup -c --bundleConfigAsCjs",
     "typechain": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
     "prepare": "npx husky set .husky/pre-commit && npm run typechain && npm run graphql && husky install"
   },
@@ -43,6 +43,7 @@
     "@rollup/plugin-typescript": "11.1.3",
     "@typechain/ethers-v6": "0.5.0",
     "@types/jest": "29.5.4",
+    "@types/rollup-plugin-peer-deps-external": "^2.2.1",
     "core-js": "3.32.2",
     "hardhat": "2.17.1",
     "hardhat-jest-plugin": "0.0.6",
