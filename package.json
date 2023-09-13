@@ -9,14 +9,16 @@
   "description": "StakeWise v3 SDK",
   "homepage": "https://app.stakewise.io",
   "scripts": {
-    "test": "jest",
+    "test": "jest --clearCache && jest",
     "test-coverage": "jest --coverage",
-    "prepare": "npm run typechain && npm run graphql",
+    "build": "npm run prepare && rm -rf ./dist && rollup -c --bundleConfigAsCjs",
     "graphql": "graphql-codegen && node ./scripts/generateGraphqlExports",
-    "typechain": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
     "minify": "minify dist/index.js --out-file dist/index.js --mangle.keepClassName",
-    "rollup": "rollup -c --bundleConfigAsCjs",
-    "build": "npm run prepare && rm -rf ./dist && "
+    "typechain": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
+    "prepare": "npx husky set .husky/pre-commit && npm run typechain && npm run graphql && husky install"
+  },
+  "exports": {
+    "default": "./dist/index.js"
   },
   "keywords": [
     "ethereum",
@@ -29,7 +31,6 @@
     "ethers": "^6.6.7"
   },
   "devDependencies": {
-    "@faker-js/faker": "8.0.2",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/near-operation-file-preset": "2.5.0",
     "@graphql-codegen/typescript": "4.0.1",
@@ -38,17 +39,22 @@
     "@rollup/plugin-commonjs": "25.0.4",
     "@rollup/plugin-json": "6.0.0",
     "@rollup/plugin-node-resolve": "15.2.1",
-    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.3",
     "@typechain/ethers-v6": "0.5.0",
+    "@types/jest": "29.5.4",
     "core-js": "3.32.2",
     "hardhat": "2.17.1",
     "hardhat-jest-plugin": "0.0.6",
+    "husky": "8.0.0",
+    "jest": "29.7.0",
     "jest-fetch-mock": "3.0.3",
     "regenerator-runtime": "0.14.0",
     "rollup": "3.29.1",
     "rollup-plugin-dts": "6.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
+    "ts-jest": "29.1.1",
+    "ts-node": "10.9.1",
     "typechain": "8.3.1",
     "typescript": "5.1.6"
   }
