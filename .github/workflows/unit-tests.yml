@@ -27,6 +27,6 @@ jobs:
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
-      # - run: npm run test
-      #   shell: bash
-      - uses: ArtiomTr/jest-coverage-report-action@v2
+      - name: Checking
+        run: npm run prepare && npm run test
+        shell: bash
