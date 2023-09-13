@@ -6,13 +6,13 @@ const config: Config = {
   verbose: true,
   preset: 'ts-jest',
   transform: {
-    '\\.[jt]sx?$': 'ts-jest'
+    '\\.[jt]sx?$': 'ts-jest',
   },
   moduleNameMapper: {
     '^helpers$': require.resolve('./src/helpers/index.ts'),
     '^graphql$': require.resolve('./src/graphql/index.ts'),
   },
-  modulePathIgnorePatterns: ['<rootDir>/src/helpers'],
+  modulePathIgnorePatterns: [ '<rootDir>/src/helpers' ],
   moduleFileExtensions: [ 'json', 'js', 'ts' ],
   collectCoverageFrom: [ 'src/**/*.ts' ],
   testMatch: [ '**/*.spec.ts' ],

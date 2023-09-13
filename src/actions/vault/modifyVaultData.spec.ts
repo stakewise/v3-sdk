@@ -37,8 +37,8 @@ describe('modifyVaultData', () => {
     },
     privateVaultAccounts: [
       { createdAt: '2023-01-01', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
-      { createdAt: '2023-01-02', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' }
-    ]
+      { createdAt: '2023-01-02', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
+    ],
   }
 
   it('should correctly transform the vault data', () => {
@@ -78,7 +78,7 @@ describe('modifyVaultData', () => {
         },
         {
           createdAt: '2023-01-02',
-          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663'
+          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
         },
       ],
     }
@@ -93,8 +93,8 @@ describe('modifyVaultData', () => {
       ...mockVaultQueryPayload,
       vault: {
         ...mockVaultQueryPayload.vault,
-        mevEscrow: ''
-      }
+        mevEscrow: '',
+      },
     }
 
     const result = modifyVaultData(mockDataWithoutMevEscrow)
@@ -105,7 +105,7 @@ describe('modifyVaultData', () => {
   it('should handle empty privateVaultAccounts correctly', () => {
     const mockDataWithoutPrivateAccounts: VaultQueryPayload = {
       ...mockVaultQueryPayload,
-      privateVaultAccounts: []
+      privateVaultAccounts: [],
     }
 
     const result = modifyVaultData(mockDataWithoutPrivateAccounts)
@@ -118,8 +118,8 @@ describe('modifyVaultData', () => {
       ...mockVaultQueryPayload,
       vault: {
         ...mockVaultQueryPayload.vault,
-        feePercent: 0
-      }
+        feePercent: 0,
+      },
     }
 
     const result = modifyVaultData(mockDataWithZeroFee)

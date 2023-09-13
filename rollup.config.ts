@@ -1,7 +1,7 @@
-import { RollupOptions } from 'rollup'
 import json from '@rollup/plugin-json'
 import { dts } from 'rollup-plugin-dts'
 import terser from '@rollup/plugin-terser'
+import type { RollupOptions } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
@@ -22,7 +22,7 @@ const config: RollupOptions[] = [
       },
     ],
     plugins: [
-      // @ts-ignore
+      // @ts-ignore: this plugin has types for old version of jest :(
       peerDepsExternal(),
       resolve(),
       commonjs(),
@@ -49,7 +49,7 @@ const config: RollupOptions[] = [
     plugins: [
       dts(),
     ],
-  }
+  },
 ]
 
 
