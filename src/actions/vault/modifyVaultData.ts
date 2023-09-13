@@ -16,11 +16,11 @@ const modifyVaultData = (data: VaultQueryPayload): ModifiedVault => {
     feePercent: feePercent / 100,
     vaultAdmin: getAddress(admin),
     vaultAddress: getAddress(address),
-    whitelist: privateVaultAccounts || [],
     feeRecipient: getAddress(feeRecipient),
     vaultKeysManager: getAddress(keysManager),
     apy: Number(avgRewardPerAsset) * 365 * 100,
     mevRecipient: mevEscrow ? getAddress(mevEscrow) : constants.sharedMevEscrow,
+    whitelist: privateVaultAccounts.map((item) => ({ ...item, address: getAddress(address) })) || [],
   }
 }
 
