@@ -59,8 +59,9 @@ const getQueryContent = (client: string, queryName: string, tsFilePath: string) 
   const templateString = isQuery ? queryTemplate : mutationTemplate
 
   const template = templateString
-    .replace(/\{QueryName}/g, queryName)
     .replace(/\{queryName}/g, string.decapitalize(queryName))
+    .replace(/\{ClientName}/g, string.capitalize(client))
+    .replace(/\{QueryName}/g, queryName)
     .replace(/\{clientName}/g, client)
 
   const fragmentImports = fragments.length
@@ -153,11 +154,21 @@ const generateGraphqlQueryFiles = (dirPath: string, client: string) => {
         const isQuery = /Query/.test(queryName)
 
         const fileTypes = getFileTypes(client, tsFilePath)
-        const fileImports = isQuery ? queryImport : ''
         const { fragmentImports, fileContent } = getQueryContent(client, queryName, tsFilePath)
 
+        const fileImports = isQuery
+          ? queryImport
+              .replace(/\{ClientName}/g, string.capitalize(client))
+              .replace(/\{clientName}/g, client)
+          : ''
+
+
+        const imports = fragmentImports
+          ? fileImports.concat(`\n${fragmentImports}\n`)
+          : fileImports
+        
         file = [
-          fragmentImports ? fileImports.concat(`\n${fragmentImports}\n`) : fileImports,
+          imports,
           fileTypes,
           fileContent,
           fileExports,

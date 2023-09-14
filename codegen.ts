@@ -14,7 +14,7 @@ const typesConfig = {
 }
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-urql
-const hooksConfig = {
+const requestsConfig = {
   maybeValue: 'T',
   defaultScalarType: 'string',
   operationResultSuffix: 'Payload', // gives suffix to payload type
@@ -43,10 +43,10 @@ const getTypesOutput = (source: Source): CodegenConfig['generates'][string] => {
   }
 }
 
-const getHooksOutput = (source: Source): CodegenConfig['generates'][string] => {
+const getRequestsOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
     schema: constants.url[source],
-    config: hooksConfig,
+    config: requestsConfig,
     plugins: [
       'typescript-operations',
     ],
@@ -74,7 +74,7 @@ const generateConfig = (): CodegenConfig => {
       },
       hooks: {
         path: `src/graphql/${source}`,
-        config: getHooksOutput(source as Source),
+        config: getRequestsOutput(source as Source),
       },
     }
 

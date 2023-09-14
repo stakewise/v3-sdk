@@ -1,4 +1,5 @@
 import json from '@rollup/plugin-json'
+import del from 'rollup-plugin-delete'
 import { dts } from 'rollup-plugin-dts'
 import terser from '@rollup/plugin-terser'
 import type { RollupOptions } from 'rollup'
@@ -7,7 +8,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
-import packageJson from './package.json'
+import pkg from './package.json'
 
 
 const config: RollupOptions[] = [
@@ -15,10 +16,23 @@ const config: RollupOptions[] = [
     input: 'src/index.ts',
     output: [
       {
-        inlineDynamicImports: true,
-        file: packageJson.main,
+        name: pkg.name,
+        file: pkg.browser,
+        sourcemap: true,
+        format: 'umd',
+      },
+      {
+        name: pkg.name,
+        file: pkg.main,
         sourcemap: true,
         format: 'cjs',
+      },
+      {
+        name: pkg.name,
+        file: pkg.module,
+        exports: 'named',
+        sourcemap: true,
+        format: 'es',
       },
     ],
     plugins: [
@@ -30,24 +44,38 @@ const config: RollupOptions[] = [
         noEmitOnError: true,
         tsconfig: './tsconfig.json',
         exclude: [
+          'node_modules',
           '**/*.spec.ts',
           '**/*.stories.tsx',
         ],
       }),
       json(),
-      terser(),
+      terser({
+        format: {
+          comments: false,
+        },
+      }),
     ],
   },
   {
-    input: 'dist/index.js',
+    input: 'src/index.ts',
     output: [
       {
         file: 'dist/index.d.ts',
-        format: 'cjs',
+        format: 'es',
       },
     ],
     plugins: [
-      dts(),
+      dts({
+        tsconfig: './tsconfig.json',
+      }),
+      del({
+        hook: 'buildEnd',
+        targets: [
+          './dist/src',
+          './dist/rollup*',
+        ],
+      }),
     ],
   },
 ]

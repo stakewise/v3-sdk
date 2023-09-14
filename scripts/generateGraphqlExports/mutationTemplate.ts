@@ -1,5 +1,6 @@
 export default `
 import { constants } from 'helpers'
+import { {ClientName}Graph } from 'types/graphql/{clientName}'
 
 
 type SubmitInput = {

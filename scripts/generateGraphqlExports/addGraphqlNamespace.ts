@@ -12,7 +12,7 @@ const addGraphqlNamespace = (filePath: string, client: string) => {
 
   const graphqlTypesFileContent = [
     '// @ts-ignore',
-    `declare namespace ${string.capitalize(client)}Graph {\n`,
+    `export declare namespace ${string.capitalize(client)}Graph {\n`,
     graphqlTypesFile,
     '}',
     '',

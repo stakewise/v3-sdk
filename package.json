@@ -2,10 +2,12 @@
   "version": "1.0.0",
   "sideEffects": false,
   "main": "dist/index.js",
-  "typings": "types.d.ts",
+  "types": "dist/index.d.ts",
   "license": "AGPL-3.0-only",
   "name": "@stakewise/v3-sdk",
-  "types": " dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
   "description": "StakeWise v3 SDK",
   "homepage": "https://app.stakewise.io",
   "scripts": {
@@ -14,8 +16,12 @@
     "prepare": "npm run typechain && npm run graphql && husky install",
     "typechain": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
     "graphql": "graphql-codegen && ts-node -O '{\"module\": \"commonjs\"}' ./scripts/generateGraphqlExports",
-    "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs"
+    "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs",
+    "generate": "dts-generator --prefix stakewise --baseDir dist --name v3-sdk --main v3-sdk --project . --exclude [ \"src/**/*.d.ts\", \"node_modules/**/*.d.ts\" ] --out dist/index.d.ts"
   },
+  "files": [
+    "dist/"
+  ],
   "exports": {
     "default": "./dist/index.js"
   },
@@ -55,6 +61,7 @@
     "jest-fetch-mock": "3.0.3",
     "regenerator-runtime": "0.14.0",
     "rollup": "3.29.1",
+    "rollup-plugin-delete": "2.0.0",
     "rollup-plugin-dts": "6.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "ts-jest": "29.1.1",
