@@ -1,5 +1,16 @@
 .idea
 .vscode
+.rollup.cache
+tsconfig.tsbuildinfo
+
+dist
+types
+cache
+coverage
 
 # dependencies
 node_modules
+
+# Types
+schema.graphql
+*.graphql.ts

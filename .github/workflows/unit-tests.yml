@@ -1,0 +1,32 @@
+name: Unit tests
+
+on:
+  pull_request:
+    branches: [ main, prod ]
+
+jobs:
+  audit:
+    name: Checking
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: read
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Setup node and npm
+        uses: actions/setup-node@v3
+        with:
+          cache: npm
+          scope: '@stakewise'
+          node-version: '18.16.1'
+          registry-url: "https://npm.pkg.github.com"
+          cache-dependency-path: "**/package-lock.json"
+      - name: Install npm dependencies
+        run: "npm ci --ignore-scripts"
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+      - name: Checking
+        run: npm run prepare && npm run test
+        shell: bash
