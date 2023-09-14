@@ -1,4 +1,4 @@
-const mutationTemplate = `
+export default `
 import { constants } from 'helpers'
 
 
@@ -17,7 +17,3 @@ const submit{QueryName} = ({ variables }: SubmitInput) =>
     .then((res) => res.json() as Promise<{ data: {QueryName}Payload }>)
     .then(({ data }) => data)
 `
-
-module.exports = {
-  mutationTemplate,
-}

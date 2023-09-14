@@ -1,10 +1,11 @@
-const fs = require('fs')
+import fs from 'fs'
 
-const string = require('./string')
+import string from './string'
 
 
-const addGraphqlNamespace = (filePath, client) => {
-  const graphqlTypesFile = fs.readFileSync(filePath, 'utf8')
+const addGraphqlNamespace = (filePath: string, client: string) => {
+  const graphqlTypesFile = fs
+    .readFileSync(filePath, 'utf8')
     .split('\n')
     .map((line) => line ? `  ${line}` : '')
     .join('\n')
@@ -21,4 +22,4 @@ const addGraphqlNamespace = (filePath, client) => {
 }
 
 
-module.exports = addGraphqlNamespace
+export default addGraphqlNamespace

@@ -1,18 +1,18 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const string = require('./string')
-const { mutationTemplate } = require('./mutationTemplate')
-const { queryImport, queryTemplate } = require('./queryTemplate')
+import string from './string'
+import mutationTemplate from './mutationTemplate'
+import { queryImport, queryTemplate } from './queryTemplate'
 
 
-const getGraphqlQuery = (tsFilePath) => {
+const getGraphqlQuery = (tsFilePath: string) => {
   const graphqlPath = tsFilePath.replace(/\.ts$/, '')
   const graphqlQuery = fs.readFileSync(graphqlPath, 'utf8')
     .replace(/\n/g, '')
     .replace(/\s+/g, ' ')
 
-  const fragments = []
+  const fragments: string[] = []
 
   graphqlQuery
     .split('...')
@@ -34,7 +34,7 @@ const getGraphqlQuery = (tsFilePath) => {
   }
 }
 
-const getFragmentContent = (tsFilePath) => {
+const getFragmentContent = (tsFilePath: string) => {
   const { query, fragments } = getGraphqlQuery(tsFilePath)
 
   const fragmentName = tsFilePath
@@ -51,7 +51,7 @@ const getFragmentContent = (tsFilePath) => {
   }
 }
 
-const getQueryContent = ({ client, queryName, tsFilePath }) => {
+const getQueryContent = (client: string, queryName: string, tsFilePath: string) => {
   const { query, fragments } = getGraphqlQuery(tsFilePath)
 
   const isQuery = /Query/.test(queryName)
@@ -73,7 +73,7 @@ const getQueryContent = ({ client, queryName, tsFilePath }) => {
   }
 }
 
-const getFileExports = (queryName) => {
+const getFileExports = (queryName: string) => {
   const isQuery = /Query/.test(queryName)
   const isMutation = /Mutation/.test(queryName)
   const isFragment = !isQuery && !isMutation
@@ -103,7 +103,7 @@ const getFileExports = (queryName) => {
   return [ fileExports, indexFileExports ].map((fileExports) => fileExports.join('\n'))
 }
 
-const getFileTypes = ({ client, tsFilePath }) => {
+const getFileTypes = (client: string, tsFilePath: string) => {
   return fs.readFileSync(tsFilePath, 'utf8')
     .replace(/import \* as Types from .*\n\n/, '')
     .replace(/import \{ TypedDocumentNode .*/, '')
@@ -112,7 +112,7 @@ const getFileTypes = ({ client, tsFilePath }) => {
     .replace(/export /g, '')
 }
 
-const generateGraphqlQueryFiles = (dirPath, client) => {
+const generateGraphqlQueryFiles = (dirPath: string, client: string) => {
   const gqlFolders = fs.readdirSync(dirPath)
     .filter((gqlModelName) => {
       const gqlModelDir = path.resolve(dirPath, gqlModelName)
@@ -127,7 +127,7 @@ const generateGraphqlQueryFiles = (dirPath, client) => {
       .filter((fileName) => /\.graphql$/.test(fileName))
       .sort((a, b) => a.length > b.length ? 1 : -1)
 
-    const indexExports = []
+    const indexExports: string[] = []
     const isFragments = gqlModelName === 'fragments'
 
     gqlFiles.forEach((gqlFileName) => {
@@ -152,9 +152,9 @@ const generateGraphqlQueryFiles = (dirPath, client) => {
       else {
         const isQuery = /Query/.test(queryName)
 
-        const fileTypes = getFileTypes({ client, tsFilePath })
+        const fileTypes = getFileTypes(client, tsFilePath)
         const fileImports = isQuery ? queryImport : ''
-        const { fragmentImports, fileContent } = getQueryContent({ client, queryName, tsFilePath })
+        const { fragmentImports, fileContent } = getQueryContent(client, queryName, tsFilePath)
 
         file = [
           fragmentImports ? fileImports.concat(`\n${fragmentImports}\n`) : fileImports,
@@ -194,4 +194,4 @@ const generateGraphqlQueryFiles = (dirPath, client) => {
 }
 
 
-module.exports = generateGraphqlQueryFiles
+export default generateGraphqlQueryFiles

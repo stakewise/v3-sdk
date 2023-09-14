@@ -18,7 +18,7 @@ const fetch{QueryName} = <ModifiedData = {QueryName}Payload>(
 `
 
 
-module.exports = {
+export {
   queryImport,
   queryTemplate,
 }

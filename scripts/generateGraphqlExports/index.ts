@@ -1,7 +1,7 @@
-const path = require('path')
+import path from 'path'
 
-const addGraphqlNamespace = require('./addGraphqlNamespace')
-const generateGraphqlQueryFiles = require('./generateGraphqlQueryFiles')
+import addGraphqlNamespace from './addGraphqlNamespace'
+import generateGraphqlQueryFiles from './generateGraphqlQueryFiles'
 
 
 const endpoints = [
