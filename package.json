@@ -9,8 +9,7 @@
   "description": "StakeWise v3 SDK",
   "homepage": "https://app.stakewise.io",
   "scripts": {
-    "test-coverage": "jest --coverage",
-    "test": "jest --clearCache && jest",
+    "test": "jest --clearCache && jest --onlyChanged",
     "build": "npm run prepare && rm -rf ./dist && npm run rollup",
     "prepare": "npm run typechain && npm run graphql && husky install",
     "graphql": "graphql-codegen && node ./scripts/generateGraphqlExports",
