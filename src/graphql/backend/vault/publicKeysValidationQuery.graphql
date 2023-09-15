@@ -1,7 +1,0 @@
-query PublicKeysValidation(
-  $publicKeys: [String!]!
-) {
-  publicKeysValidation(
-    publicKeys: $publicKeys
-  )
-}

@@ -20,6 +20,9 @@ const config: RollupOptions[] = [
         file: pkg.browser,
         sourcemap: true,
         format: 'umd',
+        globals: {
+          ethers: 'ethers',
+        },
       },
       {
         name: pkg.name,
