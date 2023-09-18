@@ -1,4 +1,5 @@
 export { default as vault } from './vault'
+export { default as transactions } from './transactions'
 export { default as daySnapshots } from './daySnapshots'
 export { default as swiseUsdPrice } from './swiseUsdPrice'
 export { default as vaultValidators } from './vaultValidators'
