@@ -10,7 +10,13 @@ const config = {
       subgraph: 'https://graph.stakewise.io/subgraphs/name/stakewise/stakewise',
     },
     explorerUrl: 'https://etherscan.io',
-    sharedMevEscrow: '',
+    rpcUrl: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
+    addresses: {
+      base: {
+        keeper: '',
+        sharedMevEscrow: '',
+      },
+    },
   },
   [Network.Gnosis]: {
     api: {
@@ -18,7 +24,13 @@ const config = {
       subgraph: 'https://graph-gno.stakewise.io/subgraphs/name/stakewise/stakewise',
     },
     explorerUrl: 'https://blockscout.com/xdai/mainnet',
-    sharedMevEscrow: '',
+    rpcUrl: 'https://rpc.gnosischain.com',
+    addresses: {
+      base: {
+        keeper: '',
+        sharedMevEscrow: '',
+      },
+    },
   },
   [Network.Goerli]: {
     api: {
@@ -26,9 +38,15 @@ const config = {
       subgraph: 'https://testnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
     },
     explorerUrl: 'https://goerli.etherscan.io',
-    sharedMevEscrow: '0xE33E8b756Cc5F4B622ce9A0d29c392F5999DB547',
+    rpcUrl: 'https://goerli.infura.io/v3/84842078b09946638c03157f83405213',
+    addresses: {
+      base: {
+        keeper: '0x893ceb1cF23475defE3747670EbE4b40e629c6fD',
+        sharedMevEscrow: '0xb793c3D2Cec1d0F35fF88BCA7655B88A44669e4B',
+      },
+    },
   },
-}
+} as const
 
 
 export default config

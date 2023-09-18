@@ -48,7 +48,7 @@ const modifyVault = (values: ModifyVaultInput): ModifiedVault => {
     })) || [],
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)
-      : config[network].sharedMevEscrow,
+      : config[network].addresses.base.sharedMevEscrow,
     capacity: vault.capacity !== MaxUint256.toString()
       ? formatEther(vault.capacity)
       : '∞',

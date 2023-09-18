@@ -1,2 +1,2 @@
-export * from './fetch'
+export * from './requests'
 export * from 'helpers/enums'

@@ -112,7 +112,7 @@ describe('modifyVault', () => {
       network,
     })
 
-    expect(result.mevRecipient).toEqual(config[network].sharedMevEscrow)
+    expect(result.mevRecipient).toEqual(config[network].addresses.base.sharedMevEscrow)
   })
 
   it('should handle empty privateVaultAccounts correctly', () => {
