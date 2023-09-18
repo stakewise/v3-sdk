@@ -1,6 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
-import constants from '../v3-sdk/src/helpers/constants'
 
+import { Network } from './src/helpers/enums'
+import config from './src/helpers/config'
+
+
+// For every netwrok we have same gql shema, so we can use just Mainnet here
+const urls = config[Network.Goerli].api // TODO replace on Mainnet
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {
@@ -14,7 +19,7 @@ const typesConfig = {
 }
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-urql
-const hooksConfig = {
+const requestsConfig = {
   maybeValue: 'T',
   defaultScalarType: 'string',
   operationResultSuffix: 'Payload', // gives suffix to payload type
@@ -26,27 +31,27 @@ const hooksConfig = {
   arrayInputCoercion: false, // strict array types
 }
 
-type Source = keyof typeof constants.url
+type Source = keyof typeof urls
 
 const getSchemaOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
-    schema: constants.url[source],
+    schema: urls[source],
     plugins: [ 'schema-ast' ],
   }
 }
 
 const getTypesOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
-    schema: constants.url[source],
+    schema: urls[source],
     config: typesConfig,
     plugins: [ 'typescript' ],
   }
 }
 
-const getHooksOutput = (source: Source): CodegenConfig['generates'][string] => {
+const getRequestsOutput = (source: Source): CodegenConfig['generates'][string] => {
   return {
-    schema: constants.url[source],
-    config: hooksConfig,
+    schema: urls[source],
+    config: requestsConfig,
     plugins: [
       'typescript-operations',
     ],
@@ -62,7 +67,7 @@ const getHooksOutput = (source: Source): CodegenConfig['generates'][string] => {
 const generateConfig = (): CodegenConfig => {
   const generates: CodegenConfig['generates'] = {}
 
-  Object.keys(constants.url).forEach((source) => {
+  Object.keys(urls).forEach((source) => {
     const outputs = {
       schema: {
         path: `src/graphql/${source}/schema.graphql`,
@@ -74,7 +79,7 @@ const generateConfig = (): CodegenConfig => {
       },
       hooks: {
         path: `src/graphql/${source}`,
-        config: getHooksOutput(source as Source),
+        config: getRequestsOutput(source as Source),
       },
     }
 
@@ -90,7 +95,7 @@ const generateConfig = (): CodegenConfig => {
   }
 }
 
-const config = generateConfig()
+const result = generateConfig()
 
 
-export default config
+export default result

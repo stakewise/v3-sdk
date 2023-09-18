@@ -1,6 +1,34 @@
 query Vault($address: ID!) {
   vault(id: $address) {
-    ...VaultFull
+    address: id
+    performance: score
+    admin
+    proof
+    isErc20
+    imageUrl
+    verified
+    capacity
+    mevEscrow
+    isPrivate
+    createdAt
+    mevEscrow
+    tokenName
+    feePercent
+    totalAssets
+    displayName
+    description
+    whitelister
+    keysManager
+    tokenSymbol
+    rewardsRoot
+    proofReward
+    totalShares
+    feeRecipient
+    queuedShares
+    validatorsRoot
+    unclaimedAssets
+    metadataIpfsHash
+    avgRewardPerAsset
   }
   privateVaultAccounts(
     where: { vault: $address }

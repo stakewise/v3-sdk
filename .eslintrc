@@ -32,6 +32,8 @@
         "ts-ignore": "allow-with-description"
       }
     ],
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "object-curly-spacing": [ "error", "always" ],
     "array-bracket-spacing": [ "error", "always" ],

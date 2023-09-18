@@ -10,7 +10,6 @@
     "target": "esnext",
     "module": "esnext",
     "declaration": true,
-    "incremental": true,
     "skipLibCheck": true,
     "declarationMap": true,
     "esModuleInterop": true,
@@ -18,7 +17,6 @@
     "declarationDir": "dist",
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "lib": [ "dom", "es2017" ],
     "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -32,8 +30,6 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.d.ts",
-    "jest.config.ts",
-    "src/global.d.ts",
     "rollup.config.ts"
   ],
   "exclude": [

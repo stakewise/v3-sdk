@@ -1,8 +1,9 @@
 import AbortRequest from './abortRequest'
+import type { FetchInput } from './types'
 
 
 const graphqlFetch = <Data, Variables, ModifiedData>(
-  options: ModuleGQL.FetchInput<Data, Variables, ModifiedData>
+  options: FetchInput<Data, Variables, ModifiedData>
 ): AbortRequest<Data, ModifiedData> => {
   const { url, query, variables, modifyResult } = options
 
@@ -25,11 +26,9 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
         variables,
         operationName,
       }),
-      onSuccess: (data: Data) => {
-        return typeof modifyResult === 'function'
-          ? modifyResult(data)
-          : data as unknown as ModifiedData
-      },
+      onSuccess: (data: Data) => typeof modifyResult === 'function'
+        ? modifyResult(data)
+        : data as unknown as ModifiedData,
     })
   )
 
