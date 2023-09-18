@@ -6,6 +6,7 @@ query Vault($address: ID!) {
     proof
     isErc20
     imageUrl
+    verified
     capacity
     mevEscrow
     isPrivate

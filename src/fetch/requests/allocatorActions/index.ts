@@ -8,6 +8,7 @@ import modifyAllocatorActions from './modifyAllocatorActions'
 
 type AllocatorActionsInput = {
   network: Network
+  userAddress?: string
   types: AllocatorActionType[]
   skip: AllocatorActionsQueryVariables['skip']
   limit: AllocatorActionsQueryVariables['first']
@@ -15,7 +16,7 @@ type AllocatorActionsInput = {
 }
 
 const allocatorActions = async (input: AllocatorActionsInput) => {
-  const { network, skip, limit, types, vaultAddress } = input
+  const { network, skip, limit, types, vaultAddress, userAddress } = input
 
   const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedAllocatorActions>({
     network,
@@ -23,6 +24,7 @@ const allocatorActions = async (input: AllocatorActionsInput) => {
       skip,
       first: limit,
       where: {
+        address: userAddress,
         actionType_in: types,
         vault_: { id: vaultAddress.toLowerCase() },
       } as AllocatorActionsQueryVariables['where'],

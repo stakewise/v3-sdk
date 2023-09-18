@@ -1,30 +1,34 @@
-import { constants } from 'helpers'
+import { MaxUint256 } from 'ethers'
+import { Network, constants } from 'helpers'
 import { VaultQueryPayload } from 'graphql/subgraph/vault'
 
 import modifyVault from './modifyVault'
 
+
+const network = Network.Goerli
 
 describe('modifyVault', () => {
   const mockVaultQueryPayload: VaultQueryPayload = {
     vault: {
       proof: [],
       isErc20: true,
+      verified: true,
       feePercent: 200,
-      capacity: '1000',
       isPrivate: false,
       proofReward: '10',
+      performance: '10',
       totalShares: '100',
       queuedShares: '50',
-      totalAssets: '150',
       tokenSymbol: 'mTKN',
       imageUrl: 'mockUrl',
-      performance: 'good',
       unclaimedAssets: '5',
       tokenName: 'mockToken',
       rewardsRoot: 'mockRoot',
-      createdAt: '2023-01-01',
+      createdAt: '1693395816',
       displayName: 'Mock Vault',
       avgRewardPerAsset: '0.01',
+      totalAssets: '150000000000',
+      capacity: '1000000000000000',
       metadataIpfsHash: 'mockHash',
       whitelister: 'mockWhitelister',
       validatorsRoot: 'mockValidators',
@@ -36,8 +40,8 @@ describe('modifyVault', () => {
       feeRecipient: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
     },
     privateVaultAccounts: [
-      { createdAt: '2023-01-01', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
-      { createdAt: '2023-01-02', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
+      { createdAt: '1693395816', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
+      { createdAt: '1693395816', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
     ],
   }
 
@@ -47,21 +51,21 @@ describe('modifyVault', () => {
       proof: [],
       isErc20: true,
       feePercent: 2,
+      verified: true,
       isPrivate: false,
-      capacity: '1000',
       proofReward: '10',
+      capacity: '0.001',
       totalShares: '100',
       queuedShares: '50',
-      totalAssets: '150',
-      performance: 'good',
       tokenSymbol: 'mTKN',
       imageUrl: 'mockUrl',
       unclaimedAssets: '5',
       tokenName: 'mockToken',
       isSmoothingPool: false,
-      createdAt: '2023-01-01',
       rewardsRoot: 'mockRoot',
+      createdAt: 1693395816000,
       displayName: 'Mock Vault',
+      totalAssets: '0.00000015',
       metadataIpfsHash: 'mockHash',
       whitelister: 'mockWhitelister',
       validatorsRoot: 'mockValidators',
@@ -71,19 +75,25 @@ describe('modifyVault', () => {
       feeRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       mevRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       vaultKeysManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      performance: {
+        total: 10,
+      },
       whitelist: [
         {
-          createdAt: '2023-01-01',
+          createdAt: 1693395816000,
           address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
         },
         {
-          createdAt: '2023-01-02',
+          createdAt: 1693395816000,
           address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
         },
       ],
     }
 
-    const result = modifyVault(mockVaultQueryPayload)
+    const result = modifyVault({
+      data: mockVaultQueryPayload,
+      network,
+    })
 
     expect(result).toEqual(expectedModifiedVault)
   })
@@ -97,9 +107,12 @@ describe('modifyVault', () => {
       },
     }
 
-    const result = modifyVault(mockDataWithoutMevEscrow)
+    const result = modifyVault({
+      data: mockDataWithoutMevEscrow,
+      network,
+    })
 
-    expect(result.mevRecipient).toEqual(constants.sharedMevEscrow)
+    expect(result.mevRecipient).toEqual(constants.sharedMevEscrow[network])
   })
 
   it('should handle empty privateVaultAccounts correctly', () => {
@@ -108,7 +121,10 @@ describe('modifyVault', () => {
       privateVaultAccounts: [],
     }
 
-    const result = modifyVault(mockDataWithoutPrivateAccounts)
+    const result = modifyVault({
+      data: mockDataWithoutPrivateAccounts,
+      network,
+    })
 
     expect(result.whitelist).toEqual([])
   })
@@ -122,8 +138,28 @@ describe('modifyVault', () => {
       },
     }
 
-    const result = modifyVault(mockDataWithZeroFee)
+    const result = modifyVault({
+      data: mockDataWithZeroFee,
+      network,
+    })
 
     expect(result.feePercent).toEqual(0)
+  })
+
+  it('should handle max capacity with ∞ symbol', () => {
+    const mockDataWithZeroFee: VaultQueryPayload = {
+      ...mockVaultQueryPayload,
+      vault: {
+        ...mockVaultQueryPayload.vault,
+        capacity: MaxUint256.toString(),
+      },
+    }
+
+    const result = modifyVault({
+      data: mockDataWithZeroFee,
+      network,
+    })
+
+    expect(result.capacity).toEqual('∞')
   })
 })

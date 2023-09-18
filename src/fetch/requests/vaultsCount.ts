@@ -4,17 +4,17 @@ import { ZeroAddress } from 'ethers'
 
 
 type VaultsCountInput = {
-  address?: string
+  userAddress?: string
   network: Network
 }
 
 const vaultsCount = async (input: VaultsCountInput) => {
-  const { network, address } = input
+  const { network, userAddress } = input
 
   const data = await subgraph.vaultsCount.fetchVaultsCountQuery({
     network,
     variables: {
-      address: address || ZeroAddress,
+      address: userAddress?.toLowerCase() || ZeroAddress,
     },
   })
 

@@ -1,26 +1,57 @@
-import { constants } from 'helpers'
-import { getAddress } from 'ethers'
+import { Network, constants } from 'helpers'
 import { VaultQueryPayload } from 'graphql/subgraph/vault'
+import { formatEther, getAddress, MaxUint256 } from 'ethers'
 
 import { ModifiedVault } from './types'
 
 
-const modifyVault = (data: VaultQueryPayload): ModifiedVault => {
+type ModifyVaultInput = {
+  data: VaultQueryPayload
+  network: Network
+}
+
+const modifyVault = (values: ModifyVaultInput): ModifiedVault => {
+  const { data, network } = values
   const { vault, privateVaultAccounts } = data
 
-  const { admin, address, feePercent, feeRecipient, mevEscrow, keysManager, avgRewardPerAsset, ...rest } = vault
+  const {
+    admin,
+    address,
+    mevEscrow,
+    createdAt,
+    feePercent,
+    performance,
+    keysManager,
+    totalAssets,
+    feeRecipient,
+    avgRewardPerAsset,
+    ...rest
+  } = vault
 
   return {
     ...rest,
+    performance: {
+      total: Number(performance),
+    },
     isSmoothingPool: !mevEscrow,
     feePercent: feePercent / 100,
     vaultAdmin: getAddress(admin),
     vaultAddress: getAddress(address),
+    createdAt: Number(createdAt) * 1000,
+    totalAssets: formatEther(totalAssets),
     feeRecipient: getAddress(feeRecipient),
     vaultKeysManager: getAddress(keysManager),
     apy: Number(avgRewardPerAsset) * 365 * 100,
-    mevRecipient: mevEscrow ? getAddress(mevEscrow) : constants.sharedMevEscrow,
-    whitelist: privateVaultAccounts.map((item) => ({ ...item, address: getAddress(address) })) || [],
+    whitelist: privateVaultAccounts.map(({ createdAt, address }) => ({
+      createdAt: Number(createdAt) * 1000,
+      address: getAddress(address),
+    })) || [],
+    mevRecipient: mevEscrow
+      ? getAddress(mevEscrow)
+      : constants.sharedMevEscrow[network],
+    capacity: vault.capacity !== MaxUint256.toString()
+      ? formatEther(vault.capacity)
+      : '∞',
   }
 }
 

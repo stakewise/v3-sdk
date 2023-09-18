@@ -19,7 +19,7 @@ const vault = async (input: VaultInput) => {
     variables: {
       address: address.toLowerCase(),
     },
-    modifyResult: modifyVault,
+    modifyResult: (data) => modifyVault({ data, network }),
   })
 
   return data

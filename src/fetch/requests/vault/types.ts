@@ -3,13 +3,20 @@ import { VaultQueryPayload } from 'graphql/subgraph/vault'
 
 export type ModifiedVault = Omit<
   VaultQueryPayload['vault'],
-  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'avgRewardPerAsset'
+  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'avgRewardPerAsset' | 'performance' | 'createdAt'
 > & {
   apy: number
+  createdAt: number
   vaultAdmin: string
   vaultAddress: string
-  vaultKeysManager: string
   mevRecipient: string
+  vaultKeysManager: string
   isSmoothingPool: boolean
-  whitelist: VaultQueryPayload['privateVaultAccounts']
+  whitelist: Array<{
+    createdAt: number
+    address: string
+  }>
+  performance: {
+    total: number
+  }
 }
