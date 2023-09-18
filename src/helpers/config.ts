@@ -22,8 +22,8 @@ const config = {
   },
   [Network.Goerli]: {
     api: {
-      backend: 'https://api-pretest.stakewise.io/graphql',
-      subgraph: 'https://graph-pretest.stakewise.io/subgraphs/name/stakewise/stakewise',
+      backend: 'https://testnet-api.stakewise.io/graphql',
+      subgraph: 'https://testnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
     },
     explorerUrl: 'https://goerli.etherscan.io',
     sharedMevEscrow: '0xE33E8b756Cc5F4B622ce9A0d29c392F5999DB547',
