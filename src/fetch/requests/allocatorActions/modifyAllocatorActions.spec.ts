@@ -1,10 +1,10 @@
-import { Network, AllocatorActionType, constants } from 'helpers'
+import { Network, AllocatorActionType, config } from 'helpers'
 
 import modifyAllocatorActions from './modifyAllocatorActions'
 
 
 const network = Network.Mainnet
-const explorerUrl = constants.explorerUrls[network]
+const explorerUrl = config[network].explorerUrl
 
 describe('modifyAllocatorActions function', () => {
   it('should correctly modify allocator actions', () => {

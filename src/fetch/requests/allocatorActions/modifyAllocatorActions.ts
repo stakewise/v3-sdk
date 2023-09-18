@@ -1,4 +1,4 @@
-import { Network, constants } from 'helpers'
+import { Network, config } from 'helpers'
 import { formatEther } from 'ethers'
 import { AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
 
@@ -17,7 +17,7 @@ const modifyAllocatorActions = (values: ModifyAllocatorActionsInput): ModifiedAl
     ...item,
     assets: formatEther(item.assets),
     createdAt: Number(item.createdAt) * 1000,
-    link: `${constants.explorerUrls[network]}/tx/${item.id.replace(/-.*/, '')}`,
+    link: `${config[network].explorerUrl}/tx/${item.id.replace(/-.*/, '')}`,
   }))
 }
 

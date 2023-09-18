@@ -1,5 +1,5 @@
 import { MaxUint256 } from 'ethers'
-import { Network, constants } from 'helpers'
+import { Network, config } from 'helpers'
 import { VaultQueryPayload } from 'graphql/subgraph/vault'
 
 import modifyVault from './modifyVault'
@@ -112,7 +112,7 @@ describe('modifyVault', () => {
       network,
     })
 
-    expect(result.mevRecipient).toEqual(constants.sharedMevEscrow[network])
+    expect(result.mevRecipient).toEqual(config[network].sharedMevEscrow)
   })
 
   it('should handle empty privateVaultAccounts correctly', () => {

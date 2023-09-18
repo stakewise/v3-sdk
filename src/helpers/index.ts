@@ -1,2 +1,2 @@
 export * from './enums'
-export { default as constants } from './constants'
+export { default as config } from './config'
