@@ -1,4 +1,4 @@
-import type { AllocatorActionsQueryVariables } from 'graphql/subgraph/allocatorActions'
+import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
 import { Network, AllocatorActionType } from 'helpers'
 import { subgraph } from 'graphql'
 
@@ -27,7 +27,7 @@ const allocatorActions = async (input: AllocatorActionsInput) => {
         vault_: { id: vaultAddress.toLowerCase() },
       } as AllocatorActionsQueryVariables['where'],
     },
-    modifyResult: (data: any) => modifyAllocatorActions({ data, network }),
+    modifyResult: (data: AllocatorActionsQueryPayload) => modifyAllocatorActions({ data, network }),
   })
 
   return data
