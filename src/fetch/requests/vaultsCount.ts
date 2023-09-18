@@ -11,7 +11,7 @@ type VaultsCountInput = {
 const vaultsCount = async (input: VaultsCountInput) => {
   const { network, address } = input
 
-  const data = await subgraph.vaults.fetchVaultsCountQuery({
+  const data = await subgraph.vaultsCount.fetchVaultsCountQuery({
     network,
     variables: {
       address: address || ZeroAddress,
