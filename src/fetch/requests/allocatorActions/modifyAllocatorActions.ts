@@ -5,12 +5,12 @@ import { AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
 import { ModifiedAllocatorActions } from './types'
 
 
-type modifyAllocatorActionsInput = {
+type ModifyAllocatorActionsInput = {
   data: AllocatorActionsQueryPayload
   network: Network
 }
 
-const modifyAllocatorActions = (values: modifyAllocatorActionsInput): ModifiedAllocatorActions => {
+const modifyAllocatorActions = (values: ModifyAllocatorActionsInput): ModifiedAllocatorActions => {
   const { data, network } = values
 
   return data.allocatorActions.map((item) => ({

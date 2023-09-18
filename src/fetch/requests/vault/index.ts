@@ -1,26 +1,29 @@
+import { Network } from 'helpers'
 import { subgraph } from 'graphql'
 import { VaultQueryVariables } from 'graphql/subgraph/vault'
 
 import { ModifiedVault } from './types'
-import modifyVaultData from './modifyVaultData'
+import modifyVault from './modifyVault'
 
 
-type Input = {
-  variables: VaultQueryVariables
+type VaultInput = {
+  network: Network
+  address: VaultQueryVariables['address']
 }
 
-const fetchVault = async (input: Input) => {
-  const { variables } = input
+const vault = async (input: VaultInput) => {
+  const { address, network } = input
 
   const data = await subgraph.vault.fetchVaultQuery<ModifiedVault>({
+    network,
     variables: {
-      address: variables.address.toLowerCase(),
+      address: address.toLowerCase(),
     },
-    modifyResult: modifyVaultData,
+    modifyResult: modifyVault,
   })
 
   return data
 }
 
 
-export default fetchVault
+export default vault
