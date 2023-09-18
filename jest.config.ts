@@ -24,6 +24,7 @@ const config: Config = {
 
     '^requests/(.*)': '<rootDir>/requests/$1',
     '^requests$': '<rootDir>/requests/index.ts',
+    '^requests/methods': '<rootDir>/requests/methods/indes.ts',
 
     '^helpers$': '<rootDir>/helpers/index.ts',
     '^contracts$': '<rootDir>/contracts/index.ts',

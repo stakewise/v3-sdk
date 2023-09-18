@@ -1,7 +1,7 @@
 import { Network, vaultMulticall } from 'helpers'
 
 
-type ParseExitRequestsInput = {
+export type ParseExitRequestsInput = {
   network: Network
   userAddress: string
   vaultAddress: string
@@ -58,11 +58,11 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   }, [] as Position[])
 
   // We need to get the data of the contract after the claim.
-  const exitedAssetsResponse: Array<{
+  const exitedAssetsResponse = await vaultMulticall<Array<{
     newPositionTicket: bigint,
     claimedShares: bigint,
     claimedAssets: bigint
-  }> = await vaultMulticall({
+  }>>({
     network,
     userAddress,
     vaultAddress,
@@ -103,7 +103,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   if (remainingShares > 0) {
     // If there are remaining shares, we must calculate how many assets are still queuing
     // Remember - Shares are VLT tokens and Assets are ETH tokens
-    const remainingAssets: Array<{ assets: bigint }> = await vaultMulticall({
+    const remainingAssets = await vaultMulticall<Array<{ assets: bigint }>>({
       network,
       userAddress,
       vaultAddress,
