@@ -1,4 +1,5 @@
 export { default as vault } from './vault'
+export { default as vaultsCount } from './vaultsCount'
 export { default as transactions } from './transactions'
 export { default as daySnapshots } from './daySnapshots'
 export { default as harvestParams } from './harvestParams'
