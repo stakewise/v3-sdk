@@ -20,6 +20,7 @@ const config: Config = {
   moduleNameMapper: {
     '^helpers$': require.resolve('./src/helpers/index.ts'),
     '^graphql$': require.resolve('./src/graphql/index.ts'),
+    '^contracts$': require.resolve('./src/contracts/index.ts'),
   },
 }
 
