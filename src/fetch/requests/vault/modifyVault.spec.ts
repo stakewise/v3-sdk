@@ -1,10 +1,10 @@
 import { constants } from 'helpers'
 import { VaultQueryPayload } from 'graphql/subgraph/vault'
 
-import modifyVaultData from './modifyVaultData'
+import modifyVault from './modifyVault'
 
 
-describe('modifyVaultData', () => {
+describe('modifyVault', () => {
   const mockVaultQueryPayload: VaultQueryPayload = {
     vault: {
       proof: [],
@@ -83,7 +83,7 @@ describe('modifyVaultData', () => {
       ],
     }
 
-    const result = modifyVaultData(mockVaultQueryPayload)
+    const result = modifyVault(mockVaultQueryPayload)
 
     expect(result).toEqual(expectedModifiedVault)
   })
@@ -97,7 +97,7 @@ describe('modifyVaultData', () => {
       },
     }
 
-    const result = modifyVaultData(mockDataWithoutMevEscrow)
+    const result = modifyVault(mockDataWithoutMevEscrow)
 
     expect(result.mevRecipient).toEqual(constants.sharedMevEscrow)
   })
@@ -108,7 +108,7 @@ describe('modifyVaultData', () => {
       privateVaultAccounts: [],
     }
 
-    const result = modifyVaultData(mockDataWithoutPrivateAccounts)
+    const result = modifyVault(mockDataWithoutPrivateAccounts)
 
     expect(result.whitelist).toEqual([])
   })
@@ -122,7 +122,7 @@ describe('modifyVaultData', () => {
       },
     }
 
-    const result = modifyVaultData(mockDataWithZeroFee)
+    const result = modifyVault(mockDataWithZeroFee)
 
     expect(result.feePercent).toEqual(0)
   })

@@ -26,11 +26,9 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
         variables,
         operationName,
       }),
-      onSuccess: (data: Data) => {
-        return typeof modifyResult === 'function'
-          ? modifyResult(data)
-          : data as unknown as ModifiedData
-      },
+      onSuccess: (data: Data) => typeof modifyResult === 'function'
+        ? modifyResult(data)
+        : data as unknown as ModifiedData,
     })
   )
 

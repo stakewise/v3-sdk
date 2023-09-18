@@ -11,13 +11,13 @@ type ModifyRequests<T extends Record<string, any>> = {
   [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'network'>>) => ReturnType<T[K]>
 }
 
-type Input = {
+type CreateRequestsInput = {
   network: Network
 }
 
-type Output = ModifyRequests<Requests>
+type CreateRequestsOutput = ModifyRequests<Requests>
 
-const createRequests = (input: Input): Output => (
+const createRequests = (input: CreateRequestsInput): CreateRequestsOutput => (
   Object.keys(methods).reduce((acc, method) => {
     const fn = methods[method as keyof typeof methods]
 
@@ -25,7 +25,7 @@ const createRequests = (input: Input): Output => (
       ...acc,
     [method]: (values: unknown) => fn({ ...(values || {}), network: input.network } as any),
     }
-  }, {} as Output)
+  }, {} as CreateRequestsOutput)
 )
 
 

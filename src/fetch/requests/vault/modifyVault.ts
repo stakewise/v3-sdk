@@ -5,7 +5,7 @@ import { VaultQueryPayload } from 'graphql/subgraph/vault'
 import { ModifiedVault } from './types'
 
 
-const modifyVaultData = (data: VaultQueryPayload): ModifiedVault => {
+const modifyVault = (data: VaultQueryPayload): ModifiedVault => {
   const { vault, privateVaultAccounts } = data
 
   const { admin, address, feePercent, feeRecipient, mevEscrow, keysManager, avgRewardPerAsset, ...rest } = vault
@@ -25,4 +25,4 @@ const modifyVaultData = (data: VaultQueryPayload): ModifiedVault => {
 }
 
 
-export default modifyVaultData
+export default modifyVault

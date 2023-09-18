@@ -1,5 +1,0 @@
-query BlacklistedVaults {
-  vaults(blacklisted: true) {
-    address: id
-  }
-}
