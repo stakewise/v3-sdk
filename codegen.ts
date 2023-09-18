@@ -4,7 +4,7 @@ import { Network } from './src/helpers/enums'
 import config from './src/helpers/config'
 
 
-// For every netwrok we have same gql shama, so we can use just Mainnet here
+// For every netwrok we have same gql shema, so we can use just Mainnet here
 const urls = config[Network.Goerli].api // TODO replace on Mainnet
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript

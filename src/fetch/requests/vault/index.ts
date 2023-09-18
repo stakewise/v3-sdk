@@ -1,6 +1,6 @@
 import { Network } from 'helpers'
 import { subgraph } from 'graphql'
-import { VaultQueryVariables } from 'graphql/subgraph/vault'
+import { VaultQueryVariables, VaultQueryPayload } from 'graphql/subgraph/vault'
 
 import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'
@@ -19,7 +19,7 @@ const vault = async (input: VaultInput) => {
     variables: {
       address: address.toLowerCase(),
     },
-    modifyResult: (data) => modifyVault({ data, network }),
+    modifyResult: (data: VaultQueryPayload) => modifyVault({ data, network }),
   })
 
   return data
