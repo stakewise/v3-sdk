@@ -1,9 +1,9 @@
 import { Network } from 'helpers'
 
-import * as methods from './requests'
+import * as methods from './methods'
 
 
-type Requests = typeof methods
+type Methods = typeof methods
 
 type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
 
@@ -15,7 +15,7 @@ type CreateRequestsInput = {
   network: Network
 }
 
-type CreateRequestsOutput = ModifyRequests<Requests>
+type CreateRequestsOutput = ModifyRequests<Methods>
 
 const createRequests = (input: CreateRequestsInput): CreateRequestsOutput => (
   Object.keys(methods).reduce((acc, method) => {

@@ -1,4 +1,5 @@
 export { default as vault } from './vault'
+export { default as exitQueue } from './exitQueue'
 export { default as vaultsCount } from './vaultsCount'
 export { default as transactions } from './transactions'
 export { default as daySnapshots } from './daySnapshots'

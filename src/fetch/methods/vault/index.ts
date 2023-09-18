@@ -8,16 +8,16 @@ import modifyVault from './modifyVault'
 
 type VaultInput = {
   network: Network
-  address: VaultQueryVariables['address']
+  vaultAddress: VaultQueryVariables['address']
 }
 
 const vault = async (input: VaultInput) => {
-  const { address, network } = input
+  const { vaultAddress, network } = input
 
   const data = await subgraph.vault.fetchVaultQuery<ModifiedVault>({
     network,
     variables: {
-      address: address.toLowerCase(),
+      address: vaultAddress.toLowerCase(),
     },
     modifyResult: (data: VaultQueryPayload) => modifyVault({ data, network }),
   })

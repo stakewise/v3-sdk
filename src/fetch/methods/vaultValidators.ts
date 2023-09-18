@@ -5,14 +5,14 @@ import { VaultValidatorsQueryVariables } from 'graphql/backend/vault'
 
 type VaultValidatorsInput = {
   network: Network
-  address: VaultValidatorsQueryVariables['address']
+  vaultAddress: VaultValidatorsQueryVariables['address']
 }
 
 const vaultValidators = async (input: VaultValidatorsInput) => {
-  const { network, address } = input
+  const { network, vaultAddress } = input
 
   const data = await backend.vault.fetchVaultValidatorsQuery({
-    variables: { address: address.toLowerCase() },
+    variables: { address: vaultAddress.toLowerCase() },
     network,
   })
 
