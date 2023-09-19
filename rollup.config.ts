@@ -49,7 +49,6 @@ const config: RollupOptions[] = [
         exclude: [
           'node_modules',
           '**/*.spec.ts',
-          '**/*.stories.tsx',
         ],
       }),
       json(),
@@ -65,6 +64,7 @@ const config: RollupOptions[] = [
     output: [
       {
         file: 'dist/index.d.ts',
+        sourcemap: false,
         format: 'es',
       },
     ],

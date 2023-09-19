@@ -1,5 +1,6 @@
 export default `
-import { config, Network } from 'helpers'
+import configs from 'helpers/configs'
+import { Network } from 'helpers/enums'
 import { {ClientName}Graph } from 'types/graphql/{clientName}'
 
 
@@ -9,7 +10,7 @@ type SubmitInput = {
 }
 
 const submit{QueryName} = ({ variables, network }: SubmitInput) =>
-  fetch(config[network].api.{clientName}, {
+  fetch(configs[network].api.{clientName}, {
     method: 'POST',
     body: JSON.stringify({
       query,
