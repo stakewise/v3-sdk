@@ -2,14 +2,14 @@ import { Network } from 'helpers'
 import { subgraph } from 'graphql'
 
 
-export type GqlExitQueueInput = {
+export type FetchExitQueuePositionsInput = {
   vaultAddress: string
   userAddress: string
   network: Network
 }
 
-const gqlExitQueue = async (input: GqlExitQueueInput) => {
-  const { network, vaultAddress, userAddress } = input
+const fetchExitQueuePositions = async (values: FetchExitQueuePositionsInput) => {
+  const { network, vaultAddress, userAddress } = values
 
   const data = await subgraph.exitQueue.fetchExitQueueQuery({
     network,
@@ -23,4 +23,4 @@ const gqlExitQueue = async (input: GqlExitQueueInput) => {
 }
 
 
-export default gqlExitQueue
+export default fetchExitQueuePositions

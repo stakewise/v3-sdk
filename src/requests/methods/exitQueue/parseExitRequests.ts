@@ -114,7 +114,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       },
     })
 
-    totalExitingAssets = remainingAssets[0].assets
+    totalExitingAssets = remainingAssets[0]?.assets
   }
 
   return {

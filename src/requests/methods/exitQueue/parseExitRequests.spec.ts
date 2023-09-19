@@ -6,18 +6,18 @@ import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 jest.mock('helpers')
 
 describe('parseExitRequests function', () => {
-  const sampleInput: ParseExitRequestsInput = {
+  const input: ParseExitRequestsInput = {
     network: Network.Mainnet,  // Use appropriate network enum value
-    userAddress: '0xsampleAddress',
-    vaultAddress: '0xsampleVaultAddress',
+    userAddress: 'userAddress',
+    vaultAddress: 'vaultAddress',
     totalShares: 1000n,
     exitRequests: [
       {
-        positionTicket: '0xsampleTicket1',
+        positionTicket: 'positionTicket-1',
         totalShares: '100',
       },
       {
-        positionTicket: '0xsampleTicket2',
+        positionTicket: 'positionTicket-2',
         totalShares: '200',
       },
     ],
@@ -49,12 +49,12 @@ describe('parseExitRequests function', () => {
         { assets: 100n },
       ])
 
-    const result = await parseExitRequests(sampleInput)
+    const result = await parseExitRequests(input)
 
     expect(result).toEqual({
       data: [
-        { exitQueueIndex: 1n, positionTicket: '0xsampleTicket1' },
-        { exitQueueIndex: 2n, positionTicket: '0xsampleTicket2' },
+        { exitQueueIndex: 1n, positionTicket: 'positionTicket-1' },
+        { exitQueueIndex: 2n, positionTicket: 'positionTicket-2' },
       ],
       total: 100n,
       withdrawable: 31n,

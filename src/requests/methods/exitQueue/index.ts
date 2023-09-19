@@ -1,9 +1,9 @@
-import gqlExitQueue from './gqlExitQueue'
 import parseExitRequests from './parseExitRequests'
-import type { GqlExitQueueInput } from './gqlExitQueue'
+import fetchExitQueuePositions from './fetchExitQueuePositions'
+import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
-type ExitQueueInput = GqlExitQueueInput & {}
+type ExitQueueInput = FetchExitQueuePositionsInput & {}
 
 const mock = {
   data: [],
@@ -14,7 +14,7 @@ const mock = {
 const exitQueue = async (input: ExitQueueInput) => {
   const { network, vaultAddress, userAddress } = input
 
-  const data = await gqlExitQueue({ network, vaultAddress, userAddress })
+  const data = await fetchExitQueuePositions({ network, vaultAddress, userAddress })
 
   if (!data) {
     return mock
