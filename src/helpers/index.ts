@@ -1,5 +1,4 @@
 export * from './enums'
 export * as constants from './constants'
-export { default as config } from './config'
+export { default as configs } from './configs'
 export { default as BigDecimal } from './BigDecimal'
-export { default as vaultMulticall } from './vaultMulticall'
