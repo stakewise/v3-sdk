@@ -23,8 +23,8 @@ const calculateAPY = (values: CalculateApyInput) => {
   }
 
   const apy = new BigDecimal(rewardPerSecond)
-    .multiply(constants.secondsInYear)
-    .divide(constants.amount1)
+    .multiply(constants.blockchain.secondsInYear)
+    .divide(constants.blockchain.amount1)
     .multiply(100)
     .toString()
 

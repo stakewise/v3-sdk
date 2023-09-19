@@ -1,4 +1,4 @@
-import { Network, config } from 'helpers'
+import { Network, configs } from 'helpers'
 import { VaultQueryPayload } from 'graphql/subgraph/vault'
 import { formatEther, getAddress, MaxUint256 } from 'ethers'
 
@@ -48,7 +48,7 @@ const modifyVault = (values: ModifyVaultInput): ModifiedVault => {
     })) || [],
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)
-      : config[network].addresses.base.sharedMevEscrow,
+      : configs[network].addresses.base.sharedMevEscrow,
     capacity: vault.capacity !== MaxUint256.toString()
       ? formatEther(vault.capacity)
       : '∞',

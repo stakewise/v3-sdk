@@ -1,4 +1,5 @@
-import { Network, vaultMulticall } from 'helpers'
+import { Network } from 'helpers'
+import { vaultMulticall } from 'contracts'
 
 import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 
