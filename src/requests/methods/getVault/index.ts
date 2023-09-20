@@ -5,12 +5,12 @@ import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'
 
 
-type VaultInput = {
+type GetVaultInput = {
   options: SDK.Options
   vaultAddress: VaultQueryVariables['address']
 }
 
-const vault = async (input: VaultInput) => {
+const getVault = async (input: GetVaultInput) => {
   const { vaultAddress, options } = input
   const { network } = options
 
@@ -26,4 +26,4 @@ const vault = async (input: VaultInput) => {
 }
 
 
-export default vault
+export default getVault

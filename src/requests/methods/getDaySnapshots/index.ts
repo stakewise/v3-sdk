@@ -5,13 +5,13 @@ import { ModifiedDaySnapshots } from './types'
 import modifyDaySnapshots from './modifyDaySnapshots'
 
 
-type DaySnapshotsInput = {
+type GetDaySnapshotsInput = {
   options: SDK.Options
   unixStartOfDay: DaySnapshotsQueryVariables['where']['date_gte']
   vaultAddress: DaySnapshotsQueryVariables['where']['vault_']['id']
 }
 
-const daySnapshots = async (input: DaySnapshotsInput) => {
+const getDaySnapshots = async (input: GetDaySnapshotsInput) => {
   const { vaultAddress, unixStartOfDay, options } = input
   const { network } = options
 
@@ -34,4 +34,4 @@ const daySnapshots = async (input: DaySnapshotsInput) => {
 }
 
 
-export default daySnapshots
+export default getDaySnapshots

@@ -2,12 +2,12 @@ import { subgraph } from 'graphql'
 import { ZeroAddress } from 'ethers'
 
 
-type VaultsCountInput = {
+type GetVaultsCountInput = {
   userAddress?: string
   options: SDK.Options
 }
 
-const vaultsCount = async (input: VaultsCountInput) => {
+const getVaultsCount = async (input: GetVaultsCountInput) => {
   const { options, userAddress } = input
 
   const data = await subgraph.vaultsCount.fetchVaultsCountQuery({
@@ -24,4 +24,4 @@ const vaultsCount = async (input: VaultsCountInput) => {
 }
 
 
-export default vaultsCount
+export default getVaultsCount

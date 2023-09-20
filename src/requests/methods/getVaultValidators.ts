@@ -2,12 +2,12 @@ import { backend } from 'graphql'
 import { VaultValidatorsQueryVariables } from 'graphql/backend/vault'
 
 
-type VaultValidatorsInput = {
+type GetVaultValidatorsInput = {
   options: SDK.Options
   vaultAddress: VaultValidatorsQueryVariables['address']
 }
 
-const vaultValidators = async (input: VaultValidatorsInput) => {
+const getVaultValidators = async (input: GetVaultValidatorsInput) => {
   const { options, vaultAddress } = input
 
   const data = await backend.vault.fetchVaultValidatorsQuery({
@@ -19,4 +19,4 @@ const vaultValidators = async (input: VaultValidatorsInput) => {
 }
 
 
-export default vaultValidators
+export default getVaultValidators

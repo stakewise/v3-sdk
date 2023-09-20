@@ -2,11 +2,11 @@ import calculateAPY from './calculateAPY'
 import fetchOsTokenSnapshots from './fetchOsTokenSnapshots'
 
 
-type ExitQueueInput = {
+type GetOsTokenApyInput = {
   options: SDK.Options
 }
 
-const osTokenAPY = async (input: ExitQueueInput) => {
+const getOsTokenAPY = async (input: GetOsTokenApyInput) => {
   const { options } = input
 
   const osTokenSnapshots = await fetchOsTokenSnapshots({ options })
@@ -15,4 +15,4 @@ const osTokenAPY = async (input: ExitQueueInput) => {
 }
 
 
-export default osTokenAPY
+export default getOsTokenAPY

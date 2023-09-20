@@ -2,12 +2,12 @@ import { subgraph } from 'graphql'
 import { TransactionsQueryVariables } from 'graphql/subgraph/transactions'
 
 
-type TransactionsInput = {
+type GetTransactionsInput = {
   hash: string
   options: SDK.Options
 }
 
-const transactions = async (input: TransactionsInput) => {
+const getTransactions = async (input: GetTransactionsInput) => {
   const { options, hash } = input
 
   const data = await subgraph.transactions.fetchTransactionsQuery({
@@ -23,4 +23,4 @@ const transactions = async (input: TransactionsInput) => {
 }
 
 
-export default transactions
+export default getTransactions

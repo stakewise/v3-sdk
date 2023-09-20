@@ -6,7 +6,7 @@ import { ModifiedAllocatorActions } from './types'
 import modifyAllocatorActions from './modifyAllocatorActions'
 
 
-type AllocatorActionsInput = {
+type GetAllocatorActionsInput = {
   options: SDK.Options
   userAddress?: string
   types: AllocatorActionType[]
@@ -15,7 +15,7 @@ type AllocatorActionsInput = {
   vaultAddress: AllocatorActionsQueryVariables['where']['address']
 }
 
-const allocatorActions = async (input: AllocatorActionsInput) => {
+const getAllocatorActions = async (input: GetAllocatorActionsInput) => {
   const { options, skip, limit, types, vaultAddress, userAddress } = input
   const { network } = options
 
@@ -37,4 +37,4 @@ const allocatorActions = async (input: AllocatorActionsInput) => {
 }
 
 
-export default allocatorActions
+export default getAllocatorActions

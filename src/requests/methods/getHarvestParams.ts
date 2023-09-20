@@ -1,12 +1,12 @@
 import { fetchHarvestParamsQuery } from 'graphql/subgraph/vault'
 
 
-type HarvestParamsInput = {
+type GetHarvestParamsInput = {
   vaultAddress: string
   options: SDK.Options
 }
 
-const harvestParams = async (values: HarvestParamsInput) => {
+const getHarvestParams = async (values: GetHarvestParamsInput) => {
   const { options, vaultAddress } = values
 
   const result = await fetchHarvestParamsQuery({
@@ -20,4 +20,4 @@ const harvestParams = async (values: HarvestParamsInput) => {
 }
 
 
-export default harvestParams
+export default getHarvestParams

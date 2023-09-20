@@ -3,7 +3,7 @@ import fetchExitQueuePositions from './fetchExitQueuePositions'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
-type ExitQueueInput = FetchExitQueuePositionsInput & {
+type GetExitQueueInput = FetchExitQueuePositionsInput & {
   options: SDK.Options
 }
 
@@ -13,7 +13,7 @@ const mock = {
   withdrawable: 0n,
 }
 
-const exitQueue = async (input: ExitQueueInput) => {
+const getExitQueue = async (input: GetExitQueueInput) => {
   const { options, vaultAddress, userAddress } = input
   const { network } = options
 
@@ -37,4 +37,4 @@ const exitQueue = async (input: ExitQueueInput) => {
 }
 
 
-export default exitQueue
+export default getExitQueue

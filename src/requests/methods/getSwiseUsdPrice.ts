@@ -1,11 +1,11 @@
 import { backend } from 'graphql'
 
 
-type SwiseUsdPriceInput = {
+type GetSwiseUsdPriceInput = {
   options: SDK.Options
 }
 
-const swiseUsdPrice = async (input: SwiseUsdPriceInput) => {
+const getSwiseUsdPrice = async (input: GetSwiseUsdPriceInput) => {
   const { options } = input
 
   const data = await backend.swise.fetchSwiseStatsQuery({ network: options.network })
@@ -14,4 +14,4 @@ const swiseUsdPrice = async (input: SwiseUsdPriceInput) => {
 }
 
 
-export default swiseUsdPrice
+export default getSwiseUsdPrice
