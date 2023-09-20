@@ -5,8 +5,8 @@ import { createContracts } from 'contracts'
 
 
 class StakeWiseSDK {
-  requests: Requests
-  contracts: Contracts
+  readonly requests: Requests
+  readonly contracts: Contracts
 
   constructor(options: SDK.Options) {
     const { network, provider, endpoints } = options

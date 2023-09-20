@@ -6,7 +6,7 @@ type Methods = typeof methods
 type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
 
 type ModifyRequests<T extends Record<string, any>> = {
-  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'network'>>) => ReturnType<T[K]>
+  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'options'>>) => ReturnType<T[K]>
 }
 
 type CreateRequestsInput = {

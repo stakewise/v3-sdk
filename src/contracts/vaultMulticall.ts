@@ -1,4 +1,4 @@
-import fetchHarvestParams from 'requests/methods/harvestParams'
+import getHarvestParams from 'requests/methods/getHarvestParams'
 import { VoidSigner, JsonRpcProvider } from 'ethers'
 import { configs, Network } from 'helpers'
 
@@ -16,19 +16,19 @@ type VaultMulticallRequestInput = {
 }
 
 type VaultMulticallInput = {
-  network: Network
+  options: SDK.Options
   userAddress: string
   vaultAddress: string
   request: VaultMulticallRequestInput
 }
 
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
-  const { network, vaultAddress, userAddress, request } = values
+  const { options, vaultAddress, userAddress, request } = values
   const { params, callStatic, estimateGas, updateState } = request
 
   const calls: string[] = []
 
-  const config = configs[network]
+  const config = configs[options.network]
   const library = new JsonRpcProvider(config.network.url)
 
   const contracts = createContracts(library, config)
@@ -37,7 +37,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const signer = new VoidSigner(userAddress, library)
   const signedContract = vaultContract.connect(signer)
 
-  const harvestParams = await fetchHarvestParams({ network, vaultAddress })
+  const harvestParams = await getHarvestParams({ options, vaultAddress })
 
   const canHarvest = updateState
     ? Object.values(harvestParams).every(Boolean)

@@ -15,7 +15,6 @@ const mock = {
 
 const getExitQueue = async (input: GetExitQueueInput) => {
   const { options, vaultAddress, userAddress } = input
-  const { network } = options
 
   const data = await fetchExitQueuePositions({ options, vaultAddress, userAddress })
 
@@ -26,7 +25,7 @@ const getExitQueue = async (input: GetExitQueueInput) => {
   const totalShares = data.reduce((acc, { totalShares }) => acc + BigInt(totalShares), 0n)
 
   const exitQueue = await parseExitRequests({
-    network,
+    options,
     userAddress,
     totalShares,
     vaultAddress,
