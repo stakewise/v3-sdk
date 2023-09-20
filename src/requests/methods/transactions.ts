@@ -1,18 +1,17 @@
-import { Network } from 'helpers'
 import { subgraph } from 'graphql'
 import { TransactionsQueryVariables } from 'graphql/subgraph/transactions'
 
 
 type TransactionsInput = {
   hash: string
-  network: Network
+  options: SDK.Options
 }
 
 const transactions = async (input: TransactionsInput) => {
-  const { network, hash } = input
+  const { options, hash } = input
 
   const data = await subgraph.transactions.fetchTransactionsQuery({
-    network,
+    network: options.network,
     variables: {
       where: {
         id: hash,

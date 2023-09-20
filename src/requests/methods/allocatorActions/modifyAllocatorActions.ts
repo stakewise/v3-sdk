@@ -10,8 +10,8 @@ type ModifyAllocatorActionsInput = {
   network: Network
 }
 
-const modifyAllocatorActions = (values: ModifyAllocatorActionsInput): ModifiedAllocatorActions => {
-  const { data, network } = values
+const modifyAllocatorActions = (input: ModifyAllocatorActionsInput): ModifiedAllocatorActions => {
+  const { data, network } = input
 
   return data.allocatorActions.map((item) => ({
     ...item,

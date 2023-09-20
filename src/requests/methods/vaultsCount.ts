@@ -1,18 +1,17 @@
-import { Network } from 'helpers'
 import { subgraph } from 'graphql'
 import { ZeroAddress } from 'ethers'
 
 
 type VaultsCountInput = {
   userAddress?: string
-  network: Network
+  options: SDK.Options
 }
 
 const vaultsCount = async (input: VaultsCountInput) => {
-  const { network, userAddress } = input
+  const { options, userAddress } = input
 
   const data = await subgraph.vaultsCount.fetchVaultsCountQuery({
-    network,
+    network: options.network,
     variables: {
       address: userAddress?.toLowerCase() || ZeroAddress,
     },

@@ -1,17 +1,16 @@
-import { Network } from 'helpers'
 import { fetchHarvestParamsQuery } from 'graphql/subgraph/vault'
 
 
 type HarvestParamsInput = {
   vaultAddress: string
-  network: Network
+  options: SDK.Options
 }
 
 const harvestParams = async (values: HarvestParamsInput) => {
-  const { network, vaultAddress } = values
+  const { options, vaultAddress } = values
 
   const result = await fetchHarvestParamsQuery({
-    network,
+    network: options.network,
     variables: {
       address: vaultAddress.toLowerCase(),
     },

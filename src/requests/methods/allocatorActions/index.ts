@@ -1,5 +1,5 @@
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
-import { Network, AllocatorActionType } from 'helpers'
+import { AllocatorActionType } from 'helpers'
 import { subgraph } from 'graphql'
 
 import { ModifiedAllocatorActions } from './types'
@@ -7,7 +7,7 @@ import modifyAllocatorActions from './modifyAllocatorActions'
 
 
 type AllocatorActionsInput = {
-  network: Network
+  options: SDK.Options
   userAddress?: string
   types: AllocatorActionType[]
   skip: AllocatorActionsQueryVariables['skip']
@@ -16,7 +16,8 @@ type AllocatorActionsInput = {
 }
 
 const allocatorActions = async (input: AllocatorActionsInput) => {
-  const { network, skip, limit, types, vaultAddress, userAddress } = input
+  const { options, skip, limit, types, vaultAddress, userAddress } = input
+  const { network } = options
 
   const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedAllocatorActions>({
     network,

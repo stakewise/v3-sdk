@@ -3,7 +3,9 @@ import fetchExitQueuePositions from './fetchExitQueuePositions'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
-type ExitQueueInput = FetchExitQueuePositionsInput & {}
+type ExitQueueInput = FetchExitQueuePositionsInput & {
+  options: SDK.Options
+}
 
 const mock = {
   data: [],
@@ -12,9 +14,10 @@ const mock = {
 }
 
 const exitQueue = async (input: ExitQueueInput) => {
-  const { network, vaultAddress, userAddress } = input
+  const { options, vaultAddress, userAddress } = input
+  const { network } = options
 
-  const data = await fetchExitQueuePositions({ network, vaultAddress, userAddress })
+  const data = await fetchExitQueuePositions({ options, vaultAddress, userAddress })
 
   if (!data) {
     return mock

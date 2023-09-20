@@ -1,5 +1,3 @@
-import { Network } from 'helpers'
-
 import * as methods from './methods'
 
 
@@ -12,7 +10,7 @@ type ModifyRequests<T extends Record<string, any>> = {
 }
 
 type CreateRequestsInput = {
-  network: Network
+  options: SDK.Options
 }
 
 type CreateRequestsOutput = ModifyRequests<Methods>
@@ -23,7 +21,7 @@ const createRequests = (input: CreateRequestsInput): CreateRequestsOutput => (
 
     return {
       ...acc,
-    [method]: (values: unknown) => fn({ ...(values || {}), network: input.network } as any),
+    [method]: (values: unknown) => fn({ ...(values || {}), network: input.options.network } as any),
     }
   }, {} as CreateRequestsOutput)
 )

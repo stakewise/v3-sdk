@@ -1,4 +1,4 @@
-import { JsonRpcProvider } from 'ethers'
+import type { Provider } from 'ethers'
 
 import {
   Erc20Abi,
@@ -42,83 +42,83 @@ import type {
 } from './types'
 
 import multicall from './multicall'
+import vaultMulticall from './vaultMulticall'
 import createContract from './createContract'
 
 
-const getSwiseToken = (library: JsonRpcProvider, config: Config) => createContract<SwiseTokenType>(
+const getSwiseToken = (library: Provider, config: Config) => createContract<SwiseTokenType>(
   config.addresses.tokens.swise,
   SwiseTokenAbi,
   library
 )
 
-const getMulticall = (library: JsonRpcProvider, config: Config) => createContract<MulticallType>(
+const getMulticall = (library: Provider, config: Config) => createContract<MulticallType>(
   config.addresses.base.multicall,
   MulticallAbi,
   library
 )
 
-const getVestingEscrowFactory = (library: JsonRpcProvider, config: Config) => createContract<VestingEscrowFactoryType>(
+const getVestingEscrowFactory = (library: Provider, config: Config) => createContract<VestingEscrowFactoryType>(
   config.addresses.factories.vestingEscrow,
   VestingEscrowFactoryAbi,
   library
 )
 
-const getVaultFactory = (library: JsonRpcProvider, address: string) => createContract<VaultFactoryType>(
+const getVaultFactory = (library: Provider, address: string) => createContract<VaultFactoryType>(
   address,
   VaultFactoryAbi,
   library
 )
 
-const getVaultsRegistry = (library: JsonRpcProvider, config: Config) => createContract<VaultsRegistryType>(
+const getVaultsRegistry = (library: Provider, config: Config) => createContract<VaultsRegistryType>(
   config.addresses.base.vaultsRegistry,
   VaultsRegistryAbi,
   library
 )
 
-const getRewardSplitterFactory = (library: JsonRpcProvider, config: Config) => createContract<RewardSplitterFactoryType>(
+const getRewardSplitterFactory = (library: Provider, config: Config) => createContract<RewardSplitterFactoryType>(
   config.addresses.base.rewardSplitterFactory,
   RewardSplitterFactoryAbi,
   library
 )
 
-const getKeeper = (library: JsonRpcProvider, config: Config) => createContract<KeeperType>(
+const getKeeper = (library: Provider, config: Config) => createContract<KeeperType>(
   config.addresses.base.keeper,
   KeeperAbi,
   library
 )
 
-const getMintToken = (library: JsonRpcProvider, config: Config) => createContract<MintTokenType>(
+const getMintToken = (library: Provider, config: Config) => createContract<MintTokenType>(
   config.addresses.tokens.mintToken,
   MintTokenAbi,
   library
 )
 
-const getMintTokenConfig = (library: JsonRpcProvider, config: Config) => createContract<MintTokenConfigType>(
+const getMintTokenConfig = (library: Provider, config: Config) => createContract<MintTokenConfigType>(
   config.addresses.base.mintTokenConfig,
   MintTokenConfigAbi,
   library
 )
 
-const getPriceOracle = (library: JsonRpcProvider, config: Config) => createContract<PriceOracleType>(
+const getPriceOracle = (library: Provider, config: Config) => createContract<PriceOracleType>(
   config.addresses.base.priceOracle,
   PriceOracleAbi,
   library
 )
 
-const getV2RewardToken = (library: JsonRpcProvider, config: Config) => createContract<V2RewardTokenType>(
+const getV2RewardToken = (library: Provider, config: Config) => createContract<V2RewardTokenType>(
   config.addresses.tokens.v2RewardToken,
   V2RewardTokenAbi,
   library
 )
 
 
-export const createContracts = (library: JsonRpcProvider, config: Config) => {
+export const createContracts = (library: Provider, config: Config) => {
   const multicallContract = getMulticall(library, config)
 
   return {
     helpers: {
       multicallContract,
-      createMulticall: multicall(multicallContract as MulticallType),
       createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, library),
       createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, library),
       createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, library),

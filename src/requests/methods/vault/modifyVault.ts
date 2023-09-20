@@ -10,8 +10,8 @@ type ModifyVaultInput = {
   network: Network
 }
 
-const modifyVault = (values: ModifyVaultInput): ModifiedVault => {
-  const { data, network } = values
+const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
+  const { data, network } = input
   const { vault, privateVaultAccounts } = data
 
   const {

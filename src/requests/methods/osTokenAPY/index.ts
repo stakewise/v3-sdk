@@ -1,17 +1,15 @@
-import { Network } from 'helpers'
-
 import calculateAPY from './calculateAPY'
 import fetchOsTokenSnapshots from './fetchOsTokenSnapshots'
 
 
 type ExitQueueInput = {
-  network: Network
+  options: SDK.Options
 }
 
 const osTokenAPY = async (input: ExitQueueInput) => {
-  const { network } = input
+  const { options } = input
 
-  const osTokenSnapshots = await fetchOsTokenSnapshots({ network })
+  const osTokenSnapshots = await fetchOsTokenSnapshots({ options })
 
   return calculateAPY({ osTokenSnapshots })
 }

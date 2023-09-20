@@ -1,19 +1,18 @@
-import { Network } from 'helpers'
 import { backend } from 'graphql'
 import { VaultValidatorsQueryVariables } from 'graphql/backend/vault'
 
 
 type VaultValidatorsInput = {
-  network: Network
+  options: SDK.Options
   vaultAddress: VaultValidatorsQueryVariables['address']
 }
 
 const vaultValidators = async (input: VaultValidatorsInput) => {
-  const { network, vaultAddress } = input
+  const { options, vaultAddress } = input
 
   const data = await backend.vault.fetchVaultValidatorsQuery({
     variables: { address: vaultAddress.toLowerCase() },
-    network,
+    network: options.network,
   })
 
   return data?.vaults?.[0]?.validators || []

@@ -1,4 +1,4 @@
-import { constants, BigDecimal } from 'helpers'
+import { BigDecimal } from 'helpers'
 import { OsTokenSnapshotsQueryPayload } from 'graphql/subgraph/osTokenSnapshots'
 
 
@@ -6,8 +6,11 @@ type CalculateApyInput = {
   osTokenSnapshots: OsTokenSnapshotsQueryPayload['osTokenSnapshots']
 }
 
-const calculateAPY = (values: CalculateApyInput) => {
-  const { osTokenSnapshots } = values
+const secondsInYear = 31536000
+const oneEth = 1000000000000000000n
+
+const calculateAPY = (input: CalculateApyInput) => {
+  const { osTokenSnapshots } = input
 
   let rewardPerSecond = 0n
 
@@ -23,8 +26,8 @@ const calculateAPY = (values: CalculateApyInput) => {
   }
 
   const apy = new BigDecimal(rewardPerSecond)
-    .multiply(constants.blockchain.secondsInYear)
-    .divide(constants.blockchain.amount1)
+    .multiply(secondsInYear)
+    .divide(oneEth)
     .multiply(100)
     .toString()
 

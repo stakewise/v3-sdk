@@ -14,11 +14,11 @@ export const modifyDaySnapshot = (daySnapshot: DaySnapshotsQueryPayload['daySnap
   }
 }
 
-const modifyDaySnapshots = (data: DaySnapshotsQueryPayload): ModifiedDaySnapshots => {
-  const days = data.daySnapshots.map(modifyDaySnapshot)
+const modifyDaySnapshots = (input: DaySnapshotsQueryPayload): ModifiedDaySnapshots => {
+  const days = input.daySnapshots.map(modifyDaySnapshot)
 
-  const first = data.firstSnapshots[0]
-    ? modifyDaySnapshot(data.firstSnapshots[0])
+  const first = input.firstSnapshots[0]
+    ? modifyDaySnapshot(input.firstSnapshots[0])
     : null
 
   return {

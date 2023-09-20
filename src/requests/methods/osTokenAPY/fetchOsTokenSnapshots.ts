@@ -1,13 +1,12 @@
-import { Network } from 'helpers'
 import { subgraph } from 'graphql'
 
 
 export type FetchOsTokenSnapshotsInput = {
-  network: Network
+  options: SDK.Options
 }
 
-const fetchOsTokenSnapshots = async (values: FetchOsTokenSnapshotsInput) => {
-  const { network } = values
+const fetchOsTokenSnapshots = async (input: FetchOsTokenSnapshotsInput) => {
+  const { options: { network } } = input
 
   const data = await subgraph.osTokenSnapshots.fetchOsTokenSnapshotsQuery({
     network,

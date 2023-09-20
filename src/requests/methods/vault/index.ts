@@ -1,4 +1,3 @@
-import { Network } from 'helpers'
 import { subgraph } from 'graphql'
 import { VaultQueryVariables, VaultQueryPayload } from 'graphql/subgraph/vault'
 
@@ -7,12 +6,13 @@ import modifyVault from './modifyVault'
 
 
 type VaultInput = {
-  network: Network
+  options: SDK.Options
   vaultAddress: VaultQueryVariables['address']
 }
 
 const vault = async (input: VaultInput) => {
-  const { vaultAddress, network } = input
+  const { vaultAddress, options } = input
+  const { network } = options
 
   const data = await subgraph.vault.fetchVaultQuery<ModifiedVault>({
     network,
