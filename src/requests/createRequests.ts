@@ -6,11 +6,12 @@ type Methods = typeof methods
 type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
 
 type ModifyRequests<T extends Record<string, any>> = {
-  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'options'>>) => ReturnType<T[K]>
+  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'options' | 'contracts'>>) => ReturnType<T[K]>
 }
 
 type CreateRequestsInput = {
   options: SDK.Options
+  contracts: SDK.Contracts
 }
 
 type CreateRequestsOutput = ModifyRequests<Methods>
@@ -21,7 +22,7 @@ const createRequests = (input: CreateRequestsInput): CreateRequestsOutput => (
 
     return {
       ...acc,
-    [method]: (values: unknown) => fn({ ...(values || {}), network: input.options.network } as any),
+    [method]: (values: unknown) => fn({ ...(values || {}), ...input } as any),
     }
   }, {} as CreateRequestsOutput)
 )

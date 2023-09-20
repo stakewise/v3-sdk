@@ -1,16 +1,24 @@
-import { Network } from 'helpers'
-import { vaultMulticall } from 'contracts'
+import { Network, configs } from 'helpers'
+import { JsonRpcProvider, ZeroAddress } from 'ethers'
+import { vaultMulticall, createContracts } from 'contracts'
 
 import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 
 
-jest.mock('helpers')
+jest.mock('contracts')
 
 describe('parseExitRequests function', () => {
+  const network = Network.Mainnet
+  const config = configs[network]
+
+  const provider = new JsonRpcProvider(config.network.url)
+  const contracts = createContracts({ provider, config })
+
   const input: ParseExitRequestsInput = {
-    network: Network.Mainnet,  // Use appropriate network enum value
-    userAddress: 'userAddress',
-    vaultAddress: 'vaultAddress',
+    contracts,
+    options: { network },  // Use appropriate network enum value
+    userAddress: ZeroAddress,
+    vaultAddress: ZeroAddress,
     totalShares: 1000n,
     exitRequests: [
       {

@@ -1,3 +1,4 @@
+import { apiUrls } from 'helpers'
 import { subgraph } from 'graphql'
 
 
@@ -6,10 +7,10 @@ export type FetchOsTokenSnapshotsInput = {
 }
 
 const fetchOsTokenSnapshots = async (input: FetchOsTokenSnapshotsInput) => {
-  const { options: { network } } = input
+  const { options } = input
 
   const data = await subgraph.osTokenSnapshots.fetchOsTokenSnapshotsQuery({
-    network,
+    url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       first: 14,
       orderBy: 'createdAt',

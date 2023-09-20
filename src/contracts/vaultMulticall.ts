@@ -1,8 +1,8 @@
 import getHarvestParams from 'requests/methods/getHarvestParams'
 import { VoidSigner, JsonRpcProvider } from 'ethers'
-import { configs, Network } from 'helpers'
+import { configs } from 'helpers'
 
-import createContracts from './createContracts'
+import { VaultAbi, KeeperAbi } from './types'
 
 
 type VaultMulticallRequestInput = {
@@ -19,20 +19,19 @@ type VaultMulticallInput = {
   options: SDK.Options
   userAddress: string
   vaultAddress: string
+  vaultContract: VaultAbi
+  keeperContract: KeeperAbi
   request: VaultMulticallRequestInput
 }
 
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
-  const { options, vaultAddress, userAddress, request } = values
+  const { options, vaultAddress, userAddress, request, vaultContract, keeperContract } = values
   const { params, callStatic, estimateGas, updateState } = request
 
   const calls: string[] = []
 
   const config = configs[options.network]
   const library = new JsonRpcProvider(config.network.url)
-
-  const contracts = createContracts(library, config)
-  const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 
   const signer = new VoidSigner(userAddress, library)
   const signedContract = vaultContract.connect(signer)
@@ -41,7 +40,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   const canHarvest = updateState
     ? Object.values(harvestParams).every(Boolean)
-    : await contracts.base.keeper.canHarvest(vaultAddress)
+    : await keeperContract.canHarvest(vaultAddress)
 
   if (canHarvest) {
     const fragment = signedContract.interface.encodeFunctionData('updateState', [ harvestParams ])

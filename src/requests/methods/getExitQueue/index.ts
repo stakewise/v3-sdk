@@ -4,6 +4,7 @@ import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
 type GetExitQueueInput = FetchExitQueuePositionsInput & {
+  contracts: SDK.Contracts
   options: SDK.Options
 }
 
@@ -14,7 +15,7 @@ const mock = {
 }
 
 const getExitQueue = async (input: GetExitQueueInput) => {
-  const { options, vaultAddress, userAddress } = input
+  const { options, contracts, vaultAddress, userAddress } = input
 
   const data = await fetchExitQueuePositions({ options, vaultAddress, userAddress })
 
@@ -26,6 +27,7 @@ const getExitQueue = async (input: GetExitQueueInput) => {
 
   const exitQueue = await parseExitRequests({
     options,
+    contracts,
     userAddress,
     totalShares,
     vaultAddress,

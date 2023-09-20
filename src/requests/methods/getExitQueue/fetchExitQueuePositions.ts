@@ -1,3 +1,4 @@
+import { apiUrls } from 'helpers'
 import { subgraph } from 'graphql'
 
 
@@ -9,10 +10,9 @@ export type FetchExitQueuePositionsInput = {
 
 const fetchExitQueuePositions = async (values: FetchExitQueuePositionsInput) => {
   const { options, vaultAddress, userAddress } = values
-  const { network } = options
 
   const data = await subgraph.exitQueue.fetchExitQueueQuery({
-    network,
+    url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       vault: vaultAddress.toLowerCase(),
       owner: userAddress.toLowerCase() || '',

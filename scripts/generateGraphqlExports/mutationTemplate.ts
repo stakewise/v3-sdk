@@ -1,16 +1,14 @@
 export default `
-import configs from 'helpers/configs'
-import { Network } from 'helpers/enums'
 import { {ClientName}Graph } from 'types/graphql/{clientName}'
 
 
 type SubmitInput = {
-  network: Network
+  url: string
   variables: {QueryName}Variables
 }
 
-const submit{QueryName} = ({ variables, network }: SubmitInput) =>
-  fetch(configs[network].api.{clientName}, {
+const submit{QueryName} = ({ variables, url }: SubmitInput) =>
+  fetch(url, {
     method: 'POST',
     body: JSON.stringify({
       query,

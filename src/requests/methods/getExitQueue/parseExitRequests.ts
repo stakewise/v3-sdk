@@ -3,6 +3,7 @@ import { vaultMulticall } from 'contracts'
 
 export type ParseExitRequestsInput = {
   options: SDK.Options
+  contracts: SDK.Contracts
   userAddress: string
   vaultAddress: string
   totalShares: bigint
@@ -24,14 +25,23 @@ type ParseExitRequestsOutput = {
 }
 
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, userAddress, vaultAddress, totalShares, exitRequests } = values
+  const { options, contracts, userAddress, vaultAddress, totalShares, exitRequests } = values
+
+  const keeperContract = {} as any // contracts.base.keeper
+  const vaultContract = {} as any // contracts.helpers.createVaultContract(vaultAddress)
+
+  const commonMulticallParams = {
+    options,
+    userAddress,
+    vaultAddress,
+    vaultContract,
+    keeperContract,
+  }
 
   // We must fetch the exit queue index for every position.
   // Based on the response we can determine if we can claim exited assets.
   const indexesResponse = await vaultMulticall<Array<bigint[]>>({
-    options,
-    userAddress,
-    vaultAddress,
+    ...commonMulticallParams,
     request: {
       params: exitRequests.map(({ positionTicket }) => ({
         method: 'getExitQueueIndex',
@@ -63,9 +73,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     claimedShares: bigint,
     claimedAssets: bigint
   }>>({
-    options,
-    userAddress,
-    vaultAddress,
+    ...commonMulticallParams,
     request: {
       params: claims.map(({ positionTicket, exitQueueIndex }) => ({
         method: 'claimExitedAssets',
@@ -104,9 +112,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     // If there are remaining shares, we must calculate how many assets are still queuing
     // Remember - Shares are VLT tokens and Assets are ETH tokens
     const remainingAssets = await vaultMulticall<Array<{ assets: bigint }>>({
-      options,
-      userAddress,
-      vaultAddress,
+      ...commonMulticallParams,
       request: {
         params: [ { method: 'convertToAssets', args: [ remainingShares ] } ],
         updateState: true,

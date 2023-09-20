@@ -1,21 +1,19 @@
-import { configs } from 'helpers'
 import { JsonRpcProvider } from 'ethers'
 import { createRequests } from 'requests'
+import { configs, apiUrls } from 'helpers'
 import { createContracts } from 'contracts'
 
 
 class StakeWiseSDK {
-  readonly requests: Requests
-  readonly contracts: Contracts
+  readonly requests: SDK.Requests
+  readonly contracts: SDK.Contracts
 
   constructor(options: SDK.Options) {
-    const { network, provider, endpoints } = options
+    const config = configs[options.network]
+    const provider = options.provider || new JsonRpcProvider(apiUrls.getWeb3Url(options))
 
-    const config = configs[network]
-    const library = provider || new JsonRpcProvider(endpoints?.web3 || config.network.url)
-
-    this.requests = createRequests({ options })
-    this.contracts = createContracts(library, config)
+    this.contracts = createContracts({ provider, config })
+    this.requests = createRequests({ options, contracts: this.contracts })
   }
 }
 

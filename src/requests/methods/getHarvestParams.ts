@@ -1,4 +1,5 @@
-import { fetchHarvestParamsQuery } from 'graphql/subgraph/vault'
+import { apiUrls } from 'helpers'
+import { subgraph } from 'graphql'
 
 
 type GetHarvestParamsInput = {
@@ -9,8 +10,8 @@ type GetHarvestParamsInput = {
 const getHarvestParams = async (values: GetHarvestParamsInput) => {
   const { options, vaultAddress } = values
 
-  const result = await fetchHarvestParamsQuery({
-    network: options.network,
+  const result = await subgraph.vault.fetchHarvestParamsQuery({
+    url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       address: vaultAddress.toLowerCase(),
     },

@@ -5,11 +5,10 @@ import type { Provider } from 'ethers'
 
 
 declare global {
-  type Config = typeof configs[Network]
-  type Requests = ReturnType<typeof createRequests>
-  type Contracts = ReturnType<typeof createContracts>
-
   namespace SDK {
+    type Config = typeof configs[Network]
+    type Requests = ReturnType<typeof createRequests>
+    type Contracts = ReturnType<typeof createContracts>
 
     type Options = {
       network: Network

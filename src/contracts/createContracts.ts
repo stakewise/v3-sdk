@@ -41,110 +41,115 @@ import type {
   Erc20Abi as Erc20Type,
 } from './types'
 
-import multicall from './multicall'
-import vaultMulticall from './vaultMulticall'
 import createContract from './createContract'
+import vaultMulticall from './vaultMulticall'
 
 
-const getSwiseToken = (library: Provider, config: Config) => createContract<SwiseTokenType>(
+const getSwiseToken = (provider: Provider, config: SDK.Config) => createContract<SwiseTokenType>(
   config.addresses.tokens.swise,
   SwiseTokenAbi,
-  library
+  provider
 )
 
-const getMulticall = (library: Provider, config: Config) => createContract<MulticallType>(
+const getMulticall = (provider: Provider, config: SDK.Config) => createContract<MulticallType>(
   config.addresses.base.multicall,
   MulticallAbi,
-  library
+  provider
 )
 
-const getVestingEscrowFactory = (library: Provider, config: Config) => createContract<VestingEscrowFactoryType>(
+const getVestingEscrowFactory = (provider: Provider, config: SDK.Config) => createContract<VestingEscrowFactoryType>(
   config.addresses.factories.vestingEscrow,
   VestingEscrowFactoryAbi,
-  library
+  provider
 )
 
-const getVaultFactory = (library: Provider, address: string) => createContract<VaultFactoryType>(
+const getVaultFactory = (provider: Provider, address: string) => createContract<VaultFactoryType>(
   address,
   VaultFactoryAbi,
-  library
+  provider
 )
 
-const getVaultsRegistry = (library: Provider, config: Config) => createContract<VaultsRegistryType>(
+const getVaultsRegistry = (provider: Provider, config: SDK.Config) => createContract<VaultsRegistryType>(
   config.addresses.base.vaultsRegistry,
   VaultsRegistryAbi,
-  library
+  provider
 )
 
-const getRewardSplitterFactory = (library: Provider, config: Config) => createContract<RewardSplitterFactoryType>(
+const getRewardSplitterFactory = (provider: Provider, config: SDK.Config) => createContract<RewardSplitterFactoryType>(
   config.addresses.base.rewardSplitterFactory,
   RewardSplitterFactoryAbi,
-  library
+  provider
 )
 
-const getKeeper = (library: Provider, config: Config) => createContract<KeeperType>(
+const getKeeper = (provider: Provider, config: SDK.Config) => createContract<KeeperType>(
   config.addresses.base.keeper,
   KeeperAbi,
-  library
+  provider
 )
 
-const getMintToken = (library: Provider, config: Config) => createContract<MintTokenType>(
+const getMintToken = (provider: Provider, config: SDK.Config) => createContract<MintTokenType>(
   config.addresses.tokens.mintToken,
   MintTokenAbi,
-  library
+  provider
 )
 
-const getMintTokenConfig = (library: Provider, config: Config) => createContract<MintTokenConfigType>(
+const getMintTokenConfig = (provider: Provider, config: SDK.Config) => createContract<MintTokenConfigType>(
   config.addresses.base.mintTokenConfig,
   MintTokenConfigAbi,
-  library
+  provider
 )
 
-const getPriceOracle = (library: Provider, config: Config) => createContract<PriceOracleType>(
+const getPriceOracle = (provider: Provider, config: SDK.Config) => createContract<PriceOracleType>(
   config.addresses.base.priceOracle,
   PriceOracleAbi,
-  library
+  provider
 )
 
-const getV2RewardToken = (library: Provider, config: Config) => createContract<V2RewardTokenType>(
+const getV2RewardToken = (provider: Provider, config: SDK.Config) => createContract<V2RewardTokenType>(
   config.addresses.tokens.v2RewardToken,
   V2RewardTokenAbi,
-  library
+  provider
 )
 
+type CreateContractsInput = {
+  provider: Provider
+  config: SDK.Config
+}
 
-export const createContracts = (library: Provider, config: Config) => {
-  const multicallContract = getMulticall(library, config)
+export const createContracts = (input: CreateContractsInput) => {
+  const { provider, config } = input
+
+  const multicallContract = getMulticall(provider, config)
 
   return {
     helpers: {
       multicallContract,
-      createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, library),
-      createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, library),
-      createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, library),
-      createVestingEscrowDirect: (address: string) => createContract<VestingEscrowType>(address, VestingEscrowAbi, library),
-      createPrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, library),
-      createRewardSplitterContract: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, library),
-      createErc20PrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, Erc20PrivateVaultAbi, library),
+      createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
+      createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
+      createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
+      createVestingEscrowDirect: (address: string) => createContract<VestingEscrowType>(address, VestingEscrowAbi, provider),
+      createPrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, provider),
+      createRewardSplitterContract: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, provider),
+      createErc20PrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, Erc20PrivateVaultAbi, provider),
     },
     base: {
-      keeper: getKeeper(library, config),
-      priceOracle: getPriceOracle(library, config),
-      vaultsRegistry: getVaultsRegistry(library, config),
-      mintTokenConfig: getMintTokenConfig(library, config),
-      rewardSplitterFactory: getRewardSplitterFactory(library, config),
+      keeper: getKeeper(provider, config),
+      priceOracle: getPriceOracle(provider, config),
+      vaultsRegistry: getVaultsRegistry(provider, config),
+      mintTokenConfig: getMintTokenConfig(provider, config),
+      rewardSplitterFactory: getRewardSplitterFactory(provider, config),
     },
     tokens: {
-      mintToken: getMintToken(library, config),
-      swiseToken: getSwiseToken(library, config),
-      V2RewardToken: getV2RewardToken(library, config),
+      mintToken: getMintToken(provider, config),
+      swiseToken: getSwiseToken(provider, config),
+      V2RewardToken: getV2RewardToken(provider, config),
     },
     factories: {
-      vestingEscrow: getVestingEscrowFactory(library, config),
-      vault: getVaultFactory(library, config.addresses.factories.vault),
-      erc20Vault: getVaultFactory(library, config.addresses.factories.erc20Vault),
-      privateVault: getVaultFactory(library, config.addresses.factories.privateVault),
-      erc20PrivateVault: getVaultFactory(library, config.addresses.factories.erc20PrivateVault),
+      vestingEscrow: getVestingEscrowFactory(provider, config),
+      vault: getVaultFactory(provider, config.addresses.factories.vault),
+      erc20Vault: getVaultFactory(provider, config.addresses.factories.erc20Vault),
+      privateVault: getVaultFactory(provider, config.addresses.factories.privateVault),
+      erc20PrivateVault: getVaultFactory(provider, config.addresses.factories.erc20PrivateVault),
     },
   }
 }
