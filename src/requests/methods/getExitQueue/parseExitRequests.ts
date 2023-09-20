@@ -27,8 +27,8 @@ type ParseExitRequestsOutput = {
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
   const { options, contracts, userAddress, vaultAddress, totalShares, exitRequests } = values
 
-  const keeperContract = {} as any // contracts.base.keeper
-  const vaultContract = {} as any // contracts.helpers.createVaultContract(vaultAddress)
+  const keeperContract = contracts.base.keeper
+  const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 
   const commonMulticallParams = {
     options,
