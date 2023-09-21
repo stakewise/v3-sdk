@@ -1,8 +1,8 @@
 import getHealthFactor from '../getHealthFactor'
-import getOsTokenPositions from './getOsTokenPositions'
+import getOsTokenPositionShares from './getOsTokenPositionShares'
 
 
-type GetMintTokenInput = {
+type GetOsTokenInput = {
   userAddress: string
   vaultAddress: string
   stakedAssets: bigint
@@ -11,12 +11,12 @@ type GetMintTokenInput = {
   contracts: StakeWise.Contracts
 }
 
-const getMintToken = async (values: GetMintTokenInput) => {
+const getOsToken = async (values: GetOsTokenInput) => {
   const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 
-  const gqlShares = await getOsTokenPositions({ options, vaultAddress, userAddress })
+  const gqlShares = await getOsTokenPositionShares({ options, vaultAddress, userAddress })
   const contractShares = await vaultContract.osTokenPositions(userAddress)
 
   const [ mintedAssets, feePercent ] = await Promise.all([
@@ -39,4 +39,4 @@ const getMintToken = async (values: GetMintTokenInput) => {
 }
 
 
-export default getMintToken
+export default getOsToken

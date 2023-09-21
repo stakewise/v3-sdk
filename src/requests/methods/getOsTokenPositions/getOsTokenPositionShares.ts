@@ -2,13 +2,13 @@ import { apiUrls } from 'helpers'
 import { subgraph } from 'graphql'
 
 
-type GetOsTokenPositionsInput = {
+type GetOsTokenPositionSharesInput = {
   userAddress: string
   vaultAddress: string
   options: StakeWise.Options
 }
 
-const getOsTokenPositions = async (values: GetOsTokenPositionsInput) => {
+const getOsTokenPositionShares = async (values: GetOsTokenPositionSharesInput) => {
   const { options, vaultAddress, userAddress } = values
 
   const result = await subgraph.osToken.fetchOsTokenPositionsQuery({
@@ -23,4 +23,4 @@ const getOsTokenPositions = async (values: GetOsTokenPositionsInput) => {
 }
 
 
-export default getOsTokenPositions
+export default getOsTokenPositionShares

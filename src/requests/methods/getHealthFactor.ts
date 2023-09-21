@@ -7,7 +7,7 @@ type GetHealthFactorInput = {
   thresholdPercent: bigint
 }
 
-const getHealthFactor = async (values: GetHealthFactorInput) => {
+const getHealthFactor = (values: GetHealthFactorInput) => {
   const { mintedAssets, stakedAssets, thresholdPercent } = values
 
   if (mintedAssets === 0n || stakedAssets === 0n) {
