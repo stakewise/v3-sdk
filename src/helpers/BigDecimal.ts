@@ -1,8 +1,6 @@
 import BigDecimals from 'bignumber.js'
 
 
-// ATTN BigDecimals is module for more accurate floating point calculations
-
 type Argument = bigint | string | number
 
 const toBigDecimal = (value: Argument) => {

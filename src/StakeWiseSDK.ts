@@ -1,12 +1,13 @@
 import { JsonRpcProvider } from 'ethers'
-import { createRequests } from 'requests'
 import { configs, apiUrls } from 'helpers'
 import { createContracts } from 'contracts'
+import { createRequests, helpers } from 'requests'
 
 
 class StakeWiseSDK {
   readonly requests: StakeWise.Requests
   readonly contracts: StakeWise.Contracts
+  readonly helpers: typeof helpers = helpers
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]

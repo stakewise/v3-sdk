@@ -1,8 +1,8 @@
-import getHealthFactor from '../getHealthFactor'
+import getHealthFactor from '../../helpers/getHealthFactor'
 import getOsTokenPositionShares from './getOsTokenPositionShares'
 
 
-type GetOsTokenInput = {
+type GetOsTokenPositionInput = {
   userAddress: string
   vaultAddress: string
   stakedAssets: bigint
@@ -11,7 +11,7 @@ type GetOsTokenInput = {
   contracts: StakeWise.Contracts
 }
 
-const getOsToken = async (values: GetOsTokenInput) => {
+const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
@@ -39,4 +39,4 @@ const getOsToken = async (values: GetOsTokenInput) => {
 }
 
 
-export default getOsToken
+export default getOsTokenPosition
