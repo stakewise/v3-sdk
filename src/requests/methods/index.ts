@@ -10,3 +10,5 @@ export { default as getHarvestParams } from './getHarvestParams'
 export { default as getSwiseUsdPrice } from './getSwiseUsdPrice'
 export { default as getVaultValidators } from './getVaultValidators'
 export { default as getAllocatorActions } from './getAllocatorActions'
+
+export { getHealthFactor } from './helpers'

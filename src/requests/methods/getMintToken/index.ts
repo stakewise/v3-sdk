@@ -1,4 +1,4 @@
-import getHealthFactor from './getHealthFactor'
+import { getHealthFactor } from '../helpers'
 import getOsTokenPositions from './getOsTokenPositions'
 
 

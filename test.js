@@ -10,7 +10,7 @@ const call = async () => {
 
   const { assets } = await sdk.requests.getStakeBalance({
     userAddress: '0xEC01cB780202595Ce2Fb11225aABfAd201B54e0f',
-    vaultAddress: '0xbc1a14cd1d4fabea06f9b50346dd2163dd783181',
+    vaultAddress: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
   })
 
   console.log('assets', assets)
@@ -19,7 +19,7 @@ const call = async () => {
     thresholdPercent,
     stakedAssets: assets,
     userAddress: '0xEC01cB780202595Ce2Fb11225aABfAd201B54e0f',
-    vaultAddress: '0xbc1a14cd1d4fabea06f9b50346dd2163dd783181',
+    vaultAddress: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
   })
 
   console.log(result)
