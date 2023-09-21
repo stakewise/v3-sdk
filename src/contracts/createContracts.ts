@@ -45,19 +45,19 @@ import createContract from './createContract'
 import vaultMulticall from './vaultMulticall'
 
 
-const getSwiseToken = (provider: Provider, config: SDK.Config) => createContract<SwiseTokenType>(
+const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<SwiseTokenType>(
   config.addresses.tokens.swise,
   SwiseTokenAbi,
   provider
 )
 
-const getMulticall = (provider: Provider, config: SDK.Config) => createContract<MulticallType>(
+const getMulticall = (provider: Provider, config: StakeWise.Config) => createContract<MulticallType>(
   config.addresses.base.multicall,
   MulticallAbi,
   provider
 )
 
-const getVestingEscrowFactory = (provider: Provider, config: SDK.Config) => createContract<VestingEscrowFactoryType>(
+const getVestingEscrowFactory = (provider: Provider, config: StakeWise.Config) => createContract<VestingEscrowFactoryType>(
   config.addresses.factories.vestingEscrow,
   VestingEscrowFactoryAbi,
   provider
@@ -69,43 +69,43 @@ const getVaultFactory = (provider: Provider, address: string) => createContract<
   provider
 )
 
-const getVaultsRegistry = (provider: Provider, config: SDK.Config) => createContract<VaultsRegistryType>(
+const getVaultsRegistry = (provider: Provider, config: StakeWise.Config) => createContract<VaultsRegistryType>(
   config.addresses.base.vaultsRegistry,
   VaultsRegistryAbi,
   provider
 )
 
-const getRewardSplitterFactory = (provider: Provider, config: SDK.Config) => createContract<RewardSplitterFactoryType>(
+const getRewardSplitterFactory = (provider: Provider, config: StakeWise.Config) => createContract<RewardSplitterFactoryType>(
   config.addresses.base.rewardSplitterFactory,
   RewardSplitterFactoryAbi,
   provider
 )
 
-const getKeeper = (provider: Provider, config: SDK.Config) => createContract<KeeperType>(
+const getKeeper = (provider: Provider, config: StakeWise.Config) => createContract<KeeperType>(
   config.addresses.base.keeper,
   KeeperAbi,
   provider
 )
 
-const getMintToken = (provider: Provider, config: SDK.Config) => createContract<MintTokenType>(
+const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenType>(
   config.addresses.tokens.mintToken,
   MintTokenAbi,
   provider
 )
 
-const getMintTokenConfig = (provider: Provider, config: SDK.Config) => createContract<MintTokenConfigType>(
+const getMintTokenConfig = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenConfigType>(
   config.addresses.base.mintTokenConfig,
   MintTokenConfigAbi,
   provider
 )
 
-const getPriceOracle = (provider: Provider, config: SDK.Config) => createContract<PriceOracleType>(
+const getPriceOracle = (provider: Provider, config: StakeWise.Config) => createContract<PriceOracleType>(
   config.addresses.base.priceOracle,
   PriceOracleAbi,
   provider
 )
 
-const getV2RewardToken = (provider: Provider, config: SDK.Config) => createContract<V2RewardTokenType>(
+const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => createContract<V2RewardTokenType>(
   config.addresses.tokens.v2RewardToken,
   V2RewardTokenAbi,
   provider
@@ -113,7 +113,7 @@ const getV2RewardToken = (provider: Provider, config: SDK.Config) => createContr
 
 type CreateContractsInput = {
   provider: Provider
-  config: SDK.Config
+  config: StakeWise.Config
 }
 
 export const createContracts = (input: CreateContractsInput) => {

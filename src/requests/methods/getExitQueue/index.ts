@@ -4,8 +4,8 @@ import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
 type GetExitQueueInput = FetchExitQueuePositionsInput & {
-  contracts: SDK.Contracts
-  options: SDK.Options
+  contracts: StakeWise.Contracts
+  options: StakeWise.Options
 }
 
 const mock = {

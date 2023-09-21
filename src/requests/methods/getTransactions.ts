@@ -5,7 +5,7 @@ import { TransactionsQueryVariables } from 'graphql/subgraph/transactions'
 
 type GetTransactionsInput = {
   hash: string
-  options: SDK.Options
+  options: StakeWise.Options
 }
 
 const getTransactions = async (input: GetTransactionsInput) => {

@@ -16,11 +16,11 @@ type VaultMulticallRequestInput = {
 }
 
 type VaultMulticallInput = {
-  options: SDK.Options
   userAddress: string
   vaultAddress: string
   vaultContract: VaultAbi
   keeperContract: KeeperAbi
+  options: StakeWise.Options
   request: VaultMulticallRequestInput
 }
 

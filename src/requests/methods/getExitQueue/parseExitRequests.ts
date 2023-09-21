@@ -2,8 +2,8 @@ import { vaultMulticall } from 'contracts'
 
 
 export type ParseExitRequestsInput = {
-  options: SDK.Options
-  contracts: SDK.Contracts
+  contracts: StakeWise.Contracts
+  options: StakeWise.Options
   userAddress: string
   vaultAddress: string
   totalShares: bigint

@@ -3,7 +3,7 @@ import { subgraph } from 'graphql'
 
 
 export type FetchExitQueuePositionsInput = {
-  options: SDK.Options
+  options: StakeWise.Options
   vaultAddress: string
   userAddress: string
 }

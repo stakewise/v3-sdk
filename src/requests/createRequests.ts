@@ -10,8 +10,8 @@ type ModifyRequests<T extends Record<string, any>> = {
 }
 
 type CreateRequestsInput = {
-  options: SDK.Options
-  contracts: SDK.Contracts
+  options: StakeWise.Options
+  contracts: StakeWise.Contracts
 }
 
 type CreateRequestsOutput = ModifyRequests<Methods>

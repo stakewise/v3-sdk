@@ -3,7 +3,7 @@ import fetchOsTokenSnapshots from './fetchOsTokenSnapshots'
 
 
 type GetOsTokenApyInput = {
-  options: SDK.Options
+  options: StakeWise.Options
 }
 
 const getOsTokenAPY = async (input: GetOsTokenApyInput) => {

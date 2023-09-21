@@ -5,7 +5,7 @@ import { ZeroAddress } from 'ethers'
 
 type GetVaultsCountInput = {
   userAddress?: string
-  options: SDK.Options
+  options: StakeWise.Options
 }
 
 const getVaultsCount = async (input: GetVaultsCountInput) => {

@@ -5,7 +5,7 @@ import type { Provider } from 'ethers'
 
 
 declare global {
-  namespace SDK {
+  namespace StakeWise {
     type Config = typeof configs[Network]
     type Requests = ReturnType<typeof createRequests>
     type Contracts = ReturnType<typeof createContracts>
@@ -21,6 +21,3 @@ declare global {
     }
   }
 }
-
-
-export {}

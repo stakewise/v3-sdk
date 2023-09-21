@@ -3,7 +3,7 @@ import { backend } from 'graphql'
 
 
 type GetSwiseUsdPriceInput = {
-  options: SDK.Options
+  options: StakeWise.Options
 }
 
 const getSwiseUsdPrice = async (input: GetSwiseUsdPriceInput) => {

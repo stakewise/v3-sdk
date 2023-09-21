@@ -4,7 +4,7 @@ import { VaultValidatorsQueryVariables } from 'graphql/backend/vault'
 
 
 type GetVaultValidatorsInput = {
-  options: SDK.Options
+  options: StakeWise.Options
   vaultAddress: VaultValidatorsQueryVariables['address']
 }
 

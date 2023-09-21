@@ -3,7 +3,7 @@ import { subgraph } from 'graphql'
 
 
 export type FetchOsTokenSnapshotsInput = {
-  options: SDK.Options
+  options: StakeWise.Options
 }
 
 const fetchOsTokenSnapshots = async (input: FetchOsTokenSnapshotsInput) => {

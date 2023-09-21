@@ -7,7 +7,7 @@ import modifyAllocatorActions from './modifyAllocatorActions'
 
 
 type GetAllocatorActionsInput = {
-  options: SDK.Options
+  options: StakeWise.Options
   userAddress?: string
   types: AllocatorActionType[]
   skip: AllocatorActionsQueryVariables['skip']

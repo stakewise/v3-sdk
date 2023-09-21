@@ -11,7 +11,7 @@ const addGraphqlNamespace = (filePath: string, client: string) => {
     .join('\n')
 
   const graphqlTypesFileContent = [
-    `export declare namespace ${string.capitalize(client)}Graph {\n`,
+    `export declare namespace StakeWise${string.capitalize(client)}Graph {\n`,
     graphqlTypesFile,
     '}',
     '',

@@ -5,10 +5,10 @@ import { createContracts } from 'contracts'
 
 
 class StakeWiseSDK {
-  readonly requests: SDK.Requests
-  readonly contracts: SDK.Contracts
+  readonly requests: StakeWise.Requests
+  readonly contracts: StakeWise.Contracts
 
-  constructor(options: SDK.Options) {
+  constructor(options: StakeWise.Options) {
     const config = configs[options.network]
     const provider = options.provider || new JsonRpcProvider(apiUrls.getWeb3Url(options))
 

@@ -1,6 +1,6 @@
 const queryImport = [
   'import { graphqlFetch, FetchCodegenInput } from \'modules/gql-module\'',
-  'import { {ClientName}Graph } from \'types/graphql/{clientName}\''
+  'import { StakeWise{ClientName}Graph } from \'types/graphql/{clientName}\''
 ].join('\n')
 
 const queryTemplate = `

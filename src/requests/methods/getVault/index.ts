@@ -7,7 +7,7 @@ import modifyVault from './modifyVault'
 
 
 type GetVaultInput = {
-  options: SDK.Options
+  options: StakeWise.Options
   vaultAddress: VaultQueryVariables['address']
 }
 

@@ -1,9 +1,9 @@
 import configs from './configs'
 
 
-const getWeb3Url = (options: SDK.Options) => options.endpoints?.web3 || configs[options.network].network.url
-const getBackendUrl = (options: SDK.Options) => options.endpoints?.api || configs[options.network].api.backend
-const getSubgraphqlUrl = (options: SDK.Options) => options.endpoints?.subgraph || configs[options.network].api.subgraph
+const getWeb3Url = (options: StakeWise.Options) => options.endpoints?.web3 || configs[options.network].network.url
+const getBackendUrl = (options: StakeWise.Options) => options.endpoints?.api || configs[options.network].api.backend
+const getSubgraphqlUrl = (options: StakeWise.Options) => options.endpoints?.subgraph || configs[options.network].api.subgraph
 
 
 export default {

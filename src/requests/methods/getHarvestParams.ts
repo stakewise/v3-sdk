@@ -4,7 +4,7 @@ import { subgraph } from 'graphql'
 
 type GetHarvestParamsInput = {
   vaultAddress: string
-  options: SDK.Options
+  options: StakeWise.Options
 }
 
 const getHarvestParams = async (values: GetHarvestParamsInput) => {

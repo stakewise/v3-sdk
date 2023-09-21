@@ -7,7 +7,7 @@ import modifyDaySnapshots from './modifyDaySnapshots'
 
 
 type GetDaySnapshotsInput = {
-  options: SDK.Options
+  options: StakeWise.Options
   unixStartOfDay: DaySnapshotsQueryVariables['where']['date_gte']
   vaultAddress: DaySnapshotsQueryVariables['where']['vault_']['id']
 }
