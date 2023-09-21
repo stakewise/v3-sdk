@@ -2,5 +2,5 @@ import './types/global'
 
 
 export * from 'helpers/enums'
-export { BigDecimal } from 'helpers'
+export { BigDecimal, configs } from 'helpers'
 export { default as StakeWiseSDK } from './StakeWiseSDK'

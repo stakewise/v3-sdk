@@ -1,2 +1,2 @@
-export * as helpers from './helpers'
+export * from './helpers'
 export { default as createRequests } from './createRequests'

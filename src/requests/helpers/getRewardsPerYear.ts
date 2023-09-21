@@ -6,7 +6,7 @@ type GetRewardsPerYearInput = {
   averageRewardsPerSecond: bigint
 }
 
-const getRewardsPerYear = async (values: GetRewardsPerYearInput) => {
+const getRewardsPerYear = (values: GetRewardsPerYearInput) => {
   const { amount, averageRewardsPerSecond } = values
 
   const rewards = new BigDecimal(averageRewardsPerSecond)
