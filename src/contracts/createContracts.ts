@@ -41,8 +41,8 @@ import type {
   Erc20Abi as Erc20Type,
 } from './types'
 
+import multicall from './multicall'
 import createContract from './createContract'
-import vaultMulticall from './vaultMulticall'
 
 
 const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<SwiseTokenType>(
@@ -124,6 +124,7 @@ export const createContracts = (input: CreateContractsInput) => {
   return {
     helpers: {
       multicallContract,
+      createMulticall: multicall(multicallContract as MulticallType),
       createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
       createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
       createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
