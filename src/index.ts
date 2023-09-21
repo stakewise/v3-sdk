@@ -1,6 +1,6 @@
-export * from './requests'
+import './types/global'
+
+
 export * from 'helpers/enums'
 export { BigDecimal } from 'helpers'
-export { createContracts } from 'contracts'
-
-import './types/global'
+export { default as StakeWiseSDK } from './StakeWiseSDK'

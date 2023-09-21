@@ -1,8 +1,9 @@
-const { Network, AllocatorActionType, createRequests } = require('./dist')
+const { StakeWiseSDK, Network } = require('./dist')
 
 
-createRequests({ network: Network.Goerli })
-  .exitQueue({
+const sdk = new StakeWiseSDK({ network: Network.Goerli })
+
+sdk.requests.getStakeBalance({
     network: Network.Goerli,
     // types: [
     //   AllocatorActionType.Redeemed,
@@ -12,8 +13,8 @@ createRequests({ network: Network.Goerli })
     // ],
     // skip: 0,
     // limit: 20,
-    userAddress: '0x35EE7B7fEae88FE646C5a57aa7F52dB30aA2CE4F',
-    vaultAddress: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    userAddress: '0xEC01cB780202595Ce2Fb11225aABfAd201B54e0f',
+    vaultAddress: '0xbc1a14cd1d4fabea06f9b50346dd2163dd783181',
   })
   .then(console.log)
   .catch(console.error)

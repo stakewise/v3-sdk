@@ -9,7 +9,7 @@ export type FetchOsTokenSnapshotsInput = {
 const fetchOsTokenSnapshots = async (input: FetchOsTokenSnapshotsInput) => {
   const { options } = input
 
-  const data = await subgraph.osTokenSnapshots.fetchOsTokenSnapshotsQuery({
+  const data = await subgraph.osToken.fetchOsTokenSnapshotsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       first: 14,
