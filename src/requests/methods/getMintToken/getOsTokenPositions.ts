@@ -19,7 +19,7 @@ const getOsTokenPositions = async (values: GetOsTokenPositionsInput) => {
     },
   })
 
-  return result?.osTokenPositions || []
+  return BigInt(result?.osTokenPositions?.[0]?.shares || 0)
 }
 
 

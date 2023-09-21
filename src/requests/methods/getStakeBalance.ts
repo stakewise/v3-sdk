@@ -11,10 +11,14 @@ type GetStakeBalanceInput = {
 const getStakeBalance = async (values: GetStakeBalanceInput) => {
   const { contracts, options, vaultAddress, userAddress } = values
 
+  console.log('userAddress', userAddress)
+  console.log('vaultAddress', vaultAddress)
   const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 
+  console.log(0)
   const balanceShares = await vaultContract.balanceOf(userAddress)
 
+  console.log(11)
   const result = await vaultMulticall<[ [ bigint ] ]>({
     options,
     userAddress,
@@ -31,6 +35,7 @@ const getStakeBalance = async (values: GetStakeBalanceInput) => {
       ],
     },
   })
+  console.log(22)
 
   return {
     shares: balanceShares || 0n,

@@ -10,3 +10,10 @@ export enum AllocatorActionType {
   VaultCreated = 'VaultCreated',
   ExitedAssetsClaimed = 'ExitedAssetsClaimed',
 }
+
+export enum OsTokenPositionHealth {
+  Unhealthy,
+  Moderate,
+  Healthy,
+  Risky,
+}
