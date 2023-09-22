@@ -34,10 +34,12 @@
     ],
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "object-curly-spacing": [ "error", "always" ],
     "array-bracket-spacing": [ "error", "always" ],
     "no-multiple-empty-lines": [ "error", { "max": 2 } ],
+    "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "jsx-a11y/alt-text": 0,
     "comma-dangle": [
       "warn", {

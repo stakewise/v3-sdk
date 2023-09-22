@@ -1,6 +1,3 @@
-import { Network } from 'helpers'
-
-
 export type FetchInput<Data, Variables, ModifiedData> = {
   url: string
   query: string
@@ -9,7 +6,7 @@ export type FetchInput<Data, Variables, ModifiedData> = {
 }
 
 export type FetchCodegenInput<Data, Variables, ModifiedData> = {
-  network: Network
+  url: string
   variables?: Variables
   modifyResult?: (data: Data) => ModifiedData
 }

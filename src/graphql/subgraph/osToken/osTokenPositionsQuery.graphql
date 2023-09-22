@@ -1,0 +1,5 @@
+query OsTokenPositions($address: Bytes, $vaultAddress: String) {
+  osTokenPositions(where: { address: $address, vault: $vaultAddress }) {
+    shares
+  }
+}

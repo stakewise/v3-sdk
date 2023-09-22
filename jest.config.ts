@@ -2,8 +2,8 @@ import type { Config } from 'jest'
 
 
 const config: Config = {
-  rootDir: '.',
   verbose: true,
+  rootDir: './src',
   preset: 'ts-jest',
   resetMocks: true,
   testEnvironment: 'node',
@@ -13,13 +13,21 @@ const config: Config = {
   modulePathIgnorePatterns: [ '<rootDir>/src/helpers' ],
   transform: {
     '\\.[jt]sx?$': 'ts-jest',
+    '\\.graphql$': '@graphql-tools/jest-transform',
   },
   globals: {
     isolatedModules: true,
   },
   moduleNameMapper: {
-    '^helpers$': require.resolve('./src/helpers/index.ts'),
-    '^graphql$': require.resolve('./src/graphql/index.ts'),
+    '^graphql/(.*)': '<rootDir>/graphql/$1',
+    '^graphql$': '<rootDir>/graphql/index.ts',
+
+    '^requests/(.*)': '<rootDir>/requests/$1',
+    '^requests$': '<rootDir>/requests/index.ts',
+    '^requests/methods': '<rootDir>/requests/methods/indes.ts',
+
+    '^helpers$': '<rootDir>/helpers/index.ts',
+    '^contracts$': '<rootDir>/contracts/index.ts',
   },
 }
 

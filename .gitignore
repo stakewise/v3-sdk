@@ -4,7 +4,6 @@
 tsconfig.tsbuildinfo
 
 dist
-types
 cache
 coverage
 
@@ -12,5 +11,7 @@ coverage
 node_modules
 
 # Types
-schema.graphql
 *.graphql.ts
+schema.graphql
+src/types/graphql
+src/contracts/types

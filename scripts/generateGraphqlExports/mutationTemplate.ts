@@ -1,15 +1,14 @@
 export default `
-import { config, Network } from 'helpers'
-import { {ClientName}Graph } from 'types/graphql/{clientName}'
+import { StakeWise{ClientName}Graph } from 'types/graphql/{clientName}'
 
 
 type SubmitInput = {
-  network: Network
+  url: string
   variables: {QueryName}Variables
 }
 
-const submit{QueryName} = ({ variables, network }: SubmitInput) =>
-  fetch(config[network].api.{clientName}, {
+const submit{QueryName} = ({ variables, url }: SubmitInput) =>
+  fetch(url, {
     method: 'POST',
     body: JSON.stringify({
       query,

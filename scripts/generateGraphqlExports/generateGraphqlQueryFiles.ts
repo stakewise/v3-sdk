@@ -109,7 +109,7 @@ const getFileTypes = (client: string, tsFilePath: string) => {
     .replace(/import \* as Types from .*\n\n/, '')
     .replace(/import \{ TypedDocumentNode .*/, '')
     .replace(/;\n+/g, '\n')
-    .replace(/Types/g, `${string.capitalize(client)}Graph`)
+    .replace(/Types/g, `StakeWise${string.capitalize(client)}Graph`)
     .replace(/export /g, '')
 }
 

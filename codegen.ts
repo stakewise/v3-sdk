@@ -1,11 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
 import { Network } from './src/helpers/enums'
-import config from './src/helpers/config'
+import configs from './src/helpers/configs'
 
 
 // For every netwrok we have same gql shema, so we can use just Mainnet here
-const urls = config[Network.Goerli].api // TODO replace on Mainnet
+const urls = configs[Network.Goerli].api // TODO replace on Mainnet
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {
