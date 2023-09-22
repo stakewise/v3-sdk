@@ -17,21 +17,6 @@ const config: RollupOptions[] = [
     output: [
       {
         name: pkg.name,
-        file: pkg.browser,
-        sourcemap: true,
-        format: 'umd',
-        globals: {
-          ethers: 'ethers',
-        },
-      },
-      {
-        name: pkg.name,
-        file: pkg.main,
-        sourcemap: true,
-        format: 'cjs',
-      },
-      {
-        name: pkg.name,
         file: pkg.module,
         exports: 'named',
         sourcemap: true,
