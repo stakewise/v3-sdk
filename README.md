@@ -94,7 +94,7 @@ type Output = Array<{
 | `id` | Event identifier |
 | `assets` | Transaction amount |
 | `createdAt` | Transaction date |
-| `actionType` | `AllocatorActionType` | Type of action |
+| `actionType` | Type of action |
 | `link` | Transaction link (etherscan/blockscout) |
 
 #### Example:
