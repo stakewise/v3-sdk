@@ -1,9 +1,8 @@
-# StakeWise Data SDK
-
 <p align="center">
-  <img src="https://app.stakewise.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fswise.475817f4.png&w=64&q=75" alt="StakeWise Logo" width="200">
+  <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="200">
 </p>
 
+# StakeWise Data SDK
 The official SDK to seamlessly fetch data from StakeWise platform.
 
 ---
@@ -17,14 +16,59 @@ The official SDK to seamlessly fetch data from StakeWise platform.
 
 ## Table of Contents
 - [Installation](#installation)
-- [Usage](#usage)
-- [API](#api)
-- [Contributing](#contributing)
-- [License](#license)
+- [Methods](#methods)
 
 ---
 
 ## Installation
 
 ```bash
-npm install YOUR_NPM_PACKAGE_NAME
+npm ....
+```
+
+## Methods
+
+### `getAllocatorActions()`
+
+#### Description:
+
+Get a list of interactions with the vault.
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| vaultAddress | `string` | **Require** | - |
+| userAddress | `string` | **Optional** | If a user address is specified, the query will look for events for that address and the vault address only |
+| types | `AllocatorActionType` | **Require** | Event types can be found in `enum AllocatorActionType` which you can import from the library |
+| limit | `number` | **Require** | To implement pagination |
+| skip | `number` | **Require** | To implement pagination |
+
+#### Returns:
+
+| Type | Description |
+|------|-------------|
+| `id` | event identifier |
+| `assets` | transaction amount |
+| `createdAt` | transaction date |
+| `actionType` | one of AllocatorActionType |
+| `link` | transaction link (etherscan/blockscout) |
+
+#### Example:
+
+```typescript
+import { AllocatorActionType } from '@stakewise/v3-sdk'
+
+sdk.requests.getAllocatorActions({
+  skip: 0,
+  limit: 20,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+  types: [
+    AllocatorActionType.Redeemed,
+    AllocatorActionType.Deposited,
+    AllocatorActionType.VaultCreated,
+    AllocatorActionType.ExitedAssetsClaimed,
+  ],
+})
+```
