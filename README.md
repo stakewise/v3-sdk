@@ -79,17 +79,27 @@ Get a list of interactions with the vault.
 
 #### Returns:
 
-| Name | Type | Description |
-|------|------|-------|
-| `id` | `string` | event identifier |
-| `assets` | `string` | transaction amount |
-| `createdAt` | `number` | transaction date |
-| `actionType` | `AllocatorActionType` | type of action |
-| `link` | `string` | transaction link (etherscan/blockscout) |
+```ts
+type Output = Array<{
+  actionType: AllocatorActionType
+  createdAt: number
+  assets: string
+  link: string
+  id: string
+}>
+```
+
+| Name | Description |
+|------|-------------|
+| `id` | Event identifier |
+| `assets` | Transaction amount |
+| `createdAt` | Transaction date |
+| `actionType` | `AllocatorActionType` | Type of action |
+| `link` | Transaction link (etherscan/blockscout) |
 
 #### Example:
 
-```typescript
+```ts
 import { AllocatorActionType } from '@stakewise/v3-sdk'
 
 sdk.requests.getAllocatorActions({
@@ -126,16 +136,21 @@ type DaySnapshot = {
   APY: number
   TVL: string
 }
+
+type Output = {
+  days: Record<number, DaySnapshot>
+  first: DaySnapshot
+}
 ```
 
-| Name | Type | Description |
-|------|------|-------|
-| `days` | `Record<number, DaySnapshot>` |The result of the query on your parameters, is returned as an object where the keys are timestamps |
-| `first` | DaySnapshot | We always send the very first saved snapshot regardless of the request parameters, this helps for rendering the chart |
+| Name | Description |
+|------|-------------|
+| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
+| `first` | We always send the very first saved snapshot regardless of the request parameters, this helps for rendering the chart |
 
 #### Example:
 
-```typescript
+```ts
 sdk.requests.getDaySnapshots({
   vaultAddress: '0x...',
   unixStartOfDay: 1695730032793,
