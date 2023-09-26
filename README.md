@@ -4,7 +4,7 @@
 
 # StakeWise V3 SDK
 
-The official SDK for seamlessly pulling data from the StakeWise platform. It is a wrapper over graphql queries and contract queries. In the end you get the data in a convenient form 
+The official SDK for seamlessly pulling data from the StakeWise platform. It is a wrapper over graphql queries and contract queries. Also included in the package are our basic contracts, which will be connected to your provider if needed
 
 [![Unit Tests](https://img.shields.io/badge/Unit%20Tests-passing-brightgreen)](LINK_TO_YOUR_TEST_RESULTS)
 [![Linting](https://img.shields.io/badge/Linting-passing-brightgreen)](LINK_TO_YOUR_LINTING_RESULTS)
@@ -20,7 +20,7 @@ The official SDK for seamlessly pulling data from the StakeWise platform. It is 
 
 ---
 ## Requirements
-<span style="color:red">Installed ethers 6.6.7+ is required.</span> This package is not included in the library (peerDependencies are used), but must be installed in your application. In the future we will try to update the ethers library with the latest version in a timely manner. If you are using ethers 5 or less, there are 2 solutions:
+Installed ethers 6.6.7+ is required This package is not included in the library (peerDependencies are used), but must be installed in your application. In the future we will try to update the ethers library with the latest version in a timely manner. If you are using ethers 5 or less, there are 2 solutions:
 1. Upgrade to ethers 6, it is much more convenient.
 2. You can install ethers 6 version separately, but it will expand your bandle:
 
@@ -79,13 +79,13 @@ Get a list of interactions with the vault.
 
 #### Returns:
 
-| Type | Description |
-|------|-------------|
-| `id` | event identifier |
-| `assets` | transaction amount |
-| `createdAt` | transaction date |
-| `actionType` | one of AllocatorActionType |
-| `link` | transaction link (etherscan/blockscout) |
+| Name | Type | Description |
+|------|------|-------|
+| `id` | `string` | event identifier |
+| `assets` | `string` | transaction amount |
+| `createdAt` | `number` | transaction date |
+| `actionType` | `AllocatorActionType` | type of action |
+| `link` | `string` | transaction link (etherscan/blockscout) |
 
 #### Example:
 
@@ -103,5 +103,41 @@ sdk.requests.getAllocatorActions({
     AllocatorActionType.VaultCreated,
     AllocatorActionType.ExitedAssetsClaimed,
   ],
+})
+```
+
+### `sdk.requests.getDaySnapshots()`
+
+#### Description:
+
+TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| unixStartOfDay | `number` | **Require** | Time to start |
+| vaultAddress | `string` | **Require** | - |
+
+#### Returns:
+
+```ts
+type DaySnapshot = {
+  APY: number
+  TVL: string
+}
+```
+
+| Name | Type | Description |
+|------|------|-------|
+| `days` | `Record<number, DaySnapshot>` |The result of the query on your parameters, is returned as an object where the keys are timestamps |
+| `first` | DaySnapshot | We always send the very first saved snapshot regardless of the request parameters, this helps for rendering the chart |
+
+#### Example:
+
+```typescript
+sdk.requests.getDaySnapshots({
+  vaultAddress: '0x...',
+  unixStartOfDay: 1695730032793,
 })
 ```
