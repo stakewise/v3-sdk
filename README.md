@@ -58,6 +58,15 @@ import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 
 ```
+#### SDK Constructor Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| network | `Network` | **Require** | Chain id |
+| provider | `any` | **Optional** | You can provide your implementation of the provender for ethers |
+| endpoints.subgraph | `string` | **Optional** | stakewise sbugraph url |
+| endpoints.web3 | `number` | **Require** | Your url for connect to blockchian |
+| endpoints.api | `string` | **Optional** | stakewise backend url |
 
 ## API
 
