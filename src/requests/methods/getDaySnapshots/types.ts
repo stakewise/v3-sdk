@@ -4,6 +4,6 @@ type DaySnapshot = {
 }
 
 export type ModifiedDaySnapshots = {
-  days: DaySnapshot[]
+  days: Record<number, DaySnapshot>
   first: DaySnapshot | null
 }
