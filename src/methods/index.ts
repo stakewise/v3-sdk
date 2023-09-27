@@ -16,22 +16,25 @@ type CreateMethodsParams = {
   contracts: StakeWise.Contracts
 }
 
-type CreateMethodsOutput = ModifyRequests<Methods>
+type CreateMethodsOutput<T extends Methods> = ModifyRequests<T>
 
-const createRequests = (methods: Methods, params: CreateMethodsParams): CreateMethodsOutput => (
+const createRequests = <T extends Methods>(methods: T, params: CreateMethodsParams): CreateMethodsOutput<T> => (
   Object.keys(methods).reduce((acc, method) => {
     const fn = methods[method as keyof typeof methods] as (values: unknown) => unknown
 
     return {
       ...acc,
-    [method]: (values: unknown) => fn({ ...(values || {}), ...params } as any),
+    [method]: (values: unknown) => fn({ ...(values || {}), ...params }),
     }
-  }, {} as CreateMethodsOutput)
+  }, {} as CreateMethodsOutput<T>)
 )
 
 
-export default {
-  createUtils: (params: CreateMethodsParams) => createRequests(utils, params),
-  createVaultMethods: (params: CreateMethodsParams) => createRequests(vault, params),
-  createOsTokenMethods: (params: CreateMethodsParams) => createRequests(osToken, params),
+const methods = {
+  createUtils: (params: CreateMethodsParams) => createRequests<typeof utils>(utils, params),
+  createVaultMethods: (params: CreateMethodsParams) => createRequests<typeof vault>(vault, params),
+  createOsTokenMethods: (params: CreateMethodsParams) => createRequests<typeof osToken>(osToken, params),
 }
+
+
+export default methods

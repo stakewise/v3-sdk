@@ -37,6 +37,7 @@ class StakeWiseSDK {
     return createRatesContracts(provider)
   }
 
+  // Temporary method
   vaultMulticall({ userAddress, vaultAddress, request }: VaultMulticallInput) {
     return vaultMulticall({
       vaultContract: this.contracts.helpers.createVaultContract(vaultAddress),
