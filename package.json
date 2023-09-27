@@ -10,7 +10,7 @@
   "description": "StakeWise v3 SDK",
   "homepage": "https://app.stakewise.io",
   "scripts": {
-    "test": "jest --clearCache && jest --onlyChanged",
+    "test": "jest --clearCache && jest",
     "prepare": "npm run typechain && npm run graphql && husky install",
     "build": "npm run test && npm run prepare && rm -rf ./dist && npm run rollup",
     "typechain": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",

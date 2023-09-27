@@ -1,6 +1,6 @@
 import { createContracts, createRatesContracts } from 'contracts'
 import { Network, configs } from 'helpers'
-import { createRequests } from 'requests'
+import methods from 'methods'
 
 import type {
   VaultAbi,
@@ -15,13 +15,11 @@ import type {
   PriceOracleAbi,
   VaultFactoryAbi,
   PrivateVaultAbi,
-  VestingEscrowAbi,
   V2RewardTokenAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
   Erc20PrivateVaultAbi,
-  VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
 } from '../contracts/types'
 
@@ -30,9 +28,12 @@ declare global {
 
   namespace StakeWise {
     type Config = typeof configs[Network]
-    type Requests = ReturnType<typeof createRequests>
     type Contracts = ReturnType<typeof createContracts>
     type RateContracts = ReturnType<typeof createRatesContracts>
+
+    type Utils = ReturnType<typeof methods.createUtils>
+    type VaultMethods = ReturnType<typeof methods.createVaultMethods>
+    type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
 
     type Options = {
       network: Network
@@ -58,12 +59,10 @@ declare global {
       type PrivateVault = PrivateVaultAbi
       type VaultFactory = VaultFactoryAbi
       type V2RewardToken = V2RewardTokenAbi
-      type VestingEscrow = VestingEscrowAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type MintTokenConfig = MintTokenConfigAbi
       type Erc20PrivateVault = Erc20PrivateVaultAbi
-      type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
     }
   }

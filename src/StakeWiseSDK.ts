@@ -1,15 +1,17 @@
+import methods from 'methods'
 import { JsonRpcProvider } from 'ethers'
 import { configs, apiUrls, Network } from 'helpers'
-import { createRequests, getHealthFactor, getRewardsPerYear } from 'requests'
 import { createContracts, createRatesContracts, vaultMulticall } from 'contracts'
 
 
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
 
 class StakeWiseSDK {
+  readonly utils: StakeWise.Utils
   readonly options: StakeWise.Options
-  readonly requests: StakeWise.Requests
+  readonly vault: StakeWise.VaultMethods
   readonly contracts: StakeWise.Contracts
+  readonly osToken: StakeWise.OsTokenMethods
   readonly rateContracts: StakeWise.RateContracts
 
   constructor(options: StakeWise.Options) {
@@ -19,10 +21,16 @@ class StakeWiseSDK {
     this.options = options
     this.rateContracts = this.#initRateContracts()
     this.contracts = createContracts({ provider, config })
-    this.requests = createRequests({ options, contracts: this.contracts })
+
+    const argsForMethods = { options, contracts: this.contracts }
+
+    this.utils = methods.createUtils(argsForMethods)
+    this.vault = methods.createVaultMethods(argsForMethods)
+    this.osToken = methods.createOsTokenMethods(argsForMethods)
   }
 
   #initRateContracts() {
+    // Contracts to get the exchange prices for tokens are on the mainnet
     const mainnetApiUrl = configs[Network.Mainnet].network.url
     const provider = new JsonRpcProvider(mainnetApiUrl)
 
@@ -39,9 +47,6 @@ class StakeWiseSDK {
       request,
     })
   }
-
-  getHealthFactor = getHealthFactor
-  getRewardsPerYear = getRewardsPerYear
 }
 
 

@@ -2,7 +2,7 @@ import { Network, configs } from 'helpers'
 import { vaultMulticall } from 'contracts'
 import { JsonRpcProvider, ZeroAddress } from 'ethers'
 
-import createContracts from '../../../contracts/createContracts'
+import createContracts from 'contracts/createContracts'
 import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 
 
