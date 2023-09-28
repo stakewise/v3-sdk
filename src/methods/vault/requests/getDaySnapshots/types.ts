@@ -1,6 +1,6 @@
 type DaySnapshot = {
   APY: number
-  TVL: string
+  TVL: number
 }
 
 export type ModifiedDaySnapshots = {

@@ -10,7 +10,7 @@ export const modifyDaySnapshot = (daySnapshot: Omit<DaySnapshotsQueryPayload['da
 
   return {
     APY: apyValue * 365 * 100,
-    TVL: formatEther(tvlValue),
+    TVL: Number(formatEther(tvlValue)),
   }
 }
 
