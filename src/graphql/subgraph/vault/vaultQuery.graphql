@@ -3,7 +3,6 @@ query Vault($address: ID!) {
     address: id
     performance: score
     admin
-    proof
     isErc20
     imageUrl
     verified
@@ -20,14 +19,8 @@ query Vault($address: ID!) {
     whitelister
     keysManager
     tokenSymbol
-    rewardsRoot
-    proofReward
-    totalShares
     feeRecipient
-    queuedShares
     validatorsRoot
-    unclaimedAssets
-    metadataIpfsHash
     avgRewardPerAsset
   }
   privateVaultAccounts(

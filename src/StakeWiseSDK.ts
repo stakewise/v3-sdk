@@ -38,8 +38,8 @@ class StakeWiseSDK {
   }
 
   // Temporary method
-  vaultMulticall({ userAddress, vaultAddress, request }: VaultMulticallInput) {
-    return vaultMulticall({
+  vaultMulticall<T extends unknown>({ userAddress, vaultAddress, request }: VaultMulticallInput) {
+    return vaultMulticall<T>({
       vaultContract: this.contracts.helpers.createVaultContract(vaultAddress),
       keeperContract: this.contracts.base.keeper,
       options: this.options,
@@ -47,6 +47,14 @@ class StakeWiseSDK {
       userAddress,
       request,
     })
+  }
+
+  get network() {
+    return this.options.network
+  }
+
+  get provider() {
+    return this.options.provider
   }
 }
 
