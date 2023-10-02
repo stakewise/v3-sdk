@@ -18,8 +18,8 @@ const modifyValidators = (input: ModifyValidatorsInput): ModifiedValidators => {
     const { apy, createdAt, earned, publicKey } = validator
 
     return {
-      apy,
       publicKey,
+      apy: Number(apy).toFixed(2),
       createdAt: new Date(createdAt).getTime(),
       earned: formatEther(String(earned || 0)),
       link: `${configs[network].pages.beaconchain}/validator/${publicKey}`,

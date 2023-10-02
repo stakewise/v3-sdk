@@ -9,7 +9,7 @@ import modifyAllocatorActions from './modifyAllocatorActions'
 type GetAllocatorActionsInput = {
   options: StakeWise.Options
   userAddress?: string
-  types: AllocatorActionType[]
+  types?: AllocatorActionType[]
   skip: AllocatorActionsQueryVariables['skip']
   limit: AllocatorActionsQueryVariables['first']
   vaultAddress: AllocatorActionsQueryVariables['where']['address']
@@ -24,9 +24,9 @@ const getAllocatorActions = async (input: GetAllocatorActionsInput) => {
       skip,
       first: limit,
       where: {
-        address: userAddress,
         actionType_in: types,
         vault_: { id: vaultAddress.toLowerCase() },
+        address: userAddress ? userAddress.toLowerCase() : undefined,
       } as AllocatorActionsQueryVariables['where'],
     },
     modifyResult: (data: AllocatorActionsQueryPayload) => modifyAllocatorActions({ data, network: options.network }),

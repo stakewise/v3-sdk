@@ -6,6 +6,7 @@ export enum Network {
 
 export enum AllocatorActionType {
   Redeemed = 'Redeemed',
+  Migrated = 'Migrated',
   Deposited = 'Deposited',
   VaultCreated = 'VaultCreated',
   ExitedAssetsClaimed = 'ExitedAssetsClaimed',

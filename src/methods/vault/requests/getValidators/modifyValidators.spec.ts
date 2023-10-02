@@ -12,7 +12,7 @@ describe('modifyValidators', () => {
         {
           validators: [
             {
-              apy: '5.5',
+              apy: '5.50',
               earned: '2',
               publicKey: 'testPublicKey',
               createdAt: '2023-05-05T12:00:00Z',
@@ -25,7 +25,7 @@ describe('modifyValidators', () => {
 
     const expectedOutput = [
       {
-        apy: '5.5',
+        apy: '5.50',
         createdAt: new Date('2023-05-05T12:00:00Z').getTime(),
         earned: formatEther('2'),
         publicKey: 'testPublicKey',
