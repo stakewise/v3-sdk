@@ -1,6 +1,6 @@
-query exitQueue($owner: Bytes, $vault: String!) {
+query exitQueue($receiver: Bytes, $vault: String!) {
   exitRequests(where: {
-    owner: $owner,
+    receiver: $receiver,
     vault: $vault,
   }) {
     positionTicket

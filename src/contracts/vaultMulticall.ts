@@ -12,7 +12,6 @@ type VaultMulticallRequestInput = {
   }>
   callStatic?: boolean
   estimateGas?: boolean
-  updateState?: boolean
 }
 
 type VaultMulticallInput = {
@@ -26,7 +25,7 @@ type VaultMulticallInput = {
 
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
   const { options, vaultAddress, userAddress, request, vaultContract, keeperContract } = values
-  const { params, callStatic, estimateGas, updateState } = request
+  const { params, callStatic, estimateGas } = request
 
   const calls: string[] = []
 
@@ -36,11 +35,10 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const signer = new VoidSigner(userAddress, library)
   const signedContract = vaultContract.connect(signer)
 
-  const harvestParams = await getHarvestParams({ options, vaultAddress })
-
-  const canHarvest = updateState
-    ? Object.values(harvestParams).every(Boolean)
-    : await keeperContract.canHarvest(vaultAddress)
+  const [ harvestParams, canHarvest ] = await Promise.all([
+    getHarvestParams({ options, vaultAddress }),
+    keeperContract.canHarvest(vaultAddress),
+  ])
 
   if (canHarvest) {
     const fragment = signedContract.interface.encodeFunctionData('updateState', [ harvestParams ])

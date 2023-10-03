@@ -14,8 +14,8 @@ const fetchExitQueuePositions = async (values: FetchExitQueuePositionsInput) => 
   const data = await subgraph.exitQueue.fetchExitQueueQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      owner: userAddress.toLowerCase(),
       vault: vaultAddress.toLowerCase(),
+      receiver: userAddress.toLowerCase(),
     },
   })
 
