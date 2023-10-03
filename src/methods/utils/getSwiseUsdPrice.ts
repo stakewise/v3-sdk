@@ -13,7 +13,7 @@ const getSwiseUsdPrice = async (input: GetSwiseUsdPriceInput) => {
     url: apiUrls.getBackendUrl(options),
   })
 
-  return data?.swiseStats?.price
+  return data?.swiseStats?.price || '0'
 }
 
 
