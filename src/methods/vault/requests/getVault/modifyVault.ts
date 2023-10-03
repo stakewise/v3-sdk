@@ -42,6 +42,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     vaultKeysManager: getAddress(keysManager),
     apy: Number(avgRewardPerAsset) * 365 * 100,
+    whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
     whitelist: privateVaultAccounts.map(({ createdAt, address }) => ({
       createdAt: Number(createdAt) * 1000,
       address: getAddress(address),

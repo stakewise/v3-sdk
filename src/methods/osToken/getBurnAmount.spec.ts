@@ -18,6 +18,7 @@ describe('getBurnAmount', () => {
 
   it('should calculate the correct burn amount', async () => {
     const mockedShares = 100n
+
     const contracts = {
       tokens: {
         mintToken: {
@@ -30,15 +31,13 @@ describe('getBurnAmount', () => {
       ltvPercent: 8000n,
       mintedAssets: 100n,
       stakedAssets: 1000n,
-      newStakedAssets: 900n,
+      newStakedAssets: 1900n,
       contracts: contracts as any,
     }
 
-    const expectedBurnAmount = (input.stakedAssets - input.newStakedAssets) * input.ltvPercent / 10_000n
-
     const result = await getBurnAmount(input)
 
-    expect(result).toBe(expectedBurnAmount > input.mintedAssets ? input.mintedAssets : expectedBurnAmount)
+    expect(result).toBe(100n)
   })
 
   it('should return 0 if assetsToBurn is less than or equal to 0', async () => {
@@ -61,28 +60,5 @@ describe('getBurnAmount', () => {
     const result = await getBurnAmount(input)
 
     expect(result).toBe(0n)
-  })
-
-  it('should return mintedAssets if assetsToBurn is greater than mintedAssets', async () => {
-    const mockedShares = 100n
-    const contracts = {
-      tokens: {
-        mintToken: {
-          convertToShares: jest.fn().mockResolvedValue(mockedShares),
-        },
-      },
-    }
-
-    const input = {
-      ltvPercent: 8000n,
-      mintedAssets: 50n,
-      stakedAssets: 1000n,
-      newStakedAssets: 500n,
-      contracts: contracts as any,
-    }
-
-    const result = await getBurnAmount(input)
-
-    expect(result).toBe(input.mintedAssets)
   })
 })

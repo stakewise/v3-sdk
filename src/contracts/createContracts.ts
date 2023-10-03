@@ -11,24 +11,20 @@ import {
   PriceOracleAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,
-  VestingEscrowAbi,
   V2RewardTokenAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
   Erc20PrivateVaultAbi,
-  VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
 } from './abis'
 
 import type {
   RewardSplitterFactoryAbi as RewardSplitterFactoryType,
-  VestingEscrowFactoryAbi as VestingEscrowFactoryType,
   MintTokenConfigAbi as MintTokenConfigType,
   VaultsRegistryAbi as VaultsRegistryType,
   RewardSplitterAbi as RewardSplitterType,
   V2RewardTokenAbi as V2RewardTokenType,
-  VestingEscrowAbi as VestingEscrowType,
   VaultFactoryAbi as VaultFactoryType,
   PrivateVaultAbi as PrivateVaultType,
   Erc20VaultAbi as Erc20VaultAbiType,
@@ -54,12 +50,6 @@ const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createCo
 const getMulticall = (provider: Provider, config: StakeWise.Config) => createContract<MulticallType>(
   config.addresses.base.multicall,
   MulticallAbi,
-  provider
-)
-
-const getVestingEscrowFactory = (provider: Provider, config: StakeWise.Config) => createContract<VestingEscrowFactoryType>(
-  config.addresses.factories.vestingEscrow,
-  VestingEscrowFactoryAbi,
   provider
 )
 
@@ -128,7 +118,6 @@ export const createContracts = (input: CreateContractsInput) => {
       createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
       createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
       createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
-      createVestingEscrowDirect: (address: string) => createContract<VestingEscrowType>(address, VestingEscrowAbi, provider),
       createPrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, provider),
       createRewardSplitterContract: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, provider),
       createErc20PrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, Erc20PrivateVaultAbi, provider),
@@ -146,7 +135,6 @@ export const createContracts = (input: CreateContractsInput) => {
       V2RewardToken: getV2RewardToken(provider, config),
     },
     factories: {
-      vestingEscrow: getVestingEscrowFactory(provider, config),
       vault: getVaultFactory(provider, config.addresses.factories.vault),
       erc20Vault: getVaultFactory(provider, config.addresses.factories.erc20Vault),
       privateVault: getVaultFactory(provider, config.addresses.factories.privateVault),

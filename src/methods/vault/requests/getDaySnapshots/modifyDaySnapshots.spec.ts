@@ -32,25 +32,25 @@ describe('modifyDaySnapshot and modifyDaySnapshots functions', () => {
 
     expect(result).toEqual({
       APY: Number(daySnapshot.rewardPerAsset) * 365 * 100,
-      TVL: '344.379922475148628745',
+      TVL: 344.37992247514865,
     })
   })
 
   it('should correctly modify multiple day snapshots', () => {
     const expectedResult = {
-      days: [
-        {
+      days: {
+        1694908800: {
           APY: Number(sampleInput.daySnapshots[0].rewardPerAsset) * 365 * 100,
-          TVL: '344.379922475148628745',
+          TVL: 344.37992247514865,
         },
-        {
+        1694995200: {
           APY: Number(sampleInput.daySnapshots[1].rewardPerAsset) * 365 * 100,
-          TVL: '344.382187878289278175',
+          TVL: 344.3821878782893,
         },
-      ],
+      },
       first: {
         APY: Number(sampleInput.firstSnapshots[0].rewardPerAsset) * 365 * 100,
-        TVL: '344.379922475148628745',
+        TVL: 344.37992247514865,
       },
     }
 

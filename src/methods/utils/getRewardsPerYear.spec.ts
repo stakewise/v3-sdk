@@ -22,9 +22,6 @@ describe('getRewardsPerYear', () => {
 
     const result = await getRewardsPerYear(input)
 
-    console.log('result', result)
-    console.log('expectedReward', expectedReward)
-
     expect(result).toBe(expectedReward)
   })
 

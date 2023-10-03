@@ -1,11 +1,9 @@
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
-import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import Erc20PrivateVaultAbi from './Erc20PrivateVaultAbi.json'
 import MintTokenConfigAbi from './MintTokenConfigAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
 import V2RewardTokenAbi from './V2RewardTokenAbi.json'
-import VestingEscrowAbi from './VestingEscrowAbi.json'
 import PrivateVaultAbi from './PrivateVaultAbi.json'
 import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
@@ -22,13 +20,11 @@ import Erc20Abi from './Erc20Abi.json'
 
 export {
   RewardSplitterFactoryAbi,
-  VestingEscrowFactoryAbi,
   Erc20PrivateVaultAbi,
   MintTokenConfigAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   V2RewardTokenAbi,
-  VestingEscrowAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,
   PriceOracleAbi,

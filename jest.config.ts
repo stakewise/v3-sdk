@@ -22,11 +22,13 @@ const config: Config = {
     '^graphql/(.*)': '<rootDir>/graphql/$1',
     '^graphql$': '<rootDir>/graphql/index.ts',
 
-    '^requests/(.*)': '<rootDir>/requests/$1',
-    '^requests$': '<rootDir>/requests/index.ts',
-    '^requests/methods': '<rootDir>/requests/methods/indes.ts',
+    '^methods/(.*)': '<rootDir>/methods/$1',
+    '^methods$': '<rootDir>/methods/index.ts',
 
+    '^helpers/(.*)': '<rootDir>/helpers/$1',
     '^helpers$': '<rootDir>/helpers/index.ts',
+
+    '^contracts/(.*)': '<rootDir>/contracts/$1',
     '^contracts$': '<rootDir>/contracts/index.ts',
   },
 }
