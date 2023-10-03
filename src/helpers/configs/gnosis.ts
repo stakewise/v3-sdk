@@ -1,3 +1,5 @@
+import { ZeroAddress } from 'ethers'
+
 import tokens from '../constants/tokens'
 
 
@@ -26,25 +28,25 @@ export default {
   addresses: {
     tokens: {
       swise: '0xfdA94F056346d2320d4B5E468D6Ad099b2277746',
-      mintToken: '',
+      mintToken: ZeroAddress,
       v2RewardToken: '0x6aC78efae880282396a335CA2F79863A1e6831D4',
       v2StakedToken: '0xA4eF9Da5BA71Cc0D2e5E877a910A37eC43420445',
     },
     base: {
-      keeper: '',
-      priceOracle: '',
-      vaultsRegistry: '',
-      sharedMevEscrow: '',
-      mintTokenConfig: '',
+      keeper: ZeroAddress,
+      priceOracle: ZeroAddress,
+      vaultsRegistry: ZeroAddress,
+      sharedMevEscrow: ZeroAddress,
+      mintTokenConfig: ZeroAddress,
       multicall: '0xb5b692a88BDFc81ca69dcB1d924f59f0413A602a',
-      rewardSplitterFactory: '',
+      rewardSplitterFactory: ZeroAddress,
     },
     factories: {
-      vault: '',
-      erc20Vault: '',
-      privateVault: '',
-      erc20PrivateVault: '',
-      vestingEscrow: '',
+      vault: ZeroAddress,
+      erc20Vault: ZeroAddress,
+      privateVault: ZeroAddress,
+      vestingEscrow: ZeroAddress,
+      erc20PrivateVault: ZeroAddress,
     },
   },
   tokens: {

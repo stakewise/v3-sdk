@@ -1,4 +1,4 @@
-import getHarvestParams from 'requests/methods/getHarvestParams'
+import getHarvestParams from 'methods/vault/requests/getHarvestParams'
 import { VoidSigner, JsonRpcProvider } from 'ethers'
 import { configs } from 'helpers'
 

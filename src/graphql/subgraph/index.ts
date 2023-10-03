@@ -1,7 +1,6 @@
 export * as vault from './vault'
 export * as osToken from './osToken'
 export * as exitQueue from './exitQueue'
-export * as vaultsCount from './vaultsCount'
 export * as daySnapshots from './daySnapshots'
 export * as transactions from './transactions'
 export * as allocatorActions from './allocatorActions'
