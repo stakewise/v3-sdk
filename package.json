@@ -18,7 +18,8 @@
     "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs"
   },
   "files": [
-    "dist/"
+    "dist/index.js",
+    "dist/abis/index.js"
   ],
   "exports": {
     ".": "./dist/index.js",
