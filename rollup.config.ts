@@ -72,29 +72,6 @@ const config: RollupOptions[] = [
       }),
     ],
   },
-  {
-    input: 'dist/abis/index.js',
-    output: [
-      {
-        file: 'dist/abis/index.d.ts',
-        sourcemap: false,
-        format: 'es',
-      },
-    ],
-    plugins: [
-      dts({
-        tsconfig: './tsconfig.json',
-      }),
-      json(),
-      del({
-        hook: 'buildEnd',
-        targets: [
-          './dist/src',
-          './dist/rollup*',
-        ],
-      }),
-    ],
-  },
 ]
 
 
