@@ -1,4 +1,5 @@
 import { createContracts, createRatesContracts } from 'contracts'
+import { BrowserProvider, JsonRpcProvider } from 'ethers'
 import { Network, configs } from 'helpers'
 import methods from 'methods'
 
@@ -16,10 +17,12 @@ import type {
   VaultFactoryAbi,
   PrivateVaultAbi,
   V2RewardTokenAbi,
+  VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
   Erc20PrivateVaultAbi,
+  VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
 } from '../contracts/types'
 
@@ -31,6 +34,7 @@ declare global {
     type Contracts = ReturnType<typeof createContracts>
     type RateContracts = ReturnType<typeof createRatesContracts>
 
+    type Provider = BrowserProvider | JsonRpcProvider
     type Utils = ReturnType<typeof methods.createUtils>
     type VaultMethods = ReturnType<typeof methods.createVaultMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
@@ -59,10 +63,12 @@ declare global {
       type PrivateVault = PrivateVaultAbi
       type VaultFactory = VaultFactoryAbi
       type V2RewardToken = V2RewardTokenAbi
+      type VestingEscrow = VestingEscrowAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type MintTokenConfig = MintTokenConfigAbi
       type Erc20PrivateVault = Erc20PrivateVaultAbi
+      type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
     }
   }

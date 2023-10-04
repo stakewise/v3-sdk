@@ -21,7 +21,9 @@
     "dist/"
   ],
   "exports": {
-    "default": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./abis/*": "./dist/abis/*",
+    "./abis": "./dist/abis/index.js"
   },
   "keywords": [
     "ethereum",
@@ -60,6 +62,7 @@
     "jest-fetch-mock": "3.0.3",
     "regenerator-runtime": "0.14.0",
     "rollup": "3.29.1",
+    "rollup-plugin-copy": "3.5.0",
     "rollup-plugin-delete": "2.0.0",
     "rollup-plugin-dts": "6.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
