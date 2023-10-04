@@ -1,5 +1,5 @@
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
-import { AllocatorActionType, apiUrls } from 'helpers'
+import { AllocatorActionType, apiUrls, validateArgs } from 'helpers'
 import { subgraph } from 'graphql'
 
 import { ModifiedAllocatorActions } from './types'
@@ -17,6 +17,27 @@ type GetAllocatorActionsInput = {
 
 const getAllocatorActions = async (input: GetAllocatorActionsInput) => {
   const { options, skip, limit, types, vaultAddress, userAddress } = input
+
+  validateArgs.address({ vaultAddress })
+  validateArgs.number({ skip, limit })
+
+  if (userAddress) {
+    validateArgs.address({ userAddress })
+  }
+
+  if (types) {
+    if (!Array.isArray(types)) {
+      throw new Error(`The "types" argument must be a array`)
+    }
+
+    types.forEach((value) => {
+      if (value in AllocatorActionType) {
+        return
+      }
+
+      throw new Error(`The "types" argument must contain enum AllocatorActionType values`)
+    })
+  }
 
   const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedAllocatorActions>({
     url: apiUrls.getSubgraphqlUrl(options),

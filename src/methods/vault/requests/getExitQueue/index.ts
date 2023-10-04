@@ -1,3 +1,5 @@
+import { validateArgs } from 'helpers'
+
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
@@ -16,6 +18,8 @@ const mock = {
 
 const getExitQueue = async (input: GetExitQueueInput) => {
   const { options, contracts, vaultAddress, userAddress } = input
+
+  validateArgs.address({ vaultAddress, userAddress })
 
   const data = await fetchExitQueuePositions({ options, vaultAddress, userAddress })
 

@@ -1,4 +1,4 @@
-import { OsTokenPositionHealth, BigDecimal } from 'helpers'
+import { OsTokenPositionHealth, BigDecimal, validateArgs } from 'helpers'
 
 
 type GetHealthFactorInput = {
@@ -9,6 +9,8 @@ type GetHealthFactorInput = {
 
 const getHealthFactor = (values: GetHealthFactorInput) => {
   const { mintedAssets, stakedAssets, thresholdPercent } = values
+
+  validateArgs.bigint({ mintedAssets, stakedAssets, thresholdPercent })
 
   if (mintedAssets === 0n || stakedAssets === 0n) {
     return {

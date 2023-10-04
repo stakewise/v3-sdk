@@ -1,3 +1,4 @@
+import { validateArgs } from 'helpers'
 import { vaultMulticall } from 'contracts'
 
 
@@ -10,6 +11,8 @@ type GetStakeBalanceInput = {
 
 const getStakeBalance = async (values: GetStakeBalanceInput) => {
   const { contracts, options, vaultAddress, userAddress } = values
+
+  validateArgs.address({ vaultAddress, userAddress })
 
   const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 

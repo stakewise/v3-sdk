@@ -1,5 +1,5 @@
-import { apiUrls } from 'helpers'
 import { backend } from 'graphql'
+import { apiUrls, validateArgs } from 'helpers'
 import { VaultValidatorsQueryVariables, VaultValidatorsQueryPayload } from 'graphql/backend/vault'
 
 import type { ModifiedValidators } from './types'
@@ -13,6 +13,8 @@ type GetValidatorsInput = {
 
 const getValidators = async (input: GetValidatorsInput) => {
   const { options, vaultAddress } = input
+
+  validateArgs.address({ vaultAddress })
 
   const data = await backend.vault.fetchVaultValidatorsQuery<ModifiedValidators>({
     url: apiUrls.getBackendUrl(options),

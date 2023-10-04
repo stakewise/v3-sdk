@@ -30,9 +30,13 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const calls: string[] = []
 
   const config = configs[options.network]
-  const library = new JsonRpcProvider(config.network.url)
 
-  const signer = new VoidSigner(userAddress, library)
+  const library = options.provider || new JsonRpcProvider(config.network.url)
+
+  const signer = options.provider
+    ? await library.getSigner(userAddress)
+    : new VoidSigner(userAddress, library)
+
   const signedContract = vaultContract.connect(signer)
 
   const [ harvestParams, canHarvest ] = await Promise.all([

@@ -1,4 +1,4 @@
-import { BigDecimal, constants } from 'helpers'
+import { BigDecimal, constants, validateArgs } from 'helpers'
 
 
 type GetRewardsPerYearInput = {
@@ -8,6 +8,8 @@ type GetRewardsPerYearInput = {
 
 const getRewardsPerYear = (values: GetRewardsPerYearInput) => {
   const { amount, averageRewardsPerSecond } = values
+
+  validateArgs.bigint({ averageRewardsPerSecond })
 
   const rewards = new BigDecimal(averageRewardsPerSecond)
     .multiply(constants.blockchain.secondsInYear)

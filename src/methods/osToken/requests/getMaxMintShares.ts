@@ -1,4 +1,4 @@
-import { BigDecimal } from 'helpers'
+import { BigDecimal, validateArgs } from 'helpers'
 
 
 type GetMaxMintSharesInput = {
@@ -10,6 +10,8 @@ type GetMaxMintSharesInput = {
 
 const getMaxMintShares = async (values: GetMaxMintSharesInput) => {
   const { contracts, stakedAssets, mintedShares, ltvPercent } = values
+
+  validateArgs.bigint({ stakedAssets, mintedShares, ltvPercent })
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {
     return 0n
