@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.2.2",
   "sideEffects": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -17,11 +17,10 @@
     "graphql": "graphql-codegen && ts-node -O '{\"module\": \"commonjs\"}' ./scripts/generateGraphqlExports",
     "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs"
   },
-  "files": [
-    "dist/"
-  ],
   "exports": {
-    "default": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./abis/*": "./dist/abis/*",
+    "./abis": "./dist/abis/index.js"
   },
   "keywords": [
     "ethereum",
@@ -31,7 +30,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "ethers": "^6.6.7"
+    "ethers": "^6.7.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.0",
@@ -60,6 +59,7 @@
     "jest-fetch-mock": "3.0.3",
     "regenerator-runtime": "0.14.0",
     "rollup": "3.29.1",
+    "rollup-plugin-copy": "3.5.0",
     "rollup-plugin-delete": "2.0.0",
     "rollup-plugin-dts": "6.0.2",
     "rollup-plugin-peer-deps-external": "2.2.4",

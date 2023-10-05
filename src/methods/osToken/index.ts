@@ -1,5 +1,6 @@
-export { default as getBaseData } from './getOsTokenData'
-export { default as getBurnAmount } from './getBurnAmount'
 export { default as getAPY } from './requests/getOsTokenAPY'
+export { default as getMaxMint } from './helpers/getMaxMint'
+export { default as getBaseData } from './requests/getOsTokenData'
+export { default as getBurnAmount } from './helpers/getBurnAmount'
 export { default as getPosition } from './requests/getOsTokenPosition'
 export { default as getHealthFactor } from './helpers/getHealthFactor'

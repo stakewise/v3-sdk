@@ -1,7 +1,6 @@
 export { default as getVault } from './requests/getVault'
 export { default as getExitQueue } from './requests/getExitQueue'
 export { default as getValidators } from './requests/getValidators'
-export { default as getTransactions } from './requests/getTransactions'
 export { default as getDaySnapshots } from './requests/getDaySnapshots'
 export { default as getStakeBalance } from './requests/getStakeBalance'
 export { default as getWithdrawData } from './requests/getWithdrawData'

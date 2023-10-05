@@ -8,7 +8,9 @@ type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' 
 
 class StakeWiseSDK {
   readonly utils: StakeWise.Utils
+  readonly config: StakeWise.Config
   readonly options: StakeWise.Options
+  readonly provider: StakeWise.Provider
   readonly vault: StakeWise.VaultMethods
   readonly contracts: StakeWise.Contracts
   readonly osToken: StakeWise.OsTokenMethods
@@ -18,7 +20,9 @@ class StakeWiseSDK {
     const config = configs[options.network]
     const provider = options.provider || new JsonRpcProvider(apiUrls.getWeb3Url(options))
 
+    this.config = config
     this.options = options
+    this.provider = provider
     this.rateContracts = this.#initRateContracts()
     this.contracts = createContracts({ provider, config })
 
@@ -51,10 +55,6 @@ class StakeWiseSDK {
 
   get network() {
     return this.options.network
-  }
-
-  get provider() {
-    return this.options.provider
   }
 }
 

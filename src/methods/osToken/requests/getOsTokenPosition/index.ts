@@ -1,3 +1,5 @@
+import { validateArgs } from 'helpers'
+
 import getHealthFactor from '../../helpers/getHealthFactor'
 import getOsTokenPositionShares from './getOsTokenPositionShares'
 
@@ -13,6 +15,9 @@ type GetOsTokenPositionInput = {
 
 const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
+
+  validateArgs.address({ vaultAddress, userAddress })
+  validateArgs.bigint({ stakedAssets, thresholdPercent })
 
   const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 

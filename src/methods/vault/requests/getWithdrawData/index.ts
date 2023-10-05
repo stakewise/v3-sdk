@@ -1,3 +1,5 @@
+import { validateArgs } from 'helpers'
+
 import getMaxWithdraw from './getMaxWithdraw'
 import getAvailableAssets from './getAvailableAssets'
 
@@ -14,6 +16,9 @@ type GetWithdrawDataInput = {
 
 const getWithdrawData = async (values: GetWithdrawDataInput) => {
   const { options, contracts, ltvPercent, mintedAssets, stakedAssets, vaultAddress, userAddress } = values
+
+  validateArgs.address({ vaultAddress, userAddress })
+  validateArgs.bigint({ ltvPercent, mintedAssets, stakedAssets })
 
   const availableAssets = await getAvailableAssets({ options, contracts, vaultAddress, userAddress })
   const maxWithdrawAssets = await getMaxWithdraw({ contracts, ltvPercent, mintedAssets, stakedAssets })

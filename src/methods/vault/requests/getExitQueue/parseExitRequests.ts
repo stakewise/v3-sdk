@@ -24,6 +24,12 @@ type ParseExitRequestsOutput = {
   withdrawable: bigint
 }
 
+type ExitedAssetsResponse = Array<{
+  newPositionTicket: bigint,
+  claimedShares: bigint,
+  claimedAssets: bigint
+}>
+
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
   const { options, contracts, userAddress, vaultAddress, totalShares, exitRequests } = values
 
@@ -47,7 +53,6 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
         method: 'getExitQueueIndex',
         args: [ positionTicket ],
       })),
-      updateState: true,
       callStatic: true,
     },
   })
@@ -67,22 +72,21 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     return acc
   }, [] as Position[])
 
-  // We need to get the data of the contract after the claim.
-  const exitedAssetsResponse = await vaultMulticall<Array<{
-    newPositionTicket: bigint,
-    claimedShares: bigint,
-    claimedAssets: bigint
-  }>>({
-    ...commonMulticallParams,
-    request: {
-      params: claims.map(({ positionTicket, exitQueueIndex }) => ({
-        method: 'claimExitedAssets',
-        args: [ positionTicket, exitQueueIndex ],
-      })),
-      updateState: true,
-      callStatic: true,
-    },
-  }) || []
+  let exitedAssetsResponse: ExitedAssetsResponse = []
+
+  if (claims.length) {
+    // We need to get the data of the contract after the claim.
+    exitedAssetsResponse = await vaultMulticall<ExitedAssetsResponse>({
+      ...commonMulticallParams,
+      request: {
+        params: claims.map(({ positionTicket, exitQueueIndex }) => ({
+          method: 'claimExitedAssets',
+          args: [ positionTicket, exitQueueIndex ],
+        })),
+        callStatic: true,
+      },
+    }) || []
+  }
 
   let remainingShares = totalShares,
       totalExitingAssets = 0n,
@@ -115,7 +119,6 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       ...commonMulticallParams,
       request: {
         params: [ { method: 'convertToAssets', args: [ remainingShares ] } ],
-        updateState: true,
         callStatic: true,
       },
     })

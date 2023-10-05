@@ -15,7 +15,7 @@ const modifyAllocatorActions = (input: ModifyAllocatorActionsInput): ModifiedAll
 
   return data.allocatorActions.map((item) => ({
     ...item,
-    assets: formatEther(item.assets),
+    assets: formatEther(item.assets || 0),
     createdAt: Number(item.createdAt) * 1000,
     link: `${configs[network].network.blockExplorerUrl}/tx/${item.id.replace(/-.*/, '')}`,
   }))

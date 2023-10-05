@@ -1,3 +1,6 @@
+import { validateArgs } from 'helpers'
+
+
 type GetBurnAmountInput = {
   ltvPercent: bigint
   mintedAssets: bigint
@@ -8,6 +11,8 @@ type GetBurnAmountInput = {
 
 const getBurnAmount = async (values: GetBurnAmountInput) => {
   const { contracts, ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = values
+
+  validateArgs.bigint({ ltvPercent, mintedAssets, stakedAssets, newStakedAssets })
 
   const hasMinted = mintedAssets && mintedAssets > 0
 

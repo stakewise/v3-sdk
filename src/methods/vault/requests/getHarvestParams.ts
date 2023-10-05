@@ -1,4 +1,4 @@
-import { apiUrls } from 'helpers'
+import { apiUrls, validateArgs } from 'helpers'
 import { subgraph } from 'graphql'
 
 
@@ -9,6 +9,8 @@ type GetHarvestParamsInput = {
 
 const getHarvestParams = async (values: GetHarvestParamsInput) => {
   const { options, vaultAddress } = values
+
+  validateArgs.address({ vaultAddress })
 
   const result = await subgraph.vault.fetchHarvestParamsQuery({
     url: apiUrls.getSubgraphqlUrl(options),

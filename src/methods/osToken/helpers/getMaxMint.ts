@@ -1,24 +1,23 @@
 import { BigDecimal, validateArgs } from 'helpers'
 
 
-type GetMaxMintSharesInput = {
+type GetMaxMintInput = {
   ltvPercent: bigint
-  stakedAssets: bigint
   mintedShares: bigint
+  stakedAssets: bigint
   contracts: StakeWise.Contracts
 }
 
-const getMaxMintShares = async (values: GetMaxMintSharesInput) => {
-  const { contracts, stakedAssets, mintedShares, ltvPercent } = values
+const getMaxMint = async (values: GetMaxMintInput) => {
+  const { contracts, ltvPercent, mintedShares, stakedAssets } = values
 
-  validateArgs.bigint({ stakedAssets, mintedShares, ltvPercent })
+  validateArgs.bigint({ ltvPercent, mintedShares, stakedAssets })
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {
     return 0n
   }
 
   const rewardPerSecond = await contracts.tokens.mintToken.avgRewardPerSecond()
-
   const avgRewardPerHour = rewardPerSecond * 60n * 60n
 
   const result = new BigDecimal(stakedAssets)
@@ -40,4 +39,4 @@ const getMaxMintShares = async (values: GetMaxMintSharesInput) => {
 }
 
 
-export default getMaxMintShares
+export default getMaxMint
