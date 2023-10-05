@@ -9,8 +9,8 @@ Official SDK for seamless data retrieval from the StakeWise platform. It serves 
 ## Table of Contents
 - [Requirements](#requirements)
 - [Usage](#usage)
-- [API](#api)
-
+- [API - Vault](#api-vault)
+- [API - osToken](#api-ostoken)
 ---
 ## Requirements
 To use the library, you must have ethers version 6.7.1+ installed. This package is not included in the library itself; we use peerDependencies to keep the package lightweight.
@@ -57,7 +57,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | endpoints.web3 | `number` | **Require** | Your url for connect to blockchian |
 | endpoints.api | `string` | **Optional** | stakewise backend url |
 
-## API
+## API - Vault
 
 ### `sdk.vault.getAllocatorActions`
 
@@ -413,3 +413,149 @@ await sdk.vault.getStakeBalance({
   vaultAddress: '0x...',
 })
 ```
+## API - osToken
+
+### `sdk.osToken.getBurnAmount`
+
+#### Description:
+
+How many osToken burn do you need to make to withdraw all deposit.
+
+#### Arguments:
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| ltvPercent | `bigint` | **Require** | getOsTokenData |
+| mintedAssets | `bigint` | **Require** | getOsTokenPosition |
+| stakedAssets | `bigint` | **Require** | getStakeBalance |
+| newStakedAssets | `bigint` | **Require** | The future amount of stake after the deposit |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+sdk.osToken.getBurnAmount({
+  ltvPercent: 0n,
+  mintedAssets: 0n,
+  stakedAssets: 0n,
+  newStakedAssets: 0n,
+})
+```
+---
+### `sdk.osToken.getHealthFactor`
+
+#### Description:
+
+Get the health of the position
+
+#### Arguments:
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| thresholdPercent | `bigint` | **Require** | getOsTokenData |
+| mintedAssets | `bigint` | **Require** | getOsTokenPosition |
+| stakedAssets | `bigint` | **Require** | getStakeBalance |
+
+#### Returns:
+
+```ts
+type Output = {
+  value: number
+  health: OsTokenPositionHealth
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `value` | Numerical value |
+| `health` | Position Health (enum) |
+
+#### Example:
+
+```ts
+sdk.osToken.getHealthFactor({
+  thresholdPercent: 0n,
+  mintedAssets: 0n,
+  stakedAssets: 0n,
+})
+```
+---
+### `sdk.osToken.getAPY`
+
+#### Description:
+
+Token reward data
+
+#### Returns:
+
+```ts
+type Output = {
+  apy: string;
+  averageRewardsPerSecond: bigint;
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `apy` | Current APY |
+| `averageRewardsPerSecond` | 2-week average of awards per second |
+
+#### Example:
+
+```ts
+await sdk.osToken.getAPY()
+```
+---
+### `sdk.osToken.getPosition`
+
+#### Description:
+
+User position data
+
+#### Arguments:
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| thresholdPercent | `bigint` | **Require** | getOsTokenData |
+| stakedAssets | `bigint` | **Require** | getStakeBalance |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+
+#### Returns:
+
+```ts
+type Output = {
+  minted: {
+    fee: bigint
+    assets: bigint
+    shares: bigint
+  },
+  healthFactor: {
+    value: number
+    health: OsTokenPositionHealth
+  }
+  protocolFeePercent: bigint
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `minted.fee` | Usage fee amount |
+| `minted.shares` | Balance |
+| `minted.assets` | Balance in ETH |
+| `healthFactor` | [getHealthFactor](#sdkostokengethealthfactor)  |
+| `protocolFeePercent` | Usage fee percent |
+
+#### Example:
+
+```ts
+await sdk.osToken.getPosition({
+  stakedAssets: 0n,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+  thresholdPercent:  0n,
+})
+```
+---
