@@ -3,7 +3,7 @@ name: Update README badges
 on:
   push:
     branches:
-      - main
+      - docs
 
 jobs:
   update_readme:
