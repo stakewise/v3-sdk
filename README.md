@@ -214,11 +214,11 @@ Returns the running vault validators.
 
 ```ts
 type Output = {
-  createdAt: number;
-  publicKey: string;
-  earned: string;
-  link: string;
-  apy: string;
+  createdAt: number
+  publicKey: string
+  earned: string
+  link: string
+  apy: string
 }
 ```
 
@@ -265,7 +265,6 @@ type Output = {
   whitelister: string
   vaultAddress: string
   mevRecipient: string
-  validatorsRoot: string
   imageUrl: string | null
   vaultKeysManager: string
   isSmoothingPool: boolean
@@ -294,23 +293,123 @@ type Output = {
 | `isPrivate` | Whether the storage is private  |
 | `vaultAdmin` | Vault administrator address  |
 | `totalAssets` | TVL of Vault  |
-| `feeRecipient` | Receiver of commission  |
+| `feeRecipient` | Vault fee address  |
 | `whitelister` | Whitelist manager  |
 | `vaultAddress` | Address of vault  |
-| `mevRecipient` | ???  |
-| `validatorsRoot` | ???  |
+| `mevRecipient` | Validator fee recipient  |
 | `imageUrl` | Link for vault logo  |
-| `vaultKeysManager` | ???  |
-| `isSmoothingPool` | ???  |
+| `vaultKeysManager` | Keys manager address  |
+| `isSmoothingPool` | Smoothing poll or Vault escrow |
 | `tokenName` | ERC20 token name  |
 | `tokenSymbol` | ERC20 token symbol  |
 | `displayName` | Name of vault  |
 | `description` | Description of vault |
 | `whitelist` | List of authorized users for deposits  |
-| performance | ??? |
+| `performance` | Vault performance indicator |
 
 #### Example:
 
 ```ts
 await sdk.vault.getVault({ vaultAddress: '0x...' })
+```
+---
+### `sdk.vault.getWithdrawData`
+
+#### Description:
+
+Withdrawal details
+
+#### Arguments:
+
+| Name | Type | Type | Info |
+|------|------|-------------|-------|
+| ltvPercent | `bigint` | **Require** | getOsTokenData |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+| mintedAssets | `bigint` | **Require** | getOsTokenPosition |
+| stakedAssets | `bigint` | **Require** | getStakeBalance |
+
+#### Returns:
+
+```ts
+type Output = {
+  availableAssets: bigint
+  maxWithdrawAssets: bigint
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `availableAssets` | Available for withdrawal instantly |
+| `maxWithdrawAssets` | Maximum available for withdrawal |
+
+#### Example:
+
+```ts
+await sdk.vault.getWithdrawData({
+  ltvPercent: 0n,
+  mintedAssets: 0n,
+  stakedAssets: 0n,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getHarvestParams`
+
+#### Description:
+
+Necessary to update the vault state
+
+#### Returns:
+
+```ts
+type Output = {
+  reward: string
+  proof: Array<string>
+  rewardsRoot: string
+  unlockedMevReward: string 
+}
+```
+
+#### Example:
+
+```ts
+await sdk.vault.getHarvestParams({ vaultAddress: '0x...' })
+```
+---
+### `sdk.vault.getStakeBalance`
+
+#### Description:
+
+Getting user's balance in the vault
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| userAddress | `string` | **Require** |
+| vaultAddress | `string` | **Require** |
+
+#### Returns:
+
+```ts
+type Output = {
+  shares: bigint
+  assets: bigint
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `shares` | Balance in vault tokens  |
+| `assets` | Balance in ETH |
+
+#### Example:
+
+```ts
+await sdk.vault.getStakeBalance({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
 ```
