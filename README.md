@@ -1,17 +1,10 @@
 <p align="center">
-  <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="200">
+  <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
 </p>
 
-# StakeWise V3 SDK
+# StakeWise Labs - V3 SDK
 
-The official SDK for seamlessly pulling data from the StakeWise platform. It is a wrapper over graphql queries and contract queries. Also included in the package are our basic contracts, which will be connected to your provider if needed
-
-[![Unit Tests](https://img.shields.io/badge/Unit%20Tests-passing-brightgreen)](LINK_TO_YOUR_TEST_RESULTS)
-[![Linting](https://img.shields.io/badge/Linting-passing-brightgreen)](LINK_TO_YOUR_LINTING_RESULTS)
-[![Latest Version](https://img.shields.io/npm/v/YOUR_NPM_PACKAGE_NAME/latest)](https://www.npmjs.com/package/YOUR_NPM_PACKAGE_NAME)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/YOUR_NPM_PACKAGE_NAME)](https://www.npmjs.com/package/YOUR_NPM_PACKAGE_NAME)
-
-
+Official SDK for seamless data retrieval from the StakeWise platform. It serves as a wrapper around GraphQL requests and contract queries.
 
 ## Table of Contents
 - [Requirements](#requirements)
@@ -20,13 +13,11 @@ The official SDK for seamlessly pulling data from the StakeWise platform. It is 
 
 ---
 ## Requirements
-Installed ethers 6.6.7+ is required This package is not included in the library (peerDependencies are used), but must be installed in your application. In the future we will try to update the ethers library with the latest version in a timely manner. If you are using ethers 5 or less, there are 2 solutions:
-1. Upgrade to ethers 6, it is much more convenient.
-2. You can install ethers 6 version separately, but it will expand your bandle:
+To use the library, you must have ethers version 6.7.1+ installed. This package is not included in the library itself; we use peerDependencies to keep the package lightweight.
 
-`npm i ethers-6@npm:ethers@6.6.7`
+If you are using version 5 of the ethers package, you can install version 6 separately and adjust the import paths using a bundler. You can also load the code of our library as a chunk using dynamic imports to prevent increasing the initial size of your application. Here's an example with webpack:
 
-Now you have ethers of your version and ethers-6. Now we can swap the use of imports within our library. If you are using webpack, you can implement it this way:
+`npm i ethers-6@npm:ethers@6.7.1`
 
 ```typescript
 webpackConfig.plugins.push(
@@ -44,8 +35,6 @@ webpackConfig.plugins.push(
 You can do something similar for other builders as well
 
 ## Usage
-
-Install SDK
 ```bash
 npm i @stakewise/v3-sdk
 ```
@@ -70,7 +59,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 
 ## API
 
-### `sdk.requests.getAllocatorActions()`
+### `sdk.vault.getAllocatorActions`
 
 #### Description:
 
@@ -111,7 +100,7 @@ type Output = Array<{
 ```ts
 import { AllocatorActionType } from '@stakewise/v3-sdk'
 
-sdk.requests.getAllocatorActions({
+await sdk.vault.getAllocatorActions({
   skip: 0,
   limit: 20,
   userAddress: '0x...',
@@ -124,8 +113,8 @@ sdk.requests.getAllocatorActions({
   ],
 })
 ```
-
-### `sdk.requests.getDaySnapshots()`
+---
+### `sdk.vault.getDaySnapshots`
 
 #### Description:
 
@@ -160,8 +149,168 @@ type Output = {
 #### Example:
 
 ```ts
-sdk.requests.getDaySnapshots({
+await sdk.vault.getDaySnapshots({
   vaultAddress: '0x...',
   unixStartOfDay: 1695730032793,
 })
+```
+---
+### `sdk.vault.getExitQueue`
+
+#### Description:
+
+Returns the withdrawal queue for a specific user.
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| userAddress | `string` | **Require** |
+| vaultAddress | `string` | **Require** | 
+
+#### Returns:
+
+```ts
+type Position = {
+  exitQueueIndex: bigint
+  positionTicket: string
+}
+
+type Output = {
+  total: bigint
+  data: Position[]
+  withdrawable: bigint
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `data` | Queue positions |
+| `total` | Total withdrawal amount (in ETH) |
+| `withdrawable` | Amount available for withdrawal (in ETH) |
+
+#### Example:
+
+```ts
+await sdk.vault.getExitQueue({
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getValidators`
+
+#### Description:
+
+Returns the running vault validators.
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| vaultAddress | `string` | **Require** | 
+
+#### Returns:
+
+```ts
+type Output = {
+  createdAt: number;
+  publicKey: string;
+  earned: string;
+  link: string;
+  apy: string;
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `createdAt` | Date of Creation |
+| `publicKey` | Validator public key |
+| `earned` | Validator balance (in ETH) |
+| `link` | Link to beaconchain |
+| `apy` | Current validator apy |
+
+#### Example:
+
+```ts
+await sdk.vault.getValidators({ vaultAddress: '0x...' })
+```
+---
+### `sdk.vault.getVault`
+
+#### Description:
+
+Returns the master data of the vault
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| vaultAddress | `string` | **Require** | 
+
+#### Returns:
+
+```ts
+type Output = {
+  apy: number
+  isErc20: boolean
+  capacity: string
+  verified: boolean
+  createdAt: number
+  feePercent: number
+  isPrivate: boolean
+  vaultAdmin: string
+  totalAssets: string
+  feeRecipient: string
+  whitelister: string
+  vaultAddress: string
+  mevRecipient: string
+  validatorsRoot: string
+  imageUrl: string | null
+  vaultKeysManager: string
+  isSmoothingPool: boolean
+  tokenName: string | null
+  tokenSymbol: string | null
+  displayName: string | null
+  description: string | null
+  whitelist: Array<{
+    createdAt: number
+    address: string
+  }> | null
+  performance: {
+    total: number
+  }
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `apy` | Current vault apy  |
+| `isErc20` | Does the vault have its own ERC20 token  |
+| `capacity` | Maximum TVL of Vault |
+| `verified` | Has the vault been verified  |
+| `createdAt` | Date of Creation  |
+| `feePercent` | Commission rate  |
+| `isPrivate` | Whether the storage is private  |
+| `vaultAdmin` | Vault administrator address  |
+| `totalAssets` | TVL of Vault  |
+| `feeRecipient` | Receiver of commission  |
+| `whitelister` | Whitelist manager  |
+| `vaultAddress` | Address of vault  |
+| `mevRecipient` | ???  |
+| `validatorsRoot` | ???  |
+| `imageUrl` | Link for vault logo  |
+| `vaultKeysManager` | ???  |
+| `isSmoothingPool` | ???  |
+| `tokenName` | ERC20 token name  |
+| `tokenSymbol` | ERC20 token symbol  |
+| `displayName` | Name of vault  |
+| `description` | Description of vault |
+| `whitelist` | List of authorized users for deposits  |
+| performance | ??? |
+
+#### Example:
+
+```ts
+await sdk.vault.getVault({ vaultAddress: '0x...' })
 ```
