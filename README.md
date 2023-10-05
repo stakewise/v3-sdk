@@ -9,8 +9,8 @@ Official SDK for seamless data retrieval from the StakeWise platform. It serves 
 ## Table of Contents
 - [Requirements](#requirements)
 - [Usage](#usage)
-- [API - Vault](#api-vault)
-- [API - osToken](#api-ostoken)
+- [API-Vault](#api-vault)
+- [API-osToken](#api-ostoken)
 ---
 ## Requirements
 To use the library, you must have ethers version 6.7.1+ installed. This package is not included in the library itself; we use peerDependencies to keep the package lightweight.
@@ -57,7 +57,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | endpoints.web3 | `number` | **Require** | Your url for connect to blockchian |
 | endpoints.api | `string` | **Optional** | stakewise backend url |
 
-## API - Vault
+## API-Vault
 
 ### `sdk.vault.getAllocatorActions`
 
@@ -323,11 +323,11 @@ Withdrawal details
 
 | Name | Type | Type | Info |
 |------|------|-------------|-------|
-| ltvPercent | `bigint` | **Require** | getOsTokenData |
+| ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
-| mintedAssets | `bigint` | **Require** | getOsTokenPosition |
-| stakedAssets | `bigint` | **Require** | getStakeBalance |
+| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -413,7 +413,7 @@ await sdk.vault.getStakeBalance({
   vaultAddress: '0x...',
 })
 ```
-## API - osToken
+## API-osToken
 
 ### `sdk.osToken.getBurnAmount`
 
@@ -424,9 +424,9 @@ How many osToken burn do you need to make to withdraw all deposit.
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Require** | getOsTokenData |
-| mintedAssets | `bigint` | **Require** | getOsTokenPosition |
-| stakedAssets | `bigint` | **Require** | getStakeBalance |
+| ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
 | newStakedAssets | `bigint` | **Require** | The future amount of stake after the deposit |
 
 #### Returns:
@@ -455,9 +455,9 @@ Get the health of the position
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Require** | getOsTokenData |
-| mintedAssets | `bigint` | **Require** | getOsTokenPosition |
-| stakedAssets | `bigint` | **Require** | getStakeBalance |
+| thresholdPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -518,8 +518,8 @@ User position data
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Require** | getOsTokenData |
-| stakedAssets | `bigint` | **Require** | getStakeBalance |
+| thresholdPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
+| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
 
@@ -531,7 +531,7 @@ type Output = {
     fee: bigint
     assets: bigint
     shares: bigint
-  },
+  }
   healthFactor: {
     value: number
     health: OsTokenPositionHealth
@@ -557,5 +557,60 @@ await sdk.osToken.getPosition({
   vaultAddress: '0x...',
   thresholdPercent:  0n,
 })
+```
+---
+### `sdk.osToken.getMaxMint`
+
+#### Description:
+
+Maximum number of **shares** for minting
+
+#### Arguments:
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
+| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
+| mintedShares | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+#### Example:
+
+```ts
+await sdk.osToken.getMaxMint({
+  ltvPercent: 0n,
+  mintedShares: 0n,
+  stakedAssets: 0n,
+})
+```
+---
+### `sdk.osToken.getBaseData`
+
+#### Description:
+
+Basic information on the token
+
+#### Returns:
+
+```ts
+type Output = {
+  rate: string
+  ltvPercent: bigint
+  thresholdPercent: bigint
+}
+```
+| Name | Description |
+|------|-------------|
+| `rate` | ETH - osToken rate |
+| `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
+| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
+
+#### Example:
+
+```ts
+await sdk.osToken.getBaseData()
 ```
 ---

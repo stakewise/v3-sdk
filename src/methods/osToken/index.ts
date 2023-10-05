@@ -1,5 +1,5 @@
 export { default as getAPY } from './requests/getOsTokenAPY'
-export { default as getMaxMint } from './helpers/getMaxMint'
+export { default as getMaxMint } from './requests/getMaxMint'
 export { default as getBaseData } from './requests/getOsTokenData'
 export { default as getBurnAmount } from './helpers/getBurnAmount'
 export { default as getPosition } from './requests/getOsTokenPosition'
