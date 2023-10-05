@@ -1,0 +1,31 @@
+name: Update README badges
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Get current version
+      id: package_version
+      run: |
+        VERSION=$(jq -r .version path-to-your-package.json)
+        echo "::set-output name=version::$VERSION"
+
+    - name: Update README file
+      run: |
+        sed -i "s|badge/version-.*-blue|badge/version-${{ steps.package_version.outputs.version }}-blue|g" README.md
+      
+    - name: Commit and push
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -am "Update README badges"
+        git push
