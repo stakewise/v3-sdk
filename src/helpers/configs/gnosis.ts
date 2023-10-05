@@ -45,7 +45,6 @@ export default {
       vault: ZeroAddress,
       erc20Vault: ZeroAddress,
       privateVault: ZeroAddress,
-      vestingEscrow: ZeroAddress,
       erc20PrivateVault: ZeroAddress,
     },
   },

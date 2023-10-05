@@ -2,20 +2,22 @@
   <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
 </p>
 
-# StakeWise Labs - V3 SDK
+# StakeWise Labs V3 SDK
 
-Official SDK for seamless data retrieval from the StakeWise platform. It serves as a wrapper around GraphQL requests and contract queries.
+The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
 ## Table of Contents
-- [Requirements](#requirements)
-- [Usage](#usage)
-- [API-Vault](#api-vault)
-- [API-osToken](#api-ostoken)
----
-## Requirements
-To use the library, you must have ethers version 6.7.1+ installed. This package is not included in the library itself; we use peerDependencies to keep the package lightweight.
+- [Prerequisites](#prerequisites)
+- [Installation and Setup](#installation-and-setup)
+- [API - Vault](#api-vault)
+- [API - osToken](#api-ostoken)
+- [API - Utils](#api-utils)
 
-If you are using version 5 of the ethers package, you can install version 6 separately and adjust the import paths using a bundler. You can also load the code of our library as a chunk using dynamic imports to prevent increasing the initial size of your application. Here's an example with webpack:
+## Prerequisites
+
+For successful utilization of this library, ensure you have `ethers` version 6.7.1 or higher installed. The `ethers` package isn't bundled within the SDK. Instead, we leverage `peerDependencies` to maintain a lean package size.
+
+**Note**: If your project uses version 5 of `ethers`, consider installing version 6 alongside it. Adjust import paths via a bundler. Additionally, you might consider loading our SDK asynchronously using dynamic imports to optimize your application's initial load performance. Here's a sample configuration with webpack:
 
 `npm i ethers-6@npm:ethers@6.7.1`
 
@@ -34,7 +36,7 @@ webpackConfig.plugins.push(
 ```
 You can do something similar for other builders as well
 
-## Usage
+## Installation and Setup
 ```bash
 npm i @stakewise/v3-sdk
 ```
@@ -614,3 +616,98 @@ type Output = {
 await sdk.osToken.getBaseData()
 ```
 ---
+## API-utils
+
+### `sdk.utils.getRewardsPerYear`
+
+#### Description:
+
+Get a list of interactions with the vault.
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| amount | `string` | **Require** | Deposit amount |
+| averageRewardsPerSecond | `string` | **Require** | [getAPY](#sdkostokengetapy) |
+
+#### Returns:
+
+```ts
+type Output = string
+```
+
+#### Example:
+
+```ts
+sdk.utils.getRewardsPerYear({
+  averageRewardsPerSecond: 0n,
+  amount: 0n,
+})
+```
+---
+### `sdk.utils.getRewardsPerYear`
+
+#### Description:
+
+Current price of SWISE token to USD.
+
+#### Returns:
+
+```ts
+type Output = string
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getSwiseUsdPrice()
+```
+---
+### `sdk.utils.getTransactions`
+
+#### Description:
+
+Retrieving a transaction to verify that the data went into the subgraph after the transaction
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| hash | `string` | **Require** | Transaction hash |
+
+#### Returns:
+
+```ts
+type Output = Array<{
+  id: string
+}>
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getTransactions({ hash: '0x...' })
+```
+---
+## Description of other parts of the api
+
+To retrieve the storage data, you just need the method above. Other parts of the api are needed for specific tasks.
+
+### StakeWise class
+
+| Name | Description
+|------|------|
+| **contracts** | Instances of our contracts |
+| **vaultMulticall** | A method to implement a transaction. It will be removed from the SDK in the future |
+| **config** | Object with contract addresses and other data |
+| **provider** | Current provider for blockchain communication |
+| **network** | Selected network |
+
+### SDK
+
+| Name | Description
+|------|------|
+| **BigDecimal** | Wrapper over bignumber.js |
+| **configs** | Data for each network |
+| **createContract** | A wrapper over the Contract class from the ethers package |

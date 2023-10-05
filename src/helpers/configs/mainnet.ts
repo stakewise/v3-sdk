@@ -46,7 +46,6 @@ export default {
       erc20Vault: ZeroAddress,
       privateVault: ZeroAddress,
       erc20PrivateVault: ZeroAddress,
-      vestingEscrow: '0x7B910cc3D4B42FEFF056218bD56d7700E4ea7dD5',
     },
   },
   tokens: {
