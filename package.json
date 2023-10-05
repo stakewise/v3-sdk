@@ -17,10 +17,6 @@
     "graphql": "graphql-codegen && ts-node -O '{\"module\": \"commonjs\"}' ./scripts/generateGraphqlExports",
     "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --bundleConfigAsCjs"
   },
-  "files": [
-    "dist/index.js",
-    "dist/abis/index.js"
-  ],
   "exports": {
     ".": "./dist/index.js",
     "./abis/*": "./dist/abis/*",
