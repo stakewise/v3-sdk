@@ -16,7 +16,7 @@ jobs:
     - name: Get current version
       id: package_version
       run: |
-        VERSION=$(jq -r .version path-to-your-package.json)
+        VERSION=$(jq -r .version ./package.json)
         echo "::set-output name=version::$VERSION"
 
     - name: Update README file
