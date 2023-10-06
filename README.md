@@ -65,6 +65,31 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | endpoints.web3 | `number` | **Require** | Your url for connect to blockchian |
 | endpoints.api | `string` | **Optional** | stakewise backend url |
 
+## Quick Links
+| **Vault** |
+|------|
+| [sdk.vault.getAllocatorActions](#sdkvaultgetallocatoractions) |
+| [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) |
+| [sdk.vault.getExitQueue](#sdkvaultgetexitqueue) |
+| [sdk.vault.getValidators](#sdkvaultgetvalidators) |
+| [sdk.vault.getVault](#sdkvaultgetvault) |
+| [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) |
+| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) |
+| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+|------|
+| **osToken** |
+| [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) |
+| [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
+| [sdk.osToken.getAPY](#sdkostokengetapy) |
+| [sdk.osToken.getPosition](#sdkostokengetposition) |
+| [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) |
+| [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+|------|
+| **Utils** |
+| [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
+| [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+
 ## API-Vault
 
 ### `sdk.vault.getAllocatorActions`
@@ -652,7 +677,7 @@ sdk.utils.getRewardsPerYear({
 })
 ```
 ---
-### `sdk.utils.getRewardsPerYear`
+### `sdk.utils.getSwiseUsdPrice`
 
 #### Description:
 
