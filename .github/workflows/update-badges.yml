@@ -20,7 +20,7 @@ jobs:
 
     - name: Update README file
       run: |
-        sed -i "s|badge/version-.*-blue|badge/version-${{ steps.package_version.outputs.version }}-blue|g" README.md
+        sed -i "s|badge/version-.*-blue|badge/version-${{ github.event.release.tag_name }}-blue|g" README.md
       
     - name: Commit and push
       run: |
