@@ -44,7 +44,6 @@ export default {
       erc20Vault: '0xD19dC15d0275c79984B69B961E77DA5D91E7125B',
       privateVault: '0xB3BE6f7544393f6FbAd8b92B2D7328891a8d8C4b',
       erc20PrivateVault: '0x21C199766Bb6cD4217f02A496f01D1AD41F799a9',
-      vestingEscrow: '0xbA91cdD484893c1f8F75DB55733ccaDcd0fE5f59',
     },
   },
   tokens: {

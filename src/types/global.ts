@@ -1,5 +1,5 @@
-import { createContracts, createRatesContracts } from 'contracts'
 import { BrowserProvider, JsonRpcProvider } from 'ethers'
+import { createContracts } from 'contracts'
 import { Network, configs } from 'helpers'
 import methods from 'methods'
 
@@ -32,7 +32,6 @@ declare global {
   namespace StakeWise {
     type Config = typeof configs[Network]
     type Contracts = ReturnType<typeof createContracts>
-    type RateContracts = ReturnType<typeof createRatesContracts>
 
     type Provider = BrowserProvider | JsonRpcProvider
     type Utils = ReturnType<typeof methods.createUtils>
