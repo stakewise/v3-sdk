@@ -17,6 +17,11 @@ jobs:
         node-version: '18'
         registry-url: 'https://npm.pkg.github.com'
 
+    - name: Setup git user
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
     - name: Update package.json version
       run: npm version --tag=latest ${{ github.event.release.tag_name }}
 
