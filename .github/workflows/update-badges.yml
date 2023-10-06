@@ -22,12 +22,14 @@ jobs:
       run: |
         sed -i "s|badge/version-.*-blue|badge/version-${{ github.event.release.tag_name }}-blue|g" README.md
       
-    - name: Commit and push
+    - name: Setup git
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git switch -c main
         git commit -am "Update README badges"
-        git push --set-upstream origin main
+      
+    - name: Push changes
+      run: git push origin main
       env:
-        NODE_AUTH_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

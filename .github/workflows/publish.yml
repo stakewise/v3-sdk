@@ -31,4 +31,4 @@ jobs:
     - name: Publish to GitHub Packages
       run: npm publish
       env:
-        NODE_AUTH_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
