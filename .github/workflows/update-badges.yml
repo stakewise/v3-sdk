@@ -28,4 +28,6 @@ jobs:
         git config --local user.name "GitHub Action"
         git switch -c main
         git commit -am "Update README badges"
-        git push
+        git push --set-upstream origin main
+      env:
+        NODE_AUTH_TOKEN: ${{ github.token }}
