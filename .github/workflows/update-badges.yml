@@ -1,9 +1,8 @@
-name: Update README badges
+name: Update version badge
 
 on:
-  push:
-    branches:
-      - docs
+  release:
+    types: [published]
 
 jobs:
   update_readme:
