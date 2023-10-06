@@ -66,29 +66,16 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | endpoints.api | `string` | **Optional** | stakewise backend url |
 
 ## Quick Links
-| **Vault** |
-|------|
-| [sdk.vault.getAllocatorActions](#sdkvaultgetallocatoractions) |
-| [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) |
-| [sdk.vault.getExitQueue](#sdkvaultgetexitqueue) |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators) |
-| [sdk.vault.getVault](#sdkvaultgetvault) |
-| [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) |
+| **Vault** | **osToken** | **Utils** |
+|------|------|------|
+| [sdk.vault.getAllocatorActions](#sdkvaultgetallocatoractions) | | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
+| [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) | | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getExitQueue](#sdkvaultgetexitqueue) | | [sdk.osToken.getAPY](#sdkostokengetapy) | | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+| [sdk.vault.getValidators](#sdkvaultgetvalidators) | | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| [sdk.vault.getVault](#sdkvaultgetvault) | | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) |
+| [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-|------|
-| **osToken** |
-| [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) |
-| [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
-| [sdk.osToken.getAPY](#sdkostokengetapy) |
-| [sdk.osToken.getPosition](#sdkostokengetposition) |
-| [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) |
-| [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-|------|
-| **Utils** |
-| [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
-| [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.utils.getTransactions](#sdkutilsgettransactions) |
 
 ## API-Vault
 
