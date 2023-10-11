@@ -3,6 +3,7 @@ import type { Config } from 'jest'
 
 const config: Config = {
   verbose: true,
+  maxWorkers: 1, // Fixed https://github.com/jestjs/jest/issues/11617#issuecomment-1028651059
   rootDir: './src',
   preset: 'ts-jest',
   resetMocks: true,
@@ -10,26 +11,13 @@ const config: Config = {
   testMatch: [ '**/*.spec.ts' ],
   collectCoverageFrom: [ 'src/**/*.ts' ],
   moduleFileExtensions: [ 'json', 'js', 'ts' ],
-  modulePathIgnorePatterns: [ '<rootDir>/src/helpers' ],
+  modulePathIgnorePatterns: [ '<rootDir>/src/utils' ],
   transform: {
     '\\.[jt]sx?$': 'ts-jest',
     '\\.graphql$': '@graphql-tools/jest-transform',
   },
   globals: {
     isolatedModules: true,
-  },
-  moduleNameMapper: {
-    '^graphql/(.*)': '<rootDir>/graphql/$1',
-    '^graphql$': '<rootDir>/graphql/index.ts',
-
-    '^methods/(.*)': '<rootDir>/methods/$1',
-    '^methods$': '<rootDir>/methods/index.ts',
-
-    '^helpers/(.*)': '<rootDir>/helpers/$1',
-    '^helpers$': '<rootDir>/helpers/index.ts',
-
-    '^contracts/(.*)': '<rootDir>/contracts/$1',
-    '^contracts$': '<rootDir>/contracts/index.ts',
   },
 }
 

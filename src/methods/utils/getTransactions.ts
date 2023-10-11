@@ -1,6 +1,6 @@
-import { TransactionsQueryVariables } from 'graphql/subgraph/transactions'
-import { apiUrls, validateArgs } from 'helpers'
-import { subgraph } from 'graphql'
+import { TransactionsQueryVariables } from '../../graphql/subgraph/transactions'
+import { apiUrls, validateArgs } from '../../utils'
+import { subgraph } from '../../graphql'
 
 
 type GetTransactionsInput = {

@@ -1,7 +1,8 @@
-import methods from 'methods'
 import { JsonRpcProvider } from 'ethers'
-import { configs, apiUrls } from 'helpers'
-import { createContracts, vaultMulticall } from 'contracts'
+
+import methods from './methods'
+import { configs, apiUrls } from './utils'
+import { createContracts, vaultMulticall } from './contracts'
 
 
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>

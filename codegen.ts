@@ -1,7 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
-import { Network } from './src/helpers/enums'
-import configs from './src/helpers/configs'
+import { Network } from './src/utils/enums'
+import configs from './src/utils/configs'
 
 
 // For every netwrok we have same gql shema, so we can use just Mainnet here

@@ -1,5 +1,4 @@
-import { validateArgs } from 'helpers'
-
+import { validateArgs } from '../../../../utils'
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'

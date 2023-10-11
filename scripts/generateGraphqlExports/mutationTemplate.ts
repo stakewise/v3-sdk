@@ -1,5 +1,5 @@
 export default `
-import { StakeWise{ClientName}Graph } from 'types/graphql/{clientName}'
+import { StakeWise{ClientName}Graph } from '../../../types/graphql/{clientName}'
 
 
 type SubmitInput = {

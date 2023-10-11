@@ -1,5 +1,4 @@
-import { validateArgs } from 'helpers'
-
+import { validateArgs } from '../../../../utils'
 import getHealthFactor from '../../helpers/getHealthFactor'
 import getOsTokenPositionShares from './getOsTokenPositionShares'
 

@@ -1,5 +1,5 @@
-import { apiUrls } from 'helpers'
-import { backend } from 'graphql'
+import { backend } from '../../graphql'
+import { apiUrls } from '../../utils'
 
 
 type GetSwiseUsdPriceInput = {

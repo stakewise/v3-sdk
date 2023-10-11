@@ -1,8 +1,8 @@
-import { Network, configs } from 'helpers'
-import { VaultQueryPayload } from 'graphql/subgraph/vault'
 import { formatEther, getAddress, MaxUint256 } from 'ethers'
 
 import { ModifiedVault } from './types'
+import { Network, configs } from '../../../../utils'
+import { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 type ModifyVaultInput = {

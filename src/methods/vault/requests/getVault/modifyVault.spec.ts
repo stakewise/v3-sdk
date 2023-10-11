@@ -1,8 +1,8 @@
 import { MaxUint256 } from 'ethers'
-import { Network, configs } from 'helpers'
-import { VaultQueryPayload } from 'graphql/subgraph/vault'
 
 import modifyVault from './modifyVault'
+import { Network, configs } from '../../../../utils'
+import { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 const network = Network.Goerli

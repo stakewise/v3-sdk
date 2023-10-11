@@ -1,5 +1,5 @@
-import { BigDecimal } from 'helpers'
-import { OsTokenSnapshotsQueryPayload } from 'graphql/subgraph/osToken'
+import { BigDecimal } from '../../../../utils'
+import { OsTokenSnapshotsQueryPayload } from '../../../../graphql/subgraph/osToken'
 
 
 type CalculateApyInput = {

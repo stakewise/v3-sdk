@@ -1,4 +1,4 @@
-import { vaultMulticall } from 'contracts'
+import vaultMulticall from '../../../../contracts/vaultMulticall'
 
 
 export type ParseExitRequestsInput = {
@@ -123,7 +123,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       },
     })
 
-    totalExitingAssets = remainingAssets[0]?.assets
+    totalExitingAssets = remainingAssets[0]?.assets || 0n
   }
 
   return {

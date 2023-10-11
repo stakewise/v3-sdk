@@ -1,4 +1,4 @@
-import { vaultMulticall } from 'contracts'
+import { vaultMulticall } from '../../../../contracts'
 
 
 type GetAvailableAssetsInput = {

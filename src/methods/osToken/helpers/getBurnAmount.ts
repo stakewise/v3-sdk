@@ -1,4 +1,4 @@
-import { validateArgs } from 'helpers'
+import { validateArgs } from '../../../utils'
 
 
 type GetBurnAmountInput = {

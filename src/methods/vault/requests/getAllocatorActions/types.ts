@@ -1,4 +1,4 @@
-import { AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
+import { AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
 
 
 type AllocatorActionsPayload = Pick<AllocatorActionsQueryPayload['allocatorActions'][number], 'id' | 'actionType' | 'assets'>
