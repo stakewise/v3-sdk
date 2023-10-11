@@ -1,7 +1,6 @@
-import { subgraph } from 'graphql'
-import { apiUrls, validateArgs } from 'helpers'
-import { VaultQueryVariables, VaultQueryPayload } from 'graphql/subgraph/vault'
-
+import { VaultQueryVariables, VaultQueryPayload } from '../../../../graphql/subgraph/vault'
+import { apiUrls, validateArgs } from '../../../../utils'
+import { subgraph } from '../../../../graphql'
 import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'
 

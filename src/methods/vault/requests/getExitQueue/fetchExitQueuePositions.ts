@@ -1,5 +1,5 @@
-import { apiUrls } from 'helpers'
-import { subgraph } from 'graphql'
+import { subgraph } from '../../../../graphql'
+import { apiUrls } from '../../../../utils'
 
 
 export type FetchExitQueuePositionsInput = {

@@ -1,9 +1,8 @@
-import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from 'graphql/subgraph/allocatorActions'
-import { AllocatorActionType, apiUrls, validateArgs } from 'helpers'
-import { subgraph } from 'graphql'
-
-import { ModifiedAllocatorActions } from './types'
+import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
+import { AllocatorActionType, apiUrls, validateArgs } from '../../../../utils'
 import modifyAllocatorActions from './modifyAllocatorActions'
+import { ModifiedAllocatorActions } from './types'
+import { subgraph } from '../../../../graphql'
 
 
 type GetAllocatorActionsInput = {

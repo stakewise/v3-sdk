@@ -1,9 +1,8 @@
-import { subgraph } from 'graphql'
-import { apiUrls, validateArgs } from 'helpers'
-import { DaySnapshotsQueryVariables } from 'graphql/subgraph/daySnapshots'
-
-import { ModifiedDaySnapshots } from './types'
+import { DaySnapshotsQueryVariables } from '../../../../graphql/subgraph/daySnapshots'
+import { apiUrls, validateArgs } from '../../../../utils'
 import modifyDaySnapshots from './modifyDaySnapshots'
+import { ModifiedDaySnapshots } from './types'
+import { subgraph } from '../../../../graphql'
 
 
 type GetDaySnapshotsInput = {

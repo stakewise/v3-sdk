@@ -3,7 +3,6 @@ import json from '@rollup/plugin-json'
 import del from 'rollup-plugin-delete'
 import { dts } from 'rollup-plugin-dts'
 import terser from '@rollup/plugin-terser'
-import type { RollupOptions } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
@@ -12,7 +11,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import pkg from './package.json'
 
 
-const config: RollupOptions[] = [
+const config = [
   {
     input: 'src/index.ts',
     output: [

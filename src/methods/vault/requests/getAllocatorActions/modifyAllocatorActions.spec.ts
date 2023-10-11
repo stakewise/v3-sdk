@@ -1,6 +1,5 @@
-import { Network, AllocatorActionType, configs } from 'helpers'
-
 import modifyAllocatorActions from './modifyAllocatorActions'
+import { Network, AllocatorActionType, configs } from '../../../../utils'
 
 
 const network = Network.Mainnet

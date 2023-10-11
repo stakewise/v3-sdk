@@ -1,8 +1,8 @@
-import getHarvestParams from 'methods/vault/requests/getHarvestParams'
 import { VoidSigner, JsonRpcProvider } from 'ethers'
-import { configs } from 'helpers'
 
+import { configs } from '../utils'
 import { VaultAbi, KeeperAbi } from './types'
+import getHarvestParams from '../methods/vault/requests/getHarvestParams'
 
 
 type VaultMulticallRequestInput = {

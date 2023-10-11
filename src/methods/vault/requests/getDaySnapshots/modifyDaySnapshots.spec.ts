@@ -1,4 +1,4 @@
-import { DaySnapshotsQueryPayload } from 'graphql/subgraph/daySnapshots'
+import { DaySnapshotsQueryPayload } from '../../../../graphql/subgraph/daySnapshots'
 import modifyDaySnapshots, { modifyDaySnapshot } from './modifyDaySnapshots'
 
 

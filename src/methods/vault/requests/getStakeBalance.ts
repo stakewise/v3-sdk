@@ -1,5 +1,5 @@
-import { validateArgs } from 'helpers'
-import { vaultMulticall } from 'contracts'
+import { vaultMulticall } from '../../../contracts'
+import { validateArgs } from '../../../utils'
 
 
 type GetStakeBalanceInput = {

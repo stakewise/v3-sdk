@@ -29,8 +29,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.d.ts",
-    "rollup.config.ts"
+    "src/**/*.d.ts"
   ],
   "exclude": [
     "node_modules"

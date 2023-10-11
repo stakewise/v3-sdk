@@ -1,4 +1,4 @@
-import { constants, BigDecimal } from 'helpers'
+import { constants, BigDecimal } from '../../../utils'
 
 
 export type GetOsTokenDataInput = {

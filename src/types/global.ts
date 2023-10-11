@@ -1,7 +1,8 @@
 import { BrowserProvider, JsonRpcProvider } from 'ethers'
-import { createContracts } from 'contracts'
-import { Network, configs } from 'helpers'
-import methods from 'methods'
+
+import methods from '../methods'
+import { Network, configs } from '../utils'
+import { createContracts } from '../contracts'
 
 import type {
   VaultAbi,

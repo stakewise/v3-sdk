@@ -1,12 +1,12 @@
-import { Network, configs } from 'helpers'
-import { vaultMulticall } from 'contracts'
 import { JsonRpcProvider, ZeroAddress } from 'ethers'
 
-import createContracts from 'contracts/createContracts'
+import { Network, configs } from '../../../../utils'
+import { createContracts } from '../../../../contracts'
+import vaultMulticall from '../../../../contracts/vaultMulticall'
 import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 
 
-jest.mock('contracts')
+jest.mock('../../../../contracts/vaultMulticall')
 
 describe('parseExitRequests function', () => {
   const network = Network.Goerli
@@ -79,7 +79,6 @@ describe('parseExitRequests function', () => {
         [ -1n ],
         [ -1n ],
       ])
-      .mockResolvedValueOnce([])
       .mockResolvedValueOnce([ { assets: 50n } ])
 
     const result = await parseExitRequests(input)

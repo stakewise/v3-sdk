@@ -1,6 +1,5 @@
-import { validateArgs } from 'helpers'
-
 import getMaxWithdraw from './getMaxWithdraw'
+import { validateArgs } from '../../../../utils'
 import getAvailableAssets from './getAvailableAssets'
 
 

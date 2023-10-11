@@ -1,5 +1,5 @@
-import { apiUrls } from 'helpers'
-import { subgraph } from 'graphql'
+import { apiUrls } from '../../../../utils'
+import { subgraph } from '../../../../graphql'
 
 
 export type FetchOsTokenSnapshotsInput = {

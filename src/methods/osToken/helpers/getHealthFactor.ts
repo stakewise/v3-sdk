@@ -1,4 +1,4 @@
-import { OsTokenPositionHealth, BigDecimal, validateArgs } from 'helpers'
+import { OsTokenPositionHealth, BigDecimal, validateArgs } from '../../../utils'
 
 
 type GetHealthFactorInput = {

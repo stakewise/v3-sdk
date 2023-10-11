@@ -60,6 +60,7 @@
 
     // Import plugin
 
+    "import/named": 0,
     "import/first": 0,
     "import/extensions": 0,
     "import/no-unresolved": 0,

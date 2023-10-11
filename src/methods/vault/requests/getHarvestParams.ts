@@ -1,5 +1,5 @@
-import { apiUrls, validateArgs } from 'helpers'
-import { subgraph } from 'graphql'
+import { apiUrls, validateArgs } from '../../../utils'
+import { subgraph } from '../../../graphql'
 
 
 type GetHarvestParamsInput = {

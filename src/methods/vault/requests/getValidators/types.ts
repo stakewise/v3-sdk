@@ -1,4 +1,4 @@
-import { VaultValidatorsQueryPayload } from 'graphql/backend/vault'
+import { VaultValidatorsQueryPayload } from '../../../../graphql/backend/vault'
 
 // earned: string, createdAt: string, publicKey: string, apy: string
 type AllocatorActionsPayload = Pick<VaultValidatorsQueryPayload['vaults'][number]['validators'][number], 'apy' | 'publicKey' | 'earned'>
