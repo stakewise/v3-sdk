@@ -1,3 +1,4 @@
+import UniswapPositionManagerAbi from './UniswapPositionManagerAbi.json'
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import Erc20PrivateVaultAbi from './Erc20PrivateVaultAbi.json'
@@ -21,6 +22,7 @@ import Erc20Abi from './Erc20Abi.json'
 
 
 export {
+  UniswapPositionManagerAbi,
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
   Erc20PrivateVaultAbi,

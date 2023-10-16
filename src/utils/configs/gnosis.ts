@@ -47,6 +47,9 @@ export default {
       privateVault: ZeroAddress,
       erc20PrivateVault: ZeroAddress,
     },
+    uniswap: {
+      positionManager: '',
+    },
   },
   tokens: {
     mintToken: tokens.osGNO,
