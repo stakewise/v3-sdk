@@ -590,7 +590,7 @@ Maximum number of **shares** for minting
 |------|------|-------------|---------|
 | ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
 | stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
-| mintedShares | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
+| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
 
 #### Returns:
 
@@ -602,7 +602,7 @@ type Output = bigint
 ```ts
 await sdk.osToken.getMaxMint({
   ltvPercent: 0n,
-  mintedShares: 0n,
+  mintedAssets: 0n,
   stakedAssets: 0n,
 })
 ```

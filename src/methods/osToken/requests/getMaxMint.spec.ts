@@ -18,7 +18,7 @@ describe('getMaxMint', () => {
   it('should return 0n if ltvPercent is <= 0', async () => {
     const result = await getMaxMint({
       ltvPercent: 0n,
-      mintedShares: 100n,
+      mintedAssets: 100n,
       stakedAssets: 100n,
       contracts: mockContracts,
     })
@@ -29,7 +29,7 @@ describe('getMaxMint', () => {
   it('should return 0n if stakedAssets is <= 0', async () => {
     const result = await getMaxMint({
       ltvPercent: 5000n,
-      mintedShares: 100n,
+      mintedAssets: 100n,
       stakedAssets: 0n,
       contracts: mockContracts,
     })
@@ -39,16 +39,17 @@ describe('getMaxMint', () => {
 
   it('should return max mint shares based on calculations', async () => {
     mockContracts.tokens.mintToken.avgRewardPerSecond.mockResolvedValue(2n)
-    mockContracts.tokens.mintToken.convertToShares.mockResolvedValue(1500n)
 
-    const result = await getMaxMint({
-      ltvPercent: 5000n,
-      mintedShares: 1000n,
-      stakedAssets: 2000n,
+    await getMaxMint({
+      ltvPercent: 9000n,
+      mintedAssets: 2001547526745735889n,
+      stakedAssets: 15001277163464317262n,
       contracts: mockContracts,
     })
 
-    expect(result).toEqual(500n)
+    const result = mockContracts.tokens.mintToken.convertToShares.mock.calls[0][0]
+
+    expect(result).toEqual(11499601920372052438n)
   })
 
   it('should return 0n if max mint shares is less than or equal to minted shares', async () => {
@@ -57,7 +58,7 @@ describe('getMaxMint', () => {
 
     const result = await getMaxMint({
       ltvPercent: 5000n,
-      mintedShares: 1000n,
+      mintedAssets: 1000n,
       stakedAssets: 2000n,
       contracts: mockContracts,
     })

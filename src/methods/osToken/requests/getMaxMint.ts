@@ -1,38 +1,32 @@
-import { BigDecimal, validateArgs } from '../../../utils'
+import { constants, validateArgs } from '../../../utils'
 
 
 type GetMaxMintInput = {
   ltvPercent: bigint
-  mintedShares: bigint
+  mintedAssets: bigint
   stakedAssets: bigint
   contracts: StakeWise.Contracts
 }
 
 const getMaxMint = async (values: GetMaxMintInput) => {
-  const { contracts, ltvPercent, mintedShares, stakedAssets } = values
+  const { contracts, ltvPercent, mintedAssets, stakedAssets } = values
 
-  validateArgs.bigint({ ltvPercent, mintedShares, stakedAssets })
+  validateArgs.bigint({ ltvPercent, mintedAssets, stakedAssets })
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {
     return 0n
   }
 
-  const rewardPerSecond = await contracts.tokens.mintToken.avgRewardPerSecond()
-  const avgRewardPerHour = rewardPerSecond * 60n * 60n
+  const avgRewardPerSecond = await contracts.tokens.mintToken.avgRewardPerSecond()
 
-  const result = new BigDecimal(stakedAssets)
-    .multiply(ltvPercent)
-    .divide(10_000)
-    .minus(avgRewardPerHour)
-    .decimals(0)
-    .toString()
+  const maxMintedAssets = stakedAssets * ltvPercent / 10_000n
+  const maxMintedAssetsHourReward = (maxMintedAssets * avgRewardPerSecond * 3600n) / constants.blockchain.amount1
+  const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
 
-  let maxMintShares = await contracts.tokens.mintToken.convertToShares(result)
+  if (canMintAssets > 0) {
+    const maxMintShares2 = await contracts.tokens.mintToken.convertToShares(canMintAssets)
 
-  if (maxMintShares > mintedShares) {
-    maxMintShares = maxMintShares - mintedShares
-
-    return maxMintShares
+    return maxMintShares2
   }
 
   return 0n
