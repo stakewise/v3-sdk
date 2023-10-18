@@ -10,6 +10,7 @@ import VestingEscrowAbi from './VestingEscrowAbi.json'
 import PrivateVaultAbi from './PrivateVaultAbi.json'
 import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
+import UniswapPoolAbi from './UniswapPoolAbi.json'
 import SwiseTokenAbi from './SwiseTokenAbi.json'
 import Erc20VaultAbi from './Erc20VaultAbi.json'
 import MulticallAbi from './MulticallAbi.json'
@@ -34,6 +35,7 @@ export {
   PrivateVaultAbi,
   VaultFactoryAbi,
   PriceOracleAbi,
+  UniswapPoolAbi,
   SwiseTokenAbi,
   Erc20VaultAbi,
   MulticallAbi,
