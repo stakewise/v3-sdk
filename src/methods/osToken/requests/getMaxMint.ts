@@ -32,4 +32,5 @@ const getMaxMint = async (values: GetMaxMintInput) => {
   return 0n
 }
 
+
 export default getMaxMint
