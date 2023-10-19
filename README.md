@@ -71,11 +71,11 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getAllocatorActions](#sdkvaultgetallocatoractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
 | [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
 | [sdk.vault.getExitQueue](#sdkvaultgetexitqueue) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) | [sdk.utils.getAssetsFromShares](#sdkutilsgetassetsfromshares) |
-| [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | [sdk.utils.getSharesFromAssets](#sdkutilsgetsharesfromassets) |
+| [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
 | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) |
-| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.utils.getSharesFromAssets](#sdkutilsgetsharesfromassets) |
+| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.utils.getAssetsFromShares](#sdkutilsgetassetsfromshares) |
 
 ## API-Vault
 
@@ -634,6 +634,54 @@ type Output = {
 await sdk.osToken.getBaseData()
 ```
 ---
+### `sdk.utils.getAssetsFromShares`
+
+#### Description:
+
+Convert osToken to ETH
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| amount | `bigint` | **Require** |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getAssetsFromShares({ amount: 0n })
+```
+---
+### `sdk.utils.getSharesFromAssets`
+
+#### Description:
+
+Convert ETH to osToken
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| amount | `bigint` | **Require** |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getSharesFromAssets({ amount: 0n })
+```
+---
 ## API-utils
 
 ### `sdk.utils.getRewardsPerYear`
@@ -706,54 +754,6 @@ type Output = Array<{
 
 ```ts
 await sdk.utils.getTransactions({ hash: '0x...' })
-```
----
-### `sdk.utils.getAssetsFromShares`
-
-#### Description:
-
-Convert osToken to ETH
-
-#### Arguments:
-
-| Name | Type | Type |
-|------|------|-------------|
-| amount | `bigint` | **Require** |
-
-#### Returns:
-
-```ts
-type Output = bigint
-```
-
-#### Example:
-
-```ts
-await sdk.utils.getAssetsFromShares({ amount: 0n })
-```
----
-### `sdk.utils.getSharesFromAssets`
-
-#### Description:
-
-Convert ETH to osToken
-
-#### Arguments:
-
-| Name | Type | Type |
-|------|------|-------------|
-| amount | `bigint` | **Require** |
-
-#### Returns:
-
-```ts
-type Output = bigint
-```
-
-#### Example:
-
-```ts
-await sdk.utils.getSharesFromAssets({ amount: 0n })
 ```
 ---
 ## Description of other parts of the api
