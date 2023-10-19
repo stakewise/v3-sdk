@@ -6,7 +6,7 @@
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
-![Version](https://img.shields.io/badge/version-1.2.6-blue)
+![Version](https://img.shields.io/badge/version-1.2.7-blue)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
@@ -296,9 +296,7 @@ type Output = {
     createdAt: number
     address: string
   }> | null
-  performance: {
-    total: number
-  }
+  performance: number
 }
 ```
 
@@ -325,7 +323,7 @@ type Output = {
 | `displayName` | Name of vault  |
 | `description` | Description of vault |
 | `whitelist` | List of authorized users for deposits  |
-| `performance` | Vault performance indicator |
+| `performance` | Vault performance indicator (percent) |
 
 #### Example:
 
@@ -634,7 +632,7 @@ type Output = {
 await sdk.osToken.getBaseData()
 ```
 ---
-### `sdk.utils.getAssetsFromShares`
+### `sdk.osToken.getAssetsFromShares`
 
 #### Description:
 
@@ -658,7 +656,7 @@ type Output = bigint
 await sdk.utils.getAssetsFromShares({ amount: 0n })
 ```
 ---
-### `sdk.utils.getSharesFromAssets`
+### `sdk.osToken.getSharesFromAssets`
 
 #### Description:
 
