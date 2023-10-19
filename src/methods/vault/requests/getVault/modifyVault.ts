@@ -30,12 +30,10 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
 
   return {
     ...rest,
-    performance: {
-      total: Number(performance),
-    },
     isSmoothingPool: !mevEscrow,
     feePercent: feePercent / 100,
     vaultAdmin: getAddress(admin),
+    performance: Number(performance),
     vaultAddress: getAddress(address),
     createdAt: Number(createdAt) * 1000,
     totalAssets: formatEther(totalAssets),

@@ -6,7 +6,7 @@
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
-![Version](https://img.shields.io/badge/version-1.2.6-blue)
+![Version](https://img.shields.io/badge/version-1.2.7-blue)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
@@ -71,11 +71,11 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getAllocatorActions](#sdkvaultgetallocatoractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
 | [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
 | [sdk.vault.getExitQueue](#sdkvaultgetexitqueue) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) | [sdk.utils.getAssetsFromShares](#sdkutilsgetassetsfromshares) |
-| [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | [sdk.utils.getSharesFromAssets](#sdkutilsgetsharesfromassets) |
+| [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
 | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) |
-| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.utils.getSharesFromAssets](#sdkutilsgetsharesfromassets) |
+| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.utils.getAssetsFromShares](#sdkutilsgetassetsfromshares) |
 
 ## API-Vault
 
@@ -296,9 +296,7 @@ type Output = {
     createdAt: number
     address: string
   }> | null
-  performance: {
-    total: number
-  }
+  performance: number
 }
 ```
 
@@ -325,7 +323,7 @@ type Output = {
 | `displayName` | Name of vault  |
 | `description` | Description of vault |
 | `whitelist` | List of authorized users for deposits  |
-| `performance` | Vault performance indicator |
+| `performance` | Vault performance indicator (percent) |
 
 #### Example:
 
@@ -634,6 +632,54 @@ type Output = {
 await sdk.osToken.getBaseData()
 ```
 ---
+### `sdk.osToken.getAssetsFromShares`
+
+#### Description:
+
+Convert osToken to ETH
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| amount | `bigint` | **Require** |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getAssetsFromShares({ amount: 0n })
+```
+---
+### `sdk.osToken.getSharesFromAssets`
+
+#### Description:
+
+Convert ETH to osToken
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| amount | `bigint` | **Require** |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getSharesFromAssets({ amount: 0n })
+```
+---
 ## API-utils
 
 ### `sdk.utils.getRewardsPerYear`
@@ -706,54 +752,6 @@ type Output = Array<{
 
 ```ts
 await sdk.utils.getTransactions({ hash: '0x...' })
-```
----
-### `sdk.utils.getAssetsFromShares`
-
-#### Description:
-
-Convert osToken to ETH
-
-#### Arguments:
-
-| Name | Type | Type |
-|------|------|-------------|
-| amount | `bigint` | **Require** |
-
-#### Returns:
-
-```ts
-type Output = bigint
-```
-
-#### Example:
-
-```ts
-await sdk.utils.getAssetsFromShares({ amount: 0n })
-```
----
-### `sdk.utils.getSharesFromAssets`
-
-#### Description:
-
-Convert ETH to osToken
-
-#### Arguments:
-
-| Name | Type | Type |
-|------|------|-------------|
-| amount | `bigint` | **Require** |
-
-#### Returns:
-
-```ts
-type Output = bigint
-```
-
-#### Example:
-
-```ts
-await sdk.utils.getSharesFromAssets({ amount: 0n })
 ```
 ---
 ## Description of other parts of the api
