@@ -44,6 +44,7 @@ describe('modifyVault', () => {
       isErc20: true,
       feePercent: 2,
       verified: true,
+      performance: 10,
       isPrivate: false,
       capacity: '0.001',
       tokenSymbol: 'mTKN',
@@ -61,9 +62,6 @@ describe('modifyVault', () => {
       feeRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       mevRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       vaultKeysManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      performance: {
-        total: 10,
-      },
       whitelist: [
         {
           createdAt: 1693395816000,

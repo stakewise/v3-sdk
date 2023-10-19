@@ -8,6 +8,7 @@ export type ModifiedVault = Omit<
   apy: number
   createdAt: number
   vaultAdmin: string
+  performance: number
   vaultAddress: string
   mevRecipient: string
   vaultKeysManager: string
@@ -16,7 +17,4 @@ export type ModifiedVault = Omit<
     createdAt: number
     address: string
   }>
-  performance: {
-    total: number
-  }
 }
