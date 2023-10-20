@@ -10,7 +10,9 @@ const getSwiseUsdPrice = async (input: GetSwiseUsdPriceInput) => {
   const { options } = input
 
   const data = await backend.swise.fetchSwiseStatsQuery({
-    url: apiUrls.getBackendUrl(options),
+    // TODO remove when mainnet backend will be ready
+    url: 'https://testnet-api.stakewise.io/graphql',
+    // url: apiUrls.getBackendUrl(options),
   })
 
   return data?.swiseStats?.price || '0'

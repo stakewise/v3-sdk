@@ -45,6 +45,9 @@ export default {
       privateVault: '0xB3BE6f7544393f6FbAd8b92B2D7328891a8d8C4b',
       erc20PrivateVault: '0x21C199766Bb6cD4217f02A496f01D1AD41F799a9',
     },
+    uniswap: {
+      positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    },
   },
   tokens: {
     mintToken: tokens.osETH,

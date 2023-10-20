@@ -9,6 +9,7 @@ import {
   MulticallAbi,
   Erc20VaultAbi,
   SwiseTokenAbi,
+  UniswapPoolAbi,
   PriceOracleAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,
@@ -18,9 +19,11 @@ import {
   MintTokenConfigAbi,
   Erc20PrivateVaultAbi,
   RewardSplitterFactoryAbi,
+  UniswapPositionManagerAbi,
 } from './abis'
 
 import type {
+  UniswapPositionManagerAbi as UniswapPositionManagerType,
   RewardSplitterFactoryAbi as RewardSplitterFactoryType,
   MintTokenConfigAbi as MintTokenConfigType,
   VaultsRegistryAbi as VaultsRegistryType,
@@ -30,6 +33,7 @@ import type {
   PrivateVaultAbi as PrivateVaultType,
   Erc20VaultAbi as Erc20VaultAbiType,
   PriceOracleAbi as PriceOracleType,
+  UniswapPoolAbi as UniswapPoolType,
   SwiseTokenAbi as SwiseTokenType,
   MulticallAbi as MulticallType,
   MintTokenAbi as MintTokenType,
@@ -103,6 +107,12 @@ const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => creat
   provider
 )
 
+const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<UniswapPositionManagerType>(
+  config.addresses.uniswap.positionManager,
+  UniswapPositionManagerAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -119,6 +129,7 @@ export const createContracts = (input: CreateContractsInput) => {
       createMulticall: multicall(multicallContract as MulticallType),
       createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
       createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
+      createUniswapPoolAbi: (address: string) => createContract<UniswapPoolType>(address, UniswapPoolAbi, provider),
       createUsdRateContract: (address: string) => createContract<UsdRateType>(address, UsdRateAbi, provider),
       createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
       createPrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, provider),
@@ -142,6 +153,9 @@ export const createContracts = (input: CreateContractsInput) => {
       erc20Vault: getVaultFactory(provider, config.addresses.factories.erc20Vault),
       privateVault: getVaultFactory(provider, config.addresses.factories.privateVault),
       erc20PrivateVault: getVaultFactory(provider, config.addresses.factories.erc20PrivateVault),
+    },
+    uniswap: {
+      positionManager: getUniswapPositionManager(provider, config),
     },
   }
 }
