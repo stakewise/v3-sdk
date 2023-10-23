@@ -1,0 +1,8 @@
+query UserRewards($user: String!, $vaultAddress: String!, $dateFrom: date_as_timestamp!) {
+  userRewards(user: $user, vaultAddress: $vaultAddress, dateFrom: $dateFrom) {
+    date,
+    dateStr,
+    dailyRewards,
+    sumRewards,
+  }
+}
