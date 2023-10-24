@@ -175,6 +175,46 @@ await sdk.vault.getDaySnapshots({
 })
 ```
 ---
+### `sdk.vault.getUserRewards`
+
+#### Description:
+
+Daily rewards for the user who has made a deposit in the vault. With the help of this data it is possible to build a chart.
+
+#### Arguments:
+
+| Name | Type     | Type | Description |
+|------|----------|-------------|---------|
+| dateFrom | `string` | **Require** | Time to start |
+| vaultAddress | `string` | **Require** | - |
+| userAddress | `string` | **Require** | - |
+
+#### Returns:
+
+```ts
+type UserReward = {
+  rewards: number
+}
+
+type Output = {
+  days: Record<number, UserReward>
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
+
+#### Example:
+
+```ts
+await sdk.vault.getUserRewards({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+  dateFrom: 1695730032793,
+})
+```
+---
 ### `sdk.vault.getExitQueue`
 
 #### Description:
