@@ -1,39 +1,43 @@
-import * as osToken from './osToken'
-import * as vault from './vault'
+import vault from './vault'
 import * as utils from './utils'
+import * as osToken from './osToken'
 
 
-type Methods = typeof utils | typeof osToken | typeof vault
+type Methods = typeof utils | typeof osToken | typeof vault.requests | typeof vault.transactions
 
-type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
-
-type ModifyRequests<T extends Record<string, any>> = {
-  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'options' | 'contracts'>>) => ReturnType<T[K]>
-}
-
-type CreateMethodsParams = {
+type CommonParams = {
   options: StakeWise.Options
+  provider: StakeWise.Provider
   contracts: StakeWise.Contracts
 }
 
-type CreateMethodsOutput<T extends Methods> = ModifyRequests<T>
+type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
 
-const createRequests = <T extends Methods>(methods: T, params: CreateMethodsParams): CreateMethodsOutput<T> => (
+type ModifyMethods<T extends Record<string, any>> = {
+  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'options' | 'contracts' | 'provider'>>) => ReturnType<T[K]>
+}
+
+type CreateMethodsOutput<T extends Methods> = ModifyMethods<T>
+
+const createMethods = <T extends Methods>(methods: T, params: CommonParams): CreateMethodsOutput<T> => (
   Object.keys(methods).reduce((acc, method) => {
     const fn = methods[method as keyof typeof methods] as (values: unknown) => unknown
 
     return {
       ...acc,
-    [method]: (values: unknown) => fn({ ...(values || {}), ...params }),
+      [method]: (values: unknown) => fn({ ...(values || {}), ...params }),
     }
   }, {} as CreateMethodsOutput<T>)
 )
 
 
 const methods = {
-  createUtils: (params: CreateMethodsParams) => createRequests<typeof utils>(utils, params),
-  createVaultMethods: (params: CreateMethodsParams) => createRequests<typeof vault>(vault, params),
-  createOsTokenMethods: (params: CreateMethodsParams) => createRequests<typeof osToken>(osToken, params),
+  createUtils: (params: CommonParams) => createMethods<typeof utils>(utils, params),
+  createVaultMethods: (params: CommonParams) => ({
+    ...createMethods<typeof vault.requests>(vault.requests, params),
+    ...createMethods<typeof vault.transactions>(vault.transactions, params),
+  }),
+  createOsTokenMethods: (params: CommonParams) => createMethods<typeof osToken>(osToken, params),
 }
 
 

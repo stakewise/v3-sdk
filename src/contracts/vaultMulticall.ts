@@ -12,6 +12,7 @@ type VaultMulticallRequestInput = {
   }>
   callStatic?: boolean
   estimateGas?: boolean
+  transactionData?: boolean
 }
 
 type VaultMulticallInput = {
@@ -25,7 +26,7 @@ type VaultMulticallInput = {
 
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
   const { options, vaultAddress, userAddress, request, vaultContract, keeperContract } = values
-  const { params, callStatic, estimateGas } = request
+  const { params, callStatic, estimateGas, transactionData } = request
 
   const calls: string[] = []
 
@@ -37,7 +38,9 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     ? await library.getSigner(userAddress)
     : new VoidSigner(userAddress, library)
 
-  const signedContract = vaultContract.connect(signer)
+  const signedContract = transactionData
+    ? vaultContract
+    : vaultContract.connect(signer)
 
   const [ harvestParams, canHarvest ] = await Promise.all([
     getHarvestParams({ options, vaultAddress }),
@@ -75,9 +78,20 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     }) as T
   }
 
-  return estimateGas
-    ? signedContract.multicall.estimateGas(calls) as T
-    : signedContract.multicall(calls) as T
+  if (estimateGas) {
+    return signedContract.multicall.estimateGas(calls) as T
+  }
+
+  if (transactionData) {
+    const rx = await signedContract.multicall.populateTransaction(calls)
+
+    return {
+      to: rx.to,
+      data: rx.data,
+    } as T
+  }
+
+  return signedContract.multicall(calls) as T
 }
 
 

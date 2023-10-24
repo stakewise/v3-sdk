@@ -20,12 +20,14 @@ class StakeWiseSDK {
     const config = configs[options.network]
     const provider = options.provider || new JsonRpcProvider(apiUrls.getWeb3Url(options))
 
+    const contracts = createContracts({ provider, config })
+
     this.config = config
     this.options = options
     this.provider = provider
-    this.contracts = createContracts({ provider, config })
+    this.contracts = contracts
 
-    const argsForMethods = { options, contracts: this.contracts }
+    const argsForMethods = { options, contracts, provider }
 
     this.utils = methods.createUtils(argsForMethods)
     this.vault = methods.createVaultMethods(argsForMethods)

@@ -74,8 +74,8 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
 | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.utils.getSharesFromAssets](#sdkutilsgetsharesfromassets) |
-| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.utils.getAssetsFromShares](#sdkutilsgetassetsfromshares) |
+| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
+| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
 
 ## API-Vault
 
