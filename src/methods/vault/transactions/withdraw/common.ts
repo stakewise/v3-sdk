@@ -1,17 +1,9 @@
-import { validateArgs } from '../../../utils'
-import { vaultMulticall } from '../../../contracts'
+import { WithdrawInput } from './types'
+import { validateArgs } from '../../../../utils'
+import { vaultMulticall } from '../../../../contracts'
 
 
-type WithdrawDataInput = {
-  assets: bigint
-  userAddress: string
-  vaultAddress: string
-  availableAssets: bigint
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
-}
-
-const withdrawData = async (values: WithdrawDataInput): Promise<StakeWise.TransactionData> => {
+export const commonLogic = async (values: WithdrawInput) => {
   const { options, contracts, assets, vaultAddress, userAddress, availableAssets } = values
 
   validateArgs.bigint({ assets, availableAssets })
@@ -68,19 +60,8 @@ const withdrawData = async (values: WithdrawDataInput): Promise<StakeWise.Transa
     })
   }
 
-  const rx = await vaultMulticall<{ data: string, to: string }>({
-    ...multicallCommonArgs,
-    request: {
-      params,
-      transactionData: true,
-    },
-  })
-
   return {
-    data: rx.data,
-    to: rx.to,
+    params,
+    multicallCommonArgs,
   }
 }
-
-
-export default withdrawData

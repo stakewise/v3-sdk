@@ -3,7 +3,31 @@ import * as utils from './utils'
 import * as osToken from './osToken'
 
 
-type Methods = typeof utils | typeof osToken | typeof vault.requests | typeof vault.transactions
+type Methods = (
+  typeof utils
+  | typeof osToken
+  | typeof vault.requests
+  | typeof vault.transactions
+)
+
+interface UnknownMethod {
+  (values: unknown): unknown
+  encode?: (values: any) => any
+}
+
+type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
+
+type WithoutEncode<M extends UnknownMethod> = (
+  (...values: CheckArgs<Omit<Parameters<M>[0], 'options' | 'contracts' | 'provider'>>) => ReturnType<M>
+)
+
+type WithEncode<M extends UnknownMethod> = WithoutEncode<M> & {
+  encode: (...values: CheckArgs<Omit<Parameters<NonNullable<M['encode']>>[0], 'options' | 'contracts' | 'provider'>>) => (
+    ReturnType<NonNullable<M['encode']>>
+  )
+}
+
+type ModifiedMethod<M extends UnknownMethod> = 'encode' extends keyof M ? WithEncode<M> : WithoutEncode<M>;
 
 type CommonParams = {
   options: StakeWise.Options
@@ -11,25 +35,30 @@ type CommonParams = {
   contracts: StakeWise.Contracts
 }
 
-type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
-
 type ModifyMethods<T extends Record<string, any>> = {
-  [K in keyof T]: (...values: CheckArgs<Omit<Parameters<T[K]>[0], 'options' | 'contracts' | 'provider'>>) => ReturnType<T[K]>
+  [K in keyof T]: ModifiedMethod<T[K]>
 }
 
 type CreateMethodsOutput<T extends Methods> = ModifyMethods<T>
 
 const createMethods = <T extends Methods>(methods: T, params: CommonParams): CreateMethodsOutput<T> => (
   Object.keys(methods).reduce((acc, method) => {
-    const fn = methods[method as keyof typeof methods] as (values: unknown) => unknown
+    const fn = methods[method as keyof typeof methods] as UnknownMethod
+
+    const wrapper = (values: unknown) => fn({ ...(values || {}), ...params })
+
+    if (typeof fn.encode === 'function') {
+      wrapper.encode = (values: unknown) => {
+        return (fn.encode as NonNullable<UnknownMethod['encode']>)({ ...(values || {}), ...params })
+      }
+    }
 
     return {
       ...acc,
-      [method]: (values: unknown) => fn({ ...(values || {}), ...params }),
+      [method]: wrapper,
     }
   }, {} as CreateMethodsOutput<T>)
 )
-
 
 const methods = {
   createUtils: (params: CommonParams) => createMethods<typeof utils>(utils, params),

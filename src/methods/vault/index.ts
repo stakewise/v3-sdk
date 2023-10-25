@@ -10,12 +10,8 @@ import getHarvestParams from './requests/getHarvestParams'
 import getAllocatorActions from './requests/getAllocatorActions'
 
 // Transactions
-import deposit from './transactions/deposit'
-import withdraw from './transactions/withdraw'
-
-// Transaction data
-import depositData from './transactionData/depositData'
-import withdrawData from './transactionData/withdrawData'
+import { deposit } from './transactions/deposit'
+import { withdraw } from './transactions/withdraw'
 
 
 export default {
@@ -32,8 +28,6 @@ export default {
   },
   transactions: {
     deposit,
-    depositData,
     withdraw,
-    withdrawData,
   },
 } as const
