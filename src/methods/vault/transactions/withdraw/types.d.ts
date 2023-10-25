@@ -1,4 +1,5 @@
-import encodeWithdraw from './encodeWithdraw'
+import withdrawGas from './withdrawGas'
+import withdrawEncode from './withdrawEncode'
 
 
 export type WithdrawInput = {
@@ -7,10 +8,12 @@ export type WithdrawInput = {
   vaultAddress: string
   availableAssets: bigint
   options: StakeWise.Options
+  provider: StakeWise.Provider
   contracts: StakeWise.Contracts
 }
 
 export interface Withdraw {
   (values: WithdrawInput): Promise<StakeWise.TransactionHash>
-  encode: typeof encodeWithdraw
+  estimateGas: typeof withdrawGas
+  encode: typeof withdrawEncode
 }

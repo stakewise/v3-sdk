@@ -1,6 +1,7 @@
 import { Withdraw } from './types'
 import { commonLogic } from './common'
-import encodeWithdraw from './encodeWithdraw'
+import withdrawGas from './withdrawGas'
+import withdrawEncode from './withdrawEncode'
 import { vaultMulticall } from '../../../../contracts'
 
 
@@ -17,7 +18,8 @@ const withdraw: Withdraw = async (values) => {
   return result.hash
 }
 
-withdraw.encode = encodeWithdraw
+withdraw.encode = withdrawEncode
+withdraw.estimateGas = withdrawGas
 
 
 export default withdraw

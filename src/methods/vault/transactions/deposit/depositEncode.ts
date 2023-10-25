@@ -7,7 +7,7 @@ type DepositDataOutput = Promise<StakeWise.TransactionData & {
   value: bigint
 }>
 
-const encodeDeposit = async (values: DepositInput): Promise<DepositDataOutput> => {
+const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> => {
   const { options, vaultAddress, userAddress } = values
 
   const { vaultContract, canHarvest, overrides } = await commonLogic(values)
@@ -35,4 +35,4 @@ const encodeDeposit = async (values: DepositInput): Promise<DepositDataOutput> =
 }
 
 
-export default encodeDeposit
+export default depositEncode

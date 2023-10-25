@@ -1,8 +1,8 @@
+import depositGas from './depositGas'
 import type { Deposit } from './types'
-import getHarvestParams from '../../requests/getHarvestParams'
+import depositEncode from './depositEncode'
 import { commonLogic, referrer } from './common'
-
-import encodeDeposit from './encodeDeposit'
+import getHarvestParams from '../../requests/getHarvestParams'
 
 
 const deposit: Deposit = async (values) => {
@@ -27,7 +27,8 @@ const deposit: Deposit = async (values) => {
   }
 }
 
-deposit.encode = encodeDeposit
+deposit.encode = depositEncode
+deposit.estimateGas = depositGas
 
 
 export default deposit

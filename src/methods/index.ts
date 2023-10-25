@@ -13,9 +13,10 @@ type Methods = (
 interface UnknownMethod {
   (values: unknown): unknown
   encode?: (values: any) => any
+  estimateGas?: (values: any) => any // Добавляем estimateGas
 }
 
-type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [ keyof Obj ] extends [ never ] ? [] : [ Obj ]
+type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [keyof Obj] extends [never] ? [] : [Obj]
 
 type WithoutEncode<M extends UnknownMethod> = (
   (...values: CheckArgs<Omit<Parameters<M>[0], 'options' | 'contracts' | 'provider'>>) => ReturnType<M>
@@ -27,7 +28,17 @@ type WithEncode<M extends UnknownMethod> = WithoutEncode<M> & {
   )
 }
 
-type ModifiedMethod<M extends UnknownMethod> = 'encode' extends keyof M ? WithEncode<M> : WithoutEncode<M>;
+type WithEstimateGas<M extends UnknownMethod> = WithoutEncode<M> & {
+  estimateGas: (...values: CheckArgs<Omit<Parameters<NonNullable<M['estimateGas']>>[0], 'options' | 'contracts' | 'provider'>>) => (
+    ReturnType<NonNullable<M['estimateGas']>>
+  )
+}
+
+type ModifiedMethod<M extends UnknownMethod> = 'encode' extends keyof M
+  ? 'estimateGas' extends keyof M
+    ? WithEstimateGas<M>
+    : WithoutEncode<M>
+  : WithEncode<M>
 
 type CommonParams = {
   options: StakeWise.Options
@@ -53,6 +64,12 @@ const createMethods = <T extends Methods>(methods: T, params: CommonParams): Cre
       }
     }
 
+    if (typeof fn.estimateGas === 'function') {
+      wrapper.estimateGas = (values: unknown) => {
+        return (fn.estimateGas as NonNullable<UnknownMethod['estimateGas']>)({ ...(values || {}), ...params })
+      }
+    }
+
     return {
       ...acc,
       [method]: wrapper,
@@ -68,6 +85,5 @@ const methods = {
   }),
   createOsTokenMethods: (params: CommonParams) => createMethods<typeof osToken>(osToken, params),
 }
-
 
 export default methods

@@ -1,4 +1,5 @@
-import encodeDeposit from './encodeDeposit'
+import depositGas from './depositGas'
+import depositEncode from './depositEncode'
 
 
 export type DepositInput = {
@@ -12,5 +13,6 @@ export type DepositInput = {
 
 export interface Deposit {
   (values: DepositInput): Promise<StakeWise.TransactionHash>
-  encode: typeof encodeDeposit
+  estimateGas: typeof depositGas
+  encode: typeof depositEncode
 }
