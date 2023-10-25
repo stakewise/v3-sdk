@@ -11,8 +11,8 @@ export default {
     id: 'goerli',
     name: 'Goerli Testnet',
     hexadecimalChainId: '0x5',
-    blockExplorerUrl: 'https://goerli.etherscan.io',
     url: 'https://goerli.infura.io/v3/84842078b09946638c03157f83405213',
+    blockExplorerUrl: 'https://goerli.etherscan.io',
     nativeCurrency: {
       symbol: tokens.eth,
       name: 'Ethereum',
@@ -38,6 +38,7 @@ export default {
       mintTokenConfig: '0x7869Fb1988554197d17F5aA846c98F7b01E8ddAc',
       sharedMevEscrow: '0xb793c3D2Cec1d0F35fF88BCA7655B88A44669e4B',
       rewardSplitterFactory: '0x6A0A71220Bd8864Deee6d8ABc0113B5589ECf2f8',
+      mintTokenVaultController: '',
     },
     factories: {
       vault: '0x872870F43AD54e69CaC28456a9f397FCDcd4345C',

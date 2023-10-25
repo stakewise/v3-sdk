@@ -3,16 +3,16 @@ import tokens from '../constants/tokens'
 
 export default {
   api: {
-    backend: 'https://testnet-api.stakewise.io/graphql',
-    subgraph: 'https://graph-holesky.stakewise.io/subgraphs/name/stakewise/stakewise/graphql',
+    backend: 'https://holesky-api.stakewise.io/graphql',
+    subgraph: 'https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
   },
   network: {
-    chainId: 5,
+    chainId: 17000,
     id: 'holesky',
     name: 'Holesky Testnet',
     hexadecimalChainId: '0x4268',
+    url: 'https://ethereum-holesky.publicnode.com/',
     blockExplorerUrl: 'https://holesky.etherscan.io',
-    url: 'https://holesky.infura.io/v3/84842078b09946638c03157f83405213',
     nativeCurrency: {
       symbol: tokens.eth,
       name: 'Ethereum',
@@ -25,19 +25,20 @@ export default {
   },
   addresses: {
     tokens: {
-      swise: '0x0e2497aACec2755d831E4AFDEA25B4ef1B823855',
+      swise: '0x484871C6D54a3dAEBeBBDB0AB7a54c97D72986Bb',
       mintToken: '0x1fA3d360eeFA3ae8091A21eBAd234a61184e9827',
-      v2RewardToken: '0x826f88d423440c305D9096cC1581Ae751eFCAfB0',
-      v2StakedToken: '0x221D9812823DBAb0F1fB40b0D294D9875980Ac19',
+      v2RewardToken: '',
+      v2StakedToken: '',
     },
     base: {
       keeper: '0xc3e8c8BA310b62540FBb5eB81c9028444D35e568',
-      multicall: '0x77dCa2C955b15e9dE4dbBCf1246B4B85b651e50e',
+      multicall: '0xcA11bde05977b3631167028862bE2a173976CA11',
       priceOracle: '0x8cE94676F28fAE24eBb4a0D6dc0bDCC0aDa10d2D',
       vaultsRegistry: '0x39B541dAA5B93bEE3a429d82c8cEcdFCE1b36566',
       mintTokenConfig: '0xC31ffC4CA45e4DDBFb88933C500115c87Cc543B5',
       sharedMevEscrow: '0xd7C4C59CB635Fcfef880A4a6Fd6563A582E1CFC1',
       rewardSplitterFactory: '0x4FeB4CD84A3b5e1f2dC3E472F2231C71687F16E1',
+      mintTokenVaultController: '0xB3BE6f7544393f6FbAd8b92B2D7328891a8d8C4b',
     },
     factories: {
       vault: '0xAd47f6F705a03D6a77b24d586428A3B83f6Cc92b',
@@ -46,7 +47,7 @@ export default {
       erc20PrivateVault: '0x2d567070f1d14A915aF23Ec45875Ad643D4D73DF',
     },
     uniswap: {
-      positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+      positionManager: '',
     },
   },
   tokens: {
