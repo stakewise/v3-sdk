@@ -12,8 +12,8 @@ type Methods = (
 
 interface UnknownMethod {
   (values: unknown): unknown
-  encode?: (values: any) => any
-  estimateGas?: (values: any) => any // Добавляем estimateGas
+  encode?: (values: unknown) => unknown
+  estimateGas?: (values: unknown) => unknown
 }
 
 type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [keyof Obj] extends [never] ? [] : [Obj]
@@ -52,23 +52,25 @@ type ModifyMethods<T extends Record<string, any>> = {
 
 type CreateMethodsOutput<T extends Methods> = ModifyMethods<T>
 
+const generateSubMethods = (fn: UnknownMethod, wrapper: UnknownMethod, params: CommonParams) => {
+  const submethods = [ 'encode', 'estimateGas' ] as const
+
+  submethods.forEach((submethod) => {
+    if (typeof fn[submethod] === 'function') {
+      wrapper[submethod] = (values: unknown) => {
+        return (fn[submethod] as NonNullable<UnknownMethod['encode']>)({ ...(values || {}), ...params })
+      }
+    }
+  })
+}
+
 const createMethods = <T extends Methods>(methods: T, params: CommonParams): CreateMethodsOutput<T> => (
   Object.keys(methods).reduce((acc, method) => {
     const fn = methods[method as keyof typeof methods] as UnknownMethod
 
     const wrapper = (values: unknown) => fn({ ...(values || {}), ...params })
 
-    if (typeof fn.encode === 'function') {
-      wrapper.encode = (values: unknown) => {
-        return (fn.encode as NonNullable<UnknownMethod['encode']>)({ ...(values || {}), ...params })
-      }
-    }
-
-    if (typeof fn.estimateGas === 'function') {
-      wrapper.estimateGas = (values: unknown) => {
-        return (fn.estimateGas as NonNullable<UnknownMethod['estimateGas']>)({ ...(values || {}), ...params })
-      }
-    }
+    generateSubMethods(fn, wrapper, params)
 
     return {
       ...acc,
@@ -85,5 +87,6 @@ const methods = {
   }),
   createOsTokenMethods: (params: CommonParams) => createMethods<typeof osToken>(osToken, params),
 }
+
 
 export default methods
