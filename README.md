@@ -68,9 +68,9 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ## Quick Links
 | **Vault** | **osToken** | **Utils** |
 |------|------|------|
-| [sdk.vault.getAllocatorActions](#sdkvaultgetallocatoractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
+| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
 | [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.vault.getExitQueue](#sdkvaultgetexitqueue) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
 | [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
 | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
@@ -79,7 +79,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 
 ## API-Vault
 
-### `sdk.vault.getAllocatorActions`
+### `sdk.vault.getStakerActions`
 
 #### Description:
 
@@ -120,7 +120,7 @@ type Output = Array<{
 ```ts
 import { AllocatorActionType } from '@stakewise/v3-sdk'
 
-await sdk.vault.getAllocatorActions({
+await sdk.vault.getStakerActions({
   skip: 0,
   limit: 20,
   userAddress: '0x...',
@@ -215,7 +215,7 @@ await sdk.vault.getUserRewards({
 })
 ```
 ---
-### `sdk.vault.getExitQueue`
+### `sdk.vault.getExitQueuePositions`
 
 #### Description:
 
@@ -252,7 +252,7 @@ type Output = {
 #### Example:
 
 ```ts
-await sdk.vault.getExitQueue({
+await sdk.vault.getExitQueuePositions({
   vaultAddress: '0x...',
   userAddress: '0x...',
 })

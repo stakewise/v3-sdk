@@ -1,13 +1,13 @@
-import modifyAllocatorActions from './modifyAllocatorActions'
+import modifyStakerActions from './modifyStakerActions'
 import { Network, AllocatorActionType, configs } from '../../../../utils'
 
 
 const network = Network.Mainnet
 const explorerUrl = configs[network].network.blockExplorerUrl
 
-describe('modifyAllocatorActions function', () => {
+describe('modifyStakerActions function', () => {
   it('should correctly modify allocator actions', () => {
-    const sampleInput: Parameters<typeof modifyAllocatorActions>[0] = {
+    const sampleInput: Parameters<typeof modifyStakerActions>[0] = {
       data: {
         allocatorActions: [
           {
@@ -44,7 +44,7 @@ describe('modifyAllocatorActions function', () => {
       },
     ]
 
-    const result = modifyAllocatorActions(sampleInput)
+    const result = modifyStakerActions(sampleInput)
 
     expect(result).toEqual(expectedResult)
   })

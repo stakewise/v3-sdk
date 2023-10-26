@@ -1,14 +1,14 @@
 // Requests
 import getVault from './requests/getVault'
-import getExitQueue from './requests/getExitQueue'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
 import getDaySnapshots from './requests/getDaySnapshots'
 import getStakeBalance from './requests/getStakeBalance'
 import getWithdrawData from './requests/getWithdrawData'
 import getHarvestParams from './requests/getHarvestParams'
+import getStakerActions from './requests/getStakerActions'
 import getCollateralized from './requests/getCollateralized'
-import getAllocatorActions from './requests/getAllocatorActions'
+import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
 import { mint } from './transactions/mint'
@@ -19,15 +19,15 @@ import { withdraw } from './transactions/withdraw'
 export default {
   requests: {
     getVault,
-    getExitQueue,
     getValidators,
     getUserRewards,
     getDaySnapshots,
     getStakeBalance,
     getWithdrawData,
     getHarvestParams,
+    getStakerActions,
     getCollateralized,
-    getAllocatorActions,
+    getExitQueuePositions,
   },
   transactions: {
     mint,
