@@ -7,6 +7,7 @@ import getDaySnapshots from './requests/getDaySnapshots'
 import getStakeBalance from './requests/getStakeBalance'
 import getWithdrawData from './requests/getWithdrawData'
 import getHarvestParams from './requests/getHarvestParams'
+import getCollateralized from './requests/getCollateralized'
 import getAllocatorActions from './requests/getAllocatorActions'
 
 // Transactions
@@ -24,6 +25,7 @@ export default {
     getStakeBalance,
     getWithdrawData,
     getHarvestParams,
+    getCollateralized,
     getAllocatorActions,
   },
   transactions: {
