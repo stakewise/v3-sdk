@@ -101,17 +101,25 @@ const getPriceOracle = (provider: Provider, config: StakeWise.Config) => createC
   provider
 )
 
-const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => createContract<V2RewardTokenType>(
-  config.addresses.tokens.v2RewardToken,
-  V2RewardTokenAbi,
-  provider
-)
+const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => {
+  if (config.addresses.tokens.v2RewardToken) {
+    return createContract<V2RewardTokenType>(
+      config.addresses.tokens.v2RewardToken,
+      V2RewardTokenAbi,
+      provider
+    )
+  }
+}
 
-const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<UniswapPositionManagerType>(
-  config.addresses.uniswap.positionManager,
-  UniswapPositionManagerAbi,
-  provider
-)
+const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => {
+  if (config.addresses.uniswap.positionManager) {
+    return createContract<UniswapPositionManagerType>(
+      config.addresses.uniswap.positionManager,
+      UniswapPositionManagerAbi,
+      provider
+    )
+  }
+}
 
 type CreateContractsInput = {
   provider: Provider
