@@ -13,6 +13,7 @@ import getExitQueuePositions from './requests/getExitQueuePositions'
 // Transactions
 import { deposit } from './transactions/deposit'
 import { withdraw } from './transactions/withdraw'
+import { claimExitQueue } from './transactions/claimExitQueue'
 
 
 export default {
@@ -31,5 +32,6 @@ export default {
   transactions: {
     deposit,
     withdraw,
+    claimExitQueue,
   },
 } as const
