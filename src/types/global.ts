@@ -11,7 +11,6 @@ import type {
   UsdRateAbi,
   EthRateAbi,
   MulticallAbi,
-  MintTokenAbi,
   Erc20VaultAbi,
   SwiseTokenAbi,
   PriceOracleAbi,
@@ -63,7 +62,6 @@ declare global {
       type EthRate = EthRateAbi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
-      type MintToken = MintTokenAbi
       type Erc20Vault = Erc20VaultAbi
       type SwiseToken = SwiseTokenAbi
       type PriceOracle = PriceOracleAbi

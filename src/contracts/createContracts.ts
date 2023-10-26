@@ -5,7 +5,6 @@ import {
   VaultAbi,
   KeeperAbi,
   UsdRateAbi,
-  MintTokenAbi,
   MulticallAbi,
   Erc20VaultAbi,
   SwiseTokenAbi,
@@ -38,7 +37,6 @@ import type {
   UniswapPoolAbi as UniswapPoolType,
   SwiseTokenAbi as SwiseTokenType,
   MulticallAbi as MulticallType,
-  MintTokenAbi as MintTokenType,
   UsdRateAbi as UsdRateType,
   VaultAbi as VaultAbiType,
   KeeperAbi as KeeperType,
@@ -85,9 +83,9 @@ const getKeeper = (provider: Provider, config: StakeWise.Config) => createContra
   provider
 )
 
-const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenType>(
+const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<Erc20Type>(
   config.addresses.tokens.mintToken,
-  MintTokenAbi,
+  Erc20Abi,
   provider
 )
 

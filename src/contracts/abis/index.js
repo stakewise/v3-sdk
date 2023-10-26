@@ -15,7 +15,6 @@ import UniswapPoolAbi from './UniswapPoolAbi.json'
 import SwiseTokenAbi from './SwiseTokenAbi.json'
 import Erc20VaultAbi from './Erc20VaultAbi.json'
 import MulticallAbi from './MulticallAbi.json'
-import MintTokenAbi from './MintTokenAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
 import EthRateAbi from './EthRateAbi.json'
 import KeeperAbi from './KeeperAbi.json'
@@ -41,7 +40,6 @@ export {
   SwiseTokenAbi,
   Erc20VaultAbi,
   MulticallAbi,
-  MintTokenAbi,
   UsdRateAbi,
   EthRateAbi,
   KeeperAbi,
