@@ -11,6 +11,7 @@ import getCollateralized from './requests/getCollateralized'
 import getAllocatorActions from './requests/getAllocatorActions'
 
 // Transactions
+import { mint } from './transactions/mint'
 import { deposit } from './transactions/deposit'
 import { withdraw } from './transactions/withdraw'
 
@@ -29,6 +30,7 @@ export default {
     getAllocatorActions,
   },
   transactions: {
+    mint,
     deposit,
     withdraw,
   },

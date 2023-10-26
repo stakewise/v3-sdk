@@ -3,9 +3,9 @@ import { commonLogic, referrer } from './common'
 import getHarvestParams from '../../requests/getHarvestParams'
 
 
-type DepositDataOutput = Promise<StakeWise.TransactionData & {
+type DepositDataOutput = StakeWise.TransactionData & {
   value: bigint
-}>
+}
 
 const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> => {
   const { options, vaultAddress, userAddress } = values

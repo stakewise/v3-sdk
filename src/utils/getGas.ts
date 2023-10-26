@@ -1,3 +1,6 @@
+import validateArgs from './validateArgs'
+
+
 type GetGasInput = {
   provider: StakeWise.Provider
   estimatedGas: bigint
@@ -5,6 +8,8 @@ type GetGasInput = {
 
 const getGas = async (value: GetGasInput): Promise<bigint> => {
   const { provider, estimatedGas } = value
+
+  validateArgs.bigint({ estimatedGas })
 
   const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
 
