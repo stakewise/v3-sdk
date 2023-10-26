@@ -1,8 +1,29 @@
-export { default as getAPY } from './requests/getOsTokenAPY'
-export { default as getMaxMint } from './requests/getMaxMint'
-export { default as getBaseData } from './requests/getOsTokenData'
-export { default as getBurnAmount } from './helpers/getBurnAmount'
-export { default as getPosition } from './requests/getOsTokenPosition'
-export { default as getHealthFactor } from './helpers/getHealthFactor'
-export { default as getSharesFromAssets } from './requests/getSharesFromAssets'
-export { default as getAssetsFromShares } from './requests/getAssetsFromShares'
+// Requests
+import getAPY from './requests/getOsTokenAPY'
+import getMaxMint from './requests/getMaxMint'
+import getBaseData from './requests/getOsTokenData'
+import getBurnAmount from './helpers/getBurnAmount'
+import getPosition from './requests/getOsTokenPosition'
+import getHealthFactor from './helpers/getHealthFactor'
+import getSharesFromAssets from './requests/getSharesFromAssets'
+import getAssetsFromShares from './requests/getAssetsFromShares'
+
+// Transactions
+import { mint } from './transactions/mint'
+
+
+export default {
+  requests: {
+    getAPY,
+    getMaxMint,
+    getBaseData,
+    getPosition,
+    getBurnAmount,
+    getHealthFactor,
+    getSharesFromAssets,
+    getAssetsFromShares,
+  },
+  transactions: {
+    mint,
+  },
+} as const

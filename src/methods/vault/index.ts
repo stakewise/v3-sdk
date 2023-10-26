@@ -11,7 +11,6 @@ import getCollateralized from './requests/getCollateralized'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
-import { mint } from './transactions/mint'
 import { deposit } from './transactions/deposit'
 import { withdraw } from './transactions/withdraw'
 
@@ -30,7 +29,6 @@ export default {
     getExitQueuePositions,
   },
   transactions: {
-    mint,
     deposit,
     withdraw,
   },

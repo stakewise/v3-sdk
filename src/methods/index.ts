@@ -1,13 +1,16 @@
 import vault from './vault'
+import osToken from './osToken'
 import * as utils from './utils'
-import * as osToken from './osToken'
 
 
 type Methods = (
   typeof utils
-  | typeof osToken
+
   | typeof vault.requests
   | typeof vault.transactions
+
+  | typeof osToken.requests
+  | typeof osToken.transactions
 )
 
 interface UnknownMethod {
@@ -85,7 +88,10 @@ const methods = {
     ...createMethods<typeof vault.requests>(vault.requests, params),
     ...createMethods<typeof vault.transactions>(vault.transactions, params),
   }),
-  createOsTokenMethods: (params: CommonParams) => createMethods<typeof osToken>(osToken, params),
+  createOsTokenMethods: (params: CommonParams) => ({
+    ...createMethods<typeof osToken.requests>(osToken.requests, params),
+    ...createMethods<typeof osToken.transactions>(osToken.transactions, params),
+  }),
 }
 
 
