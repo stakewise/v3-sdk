@@ -1,4 +1,5 @@
 import tokens from '../constants/tokens'
+import { ZeroAddress } from 'ethers'
 
 
 export default {
@@ -35,10 +36,10 @@ export default {
       multicall: '0x77dCa2C955b15e9dE4dbBCf1246B4B85b651e50e',
       priceOracle: '0xe977B1fADBD28Dff25b093Dd48c02b07921F15E4',
       vaultsRegistry: '0xA7b1A1469b6eCAF941E0Bb8d5BB50C572072Ec20',
-      mintTokenConfig: '0x7869Fb1988554197d17F5aA846c98F7b01E8ddAc',
       sharedMevEscrow: '0xb793c3D2Cec1d0F35fF88BCA7655B88A44669e4B',
+      mintTokenConfig: '0x7869Fb1988554197d17F5aA846c98F7b01E8ddAc',
+      mintTokenController: '0xBcF097a3d3D846934694C47058A3cc9D5A6f7457',
       rewardSplitterFactory: '0x6A0A71220Bd8864Deee6d8ABc0113B5589ECf2f8',
-      mintTokenVaultController: '',
     },
     factories: {
       vault: '0x872870F43AD54e69CaC28456a9f397FCDcd4345C',

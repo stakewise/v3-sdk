@@ -1,6 +1,7 @@
 import UniswapPositionManagerAbi from './UniswapPositionManagerAbi.json'
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
+import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import Erc20PrivateVaultAbi from './Erc20PrivateVaultAbi.json'
 import MintTokenConfigAbi from './MintTokenConfigAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
@@ -26,6 +27,7 @@ export {
   UniswapPositionManagerAbi,
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
+  MintTokenControllerAbi,
   Erc20PrivateVaultAbi,
   MintTokenConfigAbi,
   VaultsRegistryAbi,

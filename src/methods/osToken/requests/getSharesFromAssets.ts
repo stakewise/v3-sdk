@@ -6,7 +6,7 @@ type GetSharesFromAssetsInput = {
 const getSharesFromAssets = async (values: GetSharesFromAssetsInput) => {
   const { contracts, amount } = values
 
-  const result = await contracts.tokens.mintToken.convertToShares(amount)
+  const result = await contracts.base.mintTokenController.convertToShares(amount)
 
   return result || 0n
 }
