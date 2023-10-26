@@ -10,6 +10,7 @@ import getAssetsFromShares from './requests/getAssetsFromShares'
 
 // Transactions
 import { mint } from './transactions/mint'
+import { burn } from './transactions/burn'
 
 
 export default {
@@ -25,5 +26,6 @@ export default {
   },
   transactions: {
     mint,
+    burn,
   },
 } as const
