@@ -34,7 +34,6 @@ class StakeWiseSDK {
     this.osToken = methods.createOsTokenMethods(argsForMethods)
   }
 
-  // Temporary method
   vaultMulticall<T extends unknown>({ userAddress, vaultAddress, request }: VaultMulticallInput) {
     return vaultMulticall<T>({
       vaultContract: this.contracts.helpers.createVaultContract(vaultAddress),

@@ -30,17 +30,20 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   const calls: string[] = []
 
-  const config = configs[options.network]
+  let contract = vaultContract
 
-  const library = options.provider || new JsonRpcProvider(config.network.url)
+  const withSigner = !callStatic && !transactionData
 
-  const signer = options.provider
-    ? await library.getSigner(userAddress)
-    : new VoidSigner(userAddress, library)
+  if (withSigner) {
+    const config = configs[options.network]
+    const library = options.provider || new JsonRpcProvider(config.network.url)
 
-  const signedContract = transactionData
-    ? vaultContract
-    : vaultContract.connect(signer)
+    const signer = options.provider
+      ? await library.getSigner(userAddress)
+      : new VoidSigner(userAddress, library)
+
+    contract = vaultContract.connect(signer)
+  }
 
   const [ harvestParams, canHarvest ] = await Promise.all([
     getHarvestParams({ options, vaultAddress }),
@@ -48,20 +51,20 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   ])
 
   if (canHarvest) {
-    const fragment = signedContract.interface.encodeFunctionData('updateState', [ harvestParams ])
+    const fragment = contract.interface.encodeFunctionData('updateState', [ harvestParams ])
 
     calls.push(fragment)
   }
 
   params.forEach(({ method, args }) => {
     // @ts-ignore: TS has limitations when dealing with overloads
-    const fragment = signedContract.interface.encodeFunctionData(method, args)
+    const fragment = contract.interface.encodeFunctionData(method, args)
 
     calls.push(fragment)
   })
 
   if (callStatic) {
-    let result = await signedContract.multicall.staticCall(calls)
+    let result = await contract.multicall.staticCall(calls)
 
     if (canHarvest) {
       // Data from updateState not needed
@@ -74,16 +77,16 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
       const { method } = params[index]
 
       // @ts-ignore: TS has limitations when dealing with overloads
-      return signedContract.interface.decodeFunctionResult(method, data)
+      return contract.interface.decodeFunctionResult(method, data)
     }) as T
   }
 
   if (estimateGas) {
-    return signedContract.multicall.estimateGas(calls) as T
+    return contract.multicall.estimateGas(calls) as T
   }
 
   if (transactionData) {
-    const rx = await signedContract.multicall.populateTransaction(calls)
+    const rx = await contract.multicall.populateTransaction(calls)
 
     return {
       to: rx.to,
@@ -91,7 +94,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     } as T
   }
 
-  return signedContract.multicall(calls) as T
+  return contract.multicall(calls) as T
 }
 
 
