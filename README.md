@@ -80,6 +80,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
 |[sdk.vault.getUserRewards](#sdkvaultgetuserrewards)|
+|[sdk.vault.getCollateralized](#sdkvaultgetcollateralized)|
 
 ##### Table of transactions:
 | **Vault** | **osToken** |
@@ -479,6 +480,32 @@ type Output = {
 ```ts
 await sdk.vault.getStakeBalance({
   userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getCollateralized`
+
+#### Description:
+
+Checks if the vault validators have been run and if so, returns true
+
+#### Arguments:
+
+| Name | Type | Type |
+|------|------|-------------|
+| vaultAddress | `string` | **Require** |
+
+#### Returns:
+
+```ts
+type Output = boolean
+```
+
+#### Example:
+
+```ts
+await sdk.vault.getCollateralized({
   vaultAddress: '0x...',
 })
 ```
