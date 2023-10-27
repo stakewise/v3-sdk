@@ -18,6 +18,7 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 - [API - Vault](#api-vault)
 - [API - osToken](#api-ostoken)
 - [API - Utils](#api-utils)
+- [API - Transactions](#transactions)
 
 ## Prerequisites
 
@@ -60,12 +61,14 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
 | network | `Network` | **Require** | Chain id |
-| provider | `any` | **Optional** | You can provide your implementation of the provender for ethers |
+| provider | `BrowserProvider or JsonRpcProvider` | **Optional** | You can provide your implementation of the provender for ethers |
 | endpoints.subgraph | `string` | **Optional** | stakewise sbugraph url |
 | endpoints.web3 | `number` | **Optional** | Your url for connect to blockchian |
 | endpoints.api | `string` | **Optional** | stakewise backend url |
 
 ## Quick Links
+
+##### Request table:
 | **Vault** | **osToken** | **Utils** |
 |------|------|------|
 | [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
@@ -76,6 +79,14 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
+|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards)|
+
+##### Table of transactions:
+| **Vault** | **osToken** |
+|------|------|
+| [sdk.vault.deposit](#sdkvaultdeposit) | [sdk.osToken.mint](#sdkostokenmint) |
+| [sdk.vault.withdraw](#sdkvaultwithdraw) | [sdk.osToken.burn](#sdkostokenburn) |
+| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue) |
 
 ## API-Vault
 
@@ -381,11 +392,11 @@ Withdrawal details
 
 | Name | Type | Type | Info |
 |------|------|-------------|-------|
-| ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
+| ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
-| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
+| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -482,9 +493,9 @@ How many osToken burn do you need to make to withdraw all deposit.
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
-| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
+| ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 | newStakedAssets | `bigint` | **Require** | The future amount of stake after the deposit |
 
 #### Returns:
@@ -513,9 +524,9 @@ Get the health of the position
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
-| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
+| thresholdPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -576,8 +587,8 @@ User position data
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
-| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
+| thresholdPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
 
@@ -603,7 +614,7 @@ type Output = {
 | `minted.fee` | Usage fee amount |
 | `minted.shares` | Balance |
 | `minted.assets` | Balance in ETH |
-| `healthFactor` | [getHealthFactor](#sdkostokengethealthfactor)  |
+| `healthFactor` | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)  |
 | `protocolFeePercent` | Usage fee percent |
 
 #### Example:
@@ -626,9 +637,9 @@ Maximum number of **shares** for minting
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Require** | [getBaseData](#sdkostokengetbasedata) |
-| stakedAssets | `bigint` | **Require** | [getStakeBalance](#sdkvaultgetstakebalance) |
-| mintedAssets | `bigint` | **Require** | [getPosition](#sdkostokengetposition) |
+| ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 
 #### Returns:
 
@@ -794,6 +805,273 @@ type Output = Array<{
 await sdk.utils.getTransactions({ hash: '0x...' })
 ```
 ---
+## Transactions
+
+Transactions work through the provider you sent when creating an instance of our SDK class. Or, if you are a custodian, you can get the transaction data and sign it yourself. Each transaction also gives you the opportunity to get an approximate gas for sending it. For custodians, it is more reliable to calculate the gas yourself. Each transaction has encode and estimateGas methods for your convenience
+
+### `sdk.vault.deposit`
+
+#### Description:
+
+Deposit (stake) in a vault
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| assets | `bigint` | **Require** | Deposit amount |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+
+#### Example:
+
+```ts
+const params = {
+  assets: 0n,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.deposit(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to, value } = await sdk.vault.deposit.encode(params)
+// Get an approximate gas per transaction
+const gas = = await sdk.vault.deposit.estimateGas(params)
+```
+---
+### `sdk.vault.withdraw`
+
+#### Description:
+
+Withdrawal of funds from a vault
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| assets | `bigint` | **Require** | Withdraw amount |
+| availableAssets | `string` | **Require** | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+
+#### Example:
+
+```ts
+const amountAssets = 200n // from input mb
+
+const [
+  { ltvPercent, thresholdPercent },
+  stake,
+] = await Promise.all([
+  sdk.osToken.getBaseData(),
+  sdk.vault.getStakeBalance({
+    vaultAddress: '0x...',
+    userAddress: '0x...',
+  }),
+])
+
+const osToken = await sdk.osToken.getPosition({
+  stakedAssets: stake.assets,
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  thresholdPercent,
+})
+
+const { availableAssets, maxWithdrawAssets } = sdk.vault.getWithdrawData({
+  mintedAssets: osToken.minted.assets,
+  stakedAssets: stake.assets,
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  ltvPercent,
+})
+
+if (amountAssets > maxWithdrawAssets) {
+  // There is a withdrawal restriction if you have an osToken.
+  // If you withdraw all funds, your osToken position will become unhealthy.
+  // Contracts control this, but it's good to block cases like this in the UI.
+
+  const burnAmount = await burn.calculateBurn(stake.assets)
+
+  // burnAmount is the value that is responsible for figuring out how many osToken must be burned to withdraw all your funds.
+
+  return
+}
+
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  assets: amountAssets,
+  availableAssets,
+}
+
+// Send transaction
+const hash = await sdk.vault.withdraw(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.withdraw.encode(params)
+// Get an approximate gas per transaction
+const gas = = await sdk.vault.withdraw.estimateGas(params)
+```
+---
+### `sdk.vault.claimExitQueue`
+
+#### Description:
+
+Take the freed tokens from the queue
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| positions | `string` | **Require** | `data` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+
+#### Example:
+
+```ts
+const exitQueue = await sdk.vault.getExitQueuePositions({
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+})
+
+if (!exitQueue.withdrawable) {
+  // The exit queue has not yet accumulated funds for withdrawal
+  return
+}
+
+if (!exitQueue.data.length) {
+  // No withdrawal positions
+  return
+}
+
+const params = {
+  positions: exitQueue.data,
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.claimExitQueue(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.claimExitQueue.encode(params)
+// Get an approximate gas per transaction
+const gas = = await sdk.vault.claimExitQueue.estimateGas(params)
+```
+---
+### `sdk.osToken.mint`
+
+#### Description:
+
+Getting osToken. The amount of token you can get depends on the user's current deposit in the storage. 
+Use data from methods [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) and [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) to block a call to mint() if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction would make the position unhealthy
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| shares | `bigint` | **Require** | mint amount |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+
+#### Example:
+
+```ts
+import { OsTokenPositionHealth } from '@stakewise/v3-sdk'
+
+const amountShares = 200n // from input mb
+
+const [
+  { ltvPercent, thresholdPercent },
+  stake,
+] = await Promise.all([
+  sdk.osToken.getBaseData(),
+  sdk.vault.getStakeBalance({
+    vaultAddress: '0x...',
+    userAddress: '0x...',
+  }),
+])
+
+const osToken = await sdk.osToken.getPosition({
+  stakedAssets: stake.assets,
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  thresholdPercent,
+})
+
+const maxMint = await sdk.osToken.getMaxMint({
+  mintedAssets: osToken.minted.assets,
+  stakedAssets: stake.assets,
+  ltvPercent,
+})
+
+if (amountShares > maxMint) {
+  // The value of amountShares is more than we can mint
+  return
+}
+
+const newMintShares = osToken.minted.shares + amountShares
+const newMintAssets = await sdk.osToken.getAssetsFromShares({
+  amount: newMintShares
+})
+
+const { health } = sdk.osToken.getHealthFactor({
+  thresholdPercent,
+  stakedAssets: stake.assets,
+  mintedAssets: newMintAssets,
+})
+
+if (health !== OsTokenPositionHealth.Healthy) {
+  // If you do a minting with so many amountShares, your position is no longer healthy
+  return
+}
+
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  shares: amountShares,
+}
+
+// Send transaction
+const hash = await sdk.osToken.mint(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.osToken.mint.encode(params)
+// Get an approximate gas per transaction
+const gas = = await sdk.osToken.mint.estimateGas(params)
+```
+---
+### `sdk.osToken.burn`
+
+#### Description:
+
+Burns your osToken
+
+#### Arguments:
+
+| Name | Type | Type | Description |
+|------|------|-------------|---------|
+| shares | `bigint` | **Require** | Burn amount |
+| userAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Require** | - |
+
+#### Example:
+
+```ts
+const params = {
+  shares: 0n,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.osToken.burn(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to, value } = await sdk.osToken.burn.encode(params)
+// Get an approximate gas per transaction
+const gas = = await sdk.osToken.burn.estimateGas(params)
+```
+---
+
 ## Description of other parts of the api
 
 To retrieve the storage data, you just need the method above. Other parts of the api are needed for specific tasks.
@@ -803,7 +1081,7 @@ To retrieve the storage data, you just need the method above. Other parts of the
 | Name | Description
 |------|------|
 | **contracts** | Instances of our contracts |
-| **vaultMulticall** | A method to implement a transaction. It will be removed from the SDK in the future |
+| **vaultMulticall** | A method to implement a transaction with vault update |
 | **config** | Object with contract addresses and other data |
 | **provider** | Current provider for blockchain communication |
 | **network** | Selected network |
