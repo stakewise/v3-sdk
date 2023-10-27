@@ -4,7 +4,7 @@ import { vaultMulticall } from '../../../../contracts'
 
 
 export const commonLogic = async (values: ClaimExitQueueInput) => {
-  const { options, contracts, positions, vaultAddress, userAddress, availableAssets } = values
+  const { options, contracts, positions, vaultAddress, userAddress } = values
 
   if (!Array.isArray(positions) || !positions.length) {
     throw new Error('Not valid or empty positions')
