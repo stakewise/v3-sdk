@@ -6,7 +6,7 @@ import { DaySnapshotsQueryPayload } from '../../../../graphql/subgraph/daySnapsh
 
 export const modifyDaySnapshot = (daySnapshot: Omit<DaySnapshotsQueryPayload['daySnapshots'][number], 'date'>) => {
   const apyValue = Number(daySnapshot.rewardPerAsset) || 0
-  const tvlValue = daySnapshot.totalAssets || '0'
+  const tvlValue = String(daySnapshot.totalAssets) || '0'
 
   return {
     APY: apyValue * 365 * 100,
