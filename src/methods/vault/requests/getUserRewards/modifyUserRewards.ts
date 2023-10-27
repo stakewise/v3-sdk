@@ -5,7 +5,7 @@ import { UserRewardsQueryPayload } from '../../../../graphql/backend/vault'
 
 
 export const modifyUserReward = (reward: Omit<UserRewardsQueryPayload['userRewards'][number], 'date'>) => {
-  const totalRewards = reward.sumRewards || '0'
+  const totalRewards = String(reward.sumRewards) || '0'
 
   return {
     rewards: Number(formatEther(totalRewards)),
