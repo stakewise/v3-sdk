@@ -6,11 +6,7 @@ const createContract = <T extends unknown>(
   address: string,
   abi: InterfaceAbi,
   library: Provider
-) : T => {
-  const contract = new Contract(address, abi, library) as T
-
-  return contract
-}
+): T => new Contract(address, abi, library) as T
 
 
 export default createContract

@@ -38,6 +38,7 @@ export default {
       vaultsRegistry: ZeroAddress,
       sharedMevEscrow: ZeroAddress,
       mintTokenConfig: ZeroAddress,
+      mintTokenController: ZeroAddress,
       multicall: '0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441',
       rewardSplitterFactory: ZeroAddress,
     },

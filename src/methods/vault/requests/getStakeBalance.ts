@@ -16,7 +16,7 @@ const getStakeBalance = async (values: GetStakeBalanceInput) => {
 
   const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
 
-  const balanceShares = await vaultContract.balanceOf(userAddress)
+  const balanceShares = await vaultContract.getShares(userAddress)
 
   const result = await vaultMulticall<[ [ bigint ] ]>({
     options,

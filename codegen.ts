@@ -5,7 +5,7 @@ import configs from './src/utils/configs'
 
 
 // For every netwrok we have same gql shema, so we can use just Mainnet here
-const urls = configs[Network.Goerli].api // TODO replace on Mainnet
+const urls = configs[Network.Holesky].api // TODO replace on Mainnet
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {

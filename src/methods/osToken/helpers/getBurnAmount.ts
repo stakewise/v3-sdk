@@ -28,7 +28,7 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
       ? mintedAssets
       : assetsToBurn
 
-    const sharesToBurn = await contracts.tokens.mintToken.convertToShares(assetsResult)
+    const sharesToBurn = await contracts.base.mintTokenController.convertToShares(assetsResult)
 
     return sharesToBurn || 0n
   }

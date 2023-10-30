@@ -24,8 +24,8 @@ const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
 
   const [ mintedAssets, feePercent ] = await Promise.all([
-    contracts.tokens.mintToken.convertToAssets(mintedShares),
-    contracts.tokens.mintToken.feePercent(),
+    contracts.base.mintTokenController.convertToAssets(mintedShares),
+    contracts.base.mintTokenController.feePercent(),
   ])
 
   const protocolFeePercent = feePercent / 100n

@@ -17,14 +17,14 @@ const getMaxMint = async (values: GetMaxMintInput) => {
     return 0n
   }
 
-  const avgRewardPerSecond = await contracts.tokens.mintToken.avgRewardPerSecond()
+  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
   const maxMintedAssets = stakedAssets * ltvPercent / 10_000n
   const maxMintedAssetsHourReward = (maxMintedAssets * avgRewardPerSecond * 3600n) / constants.blockchain.amount1
   const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
 
   if (canMintAssets > 0) {
-    const maxMintShares2 = await contracts.tokens.mintToken.convertToShares(canMintAssets)
+    const maxMintShares2 = await contracts.base.mintTokenController.convertToShares(canMintAssets)
 
     return maxMintShares2
   }

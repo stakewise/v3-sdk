@@ -18,6 +18,7 @@ import {
   RewardSplitterAbi,
   MintTokenConfigAbi,
   Erc20PrivateVaultAbi,
+  MintTokenControllerAbi,
   RewardSplitterFactoryAbi,
   UniswapPositionManagerAbi,
 } from './abis'
@@ -25,6 +26,7 @@ import {
 import type {
   UniswapPositionManagerAbi as UniswapPositionManagerType,
   RewardSplitterFactoryAbi as RewardSplitterFactoryType,
+  MintTokenControllerAbi as MintTokenControllerType,
   MintTokenConfigAbi as MintTokenConfigType,
   VaultsRegistryAbi as VaultsRegistryType,
   RewardSplitterAbi as RewardSplitterType,
@@ -95,6 +97,12 @@ const getMintTokenConfig = (provider: Provider, config: StakeWise.Config) => cre
   provider
 )
 
+const getMintTokenController = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenControllerType>(
+  config.addresses.base.mintTokenController,
+  MintTokenControllerAbi,
+  provider
+)
+
 const getPriceOracle = (provider: Provider, config: StakeWise.Config) => createContract<PriceOracleType>(
   config.addresses.base.priceOracle,
   PriceOracleAbi,
@@ -141,6 +149,7 @@ export const createContracts = (input: CreateContractsInput) => {
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
       mintTokenConfig: getMintTokenConfig(provider, config),
+      mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),
     },
     tokens: {
