@@ -36,7 +36,7 @@ export default {
       keeper: '0xc3e8c8BA310b62540FBb5eB81c9028444D35e568',
       multicall: '0xcA11bde05977b3631167028862bE2a173976CA11',
       priceOracle: '0x8cE94676F28fAE24eBb4a0D6dc0bDCC0aDa10d2D',
-      vaultsRegistry: '0x39B541dAA5B93bEE3a429d82c8cEcdFCE1b36566',
+      vaultsRegistry: '0xAa773c035Af95721C518eCd8250CadAC0AAB7ed0',
       sharedMevEscrow: '0xd7C4C59CB635Fcfef880A4a6Fd6563A582E1CFC1',
       mintTokenConfig: '0xC31ffC4CA45e4DDBFb88933C500115c87Cc543B5',
       mintTokenController: '0xB3BE6f7544393f6FbAd8b92B2D7328891a8d8C4b',
