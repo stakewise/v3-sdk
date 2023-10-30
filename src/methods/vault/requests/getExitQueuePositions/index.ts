@@ -10,8 +10,8 @@ type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
 }
 
 const mock = {
-  data: [],
   total: 0n,
+  positions: [],
   withdrawable: 0n,
 }
 

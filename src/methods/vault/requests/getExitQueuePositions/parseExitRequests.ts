@@ -20,8 +20,8 @@ type Position = {
 
 type ParseExitRequestsOutput = {
   total: bigint
-  data: Position[]
   withdrawable: bigint
+  positions: Position[]
 }
 
 type ExitedAssetsResponse = Array<{
@@ -127,7 +127,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   }
 
   return {
-    data: claims,
+    positions: claims,
     total: totalExitingAssets,
     withdrawable: withdrawableAssets,
   }
