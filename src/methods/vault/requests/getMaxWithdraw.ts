@@ -1,6 +1,6 @@
 import { parseEther } from 'ethers'
 
-import { BigDecimal, constants } from '../../../../utils'
+import { BigDecimal, constants } from '../../../utils'
 
 
 type GetMaxWithdrawInput = {
@@ -17,7 +17,7 @@ const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
     return 0n
   }
 
-  const rewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
+  const rewardPerSecond = await contracts.tokens.mintToken.avgRewardPerSecond()
 
   const gap = new BigDecimal(rewardPerSecond)
     .multiply(60 * 60) // 1h

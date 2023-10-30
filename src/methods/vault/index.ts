@@ -2,12 +2,11 @@
 import getVault from './requests/getVault'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
+import getMaxWithdraw from './requests/getMaxWithdraw'
 import getDaySnapshots from './requests/getDaySnapshots'
 import getStakeBalance from './requests/getStakeBalance'
-import getWithdrawData from './requests/getWithdrawData'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
-import getCollateralized from './requests/getCollateralized'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
@@ -21,12 +20,11 @@ export default {
     getVault,
     getValidators,
     getUserRewards,
+    getMaxWithdraw,
     getDaySnapshots,
     getStakeBalance,
-    getWithdrawData,
     getHarvestParams,
     getStakerActions,
-    getCollateralized,
     getExitQueuePositions,
   },
   transactions: {

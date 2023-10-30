@@ -76,11 +76,10 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
 | [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
-| [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
 |[sdk.vault.getUserRewards](#sdkvaultgetuserrewards)|
-|[sdk.vault.getCollateralized](#sdkvaultgetcollateralized)|
 
 ##### Table of transactions:
 | **Vault** | **osToken** |
@@ -383,45 +382,33 @@ type Output = {
 await sdk.vault.getVault({ vaultAddress: '0x...' })
 ```
 ---
-### `sdk.vault.getWithdrawData`
+### `sdk.vault.getMaxWithdraw`
 
 #### Description:
 
-Withdrawal details
+How much a user can withdraw
 
 #### Arguments:
 
 | Name | Type | Type | Info |
 |------|------|-------------|-------|
 | ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
 | mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
 ```ts
-type Output = {
-  availableAssets: bigint
-  maxWithdrawAssets: bigint
-}
+type Output = bigint
 ```
-
-| Name | Description |
-|------|-------------|
-| `availableAssets` | Available for withdrawal instantly |
-| `maxWithdrawAssets` | Maximum available for withdrawal |
 
 #### Example:
 
 ```ts
-await sdk.vault.getWithdrawData({
+await sdk.vault.getMaxWithdraw({
   ltvPercent: 0n,
   mintedAssets: 0n,
   stakedAssets: 0n,
-  userAddress: '0x...',
-  vaultAddress: '0x...',
 })
 ```
 ---
@@ -484,31 +471,6 @@ await sdk.vault.getStakeBalance({
 })
 ```
 ---
-### `sdk.vault.getCollateralized`
-
-#### Description:
-
-Checks if the vault validators have been run and if so, returns true
-
-#### Arguments:
-
-| Name | Type | Type |
-|------|------|-------------|
-| vaultAddress | `string` | **Require** |
-
-#### Returns:
-
-```ts
-type Output = boolean
-```
-
-#### Example:
-
-```ts
-await sdk.vault.getCollateralized({
-  vaultAddress: '0x...',
-})
-```
 ## API-osToken
 
 ### `sdk.osToken.getBurnAmount`
@@ -878,7 +840,7 @@ Withdrawal of funds from a vault
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
 | assets | `bigint` | **Require** | Withdraw amount |
-| availableAssets | `string` | **Require** | [sdk.vault.getWithdrawData](#sdkvaultgetwithdrawdata) |
+| availableAssets | `string` | **Require** | [sdk.vault.getMaxWithdraw](#sdkvaultgetwithdrawdata) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
 
@@ -905,7 +867,7 @@ const osToken = await sdk.osToken.getPosition({
   thresholdPercent,
 })
 
-const { availableAssets, maxWithdrawAssets } = sdk.vault.getWithdrawData({
+const { availableAssets, maxWithdrawAssets } = sdk.vault.getMaxWithdraw({
   mintedAssets: osToken.minted.assets,
   stakedAssets: stake.assets,
   vaultAddress: '0x...',

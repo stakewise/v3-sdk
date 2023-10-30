@@ -4,13 +4,10 @@ import { vaultMulticall } from '../../../../contracts'
 
 
 export const commonLogic = async (values: WithdrawInput) => {
-  const { options, contracts, assets, vaultAddress, userAddress, availableAssets } = values
+  const { options, contracts, assets, vaultAddress, userAddress } = values
 
-  validateArgs.bigint({ assets, availableAssets })
+  validateArgs.bigint({ assets })
   validateArgs.address({ vaultAddress, userAddress })
-
-  const withExitQueue = availableAssets < assets
-  const hasAvailableAssets = availableAssets > 0
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
@@ -22,13 +19,13 @@ export const commonLogic = async (values: WithdrawInput) => {
     options,
   }
 
-  if (hasAvailableAssets) {
-    const amount = withExitQueue ? availableAssets : assets
+  const isCollateralized = await contracts.base.keeper.isCollateralized(vaultAddress)
 
+  if (isCollateralized) {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
       ...multicallCommonArgs,
       request: {
-        params: [ { method: 'convertToShares', args: [ amount ] } ],
+        params: [ { method: 'convertToShares', args: [ assets ] } ],
         callStatic: true,
       },
     })
@@ -40,14 +37,11 @@ export const commonLogic = async (values: WithdrawInput) => {
        args: [ shares, userAddress ],
     })
   }
-
-  if (withExitQueue) {
-    const exitQueueAssets = assets - availableAssets
-
+  else {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
       ...multicallCommonArgs,
       request: {
-        params: [ { method: 'convertToShares', args: [ exitQueueAssets ] } ],
+        params: [ { method: 'convertToShares', args: [ assets ] } ],
         callStatic: true,
       },
     })

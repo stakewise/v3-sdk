@@ -7,11 +7,16 @@ import modifyVault from './modifyVault'
 
 type GetVaultInput = {
   options: StakeWise.Options
+  contracts: StakeWise.Contracts
   vaultAddress: VaultQueryVariables['address']
 }
 
-const getVault = async (input: GetVaultInput) => {
-  const { vaultAddress, options } = input
+type GetVaultOutput = ModifiedVault & {
+  isCollateralized: boolean
+}
+
+const getVault = async (input: GetVaultInput): Promise<GetVaultOutput> => {
+  const { contracts, options, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })
 
@@ -23,7 +28,12 @@ const getVault = async (input: GetVaultInput) => {
     modifyResult: (data: VaultQueryPayload) => modifyVault({ data, network: options.network }),
   })
 
-  return data
+  const isCollateralized = await contracts.base.keeper.isCollateralized(vaultAddress)
+
+  return {
+    ...data,
+    isCollateralized,
+  }
 }
 
 
