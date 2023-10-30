@@ -3,7 +3,7 @@ import { AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/alloc
 
 type AllocatorActionsPayload = Pick<AllocatorActionsQueryPayload['allocatorActions'][number], 'id' | 'actionType' | 'assets'>
 
-export type ModifiedAllocatorActions = Array<AllocatorActionsPayload & {
+export type ModifiedStakerActions = Array<AllocatorActionsPayload & {
   link: string
   createdAt: number
 }>

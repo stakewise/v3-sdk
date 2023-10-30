@@ -49,6 +49,13 @@ declare global {
       }
     }
 
+    type TransactionData = {
+      data: string
+      to: string
+    }
+
+    type TransactionHash = string
+
     namespace ABI {
       type Vault = VaultAbi
       type Keeper = KeeperAbi

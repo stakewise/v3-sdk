@@ -1,11 +1,11 @@
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
 import { AllocatorActionType, apiUrls, validateArgs } from '../../../../utils'
-import modifyAllocatorActions from './modifyAllocatorActions'
-import { ModifiedAllocatorActions } from './types'
+import modifyStakerActions from './modifyStakerActions'
+import { ModifiedStakerActions } from './types'
 import { subgraph } from '../../../../graphql'
 
 
-type GetAllocatorActionsInput = {
+type GetStakerActionsInput = {
   options: StakeWise.Options
   userAddress?: string
   types?: AllocatorActionType[]
@@ -14,7 +14,7 @@ type GetAllocatorActionsInput = {
   vaultAddress: AllocatorActionsQueryVariables['where']['address']
 }
 
-const getAllocatorActions = async (input: GetAllocatorActionsInput) => {
+const getStakerActions = async (input: GetStakerActionsInput) => {
   const { options, skip, limit, types, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress })
@@ -38,7 +38,7 @@ const getAllocatorActions = async (input: GetAllocatorActionsInput) => {
     })
   }
 
-  const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedAllocatorActions>({
+  const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       skip,
@@ -49,11 +49,11 @@ const getAllocatorActions = async (input: GetAllocatorActionsInput) => {
         address: userAddress ? userAddress.toLowerCase() : undefined,
       } as AllocatorActionsQueryVariables['where'],
     },
-    modifyResult: (data: AllocatorActionsQueryPayload) => modifyAllocatorActions({ data, network: options.network }),
+    modifyResult: (data: AllocatorActionsQueryPayload) => modifyStakerActions({ data, network: options.network }),
   })
 
   return data
 }
 
 
-export default getAllocatorActions
+export default getStakerActions

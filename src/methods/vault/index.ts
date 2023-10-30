@@ -1,9 +1,37 @@
-export { default as getVault } from './requests/getVault'
-export { default as getExitQueue } from './requests/getExitQueue'
-export { default as getValidators } from './requests/getValidators'
-export { default as getDaySnapshots } from './requests/getDaySnapshots'
-export { default as getUserRewards } from './requests/getUserRewards'
-export { default as getStakeBalance } from './requests/getStakeBalance'
-export { default as getWithdrawData } from './requests/getWithdrawData'
-export { default as getHarvestParams } from './requests/getHarvestParams'
-export { default as getAllocatorActions } from './requests/getAllocatorActions'
+// Requests
+import getVault from './requests/getVault'
+import getValidators from './requests/getValidators'
+import getUserRewards from './requests/getUserRewards'
+import getDaySnapshots from './requests/getDaySnapshots'
+import getStakeBalance from './requests/getStakeBalance'
+import getWithdrawData from './requests/getWithdrawData'
+import getHarvestParams from './requests/getHarvestParams'
+import getStakerActions from './requests/getStakerActions'
+import getCollateralized from './requests/getCollateralized'
+import getExitQueuePositions from './requests/getExitQueuePositions'
+
+// Transactions
+import { deposit } from './transactions/deposit'
+import { withdraw } from './transactions/withdraw'
+import { claimExitQueue } from './transactions/claimExitQueue'
+
+
+export default {
+  requests: {
+    getVault,
+    getValidators,
+    getUserRewards,
+    getDaySnapshots,
+    getStakeBalance,
+    getWithdrawData,
+    getHarvestParams,
+    getStakerActions,
+    getCollateralized,
+    getExitQueuePositions,
+  },
+  transactions: {
+    deposit,
+    withdraw,
+    claimExitQueue,
+  },
+} as const

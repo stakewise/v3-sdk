@@ -4,7 +4,7 @@ import fetchExitQueuePositions from './fetchExitQueuePositions'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
-type GetExitQueueInput = FetchExitQueuePositionsInput & {
+type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
   contracts: StakeWise.Contracts
   options: StakeWise.Options
 }
@@ -15,7 +15,7 @@ const mock = {
   withdrawable: 0n,
 }
 
-const getExitQueue = async (input: GetExitQueueInput) => {
+const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
   const { options, contracts, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -41,4 +41,4 @@ const getExitQueue = async (input: GetExitQueueInput) => {
 }
 
 
-export default getExitQueue
+export default getExitQueuePositions

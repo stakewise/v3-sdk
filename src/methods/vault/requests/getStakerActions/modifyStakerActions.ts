@@ -2,15 +2,15 @@ import { formatEther } from 'ethers'
 
 import { AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
 import { Network, configs } from '../../../../utils'
-import { ModifiedAllocatorActions } from './types'
+import { ModifiedStakerActions } from './types'
 
 
-type ModifyAllocatorActionsInput = {
+type ModifyStakerActionsInput = {
   data: AllocatorActionsQueryPayload
   network: Network
 }
 
-const modifyAllocatorActions = (input: ModifyAllocatorActionsInput): ModifiedAllocatorActions => {
+const modifyStakerActions = (input: ModifyStakerActionsInput): ModifiedStakerActions => {
   const { data, network } = input
 
   return data.allocatorActions.map((item) => ({
@@ -22,4 +22,4 @@ const modifyAllocatorActions = (input: ModifyAllocatorActionsInput): ModifiedAll
 }
 
 
-export default modifyAllocatorActions
+export default modifyStakerActions
