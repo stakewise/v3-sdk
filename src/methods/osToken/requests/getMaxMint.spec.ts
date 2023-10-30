@@ -6,8 +6,8 @@ describe('getMaxMint', () => {
 
   beforeEach(() => {
     mockContracts = {
-      tokens: {
-        mintToken: {
+      base: {
+        mintTokenController: {
           avgRewardPerSecond: jest.fn(),
           convertToShares: jest.fn(),
         },

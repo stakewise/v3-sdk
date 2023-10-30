@@ -20,8 +20,8 @@ describe('getBurnAmount', () => {
     const mockedShares = 100n
 
     const contracts = {
-      tokens: {
-        mintToken: {
+      base: {
+        mintTokenController: {
           convertToShares: jest.fn().mockResolvedValue(mockedShares),
         },
       },
@@ -42,8 +42,8 @@ describe('getBurnAmount', () => {
 
   it('should return 0 if assetsToBurn is less than or equal to 0', async () => {
     const contracts = {
-      tokens: {
-        mintToken: {
+      base: {
+        mintTokenController: {
           convertToShares: jest.fn(),
         },
       },
