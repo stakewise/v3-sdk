@@ -17,7 +17,7 @@ const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
     return 0n
   }
 
-  const rewardPerSecond = await contracts.tokens.mintToken.avgRewardPerSecond()
+  const rewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
   const gap = new BigDecimal(rewardPerSecond)
     .multiply(60 * 60) // 1h

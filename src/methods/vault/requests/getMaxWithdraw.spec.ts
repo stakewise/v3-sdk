@@ -10,8 +10,8 @@ describe('getMaxWithdraw function', () => {
       mintedAssets: 1000n,
       stakedAssets: 2000n,
       contracts: {
-        tokens: {
-          mintToken: {
+        base: {
+          mintTokenController: {
             avgRewardPerSecond: jest.fn(),
           },
         },
@@ -25,8 +25,8 @@ describe('getMaxWithdraw function', () => {
   it('should consider rewardPerSecond for locked assets', async () => {
     const mockedReward = 10n
     const contracts = {
-      tokens: {
-        mintToken: {
+      base: {
+        mintTokenController: {
           avgRewardPerSecond: jest.fn().mockResolvedValue(mockedReward),
         },
       },
@@ -50,8 +50,8 @@ describe('getMaxWithdraw function', () => {
   it('should return 0 if locked assets exceed staked assets', async () => {
     const mockedReward = 10n
     const contracts = {
-      tokens: {
-        mintToken: {
+      base: {
+        mintTokenController: {
           avgRewardPerSecond: jest.fn().mockResolvedValue(mockedReward),
         },
       },

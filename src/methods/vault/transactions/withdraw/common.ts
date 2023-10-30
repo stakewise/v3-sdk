@@ -30,11 +30,11 @@ export const commonLogic = async (values: WithdrawInput) => {
       },
     })
 
-    const shares = result[0].shares
+    const exitQueueShares = result[0].shares
 
     params.push({
-       method: 'redeem',
-       args: [ shares, userAddress ],
+      method: 'enterExitQueue',
+      args: [ exitQueueShares, userAddress ],
     })
   }
   else {
@@ -46,11 +46,11 @@ export const commonLogic = async (values: WithdrawInput) => {
       },
     })
 
-    const exitQueueShares = result[0].shares
+    const shares = result[0].shares
 
     params.push({
-      method: 'enterExitQueue',
-      args: [ exitQueueShares, userAddress ],
+       method: 'redeem',
+       args: [ shares, userAddress ],
     })
   }
 

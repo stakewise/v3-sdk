@@ -840,7 +840,6 @@ Withdrawal of funds from a vault
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
 | assets | `bigint` | **Require** | Withdraw amount |
-| availableAssets | `string` | **Require** | [sdk.vault.getMaxWithdraw](#sdkvaultgetwithdrawdata) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
 
@@ -867,22 +866,14 @@ const osToken = await sdk.osToken.getPosition({
   thresholdPercent,
 })
 
-const { availableAssets, maxWithdrawAssets } = sdk.vault.getMaxWithdraw({
+const maxWithdrawAssets = await sdk.vault.getMaxWithdraw({
   mintedAssets: osToken.minted.assets,
   stakedAssets: stake.assets,
-  vaultAddress: '0x...',
-  userAddress: '0x...',
   ltvPercent,
 })
 
 if (amountAssets > maxWithdrawAssets) {
   // There is a withdrawal restriction if you have an osToken.
-  // If you withdraw all funds, your osToken position will become unhealthy.
-  // Contracts control this, but it's good to block cases like this in the UI.
-
-  const burnAmount = await burn.calculateBurn(stake.assets)
-
-  // burnAmount is the value that is responsible for figuring out how many osToken must be burned to withdraw all your funds.
 
   return
 }
@@ -891,7 +882,6 @@ const params = {
   vaultAddress: '0x...',
   userAddress: '0x...',
   assets: amountAssets,
-  availableAssets,
 }
 
 // Send transaction
