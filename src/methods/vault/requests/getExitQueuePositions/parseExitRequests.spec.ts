@@ -64,7 +64,7 @@ describe('parseExitRequests function', () => {
     expect(vaultMulticall).toHaveBeenCalledTimes(3)
 
     expect(result).toEqual({
-      data: [
+      positions: [
         { exitQueueIndex: 1n, positionTicket: 'positionTicket-1' },
         { exitQueueIndex: 2n, positionTicket: 'positionTicket-2' },
       ],
@@ -84,7 +84,7 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      data: [],
+      positions: [],
       total: 50n,
       withdrawable: 0n,
     })
@@ -108,7 +108,7 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      data: [ { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' } ],
+      positions: [ { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' } ],
       total: 50n,
       withdrawable: 30n,
     })
@@ -129,7 +129,7 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      data: [
+      positions: [
         { exitQueueIndex: 0n, positionTicket: 'positionTicket-1' },
         { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' },
       ],
@@ -152,7 +152,7 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      data: [
+      positions: [
         { exitQueueIndex: 0n, positionTicket: 'positionTicket-1' },
         { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' },
       ],

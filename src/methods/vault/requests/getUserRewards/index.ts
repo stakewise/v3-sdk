@@ -28,7 +28,7 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
     modifyResult: modifyUserRewards,
   })
 
-  return data
+  return data?.days || []
 }
 
 

@@ -6,7 +6,6 @@ export type WithdrawInput = {
   assets: bigint
   userAddress: string
   vaultAddress: string
-  availableAssets: bigint
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts
