@@ -35,9 +35,10 @@ const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
     .minus(lockedAssets)
     .divide(constants.blockchain.amount1)
     .decimals(18)
+    .toString()
 
-  return maxWithdrawAssets.gt(0)
-    ? parseEther(maxWithdrawAssets.toString())
+  return Number(maxWithdrawAssets) > 0
+    ? parseEther(maxWithdrawAssets)
     : 0n
 }
 

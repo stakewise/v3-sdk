@@ -1,7 +1,7 @@
 import { formatEther } from 'ethers'
 
 import { ModifyUserReward } from './types'
-import { UserRewardsQueryPayload } from '../../../../graphql/backend/vault'
+import type { UserRewardsQueryPayload } from '../../../../graphql/backend/vault'
 
 
 export const modifyUserReward = (reward: Omit<UserRewardsQueryPayload['userRewards'][number], 'date'>) => {

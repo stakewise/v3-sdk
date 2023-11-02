@@ -1,6 +1,6 @@
 import { formatEther } from 'ethers'
 
-import { AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
+import type { AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
 import { Network, configs } from '../../../../utils'
 import { ModifiedStakerActions } from './types'
 

@@ -48,11 +48,4 @@ describe('BigDecimal', () => {
     decimal.plus(25.5)
     expect(decimal.toString()).toBe('125.5')
   })
-
-  it('should correctly compare values with gt', () => {
-    const decimal = new BigDecimal(100)
-    expect(decimal.gt(50)).toBe(true)
-    expect(decimal.gt(100)).toBe(false)
-    expect(decimal.gt(150)).toBe(false)
-  })
 })

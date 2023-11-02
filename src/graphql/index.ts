@@ -1,2 +1,8 @@
-export * as backend from './backend'
-export * as subgraph from './subgraph'
+import * as backend from './backend'
+import * as subgraph from './subgraph'
+
+
+export default {
+  backend,
+  subgraph,
+}

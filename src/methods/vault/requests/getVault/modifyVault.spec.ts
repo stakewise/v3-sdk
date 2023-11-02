@@ -2,7 +2,7 @@ import { MaxUint256 } from 'ethers'
 
 import modifyVault from './modifyVault'
 import { Network, configs } from '../../../../utils'
-import { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
+import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 const network = Network.Goerli

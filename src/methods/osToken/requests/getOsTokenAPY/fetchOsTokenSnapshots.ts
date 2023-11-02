@@ -1,5 +1,5 @@
 import { apiUrls } from '../../../../utils'
-import { subgraph } from '../../../../graphql'
+import graphql from '../../../../graphql'
 
 
 export type FetchOsTokenSnapshotsInput = {
@@ -9,7 +9,7 @@ export type FetchOsTokenSnapshotsInput = {
 const fetchOsTokenSnapshots = async (input: FetchOsTokenSnapshotsInput) => {
   const { options } = input
 
-  const data = await subgraph.osToken.fetchOsTokenSnapshotsQuery({
+  const data = await graphql.subgraph.osToken.fetchOsTokenSnapshotsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       first: 14,

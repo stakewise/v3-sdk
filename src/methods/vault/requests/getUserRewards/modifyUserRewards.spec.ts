@@ -1,4 +1,4 @@
-import { UserRewardsQueryPayload } from '../../../../graphql/backend/vault'
+import type { UserRewardsQueryPayload } from '../../../../graphql/backend/vault'
 import modifyUserRewards, { modifyUserReward } from './modifyUserRewards'
 
 

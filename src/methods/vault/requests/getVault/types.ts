@@ -1,4 +1,4 @@
-import { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
+import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 export type ModifiedVault = Omit<

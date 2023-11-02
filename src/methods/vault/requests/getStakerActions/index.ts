@@ -2,7 +2,7 @@ import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } fro
 import { AllocatorActionType, apiUrls, validateArgs } from '../../../../utils'
 import modifyStakerActions from './modifyStakerActions'
 import { ModifiedStakerActions } from './types'
-import { subgraph } from '../../../../graphql'
+import graphql from '../../../../graphql'
 
 
 type GetStakerActionsInput = {
@@ -38,7 +38,7 @@ const getStakerActions = async (input: GetStakerActionsInput) => {
     })
   }
 
-  const data = await subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
+  const data = await graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       skip,

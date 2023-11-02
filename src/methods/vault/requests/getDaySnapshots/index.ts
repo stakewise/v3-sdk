@@ -1,8 +1,8 @@
-import { DaySnapshotsQueryVariables } from '../../../../graphql/subgraph/daySnapshots'
+import type { DaySnapshotsQueryVariables } from '../../../../graphql/subgraph/daySnapshots'
 import { apiUrls, validateArgs } from '../../../../utils'
 import modifyDaySnapshots from './modifyDaySnapshots'
 import { ModifiedDaySnapshots } from './types'
-import { subgraph } from '../../../../graphql'
+import graphql from '../../../../graphql'
 
 
 type GetDaySnapshotsInput = {
@@ -17,7 +17,7 @@ const getDaySnapshots = async (input: GetDaySnapshotsInput) => {
   validateArgs.address({ vaultAddress })
   validateArgs.number({ unixStartOfDay })
 
-  const data = await subgraph.daySnapshots.fetchDaySnapshotsQuery<ModifiedDaySnapshots>({
+  const data = await graphql.subgraph.daySnapshots.fetchDaySnapshotsQuery<ModifiedDaySnapshots>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where: {
