@@ -1,6 +1,6 @@
-import { VaultQueryVariables, VaultQueryPayload } from '../../../../graphql/subgraph/vault'
+import type { VaultQueryVariables, VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
-import { subgraph } from '../../../../graphql'
+import graphql from '../../../../graphql'
 import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'
 
@@ -20,7 +20,7 @@ const getVault = async (input: GetVaultInput): Promise<GetVaultOutput> => {
 
   validateArgs.address({ vaultAddress })
 
-  const data = await subgraph.vault.fetchVaultQuery<ModifiedVault>({
+  const data = await graphql.subgraph.vault.fetchVaultQuery<ModifiedVault>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       address: vaultAddress.toLowerCase(),

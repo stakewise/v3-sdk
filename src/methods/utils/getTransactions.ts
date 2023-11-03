@@ -1,6 +1,6 @@
-import { TransactionsQueryVariables } from '../../graphql/subgraph/transactions'
+import type { TransactionsQueryVariables } from '../../graphql/subgraph/transactions'
 import { apiUrls, validateArgs } from '../../utils'
-import { subgraph } from '../../graphql'
+import graphql from '../../graphql'
 
 
 type GetTransactionsInput = {
@@ -13,7 +13,7 @@ const getTransactions = async (input: GetTransactionsInput) => {
 
   validateArgs.string({ hash })
 
-  const data = await subgraph.transactions.fetchTransactionsQuery({
+  const data = await graphql.subgraph.transactions.fetchTransactionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where: {

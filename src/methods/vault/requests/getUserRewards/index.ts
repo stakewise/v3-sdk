@@ -1,7 +1,7 @@
-import { UserRewardsQueryVariables } from '../../../../graphql/backend/vault'
+import type { UserRewardsQueryVariables } from '../../../../graphql/backend/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
 import modifyUserRewards from './modifyUserRewards'
-import { backend } from '../../../../graphql'
+import graphql from '../../../../graphql'
 import { ModifyUserReward } from './types'
 
 
@@ -18,7 +18,7 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.string({ dateFrom })
 
-  const data = await backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
+  const data = await graphql.backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
     url: apiUrls.getBackendUrl(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),

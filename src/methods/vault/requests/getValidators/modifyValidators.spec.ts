@@ -1,6 +1,6 @@
 import { formatEther } from 'ethers'
 
-import { VaultValidatorsQueryPayload } from '../../../../graphql/backend/vault'
+import type { VaultValidatorsQueryPayload } from '../../../../graphql/backend/vault'
 import { Network, configs } from '../../../../utils'
 import modifyValidators from './modifyValidators'
 

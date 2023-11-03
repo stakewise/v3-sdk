@@ -1,4 +1,4 @@
-import { subgraph } from '../../../../graphql'
+import graphql from '../../../../graphql'
 import { apiUrls } from '../../../../utils'
 
 
@@ -11,7 +11,7 @@ type GetOsTokenPositionSharesInput = {
 const getOsTokenPositionShares = async (values: GetOsTokenPositionSharesInput) => {
   const { options, vaultAddress, userAddress } = values
 
-  const result = await subgraph.osToken.fetchOsTokenPositionsQuery({
+  const result = await graphql.subgraph.osToken.fetchOsTokenPositionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       vaultAddress,

@@ -1,7 +1,7 @@
 import { formatEther } from 'ethers'
 
 import { ModifiedDaySnapshots } from './types'
-import { DaySnapshotsQueryPayload } from '../../../../graphql/subgraph/daySnapshots'
+import type { DaySnapshotsQueryPayload } from '../../../../graphql/subgraph/daySnapshots'
 
 
 export const modifyDaySnapshot = (daySnapshot: Omit<DaySnapshotsQueryPayload['daySnapshots'][number], 'date'>) => {

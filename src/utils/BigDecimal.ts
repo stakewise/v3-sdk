@@ -60,11 +60,6 @@ class BigDecimal {
     return this
   }
 
-  // TODO remove ?
-  gt(value: number) {
-    return this.#value.gt(value)
-  }
-
   toString() {
     return String(this.#value)
   }
