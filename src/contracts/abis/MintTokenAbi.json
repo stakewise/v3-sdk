@@ -137,7 +137,7 @@
         "type": "address"
       }
     ],
-    "name": "balanceOf",
+    "name": "balanceOff",
     "outputs": [
       {
         "internalType": "uint256",
