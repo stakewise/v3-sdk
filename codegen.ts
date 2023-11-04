@@ -4,7 +4,7 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-// For every netwrok we have same gql shema, so we can use just Mainnet here
+// For every network we have same gql shema, so we can use just Mainnet here
 const urls = configs[Network.Mainnet].api
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript

@@ -63,7 +63,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | network | `Network` | **Require** | Chain id |
 | provider | `BrowserProvider or JsonRpcProvider` | **Optional** | You can provide your implementation of the provender for ethers |
 | endpoints.subgraph | `string` | **Optional** | stakewise sbugraph url |
-| endpoints.web3 | `number` | **Optional** | Your url for connect to blockchian |
+| endpoints.web3 | `number` | **Optional** | Your url for connect to blockchain |
 | endpoints.api | `string` | **Optional** | stakewise backend url |
 
 ## Quick Links
