@@ -18,9 +18,7 @@
     "rollup": "rollup --config rollup.config.js --bundleConfigAsCjs"
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./abis/*": "./dist/abis/*",
-    "./abis": "./dist/abis/index.js"
+    ".": "./dist/index.js"
   },
   "keywords": [
     "ethereum",

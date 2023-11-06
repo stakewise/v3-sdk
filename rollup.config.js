@@ -42,11 +42,6 @@ const config = [
           comments: false,
         },
       }),
-      copy({
-        targets: [
-          { src: 'src/contracts/abis', dest: 'dist' },
-        ],
-      }),
     ],
   },
   {

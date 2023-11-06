@@ -14,7 +14,7 @@ const getStakeBalance = async (values: GetStakeBalanceInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
+  const vaultContract = contracts.helpers.createVault(vaultAddress)
 
   const balanceShares = await vaultContract.getShares(userAddress)
 
