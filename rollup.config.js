@@ -1,4 +1,3 @@
-import copy from 'rollup-plugin-copy'
 import json from '@rollup/plugin-json'
 import del from 'rollup-plugin-delete'
 import { dts } from 'rollup-plugin-dts'
