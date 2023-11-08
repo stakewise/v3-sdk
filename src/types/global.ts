@@ -15,6 +15,7 @@ import type {
   Erc20VaultAbi,
   SwiseTokenAbi,
   PriceOracleAbi,
+  UniswapPoolAbi,
   VaultFactoryAbi,
   PrivateVaultAbi,
   V2RewardTokenAbi,
@@ -25,6 +26,7 @@ import type {
   Erc20PrivateVaultAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
+  UniswapPositionManagerAbi,
 } from '../contracts/types'
 
 
@@ -66,6 +68,7 @@ declare global {
       type MintToken = MintTokenAbi
       type Erc20Vault = Erc20VaultAbi
       type SwiseToken = SwiseTokenAbi
+      type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type PrivateVault = PrivateVaultAbi
       type VaultFactory = VaultFactoryAbi
@@ -77,6 +80,7 @@ declare global {
       type Erc20PrivateVault = Erc20PrivateVaultAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
+      type UniswapPositionManager = UniswapPositionManagerAbi
     }
   }
 }

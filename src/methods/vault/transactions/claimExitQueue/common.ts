@@ -16,7 +16,7 @@ export const commonLogic = async (values: ClaimExitQueueInput) => {
   })
 
   const multicallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
-    vaultContract: contracts.helpers.createVaultContract(vaultAddress),
+    vaultContract: contracts.helpers.createVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,

@@ -12,7 +12,7 @@ export const commonLogic = async (values: WithdrawInput) => {
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
   const multicallCommonArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
-    vaultContract: contracts.helpers.createVaultContract(vaultAddress),
+    vaultContract: contracts.helpers.createVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,

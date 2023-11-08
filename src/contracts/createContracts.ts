@@ -5,6 +5,7 @@ import {
   VaultAbi,
   KeeperAbi,
   UsdRateAbi,
+  EthRateAbi,
   MintTokenAbi,
   MulticallAbi,
   Erc20VaultAbi,
@@ -13,12 +14,14 @@ import {
   PriceOracleAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,
+  VestingEscrowAbi,
   V2RewardTokenAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
   Erc20PrivateVaultAbi,
   MintTokenControllerAbi,
+  VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
   UniswapPositionManagerAbi,
 } from './abis'
@@ -26,11 +29,13 @@ import {
 import type {
   UniswapPositionManagerAbi as UniswapPositionManagerType,
   RewardSplitterFactoryAbi as RewardSplitterFactoryType,
+  VestingEscrowFactoryAbi as VestingEscrowFactoryType,
   MintTokenControllerAbi as MintTokenControllerType,
   MintTokenConfigAbi as MintTokenConfigType,
   VaultsRegistryAbi as VaultsRegistryType,
   RewardSplitterAbi as RewardSplitterType,
   V2RewardTokenAbi as V2RewardTokenType,
+  VestingEscrowAbi as VestingEscrowType,
   VaultFactoryAbi as VaultFactoryType,
   PrivateVaultAbi as PrivateVaultType,
   Erc20VaultAbi as Erc20VaultAbiType,
@@ -39,6 +44,7 @@ import type {
   SwiseTokenAbi as SwiseTokenType,
   MulticallAbi as MulticallType,
   MintTokenAbi as MintTokenType,
+  EthRateAbi as EthRateType,
   UsdRateAbi as UsdRateType,
   VaultAbi as VaultAbiType,
   KeeperAbi as KeeperType,
@@ -121,6 +127,18 @@ const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config)
   provider
 )
 
+const createVestingEscrowFactory = (provider: Provider, address: string) => createContract<VestingEscrowFactoryType>(
+  address,
+  VestingEscrowFactoryAbi,
+  provider
+)
+
+const createVestingEscrowDirect = (provider: Provider, address: string) => createContract<VestingEscrowType>(
+  address,
+  VestingEscrowAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -136,13 +154,15 @@ export const createContracts = (input: CreateContractsInput) => {
       multicallContract,
       createMulticall: multicall(multicallContract as MulticallType),
       createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
-      createVaultContract: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
-      createUniswapPoolAbi: (address: string) => createContract<UniswapPoolType>(address, UniswapPoolAbi, provider),
-      createUsdRateContract: (address: string) => createContract<UsdRateType>(address, UsdRateAbi, provider),
-      createErc20VaultContract: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
-      createPrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, provider),
-      createRewardSplitterContract: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, provider),
-      createErc20PrivateVaultContract: (address: string) => createContract<PrivateVaultType>(address, Erc20PrivateVaultAbi, provider),
+      createVault: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
+      createErc20Vault: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
+      createUniswapPool: (address: string) => createContract<UniswapPoolType>(address, UniswapPoolAbi, provider),
+      createPrivateVault: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, provider),
+      createRewardSplitter: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, provider),
+      createVestingEscrowDirect: (address: string) => createContract<VestingEscrowType>(address, VestingEscrowAbi, provider),
+      createErc20PrivateVault: (address: string) => createContract<PrivateVaultType>(address, Erc20PrivateVaultAbi, provider),
+      createUsdRate: (address: string, _provider?: Provider) => createContract<UsdRateType>(address, UsdRateAbi, _provider || provider),
+      createVestingEscrowFactory: (address: string) => createContract<VestingEscrowFactoryType>(address, VestingEscrowFactoryAbi, provider),
     },
     base: {
       keeper: getKeeper(provider, config),

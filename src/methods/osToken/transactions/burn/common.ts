@@ -8,7 +8,7 @@ export const commonLogic = (values: BurnInput) => {
   validateArgs.bigint({ shares })
   validateArgs.address({ vaultAddress, userAddress })
 
-  const vaultContract = contracts.helpers.createVaultContract(vaultAddress)
+  const vaultContract = contracts.helpers.createVault(vaultAddress)
 
   return vaultContract
 }
