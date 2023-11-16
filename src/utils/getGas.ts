@@ -11,12 +11,18 @@ const getGas = async (value: GetGasInput): Promise<bigint> => {
 
   validateArgs.bigint({ estimatedGas })
 
-  const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
+  const [ feeData, latestBlock ] = await Promise.all([
+    provider.getFeeData(),
+    provider.getBlock('latest'),
+  ])
+
+  const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = feeData
+  const baseFeePerGas = latestBlock?.baseFeePerGas || 0n
 
   const isEIP1559 = Boolean(maxFeePerGas && maxPriorityFeePerGas)
 
   const gas = isEIP1559
-    ? estimatedGas * (maxFeePerGas as bigint)
+    ? estimatedGas * (baseFeePerGas + (maxPriorityFeePerGas || 0n))
     : estimatedGas * (gasPrice as bigint)
 
   return gas
