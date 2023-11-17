@@ -49,7 +49,7 @@ export default {
       erc20PrivateVault: ZeroAddress,
     },
     uniswap: {
-      positionManager: '',
+      positionManager: ZeroAddress,
     },
   },
   tokens: {
