@@ -24,10 +24,12 @@ describe('parseExitRequests function', () => {
     exitRequests: [
       {
         positionTicket: 'positionTicket-1',
+        timestamp: '123456',
         totalShares: '100',
       },
       {
         positionTicket: 'positionTicket-2',
+        timestamp: '123456',
         totalShares: '200',
       },
     ],
@@ -65,8 +67,16 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       positions: [
-        { exitQueueIndex: 1n, positionTicket: 'positionTicket-1' },
-        { exitQueueIndex: 2n, positionTicket: 'positionTicket-2' },
+        {
+          exitQueueIndex: 1n,
+          timestamp: '123456',
+          positionTicket: 'positionTicket-1',
+        },
+        {
+          exitQueueIndex: 2n,
+          timestamp: '123456',
+          positionTicket: 'positionTicket-2',
+        },
       ],
       total: 100n,
       withdrawable: 31n,
@@ -108,7 +118,11 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      positions: [ { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' } ],
+      positions: [ {
+        exitQueueIndex: 1n,
+        timestamp: '123456',
+        positionTicket: 'positionTicket-2',
+      } ],
       total: 50n,
       withdrawable: 30n,
     })
@@ -130,8 +144,16 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       positions: [
-        { exitQueueIndex: 0n, positionTicket: 'positionTicket-1' },
-        { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' },
+        {
+          exitQueueIndex: 0n,
+          timestamp: '123456',
+          positionTicket: 'positionTicket-1',
+        },
+        {
+          exitQueueIndex: 1n,
+          timestamp: '123456',
+          positionTicket: 'positionTicket-2',
+        },
       ],
       total: 0n,
       withdrawable: 0n,
@@ -153,8 +175,16 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       positions: [
-        { exitQueueIndex: 0n, positionTicket: 'positionTicket-1' },
-        { exitQueueIndex: 1n, positionTicket: 'positionTicket-2' },
+        {
+          exitQueueIndex: 0n,
+          timestamp: '123456',
+          positionTicket: 'positionTicket-1',
+        },
+        {
+          exitQueueIndex: 1n,
+          timestamp: '123456',
+          positionTicket: 'positionTicket-2',
+        },
       ],
       total: 0n,
       withdrawable: 30n,

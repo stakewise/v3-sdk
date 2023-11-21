@@ -10,12 +10,14 @@ export type ParseExitRequestsInput = {
   exitRequests: Array<{
     positionTicket: string
     totalShares: string
+    timestamp: string
   }>
 }
 
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
+  timestamp: string
 }
 
 type ParseExitRequestsOutput = {
@@ -58,13 +60,15 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   })
 
   // We need to make a list with ID and Index for those items from which you can get VLT tokens
-  const claims = (indexesResponse || []).reduce((acc, result, index) => {
-    const exitQueueIndex = result[0]
+  const claims = (indexesResponse || []).reduce((acc, item, index) => {
+    const exitQueueIndex = item[0]
+
+    const timestamp = exitRequests[index].timestamp
     const positionTicket = exitRequests[index].positionTicket
 
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
     if (exitQueueIndex > -1n) {
-      const item = { exitQueueIndex, positionTicket }
+      const item = { exitQueueIndex, positionTicket, timestamp }
 
       return [ ...acc, item ]
     }
@@ -79,9 +83,9 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     exitedAssetsResponse = await vaultMulticall<ExitedAssetsResponse>({
       ...commonMulticallParams,
       request: {
-        params: claims.map(({ positionTicket, exitQueueIndex }) => ({
+        params: claims.map(({ positionTicket, exitQueueIndex, timestamp }) => ({
           method: 'claimExitedAssets',
-          args: [ positionTicket, exitQueueIndex ],
+          args: [ positionTicket, exitQueueIndex, timestamp ],
         })),
         callStatic: true,
       },
