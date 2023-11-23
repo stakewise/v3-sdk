@@ -127,13 +127,8 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     totalExitingAssets = remainingAssets[0]?.assets || 0n
   }
 
-  const positions = claims.map(({ exitQueueIndex, positionTicket }) => ({
-    exitQueueIndex,
-    positionTicket,
-  }))
-
   return {
-    positions,
+    positions: claims,
     total: totalExitingAssets,
     withdrawable: withdrawableAssets,
   }

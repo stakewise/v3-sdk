@@ -69,10 +69,14 @@ describe('parseExitRequests function', () => {
       positions: [
         {
           exitQueueIndex: 1n,
+          totalShares: '100',
+          timestamp: '123456',
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 2n,
+          totalShares: '200',
+          timestamp: '123456',
           positionTicket: 'positionTicket-2',
         },
       ],
@@ -118,6 +122,8 @@ describe('parseExitRequests function', () => {
     expect(result).toEqual({
       positions: [ {
         exitQueueIndex: 1n,
+        totalShares: '200',
+        timestamp: '123456',
         positionTicket: 'positionTicket-2',
       } ],
       total: 50n,
@@ -143,10 +149,14 @@ describe('parseExitRequests function', () => {
       positions: [
         {
           exitQueueIndex: 0n,
+          totalShares: '100',
+          timestamp: '123456',
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 1n,
+          totalShares: '200',
+          timestamp: '123456',
           positionTicket: 'positionTicket-2',
         },
       ],
@@ -172,10 +182,14 @@ describe('parseExitRequests function', () => {
       positions: [
         {
           exitQueueIndex: 0n,
+          totalShares: '100',
+          timestamp: '123456',
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 1n,
+          totalShares: '200',
+          timestamp: '123456',
           positionTicket: 'positionTicket-2',
         },
       ],

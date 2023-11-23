@@ -32,7 +32,9 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   let contract = vaultContract
 
-  if (!transactionData) {
+  const withSigner = !callStatic && !transactionData
+
+  if (withSigner) {
     const config = configs[options.network]
     const library = options.provider || new JsonRpcProvider(config.network.url)
 
