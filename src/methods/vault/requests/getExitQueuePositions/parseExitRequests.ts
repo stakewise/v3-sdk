@@ -23,7 +23,7 @@ type Position = {
 type ParseExitRequestsOutput = {
   total: bigint
   withdrawable: bigint
-  positions: Position[]
+  positions: Array<Pick<Position, 'exitQueueIndex' | 'positionTicket'>>
 }
 
 type ExitedAssetsResponse = Array<{
@@ -63,12 +63,9 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   const claims = (indexesResponse || []).reduce((acc, item, index) => {
     const exitQueueIndex = item[0]
 
-    const timestamp = exitRequests[index].timestamp
-    const positionTicket = exitRequests[index].positionTicket
-
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
     if (exitQueueIndex > -1n) {
-      const item = { exitQueueIndex, positionTicket, timestamp }
+      const item = { exitQueueIndex, ...exitRequests[index] }
 
       return [ ...acc, item ]
     }
@@ -130,8 +127,13 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     totalExitingAssets = remainingAssets[0]?.assets || 0n
   }
 
+  const positions = claims.map(({ exitQueueIndex, positionTicket }) => ({
+    exitQueueIndex,
+    positionTicket,
+  }))
+
   return {
-    positions: claims,
+    positions,
     total: totalExitingAssets,
     withdrawable: withdrawableAssets,
   }

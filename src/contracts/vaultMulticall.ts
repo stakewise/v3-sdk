@@ -32,9 +32,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   let contract = vaultContract
 
-  const withSigner = !callStatic && !transactionData
-
-  if (withSigner) {
+  if (!transactionData) {
     const config = configs[options.network]
     const library = options.provider || new JsonRpcProvider(config.network.url)
 
@@ -64,7 +62,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   })
 
   if (callStatic) {
-    let result = await contract.multicall.staticCall(calls)
+    let result = await contract.multicall.staticCall(calls, { from: userAddress })
 
     if (canHarvest) {
       // Data from updateState not needed
