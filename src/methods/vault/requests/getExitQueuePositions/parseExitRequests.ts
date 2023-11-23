@@ -82,7 +82,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       request: {
         params: claims.map(({ positionTicket, exitQueueIndex, timestamp }) => ({
           method: 'claimExitedAssets',
-          args: [ exitQueueIndex, timestamp, positionTicket ],
+          args: [ positionTicket, exitQueueIndex, timestamp ],
         })),
         callStatic: true,
       },
