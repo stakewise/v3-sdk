@@ -28,7 +28,7 @@ export const commonLogic = async (values: ClaimExitQueueInput) => {
 
     return {
       method: 'claimExitedAssets',
-      args: [ positionTicket, exitQueueIndex, timestamp ],
+      args: [ positionTicket, timestamp, exitQueueIndex ],
     }
   })
 
