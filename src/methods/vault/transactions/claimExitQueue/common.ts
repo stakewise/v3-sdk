@@ -24,11 +24,11 @@ export const commonLogic = async (values: ClaimExitQueueInput) => {
   }
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = positions.map((position) => {
-    const { positionTicket, exitQueueIndex } = position
+    const { positionTicket, exitQueueIndex, timestamp } = position
 
     return {
       method: 'claimExitedAssets',
-      args: [ positionTicket, exitQueueIndex ],
+      args: [ positionTicket, exitQueueIndex, timestamp ],
     }
   })
 
