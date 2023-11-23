@@ -23,7 +23,7 @@ type Position = {
 type ParseExitRequestsOutput = {
   total: bigint
   withdrawable: bigint
-  positions: Array<Pick<Position, 'exitQueueIndex' | 'positionTicket'>>
+  positions: Position[]
 }
 
 type ExitedAssetsResponse = Array<{
