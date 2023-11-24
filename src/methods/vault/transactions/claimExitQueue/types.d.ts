@@ -8,7 +8,7 @@ export type ClaimExitQueueInput = {
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts
-  positions: Awaited<ReturnType<StakeWise.VaultMethods['getExitQueuePositions']>>['data']
+  positions: Awaited<ReturnType<StakeWise.VaultMethods['getExitQueuePositions']>>['positions']
 }
 
 export interface ClaimExitQueue {

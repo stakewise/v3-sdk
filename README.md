@@ -6,7 +6,7 @@
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
-![Version](https://img.shields.io/badge/version-1.2.9-blue)
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
@@ -245,18 +245,19 @@ Returns the withdrawal queue for a specific user.
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
+  timestamp: string
 }
 
 type Output = {
   total: bigint
-  data: Position[]
   withdrawable: bigint
+  positions: Position[]
 }
 ```
 
 | Name | Description |
 |------|-------------|
-| `data` | Queue positions |
+| `positions` | Queue positions |
 | `total` | Total withdrawal amount (in ETH) |
 | `withdrawable` | Amount available for withdrawal (in ETH) |
 
@@ -902,7 +903,7 @@ Take the freed tokens from the queue
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| positions | `string` | **Require** | `data` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
+| positions | `string` | **Require** | `postions` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
 | userAddress | `string` | **Require** | - |
 | vaultAddress | `string` | **Require** | - |
 
