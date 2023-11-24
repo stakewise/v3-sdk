@@ -43,7 +43,7 @@ declare global {
 
     type Options = {
       network: Network
-      provider?: any
+      provider?: Provider
       endpoints?: {
         api?: string
         web3?: string

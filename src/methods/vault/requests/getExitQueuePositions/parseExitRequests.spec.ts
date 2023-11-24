@@ -8,6 +8,14 @@ import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 
 jest.mock('../../../../contracts/vaultMulticall')
 
+const getMockProvider = (timestamp: number) => ({
+  getBlock() {
+    return {
+      timestamp,
+    }
+  },
+}) as unknown as StakeWise.Provider
+
 describe('parseExitRequests function', () => {
   const network = Network.Goerli
   const config = configs[network]
@@ -21,6 +29,7 @@ describe('parseExitRequests function', () => {
     totalShares: 1000n,
     userAddress: ZeroAddress,
     vaultAddress: ZeroAddress,
+    provider: getMockProvider(9999999999),
     exitRequests: [
       {
         positionTicket: 'positionTicket-1',
@@ -69,19 +78,41 @@ describe('parseExitRequests function', () => {
       positions: [
         {
           exitQueueIndex: 1n,
-          totalShares: '100',
           timestamp: '123456',
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 2n,
-          totalShares: '200',
           timestamp: '123456',
           positionTicket: 'positionTicket-2',
         },
       ],
       total: 100n,
       withdrawable: 31n,
+    })
+  })
+
+  it('should hide the position if it hasn\'t been 24 hours', async () => {
+    (vaultMulticall as jest.Mock)
+      .mockResolvedValueOnce([
+        [ 1n ],
+        [ 2n ],
+      ])
+      .mockResolvedValueOnce([
+        { assets: 100n },
+      ])
+
+    const result = await parseExitRequests({
+      ...input,
+      provider: getMockProvider(1),
+    })
+
+    expect(vaultMulticall).toHaveBeenCalledTimes(2)
+
+    expect(result).toEqual({
+      total: 100n,
+      positions: [],
+      withdrawable: 0n,
     })
   })
 
@@ -122,7 +153,6 @@ describe('parseExitRequests function', () => {
     expect(result).toEqual({
       positions: [ {
         exitQueueIndex: 1n,
-        totalShares: '200',
         timestamp: '123456',
         positionTicket: 'positionTicket-2',
       } ],
@@ -149,13 +179,11 @@ describe('parseExitRequests function', () => {
       positions: [
         {
           exitQueueIndex: 0n,
-          totalShares: '100',
           timestamp: '123456',
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 1n,
-          totalShares: '200',
           timestamp: '123456',
           positionTicket: 'positionTicket-2',
         },
@@ -182,13 +210,11 @@ describe('parseExitRequests function', () => {
       positions: [
         {
           exitQueueIndex: 0n,
-          totalShares: '100',
           timestamp: '123456',
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 1n,
-          totalShares: '200',
           timestamp: '123456',
           positionTicket: 'positionTicket-2',
         },
