@@ -3,6 +3,7 @@ import vaultMulticall from '../../../../contracts/vaultMulticall'
 
 export type ParseExitRequestsInput = {
   contracts: StakeWise.Contracts
+  provider: StakeWise.Provider
   options: StakeWise.Options
   userAddress: string
   vaultAddress: string
@@ -32,8 +33,20 @@ type ExitedAssetsResponse = Array<{
   claimedAssets: bigint
 }>
 
+const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) => {
+  const lastBlock = await provider.getBlock('latest')
+
+  const current = lastBlock
+    ? lastBlock.timestamp
+    : Number((new Date().getTime() / 1000).toFixed(0))
+
+  const diff = Number(current) - Number(timestamp)
+
+  return diff > 86_400 // 24 hours
+}
+
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, contracts, userAddress, vaultAddress, totalShares, exitRequests } = values
+  const { options, contracts, provider, userAddress, vaultAddress, totalShares, exitRequests } = values
 
   const keeperContract = contracts.base.keeper
   const vaultContract = contracts.helpers.createVault(vaultAddress)
@@ -59,19 +72,25 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     },
   })
 
-  // We need to make a list with ID and Index for those items from which you can get VLT tokens
-  const claims = (indexesResponse || []).reduce((acc, item, index) => {
-    const exitQueueIndex = item[0]
+  const claims: Position[] = []
+  const indexes = (indexesResponse || [])
+
+  for (let i = 0; i < indexes.length; i++) {
+    const exitQueueIndex = indexes[i][0]
+    const { positionTicket, timestamp } = exitRequests[i]
+
+    // 24 hours must have elapsed since the position was created
+    const is24HoursPassed = await _checkTimestamp(timestamp, provider)
 
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
-    if (exitQueueIndex > -1n) {
-      const item = { exitQueueIndex, ...exitRequests[index] }
+    const isValid = exitQueueIndex > -1n
 
-      return [ ...acc, item ]
+    if (isValid && is24HoursPassed) {
+      const item = { exitQueueIndex, positionTicket, timestamp }
+
+      claims.push(item)
     }
-
-    return acc
-  }, [] as Position[])
+  }
 
   let exitedAssetsResponse: ExitedAssetsResponse = []
 

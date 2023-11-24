@@ -6,6 +6,7 @@ import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
   contracts: StakeWise.Contracts
+  provider: StakeWise.Provider
   options: StakeWise.Options
 }
 
@@ -16,7 +17,7 @@ const mock = {
 }
 
 const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
-  const { options, contracts, vaultAddress, userAddress } = input
+  const { options, contracts, provider, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress, userAddress })
 
@@ -30,6 +31,7 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
 
   const exitQueue = await parseExitRequests({
     options,
+    provider,
     contracts,
     userAddress,
     totalShares,
