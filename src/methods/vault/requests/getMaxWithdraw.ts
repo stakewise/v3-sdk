@@ -10,10 +10,12 @@ type GetMaxWithdrawInput = {
   contracts: StakeWise.Contracts
 }
 
+const min = parseEther('0.00001')
+
 const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
   const { contracts, mintedAssets, stakedAssets, ltvPercent } = values
 
-  if (ltvPercent <= 0) {
+  if (ltvPercent <= 0 || stakedAssets < min) {
     return 0n
   }
 

@@ -63,12 +63,9 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   const claims = (indexesResponse || []).reduce((acc, item, index) => {
     const exitQueueIndex = item[0]
 
-    const timestamp = exitRequests[index].timestamp
-    const positionTicket = exitRequests[index].positionTicket
-
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
     if (exitQueueIndex > -1n) {
-      const item = { exitQueueIndex, positionTicket, timestamp }
+      const item = { exitQueueIndex, ...exitRequests[index] }
 
       return [ ...acc, item ]
     }
@@ -85,7 +82,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       request: {
         params: claims.map(({ positionTicket, exitQueueIndex, timestamp }) => ({
           method: 'claimExitedAssets',
-          args: [ positionTicket, exitQueueIndex, timestamp ],
+          args: [ positionTicket, timestamp, exitQueueIndex ],
         })),
         callStatic: true,
       },

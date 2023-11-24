@@ -64,7 +64,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   })
 
   if (callStatic) {
-    let result = await contract.multicall.staticCall(calls)
+    let result = await contract.multicall.staticCall(calls, { from: userAddress })
 
     if (canHarvest) {
       // Data from updateState not needed
