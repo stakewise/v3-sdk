@@ -24,9 +24,9 @@ const getMaxMint = async (values: GetMaxMintInput) => {
   const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
 
   if (canMintAssets > 0) {
-    const maxMintShares2 = await contracts.base.mintTokenController.convertToShares(canMintAssets)
+    const maxMintShares = await contracts.base.mintTokenController.convertToShares(canMintAssets)
 
-    return maxMintShares2
+    return maxMintShares
   }
 
   return 0n

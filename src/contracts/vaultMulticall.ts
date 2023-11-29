@@ -81,7 +81,17 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     }) as T
   }
 
+  // If we don't need to update a vault state, we can just call the method, no multicall. This will save the user gas
+  const isSoloCall = calls.length === 1 && params.length === 1
+
   if (estimateGas) {
+    if (isSoloCall) {
+      const { method, args } = params[0]
+
+      // @ts-ignore: no types to describe
+      return contract[method].estimateGas(...args)
+    }
+
     return contract.multicall.estimateGas(calls) as T
   }
 
@@ -92,6 +102,13 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
       to: rx.to,
       data: rx.data,
     } as T
+  }
+
+  if (isSoloCall) {
+    const { method, args } = params[0]
+
+    // @ts-ignore: no types to describe
+    return contract[method](...args)
   }
 
   return contract.multicall(calls) as T
