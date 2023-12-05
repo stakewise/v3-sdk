@@ -6,8 +6,8 @@ export type ParseExitRequestsInput = {
   provider: StakeWise.Provider
   options: StakeWise.Options
   userAddress: string
-  vaultAddress: string
   totalShares: bigint
+  vaultAddress: string
   exitRequests: Array<{
     positionTicket: string
     totalShares: string
@@ -28,8 +28,8 @@ type ParseExitRequestsOutput = {
 }
 
 type ExitedAssetsResponse = Array<{
-  newPositionTicket: bigint,
-  claimedShares: bigint,
+  leftShares: bigint
+  claimedShares: bigint
   claimedAssets: bigint
 }>
 
@@ -100,55 +100,57 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       ...commonMulticallParams,
       request: {
         params: claims.map(({ positionTicket, exitQueueIndex, timestamp }) => ({
-          method: 'claimExitedAssets',
-          args: [ positionTicket, timestamp, exitQueueIndex ],
+          method: 'calculateExitedAssets',
+          args: [ userAddress, positionTicket, timestamp, exitQueueIndex ],
         })),
         callStatic: true,
       },
     }) || []
   }
-
-  let remainingShares = totalShares,
-      totalExitingAssets = 0n,
-      withdrawableAssets = 0n
-
-  exitedAssetsResponse.forEach(({ newPositionTicket, claimedShares, claimedAssets }, index) => {
-    // "claimedAssets" is the value in ETH that user will take after claim.
-    // We can get the sum of these values to display how much ETH the user will get
-
-    withdrawableAssets = withdrawableAssets + claimedAssets
-
-    const prevPositionTicket = claims[index].positionTicket
-    const item = exitRequests.find((item) => item.positionTicket === prevPositionTicket)
-
-    // Check whether not all the shares have been exited
-    if (newPositionTicket > 0) {
-      // Subtract claimed shares from the remaining shares
-      remainingShares = remainingShares - claimedShares
-    }
-    else {
-      // If the next position ID is 0, then we will take all tokens from it
-      remainingShares = remainingShares - BigInt(item?.totalShares || 0)
-    }
-  })
-
-  if (remainingShares > 0) {
-    // If there are remaining shares, we must calculate how many assets are still queuing
-    // Remember - Shares are VLT tokens and Assets are ETH tokens
-    const remainingAssets = await vaultMulticall<Array<{ assets: bigint }>>({
+  else {
+    const result = await vaultMulticall<Array<{ assets: bigint }>>({
       ...commonMulticallParams,
       request: {
-        params: [ { method: 'convertToAssets', args: [ remainingShares ] } ],
+        params: [ { method: 'convertToAssets', args: [ totalShares ] } ],
         callStatic: true,
       },
     })
 
-    totalExitingAssets = remainingAssets[0]?.assets || 0n
+    // If there are no positions with an index greater than 0 or their timestamp has failed the 24 hour check.
+    // Then we can use totalShares from the subgraph to show total
+    return {
+      positions: [],
+      withdrawable: 0n,
+      total: result[0]?.assets || 0n,
+    }
   }
 
+  let withdrawableAssets = 0n,
+      totalLeftShares = 0n,
+      totalLeftAssets = 0n
+
+  exitedAssetsResponse.forEach(({ leftShares, claimedAssets }) => {
+    totalLeftShares += leftShares
+    withdrawableAssets += claimedAssets
+  })
+
+  if (totalLeftShares > 0) {
+    const result = await vaultMulticall<Array<{ assets: bigint }>>({
+      ...commonMulticallParams,
+      request: {
+        params: [ { method: 'convertToAssets', args: [ totalLeftShares ] } ],
+        callStatic: true,
+      },
+    })
+
+    totalLeftAssets = result[0]?.assets || 0n
+  }
+
+  const total = withdrawableAssets + totalLeftAssets
+
   return {
+    total,
     positions: claims,
-    total: totalExitingAssets,
     withdrawable: withdrawableAssets,
   }
 }

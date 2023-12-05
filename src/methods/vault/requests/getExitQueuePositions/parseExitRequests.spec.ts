@@ -25,8 +25,8 @@ describe('parseExitRequests function', () => {
 
   const input: ParseExitRequestsInput = {
     contracts,
-    options: { network },
     totalShares: 1000n,
+    options: { network },
     userAddress: ZeroAddress,
     vaultAddress: ZeroAddress,
     provider: getMockProvider(9999999999),
@@ -58,12 +58,12 @@ describe('parseExitRequests function', () => {
         {
           claimedAssets: 30n,
           claimedShares: 50n,
-          newPositionTicket: 10n,
+          leftShares: 10n,
         },
         {
           claimedAssets: 1n,
           claimedShares: 100n,
-          newPositionTicket: 20n,
+          leftShares: 20n,
         },
       ])
       .mockResolvedValueOnce([
@@ -87,7 +87,7 @@ describe('parseExitRequests function', () => {
           positionTicket: 'positionTicket-2',
         },
       ],
-      total: 100n,
+      total: 131n,
       withdrawable: 31n,
     })
   })
@@ -141,7 +141,7 @@ describe('parseExitRequests function', () => {
       ])
       .mockResolvedValueOnce([
         {
-          newPositionTicket: 10n,
+          leftShares: 10n,
           claimedShares: 50n,
           claimedAssets: 30n,
         },
@@ -156,7 +156,7 @@ describe('parseExitRequests function', () => {
         timestamp: '123456',
         positionTicket: 'positionTicket-2',
       } ],
-      total: 50n,
+      total: 80n,
       withdrawable: 30n,
     })
   })
@@ -168,8 +168,8 @@ describe('parseExitRequests function', () => {
         [ 1n ],
       ])
       .mockResolvedValueOnce([
-        { newPositionTicket: 0n, claimedShares: 0n, claimedAssets: 0n },
-        { newPositionTicket: 0n, claimedShares: 0n, claimedAssets: 0n },
+        { leftShares: 0n, claimedShares: 0n, claimedAssets: 0n },
+        { leftShares: 0n, claimedShares: 0n, claimedAssets: 0n },
       ])
       .mockResolvedValueOnce([ { assets: 0n } ])
 
@@ -200,7 +200,7 @@ describe('parseExitRequests function', () => {
         [ 1n ],
       ])
       .mockResolvedValueOnce([
-        { newPositionTicket: 10n, claimedShares: 1000n, claimedAssets: 30n },
+        { leftShares: 10n, claimedShares: 1000n, claimedAssets: 30n },
       ])
       .mockResolvedValueOnce([])
 
@@ -219,7 +219,7 @@ describe('parseExitRequests function', () => {
           positionTicket: 'positionTicket-2',
         },
       ],
-      total: 0n,
+      total: 30n,
       withdrawable: 30n,
     })
   })
