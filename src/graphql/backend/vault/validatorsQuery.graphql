@@ -1,0 +1,16 @@
+query Validators(
+  $vaultAddress: String!
+  $skip: Int!
+  $first: Int!
+) {
+  vaultValidators(
+    vaultAddress: $vaultAddress,
+    skip: $skip,
+    first: $first,
+  ) {
+    apy: apr
+    earned
+    createdAt
+    publicKey
+  }
+}

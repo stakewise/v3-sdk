@@ -2,17 +2,17 @@ import { formatEther } from 'ethers'
 
 import type { ModifiedValidators } from './types'
 import { Network, configs } from '../../../../utils'
-import type { VaultValidatorsQueryPayload } from '../../../../graphql/backend/vault'
+import type { ValidatorsQueryPayload } from '../../../../graphql/backend/vault'
 
 
 type ModifyValidatorsInput = {
-  data: VaultValidatorsQueryPayload
+  data: ValidatorsQueryPayload
   network: Network
 }
 
 const modifyValidators = (input: ModifyValidatorsInput): ModifiedValidators => {
   const { data, network } = input
-  const validators = data?.vaults?.[0]?.validators || []
+  const validators = data?.vaultValidators || []
 
   return validators.map((validator) => {
     const { apy, createdAt, earned, publicKey } = validator

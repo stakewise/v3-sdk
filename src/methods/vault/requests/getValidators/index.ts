@@ -1,4 +1,4 @@
-import type { VaultValidatorsQueryVariables, VaultValidatorsQueryPayload } from '../../../../graphql/backend/vault'
+import type { ValidatorsQueryPayload, ValidatorsQueryVariables } from '../../../../graphql/backend/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
 import type { ModifiedValidators } from './types'
 import modifyValidators from './modifyValidators'
@@ -7,18 +7,25 @@ import graphql from '../../../../graphql'
 
 type GetValidatorsInput = {
   options: StakeWise.Options
-  vaultAddress: VaultValidatorsQueryVariables['address']
+  vaultAddress: ValidatorsQueryVariables['vaultAddress']
+  skip: ValidatorsQueryVariables['skip']
+  limit: ValidatorsQueryVariables['first']
 }
 
 const getValidators = async (input: GetValidatorsInput) => {
-  const { options, vaultAddress } = input
+  const { options, skip, limit, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })
+  validateArgs.number({ skip, limit })
 
-  const data = await graphql.backend.vault.fetchVaultValidatorsQuery<ModifiedValidators>({
+  const data = await graphql.backend.vault.fetchValidatorsQuery<ModifiedValidators>({
     url: apiUrls.getBackendUrl(options),
-    variables: { address: vaultAddress.toLowerCase() },
-    modifyResult: (data: VaultValidatorsQueryPayload) => modifyValidators({ data, network: options.network }),
+    variables: {
+      vaultAddress: vaultAddress.toLowerCase(),
+      skip,
+      first: limit,
+    },
+    modifyResult: (data: ValidatorsQueryPayload) => modifyValidators({ data, network: options.network }),
   })
 
   return data

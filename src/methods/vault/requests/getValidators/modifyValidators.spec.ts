@@ -1,23 +1,19 @@
 import { formatEther } from 'ethers'
 
-import type { VaultValidatorsQueryPayload } from '../../../../graphql/backend/vault'
+import type { ValidatorsQueryPayload } from '../../../../graphql/backend/vault'
 import { Network, configs } from '../../../../utils'
 import modifyValidators from './modifyValidators'
 
 
 describe('modifyValidators', () => {
   it('should modify validators data', () => {
-    const mockData: VaultValidatorsQueryPayload = {
-      vaults: [
+    const mockData: ValidatorsQueryPayload = {
+      vaultValidators: [
         {
-          validators: [
-            {
-              apy: '5.50',
-              earned: '2',
-              publicKey: 'testPublicKey',
-              createdAt: '2023-05-05T12:00:00Z',
-            },
-          ],
+          apy: '5.50',
+          earned: '2',
+          publicKey: 'testPublicKey',
+          createdAt: '2023-05-05T12:00:00Z',
         },
       ],
     }
