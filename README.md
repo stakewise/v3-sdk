@@ -1064,8 +1064,8 @@ To retrieve the storage data, you just need the method above. Other parts of the
 
 ### StakeWise class
 
-| Name |Description |
-|------|------|
+| Name | Description |
+|------|-------------|
 | **contracts** | Instances of our contracts |
 | **vaultMulticall** | A method to implement a transaction with vault update |
 | **config** | Object with contract addresses and other data |
@@ -1074,7 +1074,7 @@ To retrieve the storage data, you just need the method above. Other parts of the
 
 ### SDK
 
-| Name |Description |
+| Name | Description |
 |------|------|
 | **BigDecimal** | Wrapper over bignumber.js |
 | **configs** | Data for each network |
