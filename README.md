@@ -6,7 +6,7 @@
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
-![Version](https://img.shields.io/badge/version-1.4.2-blue)
+![Version](https://img.shields.io/badge/version-1.5.0-blue)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
@@ -113,15 +113,19 @@ type Output = Array<{
   actionType: AllocatorActionType
   createdAt: number
   assets: string
+  shares: string
   link: string
   id: string
 }>
 ```
 
+In events related to osToken you can use shares, in all other assets
+
 | Name | Description |
 |------|-------------|
 | `id` | Event identifier |
 | `assets` | Transaction amount |
+| `shares` | Transaction amount |
 | `createdAt` | Transaction date |
 | `actionType` | Type of action |
 | `link` | Transaction link (etherscan/blockscout) |
@@ -546,26 +550,36 @@ sdk.osToken.getHealthFactor({
 
 #### Description:
 
-Token reward data
+Current os token APY
 
 #### Returns:
 
 ```ts
-type Output = {
-  apy: string;
-  averageRewardsPerSecond: bigint;
-}
+type Output = string
 ```
-
-| Name | Description |
-|------|-------------|
-| `apy` | Current APY |
-| `averageRewardsPerSecond` | 2-week average of awards per second |
 
 #### Example:
 
 ```ts
-await sdk.osToken.getAPY()
+const apy = await sdk.osToken.getAPY()
+```
+---
+### `sdk.osToken.getAvgRewardsPerSecond`
+
+#### Description:
+
+Os token average rewards per second
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+const averageRewardsPerSecond = await sdk.osToken.getAvgRewardsPerSecond()
 ```
 ---
 ### `sdk.osToken.getPosition`

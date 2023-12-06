@@ -12,6 +12,7 @@ query AllocatorActions(
   ) {
     id
     assets
+    shares
     createdAt
     actionType
   }

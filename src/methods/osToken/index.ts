@@ -7,6 +7,7 @@ import getPosition from './requests/getOsTokenPosition'
 import getHealthFactor from './helpers/getHealthFactor'
 import getSharesFromAssets from './requests/getSharesFromAssets'
 import getAssetsFromShares from './requests/getAssetsFromShares'
+import getAvgRewardsPerSecond from './requests/getAvgRewardsPerSecond'
 
 // Transactions
 import { mint } from './transactions/mint'
@@ -23,6 +24,7 @@ export default {
     getHealthFactor,
     getSharesFromAssets,
     getAssetsFromShares,
+    getAvgRewardsPerSecond,
   },
   transactions: {
     mint,
