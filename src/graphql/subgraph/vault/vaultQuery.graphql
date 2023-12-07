@@ -5,7 +5,6 @@ query Vault($address: ID!) {
     admin
     isErc20
     imageUrl
-    verified
     capacity
     mevEscrow
     isPrivate
