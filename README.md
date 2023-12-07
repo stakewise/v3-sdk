@@ -285,6 +285,8 @@ Returns the running vault validators.
 | Name | Type | Type |
 |------|------|-------------|
 | vaultAddress | `string` | **Require** | 
+| limit | `number` | **Require** | To implement pagination |
+| skip | `number` | **Require** | To implement pagination |
 
 #### Returns:
 
@@ -309,7 +311,11 @@ type Output = {
 #### Example:
 
 ```ts
-await sdk.vault.getValidators({ vaultAddress: '0x...' })
+await sdk.vault.getValidators({
+  skip: 0,
+  limit: 5,
+  vaultAddress: '0x...'
+})
 ```
 ---
 ### `sdk.vault.getVault`
@@ -841,7 +847,7 @@ const hash = await sdk.vault.deposit(params)
 // When you sign transactions on the backend (for custodians)
 const { data, to, value } = await sdk.vault.deposit.encode(params)
 // Get an approximate gas per transaction
-const gas = = await sdk.vault.deposit.estimateGas(params)
+const gas = await sdk.vault.deposit.estimateGas(params)
 ```
 ---
 ### `sdk.vault.withdraw`
@@ -904,7 +910,7 @@ const hash = await sdk.vault.withdraw(params)
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.vault.withdraw.encode(params)
 // Get an approximate gas per transaction
-const gas = = await sdk.vault.withdraw.estimateGas(params)
+const gas = await sdk.vault.withdraw.estimateGas(params)
 ```
 ---
 ### `sdk.vault.claimExitQueue`
@@ -950,7 +956,7 @@ const hash = await sdk.vault.claimExitQueue(params)
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 // Get an approximate gas per transaction
-const gas = = await sdk.vault.claimExitQueue.estimateGas(params)
+const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
 ### `sdk.osToken.mint`
@@ -1031,7 +1037,7 @@ const hash = await sdk.osToken.mint(params)
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.osToken.mint.encode(params)
 // Get an approximate gas per transaction
-const gas = = await sdk.osToken.mint.estimateGas(params)
+const gas = await sdk.osToken.mint.estimateGas(params)
 ```
 ---
 ### `sdk.osToken.burn`
@@ -1062,7 +1068,7 @@ const hash = await sdk.osToken.burn(params)
 // When you sign transactions on the backend (for custodians)
 const { data, to, value } = await sdk.osToken.burn.encode(params)
 // Get an approximate gas per transaction
-const gas = = await sdk.osToken.burn.estimateGas(params)
+const gas = await sdk.osToken.burn.estimateGas(params)
 ```
 ---
 
@@ -1072,8 +1078,8 @@ To retrieve the storage data, you just need the method above. Other parts of the
 
 ### StakeWise class
 
-| Name | Description
-|------|------|
+| Name | Description |
+|------|-------------|
 | **contracts** | Instances of our contracts |
 | **vaultMulticall** | A method to implement a transaction with vault update |
 | **config** | Object with contract addresses and other data |
@@ -1082,7 +1088,7 @@ To retrieve the storage data, you just need the method above. Other parts of the
 
 ### SDK
 
-| Name | Description
+| Name | Description |
 |------|------|
 | **BigDecimal** | Wrapper over bignumber.js |
 | **configs** | Data for each network |
