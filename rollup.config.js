@@ -21,6 +21,13 @@ const config = [
         sourcemap: true,
         format: 'es',
       },
+      {
+        name: pkg.name,
+        file: pkg.main,
+        sourcemap: true,
+        exports: 'named',
+        format: 'cjs',
+      },
     ],
     plugins: [
       // @ts-ignore: this plugin has types for old version of jest :(

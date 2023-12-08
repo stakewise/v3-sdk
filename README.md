@@ -6,7 +6,7 @@
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
-![Version](https://img.shields.io/badge/version-1.5.0-blue)
+![Version](https://img.shields.io/badge/version-1.5.1-blue)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
@@ -337,7 +337,6 @@ type Output = {
   apy: number
   isErc20: boolean
   capacity: string
-  verified: boolean
   createdAt: number
   feePercent: number
   isPrivate: boolean
@@ -367,7 +366,6 @@ type Output = {
 | `apy` | Current vault apy  |
 | `isErc20` | Does the vault have its own ERC20 token  |
 | `capacity` | Maximum TVL of Vault |
-| `verified` | Has the vault been verified  |
 | `createdAt` | Date of Creation  |
 | `feePercent` | Commission rate  |
 | `isPrivate` | Whether the storage is private  |
