@@ -11,7 +11,6 @@ describe('modifyVault', () => {
   const mockVaultQueryPayload: VaultQueryPayload = {
     vault: {
       isErc20: true,
-      verified: true,
       feePercent: 200,
       isPrivate: false,
       performance: '10',
@@ -43,7 +42,6 @@ describe('modifyVault', () => {
       apy: 365,
       isErc20: true,
       feePercent: 2,
-      verified: true,
       performance: 10,
       isPrivate: false,
       capacity: '0.001',
