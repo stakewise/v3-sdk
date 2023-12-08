@@ -337,7 +337,6 @@ type Output = {
   apy: number
   isErc20: boolean
   capacity: string
-  verified: boolean
   createdAt: number
   feePercent: number
   isPrivate: boolean
@@ -367,7 +366,6 @@ type Output = {
 | `apy` | Current vault apy  |
 | `isErc20` | Does the vault have its own ERC20 token  |
 | `capacity` | Maximum TVL of Vault |
-| `verified` | Has the vault been verified  |
 | `createdAt` | Date of Creation  |
 | `feePercent` | Commission rate  |
 | `isPrivate` | Whether the storage is private  |
