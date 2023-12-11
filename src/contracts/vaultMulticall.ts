@@ -104,14 +104,25 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     } as T
   }
 
+  // Even though ethers tries to find the best price for gas, sometimes it's
+  // not enough and the transaction breaks down and users lose money for gas.
+  // Adding 10% to the gas limit
+
   if (isSoloCall) {
     const { method, args } = params[0]
 
     // @ts-ignore: no types to describe
-    return contract[method](...args)
+    const estimatedGas = await contract[method].estimateGas(...args)
+    const gasLimit = estimatedGas * 110n / 100n
+
+    // @ts-ignore: no types to describe
+    return contract[method](...args, { gasLimit })
   }
 
-  return contract.multicall(calls) as T
+  const estimatedGas = await contract.multicall.estimateGas(calls)
+  const gasLimit = estimatedGas * 110n / 100n
+
+  return contract.multicall(calls, { gasLimit }) as T
 }
 
 
