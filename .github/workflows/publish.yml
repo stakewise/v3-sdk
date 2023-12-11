@@ -31,7 +31,9 @@ jobs:
     - name: Build SDK
       run: npm run build
 
-    - name: Publish to GitHub Packages
-      run: npm publish --access public
+    - name: Publish to NPM
+      run: |
+        echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
+        npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
