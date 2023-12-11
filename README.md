@@ -6,7 +6,7 @@
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
-![Version](https://img.shields.io/badge/version-1.5.1-blue)
+![Version](https://img.shields.io/npm/v/@stakewise/v3-sdk)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
@@ -46,6 +46,19 @@ You can do something similar for other builders as well
 ## Installation and Setup
 ```bash
 npm i @stakewise/v3-sdk
+```
+
+If your builder doesn't support `.graphql` files, then you need to add a plugin. For example, for webpack this would be graphql-tag.
+If you are using another builder, you can easily find GQL support plugins
+
+```ts
+webpackConfig.module.rules.push(
+  {
+    test: /\.(graphql|gql)$/,
+    loader: 'graphql-tag/loader',
+    exclude: /node_modules/,
+  }
+)
 ```
 
 Create SDK instance

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.0.1",
   "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
   "typings": "dist/index.d.ts",
   "module": "dist/index.esm.js",
   "description": "StakeWise v3 SDK",
-  "homepage": "https://app.stakewise.io",
+  "homepage": "https://github.com/stakewise/v3-sdk",
   "scripts": {
     "test": "jest --clearCache && jest --onlyChanged",
     "prepare": "npm run typechain && npm run graphql && husky install",
@@ -17,6 +17,9 @@
     "graphql": "graphql-codegen && ts-node -O '{\"module\": \"commonjs\"}' ./scripts/generateGraphqlExports",
     "rollup": "rollup --config rollup.config.js --bundleConfigAsCjs"
   },
+  "files": [
+    "dist/"
+  ],
   "exports": {
     ".": "./dist/index.js"
   },
