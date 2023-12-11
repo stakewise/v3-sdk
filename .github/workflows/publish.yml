@@ -1,4 +1,4 @@
-name: Update Version and Publish to GitHub Packages
+name: Update Version and Publish to NPM
 
 on:
   release:
@@ -16,6 +16,11 @@ jobs:
       with:
         node-version: '18.16.1'
         registry-url: 'https://registry.npmjs.org/'
+
+    - name: Setup git user
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
 
     - name: Update package.json version
       run: npm version --tag=latest ${{ github.event.release.tag_name }}
