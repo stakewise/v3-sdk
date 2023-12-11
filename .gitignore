@@ -1,4 +1,5 @@
 .idea
+.turbo
 .vscode
 .rollup.cache
 tsconfig.tsbuildinfo

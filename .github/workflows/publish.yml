@@ -14,13 +14,8 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18'
-        registry-url: 'https://npm.pkg.github.com'
-
-    - name: Setup git user
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        node-version: '18.16.1'
+        registry-url: 'https://registry.npmjs.org/'
 
     - name: Update package.json version
       run: npm version --tag=latest ${{ github.event.release.tag_name }}
@@ -32,6 +27,6 @@ jobs:
       run: npm run build
 
     - name: Publish to GitHub Packages
-      run: npm publish
+      run: npm publish --access public
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
