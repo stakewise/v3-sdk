@@ -104,6 +104,10 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     } as T
   }
 
+  // Even though ethers tries to find the best price for gas, sometimes it's
+  // not enough and the transaction breaks down and users lose money for gas.
+  // Adding 10% to the gas limit
+
   if (isSoloCall) {
     const { method, args } = params[0]
 
