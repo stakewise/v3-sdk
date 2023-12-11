@@ -108,10 +108,17 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     const { method, args } = params[0]
 
     // @ts-ignore: no types to describe
-    return contract[method](...args)
+    const estimatedGas = await contract[method].estimateGas(...args)
+    const gasLimit = estimatedGas * 110n / 100n
+
+    // @ts-ignore: no types to describe
+    return contract[method](...args, { gasLimit })
   }
 
-  return contract.multicall(calls) as T
+  const estimatedGas = await contract.multicall.estimateGas(calls)
+  const gasLimit = estimatedGas * 110n / 100n
+
+  return contract.multicall(calls, { gasLimit }) as T
 }
 
 
