@@ -5,11 +5,8 @@ import {
   VaultAbi,
   KeeperAbi,
   UsdRateAbi,
-  EthRateAbi,
   MintTokenAbi,
   MulticallAbi,
-  Erc20VaultAbi,
-  SwiseTokenAbi,
   UniswapPoolAbi,
   PriceOracleAbi,
   PrivateVaultAbi,
@@ -19,7 +16,6 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
-  Erc20PrivateVaultAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
@@ -38,13 +34,10 @@ import type {
   VestingEscrowAbi as VestingEscrowType,
   VaultFactoryAbi as VaultFactoryType,
   PrivateVaultAbi as PrivateVaultType,
-  Erc20VaultAbi as Erc20VaultAbiType,
   PriceOracleAbi as PriceOracleType,
   UniswapPoolAbi as UniswapPoolType,
-  SwiseTokenAbi as SwiseTokenType,
   MulticallAbi as MulticallType,
   MintTokenAbi as MintTokenType,
-  EthRateAbi as EthRateType,
   UsdRateAbi as UsdRateType,
   VaultAbi as VaultAbiType,
   KeeperAbi as KeeperType,
@@ -55,9 +48,9 @@ import multicall from './multicall'
 import createContract from './createContract'
 
 
-const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<SwiseTokenType>(
+const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<Erc20Type>(
   config.addresses.tokens.swise,
-  SwiseTokenAbi,
+  Erc20Abi,
   provider
 )
 
@@ -127,18 +120,6 @@ const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config)
   provider
 )
 
-const createVestingEscrowFactory = (provider: Provider, address: string) => createContract<VestingEscrowFactoryType>(
-  address,
-  VestingEscrowFactoryAbi,
-  provider
-)
-
-const createVestingEscrowDirect = (provider: Provider, address: string) => createContract<VestingEscrowType>(
-  address,
-  VestingEscrowAbi,
-  provider
-)
-
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -155,12 +136,10 @@ export const createContracts = (input: CreateContractsInput) => {
       createMulticall: multicall(multicallContract as MulticallType),
       createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
       createVault: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
-      createErc20Vault: (address: string) => createContract<Erc20VaultAbiType>(address, Erc20VaultAbi, provider),
       createUniswapPool: (address: string) => createContract<UniswapPoolType>(address, UniswapPoolAbi, provider),
       createPrivateVault: (address: string) => createContract<PrivateVaultType>(address, PrivateVaultAbi, provider),
       createRewardSplitter: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<VestingEscrowType>(address, VestingEscrowAbi, provider),
-      createErc20PrivateVault: (address: string) => createContract<PrivateVaultType>(address, Erc20PrivateVaultAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<UsdRateType>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<VestingEscrowFactoryType>(address, VestingEscrowFactoryAbi, provider),
     },
