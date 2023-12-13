@@ -9,11 +9,8 @@ import type {
   Erc20Abi,
   KeeperAbi,
   UsdRateAbi,
-  EthRateAbi,
   MulticallAbi,
   MintTokenAbi,
-  Erc20VaultAbi,
-  SwiseTokenAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
   VaultFactoryAbi,
@@ -23,7 +20,6 @@ import type {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
-  Erc20PrivateVaultAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
   UniswapPositionManagerAbi,
@@ -62,12 +58,9 @@ declare global {
       type Vault = VaultAbi
       type Keeper = KeeperAbi
       type UsdRate = UsdRateAbi
-      type EthRate = EthRateAbi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
       type MintToken = MintTokenAbi
-      type Erc20Vault = Erc20VaultAbi
-      type SwiseToken = SwiseTokenAbi
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type PrivateVault = PrivateVaultAbi
@@ -77,7 +70,6 @@ declare global {
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type MintTokenConfig = MintTokenConfigAbi
-      type Erc20PrivateVault = Erc20PrivateVaultAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
       type UniswapPositionManager = UniswapPositionManagerAbi
