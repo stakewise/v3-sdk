@@ -223,7 +223,8 @@ Daily rewards for the user who has made a deposit in the vault. With the help of
 
 ```ts
 type UserReward = {
-  rewards: number
+  sumRewards: number
+  dailyRewards: number
 }
 
 type Output = {
