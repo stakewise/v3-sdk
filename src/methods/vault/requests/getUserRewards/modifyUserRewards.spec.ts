@@ -8,10 +8,12 @@ describe('modifyUserReward and modifyUserRewards functions', () => {
       {
         date: '1694908800',
         sumRewards: '344379922475148628745',
+        dailyRewards: '344379922475148628745',
       },
       {
         date: '1694995200',
         sumRewards: '344382187878289278175',
+        dailyRewards: '0',
       },
     ],
   }
@@ -22,7 +24,8 @@ describe('modifyUserReward and modifyUserRewards functions', () => {
     const result = modifyUserReward(userReward)
 
     expect(result).toEqual({
-      rewards: 344.37992247514865,
+      sumRewards: 344.37992247514865,
+      dailyRewards: 344.37992247514865,
     })
   })
 
@@ -30,10 +33,12 @@ describe('modifyUserReward and modifyUserRewards functions', () => {
     const expectedResult = {
       days: {
         1694908800: {
-          rewards: 344.37992247514865,
+          sumRewards: 344.37992247514865,
+          dailyRewards: 344.37992247514865,
         },
         1694995200: {
-          rewards: 344.3821878782893,
+          sumRewards: 344.3821878782893,
+          dailyRewards: 0,
         },
       },
     }

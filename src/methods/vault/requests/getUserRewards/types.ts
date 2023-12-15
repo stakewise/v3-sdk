@@ -1,5 +1,6 @@
 type UserReward = {
-  rewards: number
+  sumRewards: number
+  dailyRewards: number
 }
 
 export type ModifyUserReward = {
