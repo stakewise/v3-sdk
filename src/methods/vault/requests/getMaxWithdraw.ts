@@ -1,6 +1,6 @@
 import { parseEther } from 'ethers'
 
-import { BigDecimal, constants } from '../../../utils'
+import { constants } from '../../../utils'
 
 
 type GetMaxWithdrawInput = {
@@ -21,27 +21,12 @@ const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
 
   const rewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
-  const gap = new BigDecimal(rewardPerSecond)
-    .multiply(60 * 60) // 1h
-    .multiply(mintedAssets)
-    .divide(constants.blockchain.amount1)
-    .toString()
+  const secondsInHour = 60n * 60n
+  const gap = rewardPerSecond * secondsInHour * mintedAssets / constants.blockchain.amount1
+  const lockedAssets = (mintedAssets + gap) * 10_000n / ltvPercent
+  const maxWithdrawAssets = stakedAssets - lockedAssets
 
-  const lockedAssets = new BigDecimal(mintedAssets)
-    .plus(gap)
-    .multiply(10_000)
-    .divide(ltvPercent)
-    .toString()
-
-  const maxWithdrawAssets = new BigDecimal(stakedAssets)
-    .minus(lockedAssets)
-    .divide(constants.blockchain.amount1)
-    .decimals(18)
-    .toString()
-
-  return Number(maxWithdrawAssets) > 0
-    ? parseEther(maxWithdrawAssets)
-    : 0n
+  return maxWithdrawAssets > min ? maxWithdrawAssets : 0n
 }
 
 
