@@ -1,4 +1,4 @@
-query UserRewards($user: String!, $vaultAddress: String!, $dateFrom: date_as_timestamp!) {
+query UserRewards($user: String!, $vaultAddress: String!, $dateFrom: DateAsTimestamp!) {
   userRewards(user: $user, vaultAddress: $vaultAddress, dateFrom: $dateFrom) {
     date
     sumRewards
