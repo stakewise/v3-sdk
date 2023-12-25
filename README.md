@@ -85,9 +85,9 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 
 ##### Request table:
 | **Vault** | **osToken** | **Utils** |
-|------|------|------|
+|------|-------------|------|
 | [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
-| [sdk.vault.getDaySnapshots](#sdkvaultgetdaysnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getVaultSnapshots](#sdkvaultgetvaultsnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
 | [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
 | [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
@@ -164,7 +164,7 @@ await sdk.vault.getStakerActions({
 })
 ```
 ---
-### `sdk.vault.getDaySnapshots`
+### `sdk.vault.getVaultSnapshots`
 
 #### Description:
 
@@ -172,22 +172,24 @@ TVL and APY snapshots for the vault. With the help of this data it is possible t
 
 #### Arguments:
 
-| Name | Type | Type | Description |
-|------|------|-------------|---------|
-| unixStartOfDay | `number` | **Require** | Time to start |
-| vaultAddress | `string` | **Require** | - |
+| Name         | Type     | Type            | Description |
+|--------------|----------|-----------------|---------|
+| vaultAddress | `string` | **Require**     | - |
+| dateFrom     | `string` | **Require**     | Time to start |
+| dateTo       | `string` | Time to end     |
+| first        | `number` | Snapshots count |
 
 #### Returns:
 
 ```ts
-type DaySnapshot = {
+type VaultSnapshot = {
   APY: number
   TVL: string
 }
 
 type Output = {
-  days: Record<number, DaySnapshot>
-  first: DaySnapshot
+  days: Record<number, VaultSnapshot>
+  first: VaultSnapshot
 }
 ```
 
@@ -199,9 +201,9 @@ type Output = {
 #### Example:
 
 ```ts
-await sdk.vault.getDaySnapshots({
+await sdk.vault.getVaultSnapshots({
   vaultAddress: '0x...',
-  unixStartOfDay: 1695730032793,
+  dateFrom: 1695730032793,
 })
 ```
 ---

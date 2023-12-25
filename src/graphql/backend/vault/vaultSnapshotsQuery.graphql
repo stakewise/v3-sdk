@@ -1,0 +1,17 @@
+query VaultSnapshots($vaultAddress: String!  $dateFrom: DateAsTimestamp!  $dateTo: DateAsTimestamp  $first: Int) {
+  vaultSnapshots(
+    vaultAddress: $vaultAddress
+    dateFrom: $dateFrom
+    dateTo: $dateTo
+    first: $first
+  ) {
+    date,
+    rewardPerAsset: weeklyApy
+    totalAssets
+  }
+  firstSnapshots: vaultSnapshots(vaultAddress: $vaultAddress, dateFrom: $dateFrom, first: 1) {
+    date
+    totalAssets
+    rewardPerAsset: weeklyApy
+  }
+}
