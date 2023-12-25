@@ -7,7 +7,7 @@ import getStakeBalance from './requests/getStakeBalance'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
 import getExitQueuePositions from './requests/getExitQueuePositions'
-import getVaultSnapshots from './requests/getVaultSnapshots'
+import getSnapshots from './requests/getSnapshots'
 
 // Transactions
 import { deposit } from './transactions/deposit'
@@ -24,7 +24,7 @@ export default {
     getStakeBalance,
     getHarvestParams,
     getStakerActions,
-    getVaultSnapshots,
+    getSnapshots,
     getExitQueuePositions,
   },
   transactions: {

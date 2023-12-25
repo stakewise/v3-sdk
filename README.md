@@ -87,7 +87,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | **Vault** | **osToken** | **Utils** |
 |------|-------------|------|
 | [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
-| [sdk.vault.getVaultSnapshots](#sdkvaultgetvaultsnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
 | [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
 | [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
@@ -164,7 +164,7 @@ await sdk.vault.getStakerActions({
 })
 ```
 ---
-### `sdk.vault.getVaultSnapshots`
+### `sdk.vault.getSnapshots`
 
 #### Description:
 
@@ -182,14 +182,14 @@ TVL and APY snapshots for the vault. With the help of this data it is possible t
 #### Returns:
 
 ```ts
-type VaultSnapshot = {
+type Snapshot = {
   APY: number
   TVL: string
 }
 
 type Output = {
-  days: Record<number, VaultSnapshot>
-  first: VaultSnapshot
+  days: Record<number, Snapshot>
+  first: Snapshot
 }
 ```
 
@@ -201,7 +201,7 @@ type Output = {
 #### Example:
 
 ```ts
-await sdk.vault.getVaultSnapshots({
+await sdk.vault.getSnapshots({
   vaultAddress: '0x...',
   dateFrom: 1695730032793,
 })

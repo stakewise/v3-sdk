@@ -1,4 +1,4 @@
-query VaultSnapshots($vaultAddress: String!  $dateFrom: DateAsTimestamp!  $dateTo: DateAsTimestamp  $first: Int) {
+query Snapshots($vaultAddress: String!  $dateFrom: DateAsTimestamp!  $dateTo: DateAsTimestamp  $first: Int) {
   vaultSnapshots(
     vaultAddress: $vaultAddress
     dateFrom: $dateFrom
@@ -6,12 +6,12 @@ query VaultSnapshots($vaultAddress: String!  $dateFrom: DateAsTimestamp!  $dateT
     first: $first
   ) {
     date,
-    rewardPerAsset: weeklyApy
+    weeklyApy
     totalAssets
   }
   firstSnapshots: vaultSnapshots(vaultAddress: $vaultAddress, dateFrom: $dateFrom, first: 1) {
     date
     totalAssets
-    rewardPerAsset: weeklyApy
+    weeklyApy
   }
 }
