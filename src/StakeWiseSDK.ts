@@ -1,7 +1,7 @@
 import { JsonRpcProvider } from 'ethers'
 
 import methods from './methods'
-import { configs, apiUrls } from './utils'
+import { configs, apiUrls, getGas } from './utils'
 import { createContracts, vaultMulticall } from './contracts'
 
 
@@ -42,6 +42,13 @@ class StakeWiseSDK {
       vaultAddress,
       userAddress,
       request,
+    })
+  }
+
+  getGas(estimatedGas: bigint) {
+    return getGas({
+      provider: this.provider,
+      estimatedGas,
     })
   }
 
