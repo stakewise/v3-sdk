@@ -3,11 +3,11 @@ import getVault from './requests/getVault'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
 import getMaxWithdraw from './requests/getMaxWithdraw'
-import getDaySnapshots from './requests/getDaySnapshots'
 import getStakeBalance from './requests/getStakeBalance'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
 import getExitQueuePositions from './requests/getExitQueuePositions'
+import getSnapshots from './requests/getSnapshots'
 
 // Transactions
 import { deposit } from './transactions/deposit'
@@ -21,10 +21,10 @@ export default {
     getValidators,
     getUserRewards,
     getMaxWithdraw,
-    getDaySnapshots,
     getStakeBalance,
     getHarvestParams,
     getStakerActions,
+    getSnapshots,
     getExitQueuePositions,
   },
   transactions: {

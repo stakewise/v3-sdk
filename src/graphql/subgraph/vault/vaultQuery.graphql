@@ -20,7 +20,7 @@ query Vault($address: ID!) {
     tokenSymbol
     feeRecipient
     validatorsRoot
-    avgRewardPerAsset
+    weeklyApy
   }
   privateVaultAccounts(
     where: { vault: $address }

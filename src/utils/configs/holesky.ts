@@ -6,7 +6,7 @@ import tokens from '../constants/tokens'
 export default {
   api: {
     backend: 'https://holesky-api.stakewise.io/graphql',
-    subgraph: 'https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise1',
   },
   network: {
     chainId: 17000,
