@@ -8,20 +8,20 @@ import { ModifiedSnapshots } from './types'
 type GetSnapshotsInput = {
   options: StakeWise.Options
   vaultAddress: SnapshotsQueryVariables['vaultAddress']
-  dateFrom: SnapshotsQueryVariables['dateFrom']
+  dateFrom: number
 }
 
 const getSnapshots = async (input: GetSnapshotsInput) => {
   const { options, vaultAddress, dateFrom } = input
 
   validateArgs.address({ vaultAddress })
-  validateArgs.string({ dateFrom })
+  validateArgs.number({ dateFrom })
 
   const data = await graphql.backend.vault.fetchSnapshotsQuery<ModifiedSnapshots>({
     url: apiUrls.getBackendUrl(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),
-      dateFrom,
+      dateFrom: String(dateFrom),
     } as SnapshotsQueryVariables,
     modifyResult: modifySnapshots,
   })

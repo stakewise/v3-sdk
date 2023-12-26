@@ -9,21 +9,21 @@ type GetUserRewardsInput = {
   options: StakeWise.Options
   userAddress: UserRewardsQueryVariables['user']
   vaultAddress: UserRewardsQueryVariables['vaultAddress']
-  dateFrom: UserRewardsQueryVariables['dateFrom']
+  dateFrom: number
 }
 
 const getUserRewards = async (input: GetUserRewardsInput) => {
   const { options, vaultAddress, userAddress, dateFrom } = input
 
   validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.string({ dateFrom })
+  validateArgs.number({ dateFrom })
 
   const data = await graphql.backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
     url: apiUrls.getBackendUrl(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),
       user: userAddress.toLowerCase(),
-      dateFrom,
+      dateFrom: String(dateFrom),
     } as UserRewardsQueryVariables,
     modifyResult: modifyUserRewards,
   })

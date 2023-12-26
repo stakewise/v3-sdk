@@ -175,9 +175,7 @@ TVL and APY snapshots for the vault. With the help of this data it is possible t
 | Name         | Type     | Type            | Description |
 |--------------|----------|-----------------|---------|
 | vaultAddress | `string` | **Require**     | - |
-| dateFrom     | `string` | **Require**     | Time to start |
-| dateTo       | `string` | Time to end     |
-| first        | `number` | Snapshots count |
+| dateFrom     | `number` | **Require**     | Time to start |
 
 #### Returns:
 
@@ -217,7 +215,7 @@ Daily rewards for the user who has made a deposit in the vault. With the help of
 
 | Name | Type     | Type | Description |
 |------|----------|-------------|---------|
-| dateFrom | `string` | **Require** | Time to start |
+| dateFrom | `number` | **Require** | Time to start |
 | vaultAddress | `string` | **Require** | - |
 | userAddress | `string` | **Require** | - |
 

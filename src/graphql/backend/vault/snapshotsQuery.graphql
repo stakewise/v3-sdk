@@ -1,9 +1,7 @@
-query Snapshots($vaultAddress: String!  $dateFrom: DateAsTimestamp!  $dateTo: DateAsTimestamp  $first: Int) {
+query Snapshots($vaultAddress: String!  $dateFrom: DateAsTimestamp!) {
   vaultSnapshots(
     vaultAddress: $vaultAddress
     dateFrom: $dateFrom
-    dateTo: $dateTo
-    first: $first
   ) {
     date,
     weeklyApy
