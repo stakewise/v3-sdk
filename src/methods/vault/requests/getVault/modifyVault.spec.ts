@@ -19,7 +19,7 @@ describe('modifyVault', () => {
       tokenName: 'mockToken',
       createdAt: '1693395816',
       displayName: 'Mock Vault',
-      avgRewardPerAsset: '0.01',
+      weeklyApy: '2.80',
       totalAssets: '150000000000',
       capacity: '1000000000000000',
       validatorsRoot: 'mockValidators',
@@ -39,7 +39,7 @@ describe('modifyVault', () => {
 
   it('should correctly transform the vault data', () => {
     const expectedModifiedVault = {
-      apy: 365,
+      apy: 2.80,
       isErc20: true,
       feePercent: 2,
       performance: 10,

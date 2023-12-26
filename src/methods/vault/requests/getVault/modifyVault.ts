@@ -24,7 +24,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     keysManager,
     totalAssets,
     feeRecipient,
-    avgRewardPerAsset,
+    weeklyApy,
     ...rest
   } = vault
 
@@ -39,7 +39,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     totalAssets: formatEther(totalAssets),
     feeRecipient: getAddress(feeRecipient),
     vaultKeysManager: getAddress(keysManager),
-    apy: Number(avgRewardPerAsset) * 365 * 100,
+    apy: Number(weeklyApy),
     whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
     whitelist: privateVaultAccounts.map(({ createdAt, address }) => ({
       createdAt: Number(createdAt) * 1000,

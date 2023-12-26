@@ -4,7 +4,7 @@ import tokens from '../constants/tokens'
 export default {
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
-    subgraph: 'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise1',
   },
   network: {
     chainId: 1,
