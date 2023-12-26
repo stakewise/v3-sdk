@@ -86,9 +86,9 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ##### Request table:
 | **Vault** | **osToken** | **Utils** |
 |------|-------------|------|
-| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getRewardsPerYear](#sdkutilsgetrewardsperyear) |
-| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) |
 | [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
 | [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
@@ -757,34 +757,6 @@ await sdk.utils.getSharesFromAssets({ amount: 0n })
 ---
 ## API-utils
 
-### `sdk.utils.getRewardsPerYear`
-
-#### Description:
-
-Get a list of interactions with the vault.
-
-#### Arguments:
-
-| Name | Type | Type | Description |
-|------|------|-------------|---------|
-| amount | `string` | **Require** | Deposit amount |
-| averageRewardsPerSecond | `string` | **Require** | [getAPY](#sdkostokengetapy) |
-
-#### Returns:
-
-```ts
-type Output = string
-```
-
-#### Example:
-
-```ts
-sdk.utils.getRewardsPerYear({
-  averageRewardsPerSecond: 0n,
-  amount: 0n,
-})
-```
----
 ### `sdk.utils.getSwiseUsdPrice`
 
 #### Description:
