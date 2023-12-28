@@ -1,3 +1,6 @@
+export { fetchScoringQuery } from './scoringQuery.graphql'
+export type { ScoringQueryPayload, ScoringQueryVariables } from './scoringQuery.graphql'
+
 export { fetchSnapshotsQuery } from './snapshotsQuery.graphql'
 export type { SnapshotsQueryPayload, SnapshotsQueryVariables } from './snapshotsQuery.graphql'
 
