@@ -1,6 +1,6 @@
 export type ModifiedScoring = {
-  consensusRewardsEarned: string,
-  consensusRewardsMissed: string,
-  executionMevEarned: string,
-  executionMevMissed: string,
+  consensusRewardsEarned: number,
+  consensusRewardsMissed: number,
+  executionMevEarned: number,
+  executionMevMissed: number,
 }
