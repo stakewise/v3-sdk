@@ -8,10 +8,10 @@ const modifyScoring = (input: ScoringQueryPayload): ModifiedScoring => {
   const { consensusRewardsEarned, consensusRewardsMissed, executionMevEarned,  executionMevMissed } = vaults[0].scoring
 
   return ({
-    consensusRewardsEarned: Number(consensusRewardsEarned),
-    consensusRewardsMissed: Number(consensusRewardsMissed),
-    executionMevEarned: Number(executionMevEarned),
-    executionMevMissed: Number(executionMevMissed),
+    consensusRewardsEarned: BigInt(consensusRewardsEarned),
+    consensusRewardsMissed: BigInt(consensusRewardsMissed),
+    executionMevEarned: BigInt(executionMevEarned),
+    executionMevMissed: BigInt(executionMevMissed),
   })
 }
 
