@@ -5,13 +5,13 @@ import { ModifiedScoring } from './types'
 const modifyScoring = (input: ScoringQueryPayload): ModifiedScoring => {
   const { vaults } = input
 
-  const { consensusRewardsEarned, consensusRewardsMissed, executionMevEarned,  executionMevMissed } = vaults[0].scoring
+  const { scoring } = vaults[0]
 
   return ({
-    consensusRewardsEarned: BigInt(consensusRewardsEarned),
-    consensusRewardsMissed: BigInt(consensusRewardsMissed),
-    executionMevEarned: BigInt(executionMevEarned),
-    executionMevMissed: BigInt(executionMevMissed),
+    consensusRewardsEarned: BigInt(scoring?.consensusRewardsEarned || 0),
+    consensusRewardsMissed: BigInt(scoring?.consensusRewardsMissed || 0),
+    executionMevEarned: BigInt(scoring?.executionMevEarned || 0),
+    executionMevMissed: BigInt(scoring?.executionMevMissed || 0),
   })
 }
 

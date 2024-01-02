@@ -220,18 +220,11 @@ Fetch components for performance score calculation.
 #### Returns:
 
 ```ts
-type Scoring = {
-  consensusRewardsEarned: number
-  consensusRewardsMissed: number
-  executionMevEarned: number
-  executionMevMissed: number
-}
-
 type Output = {
-  consensusRewardsEarned: string
-  consensusRewardsMissed: string
-  executionMevEarned: string
-  executionMevMissed: string
+  consensusRewardsEarned: bigint
+  consensusRewardsMissed: bigint
+  executionMevEarned: bigint
+  executionMevMissed: bigint
 }
 ```
 
