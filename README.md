@@ -94,7 +94,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
-|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards)|
+|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards) | [sdk.vault.getScoring](#sdkvaultgetscoring) |
 
 ##### Table of transactions:
 | **Vault** | **osToken** |
@@ -202,6 +202,44 @@ type Output = {
 await sdk.vault.getSnapshots({
   vaultAddress: '0x...',
   dateFrom: 1695730032793,
+})
+```
+---
+### `sdk.vault.getScoring`
+
+#### Description:
+
+Fetch components for performance score calculation.
+
+#### Arguments:
+
+| Name         | Type     | Type            | Description |
+|--------------|----------|-----------------|---------|
+| vaultAddress | `string` | **Require**     | - |
+
+#### Returns:
+
+```ts
+type Output = {
+  consensusRewardsEarned: bigint
+  consensusRewardsMissed: bigint
+  executionMevEarned: bigint
+  executionMevMissed: bigint
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `consensusRewardsEarned` | The total amount of consensus rewards earned by the Vault |
+| `consensusRewardsMissed` | The total amount of consensus rewards missed by the Vault |
+| `executionMevEarned` | The total amount of execution rewards earned by the Vault |
+| `executionMevMissed` | The total amount of execution rewards missed by the Vault. It will include the ones missed due to the invalid fee recipient address set for the validator |
+
+#### Example:
+
+```ts
+await sdk.vault.getScoring({
+  vaultAddress: '0x...',
 })
 ```
 ---

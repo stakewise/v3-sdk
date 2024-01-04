@@ -1,0 +1,10 @@
+query Scoring($vaultAddress: String!) {
+  vaults(id: $vaultAddress) {
+    scoring {
+      consensusRewardsEarned,
+      consensusRewardsMissed,
+      executionMevEarned,
+      executionMevMissed
+    }
+  }
+}
