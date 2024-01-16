@@ -251,11 +251,12 @@ Daily rewards for the user who has made a deposit in the vault. With the help of
 
 #### Arguments:
 
-| Name | Type     | Type | Description |
+| Name | Type     | Type        | Description |
 |------|----------|-------------|---------|
-| dateFrom | `number` | **Require** | Time to start |
 | vaultAddress | `string` | **Require** | - |
 | userAddress | `string` | **Require** | - |
+| dateFrom | `number` | **Require** | Time to start |
+| dateTo | `number` | Time to end |
 
 #### Returns:
 
