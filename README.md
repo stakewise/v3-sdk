@@ -257,7 +257,7 @@ Daily rewards for the user who has made a deposit in the vault. With the help of
 | userAddress | `string` | **Require** | - |
 | dateFrom | `number` | **Require** | Time to start |
 | dateTo | `number` | **Optional** | Time to end |
-| fillGaps | `boolean` | **Optional** | To fill in all the days, or not |
+| fillGaps | `boolean` | **Optional** | Fill in the empty days with zeros |
 
 #### Returns:
 
@@ -272,7 +272,7 @@ type UserReward = {
 }
 
 type Output = {
-  days: Record<number, UserReward> | []
+  days: Record<number, UserReward>
 }
 ```
 
