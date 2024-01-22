@@ -10,20 +10,28 @@ type GetUserRewardsInput = {
   userAddress: UserRewardsQueryVariables['user']
   vaultAddress: UserRewardsQueryVariables['vaultAddress']
   dateFrom: number
+  dateTo?: number
+  fillGaps?: boolean
 }
 
 const getUserRewards = async (input: GetUserRewardsInput) => {
-  const { options, vaultAddress, userAddress, dateFrom } = input
+  const { options, vaultAddress, userAddress, dateFrom, dateTo, fillGaps } = input
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ dateFrom })
 
+  if (dateTo) {
+    validateArgs.number({ dateTo })
+  }
+
   const data = await graphql.backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
     url: apiUrls.getBackendUrl(options),
     variables: {
-      vaultAddress: vaultAddress.toLowerCase(),
-      user: userAddress.toLowerCase(),
+      fillGaps,
       dateFrom: String(dateFrom),
+      user: userAddress.toLowerCase(),
+      dateTo: dateTo ? String(dateTo) : undefined,
+      vaultAddress: vaultAddress.toLowerCase(),
     } as UserRewardsQueryVariables,
     modifyResult: modifyUserRewards,
   })

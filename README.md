@@ -251,18 +251,24 @@ Daily rewards for the user who has made a deposit in the vault. With the help of
 
 #### Arguments:
 
-| Name | Type     | Type | Description |
-|------|----------|-------------|---------|
-| dateFrom | `number` | **Require** | Time to start |
+| Name | Type     | Type        | Description |
+|------|----------|-------------|---|
 | vaultAddress | `string` | **Require** | - |
 | userAddress | `string` | **Require** | - |
+| dateFrom | `number` | **Require** | Time to start |
+| dateTo | `number` | **Optional** | Time to end |
+| fillGaps | `boolean` | **Optional** | Fill in the empty days with zeros |
 
 #### Returns:
 
 ```ts
 type UserReward = {
-  sumRewards: number
-  dailyRewards: number
+  date: number
+  sumRewards: string
+  dailyRewards: string
+  dailyRewardsEur: string
+  dailyRewardsGbp: string
+  dailyRewardsUsd: string
 }
 
 type Output = {
