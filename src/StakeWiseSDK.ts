@@ -1,7 +1,5 @@
-import { JsonRpcProvider } from 'ethers'
-
 import methods from './methods'
-import { configs, apiUrls, getGas } from './utils'
+import { configs, getGas, createProvider } from './utils'
 import { createContracts, vaultMulticall } from './contracts'
 
 
@@ -18,7 +16,8 @@ class StakeWiseSDK {
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
-    const provider = options.provider || new JsonRpcProvider(apiUrls.getWeb3Url(options))
+
+    const provider = options.provider || createProvider(options)
 
     const contracts = createContracts({ provider, config })
 

@@ -1,4 +1,4 @@
-import { BrowserProvider, JsonRpcProvider } from 'ethers'
+import { BrowserProvider, JsonRpcProvider, FallbackProvider } from 'ethers'
 
 import methods from '../methods'
 import { Network, configs } from '../utils'
@@ -30,20 +30,26 @@ declare global {
 
   namespace StakeWise {
     type Config = typeof configs[Network]
-    type Contracts = ReturnType<typeof createContracts>
+    type Provider = BrowserProvider | JsonRpcProvider | CustomFallbackProvider
 
-    type Provider = BrowserProvider | JsonRpcProvider
+    type Contracts = ReturnType<typeof createContracts>
     type Utils = ReturnType<typeof methods.createUtils>
     type VaultMethods = ReturnType<typeof methods.createVaultMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
+
+    // FallbackProvider has no base methods unlike JsonRpcProvider
+    type CustomFallbackProvider = FallbackProvider & {
+      getSigner: () => any
+      send: () => any
+    }
 
     type Options = {
       network: Network
       provider?: Provider
       endpoints?: {
         api?: string
-        web3?: string
         subgraph?: string
+        web3?: string | string[]
       }
     }
 

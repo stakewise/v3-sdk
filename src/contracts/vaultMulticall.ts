@@ -39,7 +39,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     const library = options.provider || new JsonRpcProvider(config.network.url)
 
     const signer = options.provider
-      ? await library.getSigner(userAddress)
+      ? await options.provider.getSigner(userAddress)
       : new VoidSigner(userAddress, library)
 
     contract = vaultContract.connect(signer)
