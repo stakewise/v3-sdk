@@ -13,6 +13,7 @@ query Vault($address: ID!) {
     tokenName
     feePercent
     totalAssets
+    isBlocklist
     displayName
     description
     whitelister

@@ -434,6 +434,7 @@ type Output = {
 | `createdAt`        | Date of Creation                        |
 | `feePercent`       | Commission rate                         |
 | `isPrivate`        | Whether the storage is private          |
+| `isBlocklist`      | Whether the storage has blocklist       |
 | `vaultAdmin`       | Vault administrator address             |
 | `totalAssets`      | TVL of Vault                            |
 | `feeRecipient`     | Vault fee address                       |
