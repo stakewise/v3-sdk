@@ -35,6 +35,10 @@ describe('modifyVault', () => {
       { createdAt: '1693395816', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
       { createdAt: '1693395816', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
     ],
+    vaultBlockedAccounts: [
+      { createdAt: '1693395817', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
+      { createdAt: '1693395817', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
+    ],
   }
 
   it('should correctly transform the vault data', () => {
@@ -67,6 +71,16 @@ describe('modifyVault', () => {
         },
         {
           createdAt: 1693395816000,
+          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+        },
+      ],
+      blocklist: [
+        {
+          createdAt: 1693395817000,
+          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+        },
+        {
+          createdAt: 1693395817000,
           address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
         },
       ],
@@ -109,6 +123,20 @@ describe('modifyVault', () => {
     })
 
     expect(result.whitelist).toEqual([])
+  })
+
+  it('should handle empty vaultBlockedAccounts correctly', () => {
+    const mockDataWithoutBlockedAccounts: VaultQueryPayload = {
+      ...mockVaultQueryPayload,
+      vaultBlockedAccounts: [],
+    }
+
+    const result = modifyVault({
+      data: mockDataWithoutBlockedAccounts,
+      network,
+    })
+
+    expect(result.blocklist).toEqual([])
   })
 
   it('should handle feePercent being 0', () => {
