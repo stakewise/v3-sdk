@@ -1,6 +1,6 @@
-import { VoidSigner, JsonRpcProvider } from 'ethers'
+import { VoidSigner } from 'ethers'
 
-import { configs } from '../utils'
+import { createProvider } from '../utils'
 import { VaultAbi, KeeperAbi } from './types'
 import getHarvestParams from '../methods/vault/requests/getHarvestParams'
 
@@ -35,8 +35,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const withSigner = !callStatic && !transactionData
 
   if (withSigner) {
-    const config = configs[options.network]
-    const library = options.provider || new JsonRpcProvider(config.network.url)
+    const library = options.provider || createProvider(options)
 
     const signer = options.provider
       ? await options.provider.getSigner(userAddress)
