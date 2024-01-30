@@ -9,7 +9,7 @@ export enum AllocatorActionType {
   Redeemed = 'Redeemed',
   Migrated = 'Migrated',
   Deposited = 'Deposited',
-  Transferred = 'Transferred',
+  TransferIn = 'TransferIn',
   VaultCreated = 'VaultCreated',
   OsTokenMinted = 'OsTokenMinted',
   OsTokenBurned = 'OsTokenBurned',
