@@ -1,6 +1,11 @@
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
+type ListItem = {
+  createdAt: number
+  address: string
+}
+
 export type ModifiedVault = Omit<
   VaultQueryPayload['vault'],
   'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'weeklyApy' | 'performance' | 'createdAt'
@@ -13,8 +18,6 @@ export type ModifiedVault = Omit<
   mevRecipient: string
   vaultKeysManager: string
   isSmoothingPool: boolean
-  whitelist: Array<{
-    createdAt: number
-    address: string
-  }>
+  whitelist: ListItem[]
+  blocklist: ListItem[]
 }

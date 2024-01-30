@@ -13,6 +13,7 @@ query Vault($address: ID!) {
     tokenName
     feePercent
     totalAssets
+    isBlocklist
     displayName
     description
     whitelister
@@ -20,11 +21,16 @@ query Vault($address: ID!) {
     tokenSymbol
     feeRecipient
     validatorsRoot
+    blocklistManager
     weeklyApy
   }
   privateVaultAccounts(
     where: { vault: $address }
   ) {
+    createdAt
+    address
+  }
+  vaultBlockedAccounts(where: { vault: $address }) {
     createdAt
     address
   }
