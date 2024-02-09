@@ -23,100 +23,77 @@ import {
   UniswapPositionManagerAbi,
 } from './abis'
 
-import type {
-  UniswapPositionManagerAbi as UniswapPositionManagerType,
-  RewardSplitterFactoryAbi as RewardSplitterFactoryType,
-  VestingEscrowFactoryAbi as VestingEscrowFactoryType,
-  MintTokenControllerAbi as MintTokenControllerType,
-  BlocklistVaultDiffAbi as BlocklistVaultDiffType,
-  PrivateVaultDiffAbi as PrivateVaultDiffType,
-  MintTokenConfigAbi as MintTokenConfigType,
-  VaultsRegistryAbi as VaultsRegistryType,
-  RewardSplitterAbi as RewardSplitterType,
-  V2RewardTokenAbi as V2RewardTokenType,
-  VestingEscrowAbi as VestingEscrowType,
-  VaultFactoryAbi as VaultFactoryType,
-  PriceOracleAbi as PriceOracleType,
-  UniswapPoolAbi as UniswapPoolType,
-  MulticallAbi as MulticallType,
-  MintTokenAbi as MintTokenType,
-  UsdRateAbi as UsdRateType,
-  VaultAbi as VaultAbiType,
-  KeeperAbi as KeeperType,
-  Erc20Abi as Erc20Type,
-} from './types'
-
 import multicall from './multicall'
 import createContract from './createContract'
 
 
-const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<Erc20Type>(
+const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Erc20Token>(
   config.addresses.tokens.swise,
   Erc20Abi,
   provider
 )
 
-const getMulticall = (provider: Provider, config: StakeWise.Config) => createContract<MulticallType>(
+const getMulticall = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Multicall>(
   config.addresses.base.multicall,
   MulticallAbi,
   provider
 )
 
-const getVaultFactory = (provider: Provider, address: string) => createContract<VaultFactoryType>(
+const getVaultFactory = (provider: Provider, address: string) => createContract<StakeWise.ABI.VaultFactory>(
   address,
   VaultFactoryAbi,
   provider
 )
 
-const getVaultsRegistry = (provider: Provider, config: StakeWise.Config) => createContract<VaultsRegistryType>(
+const getVaultsRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.VaultsRegistry>(
   config.addresses.base.vaultsRegistry,
   VaultsRegistryAbi,
   provider
 )
 
-const getRewardSplitterFactory = (provider: Provider, config: StakeWise.Config) => createContract<RewardSplitterFactoryType>(
+const getRewardSplitterFactory = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.RewardSplitterFactory>(
   config.addresses.base.rewardSplitterFactory,
   RewardSplitterFactoryAbi,
   provider
 )
 
-const getKeeper = (provider: Provider, config: StakeWise.Config) => createContract<KeeperType>(
+const getKeeper = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Keeper>(
   config.addresses.base.keeper,
   KeeperAbi,
   provider
 )
 
-const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenType>(
+const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintToken>(
   config.addresses.tokens.mintToken,
   MintTokenAbi,
   provider
 )
 
-const getMintTokenConfig = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenConfigType>(
+const getMintTokenConfig = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfig>(
   config.addresses.base.mintTokenConfig,
   MintTokenConfigAbi,
   provider
 )
 
-const getMintTokenController = (provider: Provider, config: StakeWise.Config) => createContract<MintTokenControllerType>(
+const getMintTokenController = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenController>(
   config.addresses.base.mintTokenController,
   MintTokenControllerAbi,
   provider
 )
 
-const getPriceOracle = (provider: Provider, config: StakeWise.Config) => createContract<PriceOracleType>(
+const getPriceOracle = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.PriceOracle>(
   config.addresses.base.priceOracle,
   PriceOracleAbi,
   provider
 )
 
-const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => createContract<V2RewardTokenType>(
+const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.V2RewardToken>(
   config.addresses.tokens.v2RewardToken,
   V2RewardTokenAbi,
   provider
 )
 
-const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<UniswapPositionManagerType>(
+const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.UniswapPositionManager>(
   config.addresses.uniswap.positionManager,
   UniswapPositionManagerAbi,
   provider
@@ -135,16 +112,16 @@ export const createContracts = (input: CreateContractsInput) => {
   return {
     helpers: {
       multicallContract,
-      createMulticall: multicall(multicallContract as MulticallType),
-      createErc20: (address: string) => createContract<Erc20Type>(address, Erc20Abi, provider),
-      createVault: (address: string) => createContract<VaultAbiType>(address, VaultAbi, provider),
-      createUniswapPool: (address: string) => createContract<UniswapPoolType>(address, UniswapPoolAbi, provider),
-      createPrivateVault: (address: string) => createContract<VaultAbiType & PrivateVaultDiffType>(address, PrivateVaultAbi, provider),
-      createBlocklistVault: (address: string) => createContract<VaultAbiType & BlocklistVaultDiffType>(address, BlocklistVaultAbi, provider),
-      createRewardSplitter: (address: string) => createContract<RewardSplitterType>(address, RewardSplitterAbi, provider),
-      createVestingEscrowDirect: (address: string) => createContract<VestingEscrowType>(address, VestingEscrowAbi, provider),
-      createUsdRate: (address: string, _provider?: Provider) => createContract<UsdRateType>(address, UsdRateAbi, _provider || provider),
-      createVestingEscrowFactory: (address: string) => createContract<VestingEscrowFactoryType>(address, VestingEscrowFactoryAbi, provider),
+      createMulticall: multicall(multicallContract as StakeWise.ABI.Multicall),
+      createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
+      createVault: (address: string) => createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider),
+      createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),
+      createPrivateVault: (address: string) => createContract<StakeWise.ABI.PrivateVault>(address, PrivateVaultAbi, provider),
+      createBlocklistVault: (address: string) => createContract<StakeWise.ABI.BlocklistVault>(address, BlocklistVaultAbi, provider),
+      createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
+      createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
+      createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
+      createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),
     },
     base: {
       keeper: getKeeper(provider, config),

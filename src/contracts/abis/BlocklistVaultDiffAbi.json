@@ -3,6 +3,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_blocklistManager",
+        "type": "address"
+      }
+    ],
+    "name": "setBlocklistManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "account",
         "type": "address"
       },

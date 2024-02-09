@@ -3,6 +3,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_whitelister",
+        "type": "address"
+      }
+    ],
+    "name": "setWhitelister",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "account",
         "type": "address"
       },
