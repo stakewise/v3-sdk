@@ -19,7 +19,7 @@ jobs:
         with:
           cache: npm
           scope: '@stakewise'
-          node-version: '18.16.1'
+          node-version: '18.17.0'
           registry-url: "https://npm.pkg.github.com"
           cache-dependency-path: "**/package-lock.json"
       - name: Install npm dependencies
