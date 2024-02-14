@@ -10,14 +10,9 @@ type ModifyVaultInput = {
   network: Network
 }
 
-const modifyAddress = ({ createdAt, address }: { createdAt: string, address: string }) => ({
-  createdAt: Number(createdAt) * 1000,
-  address: getAddress(address),
-})
-
 const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
   const { data, network } = input
-  const { vault, privateVaultAccounts, vaultBlockedAccounts } = data
+  const { vault } = data
 
   const {
     admin,
@@ -29,6 +24,8 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     keysManager,
     totalAssets,
     feeRecipient,
+    blocklistCount,
+    whitelistCount,
     weeklyApy,
     ...rest
   } = vault
@@ -45,10 +42,10 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     vaultKeysManager: getAddress(keysManager),
     apy: Number(weeklyApy),
+    blocklistCount: Number(blocklistCount),
+    whitelistCount: Number(whitelistCount),
     whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
     blocklistManager: vault.blocklistManager ? getAddress(vault.blocklistManager) : '',
-    whitelist: privateVaultAccounts.map(modifyAddress),
-    blocklist: vaultBlockedAccounts.map(modifyAddress),
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)
       : configs[network].addresses.base.sharedMevEscrow,

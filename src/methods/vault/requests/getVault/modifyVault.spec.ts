@@ -21,6 +21,8 @@ describe('modifyVault', () => {
       createdAt: '1693395816',
       displayName: 'Mock Vault',
       weeklyApy: '2.80',
+      blocklistCount: '0',
+      whitelistCount: '0',
       totalAssets: '150000000000',
       capacity: '1000000000000000',
       validatorsRoot: 'mockValidators',
@@ -33,14 +35,6 @@ describe('modifyVault', () => {
       feeRecipient: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
     },
-    privateVaultAccounts: [
-      { createdAt: '1693395816', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
-      { createdAt: '1693395816', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
-    ],
-    vaultBlockedAccounts: [
-      { createdAt: '1693395817', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
-      { createdAt: '1693395817', address: '0xeefffd4c23d2e8c845870e273861e7d60df49663' },
-    ],
   }
 
   it('should correctly transform the vault data', () => {
@@ -51,6 +45,8 @@ describe('modifyVault', () => {
       performance: 10,
       isPrivate: false,
       isBlocklist: false,
+      blocklistCount: 0,
+      whitelistCount: 0,
       capacity: '0.001',
       tokenSymbol: 'mTKN',
       imageUrl: 'mockUrl',
@@ -68,26 +64,6 @@ describe('modifyVault', () => {
       mevRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       vaultKeysManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       blocklistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      whitelist: [
-        {
-          createdAt: 1693395816000,
-          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-        },
-        {
-          createdAt: 1693395816000,
-          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-        },
-      ],
-      blocklist: [
-        {
-          createdAt: 1693395817000,
-          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-        },
-        {
-          createdAt: 1693395817000,
-          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-        },
-      ],
     }
 
     const result = modifyVault({
@@ -113,34 +89,6 @@ describe('modifyVault', () => {
     })
 
     expect(result.mevRecipient).toEqual(configs[network].addresses.base.sharedMevEscrow)
-  })
-
-  it('should handle empty privateVaultAccounts correctly', () => {
-    const mockDataWithoutPrivateAccounts: VaultQueryPayload = {
-      ...mockVaultQueryPayload,
-      privateVaultAccounts: [],
-    }
-
-    const result = modifyVault({
-      data: mockDataWithoutPrivateAccounts,
-      network,
-    })
-
-    expect(result.whitelist).toEqual([])
-  })
-
-  it('should handle empty vaultBlockedAccounts correctly', () => {
-    const mockDataWithoutBlockedAccounts: VaultQueryPayload = {
-      ...mockVaultQueryPayload,
-      vaultBlockedAccounts: [],
-    }
-
-    const result = modifyVault({
-      data: mockDataWithoutBlockedAccounts,
-      network,
-    })
-
-    expect(result.blocklist).toEqual([])
   })
 
   it('should handle feePercent being 0', () => {

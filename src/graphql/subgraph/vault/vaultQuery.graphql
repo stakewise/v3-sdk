@@ -23,13 +23,7 @@ query Vault($address: ID!) {
     validatorsRoot
     blocklistManager
     weeklyApy
-  }
-  privateVaultAccounts(where: { vault: $address }, first: 1000) {
-    createdAt
-    address
-  }
-  vaultBlockedAccounts(where: { vault: $address }, first: 1000) {
-    createdAt
-    address
+    blocklistCount
+    whitelistCount
   }
 }
