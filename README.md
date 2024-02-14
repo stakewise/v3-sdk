@@ -485,6 +485,8 @@ type Output = {
   whitelister: string
   vaultAddress: string
   mevRecipient: string
+  whitelistCount: number
+  blocklistCount: number
   imageUrl: string | null
   blocklistManager: string
   vaultKeysManager: string
@@ -497,32 +499,34 @@ type Output = {
 }
 ```
 
-| Name               | Description                             |
-|--------------------|-----------------------------------------|
-| `apy`              | Current vault apy                       |
-| `isErc20`          | Does the vault have its own ERC20 token |
-| `capacity`         | Maximum TVL of Vault                    |
-| `createdAt`        | Date of Creation                        |
-| `feePercent`       | Commission rate                         |
-| `isPrivate`        | Whether the storage is private          |
-| `isBlocklist`      | Whether the storage has blocklist       |
-| `vaultAdmin`       | Vault administrator address             |
-| `totalAssets`      | TVL of Vault                            |
-| `feeRecipient`     | Vault fee address                       |
-| `whitelister`      | Whitelist manager                       |
-| `vaultAddress`     | Address of vault                        |
-| `mevRecipient`     | Validator fee recipient                 |
-| `imageUrl`         | Link for vault logo                     |
-| `blocklistManager` | Blocklist manager                       |
-| `vaultKeysManager` | Keys manager address                    |
-| `isSmoothingPool`  | Smoothing poll or Vault escrow          |
-| `tokenName`        | ERC20 token name                        |
-| `tokenSymbol`      | ERC20 token symbol                      |
-| `displayName`      | Name of vault                           |
-| `description`      | Description of vault                    |
-| `whitelist`        | List of authorized users for deposits   |
-| `blocklist`        | List of blocked users for deposits      |
-| `performance`      | Vault performance indicator (percent)   |
+| Name               | Description                                                   |
+|--------------------|---------------------------------------------------------------|
+| `apy`              | Current vault apy                                             |
+| `isErc20`          | Does the vault have its own ERC20 token                       |
+| `capacity`         | Maximum TVL of Vault                                          |
+| `createdAt`        | Date of Creation                                              |
+| `feePercent`       | Commission rate                                               |
+| `isPrivate`        | Whether the storage is private                                |
+| `isBlocklist`      | Whether the storage has blocklist                             |
+| `vaultAdmin`       | Vault administrator address                                   |
+| `totalAssets`      | TVL of Vault                                                  |
+| `feeRecipient`     | Vault fee address                                             |
+| `whitelister`      | Whitelist manager                                             |
+| `vaultAddress`     | Address of vault                                              |
+| `mevRecipient`     | Validator fee recipient                                       |
+| `whitelistCount`   | Number of addresses in the [whitelist](#sdkvaultgetwhitelist) |
+| `blocklistCount`   | Number of addresses in the [blocklist](#sdkvaultgetblocklist) |
+| `imageUrl`         | Link for vault logo                                           |
+| `blocklistManager` | Blocklist manager                                             |
+| `vaultKeysManager` | Keys manager address                                          |
+| `isSmoothingPool`  | Smoothing poll or Vault escrow                                |
+| `tokenName`        | ERC20 token name                                              |
+| `tokenSymbol`      | ERC20 token symbol                                            |
+| `displayName`      | Name of vault                                                 |
+| `description`      | Description of vault                                          |
+| `whitelist`        | List of authorized users for deposits                         |
+| `blocklist`        | List of blocked users for deposits                            |
+| `performance`      | Vault performance indicator (percent)                         |
 
 #### Example:
 
