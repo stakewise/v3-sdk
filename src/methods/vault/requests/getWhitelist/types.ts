@@ -3,4 +3,6 @@ type ListItem = {
   address: string
 }
 
-export type ModifiedWhitelist = ListItem[]
+export type ModifiedWhitelist = {
+  whitelist: ListItem[]
+}

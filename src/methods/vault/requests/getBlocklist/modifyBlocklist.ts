@@ -17,7 +17,9 @@ const modifyBlocklist = (input: ModifyBlocklistInput): ModifiedBlocklist => {
   const { data } = input
   const { vaultBlockedAccounts } = data
 
-  return vaultBlockedAccounts.map(modifyAddress)
+  return {
+    blocklist: vaultBlockedAccounts.map(modifyAddress),
+  }
 }
 
 

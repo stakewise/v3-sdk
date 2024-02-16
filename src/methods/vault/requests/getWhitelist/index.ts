@@ -48,7 +48,7 @@ const getWhitelist = async (input: GetWhitelistInput): Promise<GetWhitelistOutpu
     ? { vault: vaultAddress, address_contains: search } as WhitelistAccountsQueryVariables['where']
     : { vault: vaultAddress } as WhitelistAccountsQueryVariables['where']
 
-  const data = await graphql.subgraph.vault.fetchWhitelistAccountsQuery<ModifiedWhitelist>({
+  return graphql.subgraph.vault.fetchWhitelistAccountsQuery<ModifiedWhitelist>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where,
@@ -58,10 +58,6 @@ const getWhitelist = async (input: GetWhitelistInput): Promise<GetWhitelistOutpu
     },
     modifyResult: (data: WhitelistAccountsQueryPayload) => modifyWhitelist({ data }),
   })
-
-  return {
-    whitelist: data,
-  }
 }
 
 

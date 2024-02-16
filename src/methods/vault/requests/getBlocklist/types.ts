@@ -3,4 +3,6 @@ type ListItem = {
   address: string
 }
 
-export type ModifiedBlocklist = ListItem[]
+export type ModifiedBlocklist = {
+  blocklist: ListItem[]
+}

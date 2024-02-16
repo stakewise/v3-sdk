@@ -17,7 +17,9 @@ const modifyWhitelist = (input: ModifyWhitelistInput): ModifiedWhitelist => {
   const { data } = input
   const { privateVaultAccounts } = data
 
-  return privateVaultAccounts.map(modifyAddress)
+  return {
+    whitelist: privateVaultAccounts.map(modifyAddress),
+  }
 }
 
 

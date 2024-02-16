@@ -48,7 +48,7 @@ const getBlocklist = async (input: GetBlocklistInput): Promise<GetBlocklistOutpu
     ? { vault: vaultAddress, address_contains: search } as BlocklistAccountsQueryVariables['where']
     : { vault: vaultAddress } as BlocklistAccountsQueryVariables['where']
 
-  const data = await graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
+  return graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where,
@@ -58,10 +58,6 @@ const getBlocklist = async (input: GetBlocklistInput): Promise<GetBlocklistOutpu
     },
     modifyResult: (data: BlocklistAccountsQueryPayload) => modifyBlocklist({ data }),
   })
-
-  return {
-    blocklist: data,
-  }
 }
 
 
