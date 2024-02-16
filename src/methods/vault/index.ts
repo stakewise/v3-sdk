@@ -1,6 +1,8 @@
 // Requests
 import getVault from './requests/getVault'
 import getSnapshots from './requests/getSnapshots'
+import getWhitelist from './requests/getWhitelist'
+import getBlocklist from './requests/getBlocklist'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
 import getMaxWithdraw from './requests/getMaxWithdraw'
@@ -27,6 +29,8 @@ export default {
     getMaxWithdraw,
     getValidators,
     getSnapshots,
+    getWhitelist,
+    getBlocklist,
     getVault,
   },
   transactions: {
