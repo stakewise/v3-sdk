@@ -209,8 +209,8 @@ await sdk.vault.getSnapshots({
 
 #### Description:
 
-This data is used to retrieve the data that indicates the level of effectiveness or performance of the vault. 
-The returned data provides percentiles corresponding to different statuses.
+This method is used to fetch information indicating the effectiveness or performance level of the vault. 
+The retrieved data includes percentiles corresponding to various statuses.
 
 #### Returns:
 
@@ -222,13 +222,13 @@ type Output = {
 }
 ```
 
-| Name | Description                                                                                          |
-|------|------------------------------------------------------------------------------------------------------|
-| `percentile25` | Represents the value corresponding to the **lowest** status. It is associated with the color (#FF4F38)   |
-| `percentile50` | Represents the value corresponding to the **moderate** status. It is associated with the color (#EE8F20) |
-| `percentile75` | Represents the value corresponding to the **good** status. It is associated with the color (#97C86F)     |
+| Name | Description                                                                                             |
+|------|---------------------------------------------------------------------------------------------------------|
+| `percentile25` | Represents the value corresponding to the **lowest** status. It is associated with the color (red)      |
+| `percentile50` | Represents the value corresponding to the **moderate** status. It is associated with the color (orange) |
+| `percentile75` | Represents the value corresponding to the **good** status. It is associated with the color (light green)      |
 
-_For values greater than percentile75 the status corresponds to **excellent** with color (#4CD48B)_
+_For values greater than percentile75 the status corresponds to **excellent** with color (green)_
 
 #### Example:
 
