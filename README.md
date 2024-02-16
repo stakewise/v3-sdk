@@ -94,7 +94,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
-|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards) | [sdk.vault.getScoring](#sdkvaultgetscoring) |
+|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards) | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)
 
 ##### Table of transactions:
 | **Vault** | **osToken** |
@@ -205,42 +205,35 @@ await sdk.vault.getSnapshots({
 })
 ```
 ---
-### `sdk.vault.getScoring`
+### `sdk.vault.getScorePercentiles`
 
 #### Description:
 
-Fetch components for performance score calculation.
-
-#### Arguments:
-
-| Name         | Type     | Type            | Description |
-|--------------|----------|-----------------|---------|
-| vaultAddress | `string` | **Require**     | - |
+This method is used to fetch information indicating the effectiveness or performance level of the vault. 
+The retrieved data includes percentiles corresponding to various statuses.
 
 #### Returns:
 
 ```ts
 type Output = {
-  consensusRewardsEarned: bigint
-  consensusRewardsMissed: bigint
-  executionMevEarned: bigint
-  executionMevMissed: bigint
+  percentile25: number
+  percentile50: number
+  percentile75: number
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `consensusRewardsEarned` | The total amount of consensus rewards earned by the Vault |
-| `consensusRewardsMissed` | The total amount of consensus rewards missed by the Vault |
-| `executionMevEarned` | The total amount of execution rewards earned by the Vault |
-| `executionMevMissed` | The total amount of execution rewards missed by the Vault. It will include the ones missed due to the invalid fee recipient address set for the validator |
+| Name | Description                                                                                             |
+|------|---------------------------------------------------------------------------------------------------------|
+| `percentile25` | Represents the value corresponding to the **lowest** status. It is associated with the color (red)      |
+| `percentile50` | Represents the value corresponding to the **moderate** status. It is associated with the color (orange) |
+| `percentile75` | Represents the value corresponding to the **good** status. It is associated with the color (light green)      |
+
+_For values greater than percentile75 the status corresponds to **excellent** with color (green)_
 
 #### Example:
 
 ```ts
-await sdk.vault.getScoring({
-  vaultAddress: '0x...',
-})
+await sdk.vault.getScorePercentiles()
 ```
 ---
 ### `sdk.vault.getUserRewards`
