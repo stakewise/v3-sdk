@@ -94,7 +94,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
-|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards) | [sdk.vault.getScoring](#sdkvaultgetscoring) |
+|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards) | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)
 
 ##### Table of transactions:
 | **Vault** | **osToken** |
@@ -205,42 +205,32 @@ await sdk.vault.getSnapshots({
 })
 ```
 ---
-### `sdk.vault.getScoring`
+### `sdk.vault.getScorePercentiles`
 
 #### Description:
 
-Fetch components for performance score calculation.
-
-#### Arguments:
-
-| Name         | Type     | Type            | Description |
-|--------------|----------|-----------------|---------|
-| vaultAddress | `string` | **Require**     | - |
+Fetch components for score percentiles calculation.
 
 #### Returns:
 
 ```ts
 type Output = {
-  consensusRewardsEarned: bigint
-  consensusRewardsMissed: bigint
-  executionMevEarned: bigint
-  executionMevMissed: bigint
+  percentile25: number
+  percentile50: number
+  percentile75: number
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `consensusRewardsEarned` | The total amount of consensus rewards earned by the Vault |
-| `consensusRewardsMissed` | The total amount of consensus rewards missed by the Vault |
-| `executionMevEarned` | The total amount of execution rewards earned by the Vault |
-| `executionMevMissed` | The total amount of execution rewards missed by the Vault. It will include the ones missed due to the invalid fee recipient address set for the validator |
+| Name | Description                                               |
+|------|-----------------------------------------------------------|
+| `percentile25` | The value that corresponds to this percentage             |
+| `percentile50` | The value that corresponds to this percentage |
+| `percentile75` | The value that corresponds to this percentage |
 
 #### Example:
 
 ```ts
-await sdk.vault.getScoring({
-  vaultAddress: '0x...',
-})
+await sdk.vault.getScorePercentiles()
 ```
 ---
 ### `sdk.vault.getUserRewards`

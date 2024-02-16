@@ -1,6 +1,3 @@
-export { fetchScoringQuery } from './scoringQuery.graphql'
-export type { ScoringQueryPayload, ScoringQueryVariables } from './scoringQuery.graphql'
-
 export { fetchSnapshotsQuery } from './snapshotsQuery.graphql'
 export type { SnapshotsQueryPayload, SnapshotsQueryVariables } from './snapshotsQuery.graphql'
 
@@ -9,3 +6,6 @@ export type { ValidatorsQueryPayload, ValidatorsQueryVariables } from './validat
 
 export { fetchUserRewardsQuery } from './userRewardsQuery.graphql'
 export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql'
+
+export { fetchScorePercentilesQuery } from './scorePercentilesQuery.graphql'
+export type { ScorePercentilesQueryPayload, ScorePercentilesQueryVariables } from './scorePercentilesQuery.graphql'

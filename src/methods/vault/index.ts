@@ -1,14 +1,14 @@
 // Requests
 import getVault from './requests/getVault'
+import getSnapshots from './requests/getSnapshots'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
 import getMaxWithdraw from './requests/getMaxWithdraw'
 import getStakeBalance from './requests/getStakeBalance'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
+import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
-import getSnapshots from './requests/getSnapshots'
-import getScoring from './requests/getScoring'
 
 // Transactions
 import { deposit } from './transactions/deposit'
@@ -18,16 +18,16 @@ import { claimExitQueue } from './transactions/claimExitQueue'
 
 export default {
   requests: {
-    getVault,
-    getValidators,
-    getUserRewards,
-    getMaxWithdraw,
-    getStakeBalance,
+    getExitQueuePositions,
+    getScorePercentiles,
     getHarvestParams,
     getStakerActions,
+    getStakeBalance,
+    getUserRewards,
+    getMaxWithdraw,
+    getValidators,
     getSnapshots,
-    getScoring,
-    getExitQueuePositions,
+    getVault,
   },
   transactions: {
     deposit,
