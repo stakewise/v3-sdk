@@ -11,7 +11,7 @@
   "extensions": {
     "endpoints": {
       "Subgraph GraphQL": {
-        "url": "https://graph-testnet.stakewise.io/subgraphs/name/stakewise/stakewise",
+        "url": "https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
         },

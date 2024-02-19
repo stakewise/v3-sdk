@@ -84,17 +84,19 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ## Quick Links
 
 ##### Request table:
-| **Vault** | **osToken** | **Utils** |
-|------|-------------|------|
-| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions) | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots) | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+| **Vault**                                                         | **osToken** | **Utils** |
+|-------------------------------------------------------------------|-------------|------|
+| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions)           | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots)                   | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
 | [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators) | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| [sdk.vault.getVault](#sdkvaultgetvault) | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
-| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw) | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams) | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
-| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
-|[sdk.vault.getUserRewards](#sdkvaultgetuserrewards) | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)
+| [sdk.vault.getValidators](#sdkvaultgetvalidators)                 | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| [sdk.vault.getVault](#sdkvaultgetvault)                           | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
+| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams)           | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
+| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance)             | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
+| [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)
+| [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   
+| [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   
 
 ##### Table of transactions:
 | **Vault** | **osToken** |
@@ -283,6 +285,90 @@ await sdk.vault.getUserRewards({
 })
 ```
 ---
+### `sdk.vault.getWhitelist`
+
+#### Description:
+
+Fetch the whitelist for private vaults. Only addresses included in this list are eligible to stake in the private vault. The number of addresses in this list is indicated by the vault whitelistCount field.
+
+
+#### Arguments:
+
+| Name | Type              | Type        | Description |
+|------|-------------------|-------------|---|
+| vaultAddress | `string`          | **Require** | - |
+| orderDirection | `'asc' \| 'desc'` | **Optional** | Sort, by default `desc` (descending order) |
+| search | `string`          | **Optional** | Filters results by the address field |
+| limit | `number`          | **Optional** | Limit the number of addresses, default is 100 |
+| skip | `number`          | **Optional** | Skip the number of addresses, default is 0 |
+
+#### Returns:
+
+```ts
+type List = {
+  createdAt: number
+  address: string
+}
+
+type Output = {
+  whitelist: List[]
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `whitelist` | An array of objects representing the result of the query based on your parameters |
+
+#### Example:
+
+```ts
+await sdk.vault.getWhitelist({
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getBlocklist`
+
+#### Description:
+
+Fetch the blocklist for blocklisted vaults. Addresses included in this list are not eligible to stake in the blocklisted vault. The number of addresses in this list is indicated by the vault blocklistCount field.
+
+
+#### Arguments:
+
+| Name | Type          | Type        | Description |
+|------|---------------|-------------|---|
+| vaultAddress | `string`      | **Require** | - |
+| orderDirection | `'asc' \| 'desc'` | **Optional** | Sort, by default `desc` (descending order) |
+| search | `string`      | **Optional** | Filters results by the address field |
+| limit | `number`      | **Optional** | Limit the number of addresses, default is 100 |
+| skip | `number`      | **Optional** | Skip the number of addresses, default is 0 |
+
+#### Returns:
+
+```ts
+type List = {
+  createdAt: number
+  address: string
+}
+
+type Output = {
+  blocklist: List[]
+}
+```
+
+| Name | Description |
+|------|-------------|
+| `blocklist` | An array of objects representing the result of the query based on your parameters |
+
+#### Example:
+
+```ts
+await sdk.vault.getBlocklist({
+  vaultAddress: '0x...',
+})
+```
+---
 ### `sdk.vault.getExitQueuePositions`
 
 #### Description:
@@ -399,6 +485,8 @@ type Output = {
   whitelister: string
   vaultAddress: string
   mevRecipient: string
+  whitelistCount: number
+  blocklistCount: number
   imageUrl: string | null
   blocklistManager: string
   vaultKeysManager: string
@@ -407,44 +495,38 @@ type Output = {
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
-  whitelist: Array<{
-    createdAt: number
-    address: string
-  }> | null
-  blocklist: Array<{
-    createdAt: number
-    address: string
-  }> | null
   performance: number
 }
 ```
 
-| Name               | Description                             |
-|--------------------|-----------------------------------------|
-| `apy`              | Current vault apy                       |
-| `isErc20`          | Does the vault have its own ERC20 token |
-| `capacity`         | Maximum TVL of Vault                    |
-| `createdAt`        | Date of Creation                        |
-| `feePercent`       | Commission rate                         |
-| `isPrivate`        | Whether the storage is private          |
-| `isBlocklist`      | Whether the storage has blocklist       |
-| `vaultAdmin`       | Vault administrator address             |
-| `totalAssets`      | TVL of Vault                            |
-| `feeRecipient`     | Vault fee address                       |
-| `whitelister`      | Whitelist manager                       |
-| `vaultAddress`     | Address of vault                        |
-| `mevRecipient`     | Validator fee recipient                 |
-| `imageUrl`         | Link for vault logo                     |
-| `blocklistManager` | Blocklist manager                       |
-| `vaultKeysManager` | Keys manager address                    |
-| `isSmoothingPool`  | Smoothing poll or Vault escrow          |
-| `tokenName`        | ERC20 token name                        |
-| `tokenSymbol`      | ERC20 token symbol                      |
-| `displayName`      | Name of vault                           |
-| `description`      | Description of vault                    |
-| `whitelist`        | List of authorized users for deposits   |
-| `blocklist`        | List of blocked users for deposits      |
-| `performance`      | Vault performance indicator (percent)   |
+| Name               | Description                                                   |
+|--------------------|---------------------------------------------------------------|
+| `apy`              | Current vault apy                                             |
+| `isErc20`          | Does the vault have its own ERC20 token                       |
+| `capacity`         | Maximum TVL of Vault                                          |
+| `createdAt`        | Date of Creation                                              |
+| `feePercent`       | Commission rate                                               |
+| `isPrivate`        | Whether the storage is private                                |
+| `isBlocklist`      | Whether the storage has blocklist                             |
+| `vaultAdmin`       | Vault administrator address                                   |
+| `totalAssets`      | TVL of Vault                                                  |
+| `feeRecipient`     | Vault fee address                                             |
+| `whitelister`      | Whitelist manager                                             |
+| `vaultAddress`     | Address of vault                                              |
+| `mevRecipient`     | Validator fee recipient                                       |
+| `whitelistCount`   | Number of addresses in the [whitelist](#sdkvaultgetwhitelist) |
+| `blocklistCount`   | Number of addresses in the [blocklist](#sdkvaultgetblocklist) |
+| `imageUrl`         | Link for vault logo                                           |
+| `blocklistManager` | Blocklist manager                                             |
+| `vaultKeysManager` | Keys manager address                                          |
+| `isSmoothingPool`  | Smoothing poll or Vault escrow                                |
+| `tokenName`        | ERC20 token name                                              |
+| `tokenSymbol`      | ERC20 token symbol                                            |
+| `displayName`      | Name of vault                                                 |
+| `description`      | Description of vault                                          |
+| `whitelist`        | List of authorized users for deposits                         |
+| `blocklist`        | List of blocked users for deposits                            |
+| `performance`      | Vault performance indicator (percent)                         |
 
 #### Example:
 

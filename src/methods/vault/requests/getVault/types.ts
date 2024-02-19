@@ -1,14 +1,9 @@
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-type ListItem = {
-  createdAt: number
-  address: string
-}
-
 export type ModifiedVault = Omit<
   VaultQueryPayload['vault'],
-  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'weeklyApy' | 'performance' | 'createdAt'
+  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'weeklyApy' | 'performance' | 'createdAt' | 'blocklistCount' | 'whitelistCount'
 > & {
   apy: number
   createdAt: number
@@ -16,8 +11,8 @@ export type ModifiedVault = Omit<
   performance: number
   vaultAddress: string
   mevRecipient: string
+  blocklistCount: number
+  whitelistCount: number
   vaultKeysManager: string
   isSmoothingPool: boolean
-  whitelist: ListItem[]
-  blocklist: ListItem[]
 }
