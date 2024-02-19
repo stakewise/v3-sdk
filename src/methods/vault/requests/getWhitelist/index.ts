@@ -44,9 +44,11 @@ const getWhitelist = async (input: GetWhitelistInput): Promise<GetWhitelistOutpu
     }
   }
 
+  const vault = vaultAddress.toLowerCase()
+
   const where = search
-    ? { vault: vaultAddress, address_contains: search } as WhitelistAccountsQueryVariables['where']
-    : { vault: vaultAddress } as WhitelistAccountsQueryVariables['where']
+    ? { vault, address_contains: search.toLowerCase() } as WhitelistAccountsQueryVariables['where']
+    : { vault } as WhitelistAccountsQueryVariables['where']
 
   return graphql.subgraph.vault.fetchWhitelistAccountsQuery<ModifiedWhitelist>({
     url: apiUrls.getSubgraphqlUrl(options),

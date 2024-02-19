@@ -44,9 +44,11 @@ const getBlocklist = async (input: GetBlocklistInput): Promise<GetBlocklistOutpu
     }
   }
 
+  const vault = vaultAddress.toLowerCase()
+
   const where = search
-    ? { vault: vaultAddress, address_contains: search } as BlocklistAccountsQueryVariables['where']
-    : { vault: vaultAddress } as BlocklistAccountsQueryVariables['where']
+    ? { vault, address_contains: search.toLowerCase() } as BlocklistAccountsQueryVariables['where']
+    : { vault } as BlocklistAccountsQueryVariables['where']
 
   return graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
     url: apiUrls.getSubgraphqlUrl(options),
