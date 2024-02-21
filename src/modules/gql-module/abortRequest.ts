@@ -1,9 +1,14 @@
-type Callback<Data, ModifiedData = Data> = (value: Data) => ModifiedData | PromiseLike<ModifiedData>
+import AbortCallback from './abortCallback'
 
-type SecondCallback<Data> = (value: Data) => Data | void
+
+type ModifyCallback<Data, ModifiedData = Data> = (value: Data) => ModifiedData | PromiseLike<ModifiedData>
+
+type FirstCallback<Data> = (value: Data) => Data | any
+
+type EmptyCallback = () => void
 
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
-  onSuccess: Callback<Data, ModifiedData>
+  onSuccess: ModifyCallback<Data, ModifiedData>
 }
 
 type PendingRequest = {
@@ -18,7 +23,8 @@ const dummyPromise = new Promise(() => {})
 // Returns fetch promise that can be aborted
 // If we create several promises, only one request will be executed
 class AbortRequest<Data, ModifiedData> {
-  controller = new AbortController()
+  private controller = new AbortController()
+  request: Promise<Data>
   promise: Promise<ModifiedData>
   body: string
   isAborted: boolean
@@ -33,66 +39,74 @@ class AbortRequest<Data, ModifiedData> {
 
     if (pendingRequest) {
       pendingRequest.count += 1
-      this.promise = pendingRequest.promise
+      this.request = pendingRequest.promise
     }
     else {
-      this.promise = fetch(url, {
+      this.request = fetch(url, {
         ...init,
         signal: this.controller.signal,
       })
-        .then(async (res) => {
-          try {
-            const { data } = await res.json()
-
-            requestsQueue[this.body] = undefined
-
-            if (this.isAborted) {
-              return dummyPromise as Promise<ModifiedData>
-            }
-
-            if (typeof onSuccess === 'function') {
-              return onSuccess(data) as Promise<ModifiedData>
-            }
-
-            return data as Promise<ModifiedData>
-          }
-          catch (error) {
-            return Promise.reject(error)
-          }
+        .then((res) => res.json())
+        .then((json) => {
+          requestsQueue[this.body] = undefined
+          return json?.data as Data
         })
         .catch((error) => {
           requestsQueue[this.body] = undefined
-
-          if (this.isAborted) {
-            return dummyPromise as Promise<ModifiedData>
-          }
 
           return Promise.reject(error)
         })
 
       requestsQueue[this.body] = {
-        promise: this.promise,
-        count: 0,
+        promise: this.request,
+        count: 1,
       }
     }
+
+    this.promise = this.request
+      .then((data) => {
+        try {
+          if (this.isAborted) {
+            return dummyPromise as Promise<ModifiedData>
+          }
+
+          if (typeof onSuccess === 'function') {
+            return onSuccess(data) as Promise<ModifiedData>
+          }
+
+          return data as Promise<ModifiedData>
+        }
+        catch (error) {
+          return Promise.reject(error)
+        }
+      })
+      .catch((error) => {
+        if (this.isAborted) {
+          return dummyPromise as Promise<ModifiedData>
+        }
+
+        return Promise.reject(error)
+      })
   }
 
-  then(onSuccess: SecondCallback<ModifiedData>, onError?: SecondCallback<ModifiedData>) {
-    if (this.isAborted) {
-      return dummyPromise
-    }
-
-    return this.promise.then(onSuccess, onError)
+  then(onSuccess: FirstCallback<ModifiedData>, onError?: FirstCallback<ModifiedData>) {
+    return new AbortCallback(this.promise.then(onSuccess, onError), this.abort.bind(this))
   }
 
-  catch(callback: SecondCallback<ModifiedData>) {
-    return this.promise.catch(callback)
+  catch(callback: FirstCallback<ModifiedData>) {
+    return new AbortCallback(this.promise.catch(callback), this.abort.bind(this))
+  }
+
+  finally(callback: EmptyCallback) {
+    return new AbortCallback(this.promise.finally(callback), this.abort.bind(this))
   }
 
   abort() {
     this.isAborted = true
 
-    if (requestsQueue[this.body]?.count) {
+    const count = requestsQueue[this.body]?.count || 0
+
+    if (count > 1) {
       (requestsQueue[this.body] as PendingRequest).count -= 1
     }
     else {

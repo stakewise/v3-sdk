@@ -98,6 +98,25 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   
 | [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   
 
+All of these methods return a promise that can be aborted by invoking the `abort()` function.
+If `abort()` is invoked, the in-progress promise will not be resolved or rejected, and the
+network request will be canceled.
+If the promise has already been resolved or rejected, invoking `abort()` will not have any effect.
+
+Using `abort()` can be beneficial when querying lists such as `whitelist` or `blocklist`. If we
+are retrieving the list based on a filter string from user input, even with debounced requests,
+the user might continue typing and modify the filter after the initial request is sent. In such
+cases, a second request may be initiated. To prevent fetching data from the first request, we
+can call `abort()`.
+
+```ts
+const promise = sdk.vault.getWhitelist({
+  vaultAddress: '0x...',
+})
+
+promise.abort()
+```
+
 ##### Table of transactions:
 | **Vault** | **osToken** |
 |------|------|
