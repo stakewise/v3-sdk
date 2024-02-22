@@ -1,6 +1,7 @@
 import { ZeroAddress } from 'ethers'
 
 import tokens from '../constants/tokens'
+import { Network } from '../enums'
 
 
 export default {
@@ -9,9 +10,10 @@ export default {
     subgraph: 'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
   },
   network: {
-    chainId: 1,
     id: 'mainnet',
     name: 'Ethereum',
+    chainId: Network.Mainnet,
+    forkVersion: '0x00000000',
     hexadecimalChainId: '0x1',
     blockExplorerUrl: 'https://etherscan.io',
     url: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
@@ -60,4 +62,5 @@ export default {
     v2RewardToken: tokens.rETH2,
     v2StakedToken: tokens.sETH2,
   },
+  isTestnet: false,
 } as const

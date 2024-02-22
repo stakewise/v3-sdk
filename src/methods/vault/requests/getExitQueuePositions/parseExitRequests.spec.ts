@@ -17,7 +17,7 @@ const getMockProvider = (timestamp: number) => ({
 }) as unknown as StakeWise.Provider
 
 describe('parseExitRequests function', () => {
-  const network = Network.Goerli
+  const network = Network.Holesky
   const config = configs[network]
 
   const provider = new JsonRpcProvider(config.network.url)

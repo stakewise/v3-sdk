@@ -1,6 +1,7 @@
 import { ZeroAddress } from 'ethers'
 
 import tokens from '../constants/tokens'
+import { Network } from '../enums'
 
 
 export default {
@@ -10,8 +11,9 @@ export default {
   },
   network: {
     id: 'gnosis',
-    chainId: 100,
     name: 'Gnosis Chain',
+    chainId: Network.Gnosis,
+    forkVersion: '0x00000064',
     hexadecimalChainId: '0x64',
     url: 'https://rpc.gnosischain.com',
     blockExplorerUrl: 'https://blockscout.com/xdai/mainnet',
@@ -60,4 +62,5 @@ export default {
     v2RewardToken: tokens.rGNO,
     v2StakedToken: tokens.sGNO,
   },
+  isTestnet: false,
 } as const
