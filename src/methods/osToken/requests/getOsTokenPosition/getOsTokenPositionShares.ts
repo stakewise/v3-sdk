@@ -8,18 +8,17 @@ type GetOsTokenPositionSharesInput = {
   options: StakeWise.Options
 }
 
-const getOsTokenPositionShares = async (values: GetOsTokenPositionSharesInput) => {
+const getOsTokenPositionShares = (values: GetOsTokenPositionSharesInput) => {
   const { options, vaultAddress, userAddress } = values
 
-  const result = await graphql.subgraph.osToken.fetchOsTokenPositionsQuery({
+  return graphql.subgraph.osToken.fetchOsTokenPositionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       vaultAddress,
       address: userAddress,
     },
+    modifyResult: (data) => BigInt(data?.osTokenPositions?.[0]?.shares || 0),
   })
-
-  return BigInt(result?.osTokenPositions?.[0]?.shares || 0)
 }
 
 

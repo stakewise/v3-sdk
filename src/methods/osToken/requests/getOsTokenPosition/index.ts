@@ -12,35 +12,35 @@ type GetOsTokenPositionInput = {
   contracts: StakeWise.Contracts
 }
 
-const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
+const getOsTokenPosition = (values: GetOsTokenPositionInput) => {
   const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  return getOsTokenPositionShares({ options, vaultAddress, userAddress })
+    .then(async (gqlMintedShares) => {
+      const vaultContract = contracts.helpers.createVault(vaultAddress)
+      const mintedShares = await vaultContract.osTokenPositions(userAddress)
 
-  const gqlMintedShares = await getOsTokenPositionShares({ options, vaultAddress, userAddress })
-  const mintedShares = await vaultContract.osTokenPositions(userAddress)
+      const [ mintedAssets, feePercent ] = await Promise.all([
+        contracts.base.mintTokenController.convertToAssets(mintedShares),
+        contracts.base.mintTokenController.feePercent(),
+      ])
 
-  const [ mintedAssets, feePercent ] = await Promise.all([
-    contracts.base.mintTokenController.convertToAssets(mintedShares),
-    contracts.base.mintTokenController.feePercent(),
-  ])
+      const protocolFeePercent = feePercent / 100n
+      const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
 
-  const protocolFeePercent = feePercent / 100n
-  const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
-
-  return {
-    minted: {
-      assets: mintedAssets,
-      shares: mintedShares,
-      fee: mintedShares - gqlMintedShares,
-    },
-    healthFactor,
-    protocolFeePercent,
-  }
+      return {
+        minted: {
+          assets: mintedAssets,
+          shares: mintedShares,
+          fee: mintedShares - gqlMintedShares,
+        },
+        healthFactor,
+        protocolFeePercent,
+      }
+    })
 }
-
 
 export default getOsTokenPosition

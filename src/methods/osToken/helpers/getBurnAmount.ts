@@ -1,4 +1,5 @@
 import { validateArgs } from '../../../utils'
+import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
 type GetBurnAmountInput = {
@@ -37,4 +38,4 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
 }
 
 
-export default getBurnAmount
+export default wrapAbortPromise<GetBurnAmountInput, bigint>(getBurnAmount)

@@ -1,4 +1,5 @@
 import { constants, validateArgs } from '../../../utils'
+import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
 type GetMaxMintInput = {
@@ -33,4 +34,4 @@ const getMaxMint = async (values: GetMaxMintInput) => {
 }
 
 
-export default getMaxMint
+export default wrapAbortPromise<GetMaxMintInput, bigint>(getMaxMint)

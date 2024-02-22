@@ -1,4 +1,5 @@
 import type { VaultQueryVariables, VaultQueryPayload } from '../../../../graphql/subgraph/vault'
+import { wrapAbortPromise } from '../../../../modules/gql-module'
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 import { ModifiedVault } from './types'
@@ -15,20 +16,21 @@ type GetVaultOutput = ModifiedVault & {
   isCollateralized: boolean
 }
 
-const getVault = async (input: GetVaultInput): Promise<GetVaultOutput> => {
+const getVault = async (input: GetVaultInput) => {
   const { contracts, options, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })
 
-  const data = await graphql.subgraph.vault.fetchVaultQuery<ModifiedVault>({
-    url: apiUrls.getSubgraphqlUrl(options),
-    variables: {
-      address: vaultAddress.toLowerCase(),
-    },
-    modifyResult: (data: VaultQueryPayload) => modifyVault({ data, network: options.network }),
-  })
-
-  const isCollateralized = await contracts.base.keeper.isCollateralized(vaultAddress)
+  const [ data, isCollateralized ] = await Promise.all([
+    graphql.subgraph.vault.fetchVaultQuery<ModifiedVault>({
+      url: apiUrls.getSubgraphqlUrl(options),
+      variables: {
+        address: vaultAddress.toLowerCase(),
+      },
+      modifyResult: (data: VaultQueryPayload) => modifyVault({ data, network: options.network }),
+    }),
+    contracts.base.keeper.isCollateralized(vaultAddress),
+  ])
 
   return {
     ...data,
@@ -37,4 +39,4 @@ const getVault = async (input: GetVaultInput): Promise<GetVaultOutput> => {
 }
 
 
-export default getVault
+export default wrapAbortPromise<GetVaultInput, GetVaultOutput>(getVault)

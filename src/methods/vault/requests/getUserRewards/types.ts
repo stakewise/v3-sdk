@@ -7,6 +7,4 @@ type UserReward = {
   dailyRewardsUsd: number
 }
 
-export type ModifyUserReward = {
-  days: Record<number, UserReward>
-}
+export type ModifyUserReward = Record<number, UserReward>

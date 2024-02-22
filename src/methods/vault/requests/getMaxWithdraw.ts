@@ -1,6 +1,7 @@
 import { parseEther } from 'ethers'
 
 import { constants } from '../../../utils'
+import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
 type GetMaxWithdrawInput = {
@@ -30,4 +31,4 @@ const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
 }
 
 
-export default getMaxWithdraw
+export default wrapAbortPromise<GetMaxWithdrawInput, bigint>(getMaxWithdraw)

@@ -8,18 +8,17 @@ export type FetchExitQueuePositionsInput = {
   userAddress: string
 }
 
-const fetchExitQueuePositions = async (values: FetchExitQueuePositionsInput) => {
+const fetchExitQueuePositions = (values: FetchExitQueuePositionsInput) => {
   const { options, vaultAddress, userAddress } = values
 
-  const data = await graphql.subgraph.exitQueue.fetchExitQueueQuery({
+  return graphql.subgraph.exitQueue.fetchExitQueueQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       vault: vaultAddress.toLowerCase(),
       receiver: userAddress.toLowerCase(),
     },
+    modifyResult: (data) => data?.exitRequests || [],
   })
-
-  return data?.exitRequests || []
 }
 
 

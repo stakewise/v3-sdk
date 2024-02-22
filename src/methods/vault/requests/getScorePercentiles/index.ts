@@ -10,15 +10,13 @@ type GetScorePercentilesInput = {
   options: StakeWise.Options
 }
 
-const getScorePercentiles = async (input: GetScorePercentilesInput) => {
+const getScorePercentiles = (input: GetScorePercentilesInput) => {
   const { options } = input
 
-  const data = await graphql.backend.vault.fetchScorePercentilesQuery<ModifiedScorePercentiles>({
+  return graphql.backend.vault.fetchScorePercentilesQuery<ModifiedScorePercentiles>({
     url: apiUrls.getBackendUrl(options),
     modifyResult: (data: ScorePercentilesQueryPayload) => modifyScorePercentiles(data),
   })
-
-  return data
 }
 
 

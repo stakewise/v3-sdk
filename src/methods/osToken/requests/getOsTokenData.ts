@@ -1,4 +1,5 @@
 import { constants, BigDecimal } from '../../../utils'
+import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
 export type GetOsTokenDataInput = {
@@ -11,6 +12,11 @@ export type OsTokenDataMulticallReturnType = {
   thresholdPercent: bigint
 }
 
+type Output = {
+  rate: string
+  ltvPercent: bigint
+  thresholdPercent: bigint
+}
 
 const getOsTokenData = async (input: GetOsTokenDataInput) => {
   const { contracts } = input
@@ -53,4 +59,4 @@ const getOsTokenData = async (input: GetOsTokenDataInput) => {
 }
 
 
-export default getOsTokenData
+export default wrapAbortPromise<GetOsTokenDataInput, Output>(getOsTokenData)
