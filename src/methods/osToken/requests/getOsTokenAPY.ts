@@ -6,14 +6,13 @@ export type FetchOsTokenSnapshotsInput = {
   options: StakeWise.Options
 }
 
-const getOsTokenAPY = async (input: FetchOsTokenSnapshotsInput) => {
+const getOsTokenAPY = (input: FetchOsTokenSnapshotsInput) => {
   const { options } = input
 
-  const data = await graphql.subgraph.osToken.fetchOsTokenApyQuery({
+  return graphql.subgraph.osToken.fetchOsTokenApyQuery({
     url: apiUrls.getSubgraphqlUrl(options),
+    modifyResult: (data) => data?.osTokens?.[0].apy || '0',
   })
-
-  return data?.osTokens?.[0].apy || '0'
 }
 
 

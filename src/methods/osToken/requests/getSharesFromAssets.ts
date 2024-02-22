@@ -1,3 +1,6 @@
+import { wrapAbortPromise } from '../../../modules/gql-module'
+
+
 type GetSharesFromAssetsInput = {
   contracts: StakeWise.Contracts
   amount: bigint
@@ -12,4 +15,4 @@ const getSharesFromAssets = async (values: GetSharesFromAssetsInput) => {
 }
 
 
-export default getSharesFromAssets
+export default wrapAbortPromise<GetSharesFromAssetsInput, bigint>(getSharesFromAssets)

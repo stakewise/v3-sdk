@@ -84,19 +84,40 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                         | **osToken** | **Utils** |
-|-------------------------------------------------------------------|-------------|------|
-| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions)           | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount) | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots)                   | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
-| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy) |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators)                 | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| [sdk.vault.getVault](#sdkvaultgetvault)                           | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) | 
-| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| **Vault**                                                         | **osToken**                                                     | **Utils** |
+|-------------------------------------------------------------------|-----------------------------------------------------------------|------|
+| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions)           | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount)           | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots)                   | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)       | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
+| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy)                         |
+| [sdk.vault.getValidators](#sdkvaultgetvalidators)                 | [sdk.osToken.getPosition](#sdkostokengetposition)               |
+| [sdk.vault.getVault](#sdkvaultgetvault)                           | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint)                 | 
+| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [sdk.osToken.getBaseData](#sdkostokengetbasedata)               |
 | [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams)           | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
 | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance)             | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
-| [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)
+| [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)   
 | [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   
 | [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   
+
+All of these methods (except synchronous getHealthFactor) return a promise that can be
+aborted by invoking the `abort()` function.
+
+If `abort()` is invoked, the in-progress promise will not be resolved or rejected, and the
+network request will be canceled.
+If the promise has already been resolved or rejected, invoking `abort()` will not have any effect.
+
+Using `abort()` can be beneficial when querying lists such as `whitelist` or `blocklist`. If we
+are retrieving the list based on a filter string from user input, even with debounced requests,
+the user might continue typing and modify the filter after the initial request is sent. In such
+cases, a second request may be initiated. To prevent fetching data from the first request, we
+can call `abort()`.
+
+```ts
+const promise = sdk.vault.getWhitelist({
+  vaultAddress: '0x...',
+})
+
+promise.abort()
+```
 
 ##### Table of transactions:
 | **Vault** | **osToken** |

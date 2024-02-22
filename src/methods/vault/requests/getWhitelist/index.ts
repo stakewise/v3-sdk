@@ -14,14 +14,8 @@ type GetWhitelistInput = {
   options: StakeWise.Options
 }
 
-type GetWhitelistOutput = {
-  whitelist: {
-    createdAt: number
-    address: string
-  }[]
-}
 
-const getWhitelist = async (input: GetWhitelistInput): Promise<GetWhitelistOutput> => {
+const getWhitelist = (input: GetWhitelistInput) => {
   const { vaultAddress, orderDirection, search, limit, skip, options } = input
 
   validateArgs.address({ vaultAddress })

@@ -14,7 +14,7 @@ type GetUserRewardsInput = {
   fillGaps?: boolean
 }
 
-const getUserRewards = async (input: GetUserRewardsInput) => {
+const getUserRewards = (input: GetUserRewardsInput) => {
   const { options, vaultAddress, userAddress, dateFrom, dateTo, fillGaps } = input
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -24,7 +24,7 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
     validateArgs.number({ dateTo })
   }
 
-  const data = await graphql.backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
+  return graphql.backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
     url: apiUrls.getBackendUrl(options),
     variables: {
       fillGaps,
@@ -35,8 +35,6 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
     } as UserRewardsQueryVariables,
     modifyResult: modifyUserRewards,
   })
-
-  return data?.days || []
 }
 
 

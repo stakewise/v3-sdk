@@ -6,14 +6,13 @@ type GetSwiseUsdPriceInput = {
   options: StakeWise.Options
 }
 
-const getSwiseUsdPrice = async (input: GetSwiseUsdPriceInput) => {
+const getSwiseUsdPrice = (input: GetSwiseUsdPriceInput) => {
   const { options } = input
 
-  const data = await graphql.backend.swise.fetchSwiseStatsQuery({
+  return graphql.backend.swise.fetchSwiseStatsQuery({
     url: apiUrls.getBackendUrl(options),
+    modifyResult: (data) => data?.swiseStats?.price || '0',
   })
-
-  return data?.swiseStats?.price || '0'
 }
 
 

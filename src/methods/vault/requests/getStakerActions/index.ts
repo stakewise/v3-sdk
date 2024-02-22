@@ -14,7 +14,7 @@ type GetStakerActionsInput = {
   vaultAddress: AllocatorActionsQueryVariables['where']['address']
 }
 
-const getStakerActions = async (input: GetStakerActionsInput) => {
+const getStakerActions = (input: GetStakerActionsInput) => {
   const { options, skip, limit, types, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress })
@@ -38,7 +38,7 @@ const getStakerActions = async (input: GetStakerActionsInput) => {
     })
   }
 
-  const data = await graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
+  return graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       skip,
@@ -51,8 +51,6 @@ const getStakerActions = async (input: GetStakerActionsInput) => {
     },
     modifyResult: (data: AllocatorActionsQueryPayload) => modifyStakerActions({ data, network: options.network }),
   })
-
-  return data
 }
 
 

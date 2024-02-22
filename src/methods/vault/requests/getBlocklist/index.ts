@@ -14,14 +14,7 @@ type GetBlocklistInput = {
   options: StakeWise.Options
 }
 
-type GetBlocklistOutput = {
-  blocklist: {
-    createdAt: number
-    address: string
-  }[]
-}
-
-const getBlocklist = async (input: GetBlocklistInput): Promise<GetBlocklistOutput> => {
+const getBlocklist = (input: GetBlocklistInput) => {
   const { vaultAddress, orderDirection, search, limit, skip, options } = input
 
   validateArgs.address({ vaultAddress })

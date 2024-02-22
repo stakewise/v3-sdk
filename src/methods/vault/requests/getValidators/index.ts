@@ -12,13 +12,13 @@ type GetValidatorsInput = {
   limit: ValidatorsQueryVariables['first']
 }
 
-const getValidators = async (input: GetValidatorsInput) => {
+const getValidators = (input: GetValidatorsInput) => {
   const { options, skip, limit, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })
   validateArgs.number({ skip, limit })
 
-  const data = await graphql.backend.vault.fetchValidatorsQuery<ModifiedValidators>({
+  return graphql.backend.vault.fetchValidatorsQuery<ModifiedValidators>({
     url: apiUrls.getBackendUrl(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),
@@ -27,8 +27,6 @@ const getValidators = async (input: GetValidatorsInput) => {
     },
     modifyResult: (data: ValidatorsQueryPayload) => modifyValidators({ data, network: options.network }),
   })
-
-  return data
 }
 
 

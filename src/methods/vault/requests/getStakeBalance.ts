@@ -1,5 +1,6 @@
 import { vaultMulticall } from '../../../contracts'
 import { validateArgs } from '../../../utils'
+import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
 type GetStakeBalanceInput = {
@@ -7,6 +8,11 @@ type GetStakeBalanceInput = {
   vaultAddress: string
   options: StakeWise.Options
   contracts: StakeWise.Contracts
+}
+
+type Output = {
+  shares: bigint
+  assets: bigint
 }
 
 const getStakeBalance = async (values: GetStakeBalanceInput) => {
@@ -42,4 +48,4 @@ const getStakeBalance = async (values: GetStakeBalanceInput) => {
 }
 
 
-export default getStakeBalance
+export default wrapAbortPromise<GetStakeBalanceInput, Output>(getStakeBalance)

@@ -8,21 +8,20 @@ type GetTransactionsInput = {
   options: StakeWise.Options
 }
 
-const getTransactions = async (input: GetTransactionsInput) => {
+const getTransactions = (input: GetTransactionsInput) => {
   const { options, hash } = input
 
   validateArgs.string({ hash })
 
-  const data = await graphql.subgraph.transactions.fetchTransactionsQuery({
+  return graphql.subgraph.transactions.fetchTransactionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where: {
         id: hash,
       },
     } as TransactionsQueryVariables,
+    modifyResult: (data) => data?.transactions || [],
   })
-
-  return data?.transactions || []
 }
 
 

@@ -11,13 +11,13 @@ type GetSnapshotsInput = {
   dateFrom: number
 }
 
-const getSnapshots = async (input: GetSnapshotsInput) => {
+const getSnapshots = (input: GetSnapshotsInput) => {
   const { options, vaultAddress, dateFrom } = input
 
   validateArgs.address({ vaultAddress })
   validateArgs.number({ dateFrom })
 
-  const data = await graphql.backend.vault.fetchSnapshotsQuery<ModifiedSnapshots>({
+  return graphql.backend.vault.fetchSnapshotsQuery<ModifiedSnapshots>({
     url: apiUrls.getBackendUrl(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),
@@ -25,8 +25,6 @@ const getSnapshots = async (input: GetSnapshotsInput) => {
     } as SnapshotsQueryVariables,
     modifyResult: modifySnapshots,
   })
-
-  return data
 }
 
 

@@ -15,24 +15,20 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
   const opName = operationName ? `?opName=${operationName}` : ''
   const requestUrl = `${url}${opName}`
 
-  const handleRequest = () => (
-    new AbortRequest<Data, ModifiedData>(requestUrl, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify({
-        query,
-        variables,
-        operationName,
-      }),
-      onSuccess: (data: Data) => typeof modifyResult === 'function'
-        ? modifyResult(data)
-        : data as unknown as ModifiedData,
-    })
-  )
-
-  return handleRequest()
+  return new AbortRequest<Data, ModifiedData>(requestUrl, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+      operationName,
+    }),
+    onSuccess: (data: Data) => typeof modifyResult === 'function'
+      ? modifyResult(data)
+      : data as unknown as ModifiedData,
+  })
 }
 
 

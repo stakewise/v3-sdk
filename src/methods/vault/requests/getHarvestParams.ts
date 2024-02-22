@@ -7,19 +7,18 @@ type GetHarvestParamsInput = {
   options: StakeWise.Options
 }
 
-const getHarvestParams = async (values: GetHarvestParamsInput) => {
+const getHarvestParams = (values: GetHarvestParamsInput) => {
   const { options, vaultAddress } = values
 
   validateArgs.address({ vaultAddress })
 
-  const result = await graphql.subgraph.vault.fetchHarvestParamsQuery({
+  return graphql.subgraph.vault.fetchHarvestParamsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       address: vaultAddress.toLowerCase(),
     },
+    modifyResult: (data) => data.harvestParams,
   })
-
-  return result.harvestParams
 }
 
 

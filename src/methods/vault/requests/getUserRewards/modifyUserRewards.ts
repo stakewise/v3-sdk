@@ -23,9 +23,9 @@ const modifyUserRewards = (input: UserRewardsQueryPayload): ModifyUserReward => 
     acc[Number(date)] = modifyUserReward({ date, ...rest })
 
     return acc
-  }, {} as ModifyUserReward['days'])
+  }, {} as ModifyUserReward)
 
-  return { days }
+  return days || {}
 }
 
 

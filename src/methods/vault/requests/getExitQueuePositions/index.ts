@@ -21,25 +21,24 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const data = await fetchExitQueuePositions({ options, vaultAddress, userAddress })
+  return fetchExitQueuePositions({ options, vaultAddress, userAddress })
+    .then((data) => {
+      if (!data) {
+        return mock
+      }
 
-  if (!data) {
-    return mock
-  }
+      const totalShares = data.reduce((acc, { totalShares }) => acc + BigInt(totalShares), 0n)
 
-  const totalShares = data.reduce((acc, { totalShares }) => acc + BigInt(totalShares), 0n)
-
-  const exitQueue = await parseExitRequests({
-    options,
-    provider,
-    contracts,
-    userAddress,
-    totalShares,
-    vaultAddress,
-    exitRequests: data,
-  })
-
-  return exitQueue
+      return parseExitRequests({
+        options,
+        provider,
+        contracts,
+        userAddress,
+        totalShares,
+        vaultAddress,
+        exitRequests: data,
+      })
+    })
 }
 
 
