@@ -1,3 +1,5 @@
+import { ZeroAddress } from 'ethers'
+
 import tokens from '../constants/tokens'
 
 
@@ -29,6 +31,7 @@ export default {
       mintToken: '0xBcF097a3d3D846934694C47058A3cc9D5A6f7457',
       v2RewardToken: '0x826f88d423440c305D9096cC1581Ae751eFCAfB0',
       v2StakedToken: '0x221D9812823DBAb0F1fB40b0D294D9875980Ac19',
+      strk: ZeroAddress,
     },
     base: {
       keeper: '0x893ceb1cF23475defE3747670EbE4b40e629c6fD',

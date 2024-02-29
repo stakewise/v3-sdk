@@ -20,7 +20,7 @@ describe('modifyVault', () => {
       tokenName: 'mockToken',
       createdAt: '1693395816',
       displayName: 'Mock Vault',
-      weeklyApy: '2.80',
+      apy: '2.80',
       blocklistCount: '0',
       whitelistCount: '0',
       totalAssets: '150000000000',

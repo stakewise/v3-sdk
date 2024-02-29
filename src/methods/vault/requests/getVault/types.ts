@@ -3,7 +3,7 @@ import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 export type ModifiedVault = Omit<
   VaultQueryPayload['vault'],
-  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'weeklyApy' | 'performance' | 'createdAt' | 'blocklistCount' | 'whitelistCount'
+  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'apy' | 'performance' | 'createdAt' | 'blocklistCount' | 'whitelistCount'
 > & {
   apy: number
   createdAt: number
