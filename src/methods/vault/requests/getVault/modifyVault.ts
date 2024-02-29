@@ -26,7 +26,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient,
     blocklistCount,
     whitelistCount,
-    weeklyApy,
+    apy,
     ...rest
   } = vault
 
@@ -41,7 +41,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     totalAssets: formatEther(totalAssets),
     feeRecipient: getAddress(feeRecipient),
     vaultKeysManager: getAddress(keysManager),
-    apy: Number(weeklyApy),
+    apy: Number(apy),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
     whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',

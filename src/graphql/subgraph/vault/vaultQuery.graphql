@@ -2,6 +2,7 @@ query Vault($address: ID!) {
   vault(id: $address) {
     address: id
     performance: score
+    apy
     admin
     isErc20
     imageUrl
@@ -21,9 +22,8 @@ query Vault($address: ID!) {
     tokenSymbol
     feeRecipient
     validatorsRoot
-    blocklistManager
-    weeklyApy
     blocklistCount
     whitelistCount
+    blocklistManager
   }
 }
