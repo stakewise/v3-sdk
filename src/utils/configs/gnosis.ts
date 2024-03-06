@@ -54,6 +54,9 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
+    cow: {
+      vaultRelayer: ZeroAddress,
+    },
   },
   tokens: {
     mintToken: tokens.osGNO,
