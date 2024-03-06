@@ -10,7 +10,6 @@ import type {
   KeeperAbi,
   UsdRateAbi,
   MulticallAbi,
-  MintTokenAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
   VaultFactoryAbi,
