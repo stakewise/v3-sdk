@@ -57,6 +57,9 @@ export default {
     uniswap: {
       positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     },
+    cow: {
+      vaultRelayer: '0xc92e8bdf79f0507f65a392b0ab4667716bfe0110',
+    },
   },
   tokens: {
     mintToken: tokens.osETH,
