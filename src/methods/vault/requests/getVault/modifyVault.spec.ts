@@ -5,7 +5,7 @@ import { Network, configs } from '../../../../utils'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-const network = Network.Goerli
+const network = Network.Holesky
 
 describe('modifyVault', () => {
   const mockVaultQueryPayload: VaultQueryPayload = {

@@ -14,6 +14,10 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
   const { data, network } = input
   const { vault } = data
 
+  if (!vault) {
+    throw new Error('Vault not found')
+  }
+
   const {
     admin,
     address,

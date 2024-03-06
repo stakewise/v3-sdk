@@ -3,10 +3,15 @@ import AbortPromise from './abortPromise'
 
 const wrapAbortPromise = <Input, Output>(action: (props: Input) => Promise<Output>) => (
   (props: Input): AbortPromise<Output> => {
-    return new AbortPromise<Output>(async (resolve) => {
-      const result = await action(props)
+    return new AbortPromise<Output>(async (resolve, reject) => {
+      try {
+        const result = await action(props)
 
-      return resolve(result)
+        return resolve(result)
+      }
+      catch (error) {
+        return reject(error)
+      }
     })
   }
 )

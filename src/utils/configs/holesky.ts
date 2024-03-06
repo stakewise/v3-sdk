@@ -1,6 +1,7 @@
 import { ZeroAddress } from 'ethers'
 
 import tokens from '../constants/tokens'
+import { Network } from '../enums'
 
 
 export default {
@@ -9,9 +10,10 @@ export default {
     subgraph: 'https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
   },
   network: {
-    chainId: 17000,
     id: 'holesky',
     name: 'Holesky Testnet',
+    chainId: Network.Holesky,
+    forkVersion: '0x01017000',
     hexadecimalChainId: '0x4268',
     url: 'https://ethereum-holesky.publicnode.com/',
     blockExplorerUrl: 'https://holesky.etherscan.io',
@@ -60,4 +62,5 @@ export default {
     v2RewardToken: tokens.rETH2,
     v2StakedToken: tokens.sETH2,
   },
+  isTestnet: true,
 } as const
