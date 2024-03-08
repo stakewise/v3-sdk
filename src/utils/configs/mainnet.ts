@@ -13,7 +13,6 @@ export default {
     id: 'mainnet',
     name: 'Ethereum',
     chainId: Network.Mainnet,
-    forkVersion: '0x00000000',
     hexadecimalChainId: '0x1',
     blockExplorerUrl: 'https://etherscan.io',
     url: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
@@ -24,7 +23,6 @@ export default {
     },
   },
   pages: {
-    etherscan: 'https://etherscan.io',
     beaconchain: 'https://beaconcha.in',
   },
   addresses: {

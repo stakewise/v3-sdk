@@ -13,7 +13,6 @@ export default {
     id: 'gnosis',
     name: 'Gnosis Chain',
     chainId: Network.Gnosis,
-    forkVersion: '0x00000064',
     hexadecimalChainId: '0x64',
     url: 'https://rpc.gnosischain.com',
     blockExplorerUrl: 'https://blockscout.com/xdai/mainnet',
@@ -24,7 +23,6 @@ export default {
     },
   },
   pages: {
-    etherscan: 'https://blockscout.com/xdai/mainnet',
     beaconchain: 'https://gnosis.beaconcha.in',
   },
   addresses: {

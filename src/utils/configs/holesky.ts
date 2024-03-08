@@ -13,7 +13,6 @@ export default {
     id: 'holesky',
     name: 'Holesky Testnet',
     chainId: Network.Holesky,
-    forkVersion: '0x01017000',
     hexadecimalChainId: '0x4268',
     url: 'https://ethereum-holesky.publicnode.com/',
     blockExplorerUrl: 'https://holesky.etherscan.io',
@@ -24,7 +23,6 @@ export default {
     },
   },
   pages: {
-    etherscan: 'https://holesky.etherscan.io',
     beaconchain: 'https://holesky.beaconcha.in',
   },
   addresses: {
