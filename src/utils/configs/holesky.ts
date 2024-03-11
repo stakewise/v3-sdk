@@ -58,6 +58,7 @@ export default {
       positionManager: ZeroAddress,
     },
     cow: {
+      ethFlow: ZeroAddress,
       vaultRelayer: ZeroAddress,
     },
   },
