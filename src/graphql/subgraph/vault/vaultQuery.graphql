@@ -4,6 +4,7 @@ query Vault($address: ID!) {
     performance: score
     apy
     admin
+    version
     isErc20
     imageUrl
     capacity
