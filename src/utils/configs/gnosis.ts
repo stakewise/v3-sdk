@@ -29,6 +29,7 @@ export default {
     tokens: {
       swise: '0xfdA94F056346d2320d4B5E468D6Ad099b2277746',
       mintToken: ZeroAddress,
+      depositToken: '0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb',
       v2RewardToken: '0x6aC78efae880282396a335CA2F79863A1e6831D4',
       v2StakedToken: '0xA4eF9Da5BA71Cc0D2e5E877a910A37eC43420445',
       strk: ZeroAddress,

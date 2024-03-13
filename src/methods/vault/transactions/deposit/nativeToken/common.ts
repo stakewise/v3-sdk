@@ -1,7 +1,7 @@
 import { ZeroAddress } from 'ethers'
 
-import type { DepositInput } from './types'
-import { validateArgs } from '../../../../utils'
+import type { DepositInput } from '../types'
+import { validateArgs } from '../../../../../utils'
 
 
 export const commonLogic = async (values: DepositInput) => {
@@ -19,5 +19,6 @@ export const commonLogic = async (values: DepositInput) => {
 
   return { vaultContract, canHarvest, overrides }
 }
+
 
 export const referrer = ZeroAddress

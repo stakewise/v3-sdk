@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import type { Provider } from 'ethers'
 
 import {
@@ -17,6 +18,7 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   MintTokenConfigAbi,
+  OtherTokenVaultAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
@@ -119,6 +121,7 @@ export const createContracts = (input: CreateContractsInput) => {
       createPrivateVault: (address: string) => createContract<StakeWise.ABI.PrivateVault>(address, PrivateVaultAbi, provider),
       createBlocklistVault: (address: string) => createContract<StakeWise.ABI.BlocklistVault>(address, BlocklistVaultAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
+      createOtherTokenVault: (address: string) => createContract<StakeWise.ABI.OtherTokenVault>(address, OtherTokenVaultAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),

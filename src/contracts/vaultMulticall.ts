@@ -1,7 +1,7 @@
 import { VoidSigner } from 'ethers'
 
 import { createProvider } from '../utils'
-import { VaultAbi, KeeperAbi } from './types'
+import { VaultAbi, OtherTokenVaultAbi, KeeperAbi } from './types'
 import getHarvestParams from '../methods/vault/requests/getHarvestParams'
 
 
@@ -18,10 +18,10 @@ type VaultMulticallRequestInput = {
 type VaultMulticallInput = {
   userAddress: string
   vaultAddress: string
-  vaultContract: VaultAbi
   keeperContract: KeeperAbi
   options: StakeWise.Options
   request: VaultMulticallRequestInput
+  vaultContract: VaultAbi | OtherTokenVaultAbi
 }
 
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
