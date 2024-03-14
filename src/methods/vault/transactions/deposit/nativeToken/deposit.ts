@@ -2,7 +2,6 @@ import depositGas from './depositGas'
 import type { Deposit } from '../types'
 import depositEncode from './depositEncode'
 import { commonLogic, referrer } from './common'
-import { getNetworkTypes } from '../../../../../utils'
 import getHarvestParams from '../../../requests/getHarvestParams'
 
 
@@ -13,8 +12,6 @@ const deposit: Deposit = async (values) => {
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
-
-  const { isGnosis } = getNetworkTypes(options)
 
   if (canHarvest) {
     const harvestParams = await getHarvestParams({ options, vaultAddress })
