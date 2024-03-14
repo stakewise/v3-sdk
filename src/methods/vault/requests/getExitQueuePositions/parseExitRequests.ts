@@ -6,11 +6,11 @@ export type ParseExitRequestsInput = {
   provider: StakeWise.Provider
   options: StakeWise.Options
   userAddress: string
-  totalShares: bigint
   vaultAddress: string
   exitRequests: Array<{
     positionTicket: string
     totalShares: string
+    totalAssets: string
     timestamp: string
   }>
 }
@@ -18,6 +18,7 @@ export type ParseExitRequestsInput = {
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
+  isV1Position: boolean
   timestamp: string
 }
 
@@ -28,9 +29,9 @@ type ParseExitRequestsOutput = {
 }
 
 type ExitedAssetsResponse = Array<{
-  leftShares: bigint
-  claimedShares: bigint
-  claimedAssets: bigint
+  leftTickets: bigint
+  exitedTickets: bigint
+  exitedAssets: bigint
 }>
 
 const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) => {
@@ -46,7 +47,7 @@ const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) 
 }
 
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, contracts, provider, userAddress, vaultAddress, totalShares, exitRequests } = values
+  const { options, contracts, provider, userAddress, vaultAddress, exitRequests } = values
 
   const keeperContract = contracts.base.keeper
   const vaultContract = contracts.helpers.createVault(vaultAddress)
@@ -75,28 +76,49 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   const claims: Position[] = []
   const indexes = (indexesResponse || [])
 
+  let queuedShares = 0n, queuedAssets = 0n
   for (let i = 0; i < indexes.length; i++) {
+    const { positionTicket, timestamp, totalShares, totalAssets } = exitRequests[i]
+    queuedShares += BigInt(totalShares)
+    queuedAssets += BigInt(totalAssets)
+
+    // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
     const exitQueueIndex = indexes[i][0]
-    const { positionTicket, timestamp } = exitRequests[i]
+    if (exitQueueIndex < 0n) {
+      continue
+    }
 
     // 24 hours must have elapsed since the position was created
     const is24HoursPassed = await _checkTimestamp(timestamp, provider)
-
-    // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
-    const isValid = exitQueueIndex > -1n
-
-    if (isValid && is24HoursPassed) {
-      const item = { exitQueueIndex, positionTicket, timestamp }
+    if (is24HoursPassed) {
+      const isV1Position = BigInt(totalShares) > 0
+      const item = { exitQueueIndex, positionTicket, timestamp, isV1Position }
 
       claims.push(item)
     }
   }
 
-  let exitedAssetsResponse: ExitedAssetsResponse = []
+  if (!claims.length) {
+    const result = await vaultMulticall<Array<{ assets: bigint }>>({
+      ...commonMulticallParams,
+      request: {
+        params: [ { method: 'convertToAssets', args: [ queuedShares ] } ],
+        callStatic: true,
+      },
+    })
+    const totalV1QueuedAssets = result[0]?.assets || 0n
 
-  if (claims.length) {
-    // We need to get the data of the contract after the claim.
-    exitedAssetsResponse = await vaultMulticall<ExitedAssetsResponse>({
+    // If there are no positions with an index greater than 0 or their timestamp has failed the 24-hour check.
+    // Then we can use totalShares from the subgraph to show total
+    return {
+      positions: [],
+      withdrawable: 0n,
+      total: totalV1QueuedAssets + queuedAssets,
+    }
+  }
+
+  // We need to calculate the exited assets for every position.
+  const exitedAssetsResponse = await vaultMulticall<ExitedAssetsResponse>({
       ...commonMulticallParams,
       request: {
         params: claims.map(({ positionTicket, exitQueueIndex, timestamp }) => ({
@@ -106,47 +128,34 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
         callStatic: true,
       },
     }) || []
-  }
-  else {
-    const result = await vaultMulticall<Array<{ assets: bigint }>>({
-      ...commonMulticallParams,
-      request: {
-        params: [ { method: 'convertToAssets', args: [ totalShares ] } ],
-        callStatic: true,
-      },
-    })
 
-    // If there are no positions with an index greater than 0 or their timestamp has failed the 24 hour check.
-    // Then we can use totalShares from the subgraph to show total
-    return {
-      positions: [],
-      withdrawable: 0n,
-      total: result[0]?.assets || 0n,
+  // Calculate total withdrawable assets
+  let withdrawableAssets = 0n
+  exitedAssetsResponse.forEach(({ exitedTickets, exitedAssets }, i) => {
+    const { isV1Position } = claims[i]
+    if (isV1Position) {
+      // in V1 exit queue exit tickets are shares
+      queuedShares -= exitedTickets
     }
-  }
-
-  let withdrawableAssets = 0n,
-      totalLeftShares = 0n,
-      totalLeftAssets = 0n
-
-  exitedAssetsResponse.forEach(({ leftShares, claimedAssets }) => {
-    totalLeftShares += leftShares
-    withdrawableAssets += claimedAssets
+    else {
+      queuedAssets -= exitedAssets
+    }
+    withdrawableAssets += exitedAssets
   })
 
-  if (totalLeftShares > 0) {
+  if (queuedShares > 0) {
     const result = await vaultMulticall<Array<{ assets: bigint }>>({
       ...commonMulticallParams,
       request: {
-        params: [ { method: 'convertToAssets', args: [ totalLeftShares ] } ],
+        params: [ { method: 'convertToAssets', args: [ queuedShares ] } ],
         callStatic: true,
       },
     })
 
-    totalLeftAssets = result[0]?.assets || 0n
+    queuedAssets += result[0]?.assets || 0n
   }
 
-  const total = withdrawableAssets + totalLeftAssets
+  const total = withdrawableAssets + queuedAssets
 
   return {
     total,

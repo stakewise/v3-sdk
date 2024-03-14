@@ -517,6 +517,7 @@ type Output = {
   displayName: string | null
   description: string | null
   performance: number
+  version: number
 }
 ```
 
@@ -548,6 +549,7 @@ type Output = {
 | `whitelist`        | List of authorized users for deposits                         |
 | `blocklist`        | List of blocked users for deposits                            |
 | `performance`      | Vault performance indicator (percent)                         |
+| `version`          | Vault version                                                 |
 
 #### Example:
 
