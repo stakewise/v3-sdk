@@ -5,6 +5,7 @@ import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
 import MintTokenConfigAbi from './MintTokenConfigAbi.json'
+import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
 import V2RewardTokenAbi from './V2RewardTokenAbi.json'
@@ -29,6 +30,7 @@ export {
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
   MintTokenControllerAbi,
+  OtherTokenVaultAbi,
   MintTokenConfigAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,

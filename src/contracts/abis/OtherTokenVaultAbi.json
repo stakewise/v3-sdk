@@ -241,6 +241,11 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "assets",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "receiver",
         "type": "address"
