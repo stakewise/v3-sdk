@@ -11,7 +11,7 @@ const claimExitQueueGas = async (values: ClaimExitQueueInput) => {
     ...multicallArgs,
     request: {
       params,
-      transactionData: true,
+      estimateGas: true,
     },
   })
 

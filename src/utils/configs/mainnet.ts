@@ -13,7 +13,6 @@ export default {
     id: 'mainnet',
     name: 'Ethereum',
     chainId: Network.Mainnet,
-    forkVersion: '0x00000000',
     hexadecimalChainId: '0x1',
     blockExplorerUrl: 'https://etherscan.io',
     url: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
@@ -24,13 +23,13 @@ export default {
     },
   },
   pages: {
-    etherscan: 'https://etherscan.io',
     beaconchain: 'https://beaconcha.in',
   },
   addresses: {
     tokens: {
       swise: '0x48C3399719B582dD63eB5AADf12A40B4C3f52FA2',
       mintToken: '0xf1C9acDc66974dFB6dEcB12aA385b9cD01190E38',
+      depositToken: ZeroAddress,
       v2RewardToken: '0x20BC832ca081b91433ff6c17f85701B6e92486c5',
       v2StakedToken: '0xFe2e637202056d30016725477c5da089Ab0A043A',
     },

@@ -13,7 +13,6 @@ export default {
     id: 'gnosis',
     name: 'Gnosis Chain',
     chainId: Network.Gnosis,
-    forkVersion: '0x00000064',
     hexadecimalChainId: '0x64',
     url: 'https://rpc.gnosischain.com',
     blockExplorerUrl: 'https://blockscout.com/xdai/mainnet',
@@ -24,13 +23,13 @@ export default {
     },
   },
   pages: {
-    etherscan: 'https://blockscout.com/xdai/mainnet',
     beaconchain: 'https://gnosis.beaconcha.in',
   },
   addresses: {
     tokens: {
       swise: '0xfdA94F056346d2320d4B5E468D6Ad099b2277746',
       mintToken: ZeroAddress,
+      depositToken: '0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb',
       v2RewardToken: '0x6aC78efae880282396a335CA2F79863A1e6831D4',
       v2StakedToken: '0xA4eF9Da5BA71Cc0D2e5E877a910A37eC43420445',
     },
