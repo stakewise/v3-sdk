@@ -471,18 +471,18 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "vault",
+        "name": "newImplementation",
         "type": "address"
       },
       {
-        "internalType": "bytes[]",
+        "internalType": "bytes",
         "name": "data",
-        "type": "bytes[]"
+        "type": "bytes"
       }
     ],
     "name": "upgradeToAndCall",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   }
 ]
