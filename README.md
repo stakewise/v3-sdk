@@ -400,10 +400,10 @@ Returns the withdrawal queue for a specific user.
 
 #### Arguments:
 
-| Name | Type | Type |
-|------|------|-------------|
-| userAddress | `string` | **Yes** |
-| vaultAddress | `string` | **Yes** | 
+| Name | Type | Required |
+|------|------|----------|
+| userAddress | `string` | **Yes**  |
+| vaultAddress | `string` | **Yes**  | 
 
 #### Returns:
 
@@ -444,7 +444,7 @@ Returns the running vault validators.
 
 #### Arguments:
 
-| Name | Type | Type |
+| Name | Type | Required |
 |------|------|-------------|
 | vaultAddress | `string` | **Yes** | 
 | limit | `number` | **Yes** | To implement pagination |
@@ -488,7 +488,7 @@ Returns the master data of the vault
 
 #### Arguments:
 
-| Name | Type | Type |
+| Name | Type | Required |
 |------|------|-------------|
 | vaultAddress | `string` | **Yes** | 
 
@@ -565,7 +565,7 @@ How much a user can withdraw
 
 #### Arguments:
 
-| Name | Type | Type | Info |
+| Name | Type | Required | Info |
 |------|------|-------------|-------|
 | ltvPercent | `bigint` | **Yes** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
@@ -618,7 +618,7 @@ Getting user's balance in the vault
 
 #### Arguments:
 
-| Name | Type | Type |
+| Name | Type | Required |
 |------|------|-------------|
 | userAddress | `string` | **Yes** |
 | vaultAddress | `string` | **Yes** |
@@ -865,7 +865,7 @@ Convert osToken to ETH
 
 #### Arguments:
 
-| Name | Type | Type |
+| Name | Type | Required |
 |------|------|-------------|
 | amount | `bigint` | **Yes** |
 
@@ -889,7 +889,7 @@ Convert ETH to osToken
 
 #### Arguments:
 
-| Name | Type | Type |
+| Name | Type | Required |
 |------|------|-------------|
 | amount | `bigint` | **Yes** |
 
