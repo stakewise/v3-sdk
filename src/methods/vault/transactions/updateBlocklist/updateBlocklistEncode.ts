@@ -1,9 +1,9 @@
 import { commonLogic } from './common'
-import { UpdateWhitelistInput } from './types'
+import { UpdateBlocklistInput } from './types'
 import { vaultMulticall } from '../../../../contracts'
 
 
-const updateWhitelistEncode = async (values: UpdateWhitelistInput): Promise<StakeWise.TransactionData> => {
+const updateBlocklistEncode = async (values: UpdateBlocklistInput): Promise<StakeWise.TransactionData> => {
   const { params, multicallCommonArgs } = commonLogic(values)
 
   const rx = await vaultMulticall<{ data: string, to: string }>({
@@ -21,4 +21,4 @@ const updateWhitelistEncode = async (values: UpdateWhitelistInput): Promise<Stak
 }
 
 
-export default updateWhitelistEncode
+export default updateBlocklistEncode

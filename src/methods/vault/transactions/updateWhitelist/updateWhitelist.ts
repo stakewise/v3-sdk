@@ -6,7 +6,7 @@ import { vaultMulticall } from '../../../../contracts'
 
 
 const updateWhitelist: UpdateWhitelist = async (values) => {
-  const { params, multicallCommonArgs } = await commonLogic(values)
+  const { params, multicallCommonArgs } = commonLogic(values)
 
   const result = await vaultMulticall<{ hash: string }>({
     ...multicallCommonArgs,

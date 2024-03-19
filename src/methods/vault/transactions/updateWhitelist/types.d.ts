@@ -7,6 +7,7 @@ export type UpdateWhitelistInput = {
     address: string
     isNew: boolean
   }>
+  userAddress: string
   vaultAddress: string
   options: StakeWise.Options
   provider: StakeWise.Provider

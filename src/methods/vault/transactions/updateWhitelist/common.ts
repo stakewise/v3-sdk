@@ -3,56 +3,38 @@ import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
 
-export const commonLogic = async (values: UpdateWhitelistInput) => {
-  const { options, contracts, assets, vaultAddress, userAddress } = values
+const validateList = (whitelist: UpdateWhitelistInput['whitelist']) => {
+  const isValid = whitelist.every((whitelistItem) => (
+    whitelistItem
+    && typeof whitelistItem === 'object'
+    && typeof whitelistItem.address === 'string'
+    && typeof whitelistItem.isNew === 'boolean'
+  ))
 
-  validateArgs.bigint({ assets })
+  if (!isValid) {
+    throw new Error('The "whitelist" argument must be an array of objects with "address" and "isNew" properties')
+  }
+}
+
+export const commonLogic = (values: UpdateWhitelistInput) => {
+  const { options, contracts, userAddress, vaultAddress, whitelist } = values
+
+  validateArgs.array({ whitelist })
   validateArgs.address({ vaultAddress, userAddress })
-
-  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
+  validateList(whitelist)
 
   const multicallCommonArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
-    vaultContract: contracts.helpers.createVault(vaultAddress),
+    vaultContract: contracts.helpers.createPrivateVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,
     options,
   }
 
-  const isCollateralized = await contracts.base.keeper.isCollateralized(vaultAddress)
-
-  if (isCollateralized) {
-    const result = await vaultMulticall<[ { shares: bigint } ]>({
-      ...multicallCommonArgs,
-      request: {
-        params: [ { method: 'convertToShares', args: [ assets ] } ],
-        callStatic: true,
-      },
-    })
-
-    const exitQueueShares = result[0].shares
-
-    params.push({
-      method: 'enterExitQueue',
-      args: [ exitQueueShares, userAddress ],
-    })
-  }
-  else {
-    const result = await vaultMulticall<[ { shares: bigint } ]>({
-      ...multicallCommonArgs,
-      request: {
-        params: [ { method: 'convertToShares', args: [ assets ] } ],
-        callStatic: true,
-      },
-    })
-
-    const shares = result[0].shares
-
-    params.push({
-       method: 'redeem',
-       args: [ shares, userAddress ],
-    })
-  }
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = whitelist.map(({ address, isNew }) => ({
+    method: 'updateWhitelist',
+    args: [ address, isNew ],
+  }))
 
   return {
     params,

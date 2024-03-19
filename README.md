@@ -75,7 +75,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| network | `Network` | **Require** | Chain id |
+| network | `Network` | **Required** | Chain id |
 | provider | `BrowserProvider or JsonRpcProvider` | **Optional** | You can provide your implementation of the provender for ethers |
 | endpoints.web3 | `string OR string[]` | **Optional** | Your urls for connect to blockchain |
 | endpoints.subgraph | `string` | **Optional** | stakewise sbugraph url |
@@ -120,11 +120,13 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault** | **osToken** |
-|------|------|
-| [sdk.vault.deposit](#sdkvaultdeposit) | [sdk.osToken.mint](#sdkostokenmint) |
-| [sdk.vault.withdraw](#sdkvaultwithdraw) | [sdk.osToken.burn](#sdkostokenburn) |
-| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue) |
+| **Vault**                                             | **osToken** |
+|-------------------------------------------------------|------|
+| [sdk.vault.deposit](#sdkvaultdeposit)                 | [sdk.osToken.mint](#sdkostokenmint) |
+| [sdk.vault.withdraw](#sdkvaultwithdraw)               | [sdk.osToken.burn](#sdkostokenburn) |
+| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue)   |
+| [sdk.vault.updateWhitelist](#sdkvaultupdatewhitelist) |
+| [sdk.vault.updateBlocklist](#sdkvaultupdateblocklist)     |
 
 ## API-Vault
 
@@ -138,11 +140,11 @@ Get a list of interactions with the vault.
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| vaultAddress | `string` | **Require** | - |
+| vaultAddress | `string` | **Required** | - |
 | userAddress | `string` | **Optional** | If a user address is specified, the query will look for events for that address and the vault address only |
-| types | `AllocatorActionType` | **Require** | Event types can be found in `enum AllocatorActionType` which you can import from the library |
-| limit | `number` | **Require** | To implement pagination |
-| skip | `number` | **Require** | To implement pagination |
+| types | `AllocatorActionType` | **Required** | Event types can be found in `enum AllocatorActionType` which you can import from the library |
+| limit | `number` | **Required** | To implement pagination |
+| skip | `number` | **Required** | To implement pagination |
 
 #### Returns:
 
@@ -197,8 +199,8 @@ TVL and APY snapshots for the vault. With the help of this data it is possible t
 
 | Name         | Type     | Type            | Description |
 |--------------|----------|-----------------|---------|
-| vaultAddress | `string` | **Require**     | - |
-| dateFrom     | `number` | **Require**     | Time to start |
+| vaultAddress | `string` | **Required**     | - |
+| dateFrom     | `number` | **Required**     | Time to start |
 
 #### Returns:
 
@@ -269,9 +271,9 @@ Daily rewards for the user who has made a deposit in the vault. With the help of
 
 | Name | Type     | Type        | Description |
 |------|----------|-------------|---|
-| vaultAddress | `string` | **Require** | - |
-| userAddress | `string` | **Require** | - |
-| dateFrom | `number` | **Require** | Time to start |
+| vaultAddress | `string` | **Required** | - |
+| userAddress | `string` | **Required** | - |
+| dateFrom | `number` | **Required** | Time to start |
 | dateTo | `number` | **Optional** | Time to end |
 | fillGaps | `boolean` | **Optional** | Fill in the empty days with zeros |
 
@@ -317,7 +319,7 @@ Fetch the whitelist for private vaults. Only addresses included in this list are
 
 | Name | Type              | Type        | Description |
 |------|-------------------|-------------|---|
-| vaultAddress | `string`          | **Require** | - |
+| vaultAddress | `string`          | **Required** | - |
 | orderDirection | `'asc' \| 'desc'` | **Optional** | Sort, by default `desc` (descending order) |
 | search | `string`          | **Optional** | Filters results by the address field |
 | limit | `number`          | **Optional** | Limit the number of addresses, default is 100 |
@@ -359,7 +361,7 @@ Fetch the blocklist for blocklisted vaults. Addresses included in this list are 
 
 | Name | Type          | Type        | Description |
 |------|---------------|-------------|---|
-| vaultAddress | `string`      | **Require** | - |
+| vaultAddress | `string`      | **Required** | - |
 | orderDirection | `'asc' \| 'desc'` | **Optional** | Sort, by default `desc` (descending order) |
 | search | `string`      | **Optional** | Filters results by the address field |
 | limit | `number`      | **Optional** | Limit the number of addresses, default is 100 |
@@ -400,8 +402,8 @@ Returns the withdrawal queue for a specific user.
 
 | Name | Type | Type |
 |------|------|-------------|
-| userAddress | `string` | **Require** |
-| vaultAddress | `string` | **Require** | 
+| userAddress | `string` | **Required** |
+| vaultAddress | `string` | **Required** | 
 
 #### Returns:
 
@@ -444,9 +446,9 @@ Returns the running vault validators.
 
 | Name | Type | Type |
 |------|------|-------------|
-| vaultAddress | `string` | **Require** | 
-| limit | `number` | **Require** | To implement pagination |
-| skip | `number` | **Require** | To implement pagination |
+| vaultAddress | `string` | **Required** | 
+| limit | `number` | **Required** | To implement pagination |
+| skip | `number` | **Required** | To implement pagination |
 
 #### Returns:
 
@@ -488,7 +490,7 @@ Returns the master data of the vault
 
 | Name | Type | Type |
 |------|------|-------------|
-| vaultAddress | `string` | **Require** | 
+| vaultAddress | `string` | **Required** | 
 
 #### Returns:
 
@@ -565,9 +567,9 @@ How much a user can withdraw
 
 | Name | Type | Type | Info |
 |------|------|-------------|-------|
-| ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| ltvPercent | `bigint` | **Required** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Required** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Required** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -618,8 +620,8 @@ Getting user's balance in the vault
 
 | Name | Type | Type |
 |------|------|-------------|
-| userAddress | `string` | **Require** |
-| vaultAddress | `string` | **Require** |
+| userAddress | `string` | **Required** |
+| vaultAddress | `string` | **Required** |
 
 #### Returns:
 
@@ -655,10 +657,10 @@ How many osToken burn do you need to make to withdraw all deposit.
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-| newStakedAssets | `bigint` | **Require** | The future amount of stake after the deposit |
+| ltvPercent | `bigint` | **Required** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Required** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Required** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| newStakedAssets | `bigint` | **Required** | The future amount of stake after the deposit |
 
 #### Returns:
 
@@ -686,9 +688,9 @@ Get the health of the position
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| thresholdPercent | `bigint` | **Required** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| mintedAssets | `bigint` | **Required** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| stakedAssets | `bigint` | **Required** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -759,10 +761,10 @@ User position data
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
+| thresholdPercent | `bigint` | **Required** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| stakedAssets | `bigint` | **Required** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| userAddress | `string` | **Required** | - |
+| vaultAddress | `string` | **Required** | - |
 
 #### Returns:
 
@@ -809,9 +811,9 @@ Maximum number of **shares** for minting
 #### Arguments:
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Require** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
-| stakedAssets | `bigint` | **Require** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-| mintedAssets | `bigint` | **Require** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| ltvPercent | `bigint` | **Required** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| stakedAssets | `bigint` | **Required** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| mintedAssets | `bigint` | **Required** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 
 #### Returns:
 
@@ -865,7 +867,7 @@ Convert osToken to ETH
 
 | Name | Type | Type |
 |------|------|-------------|
-| amount | `bigint` | **Require** |
+| amount | `bigint` | **Required** |
 
 #### Returns:
 
@@ -889,7 +891,7 @@ Convert ETH to osToken
 
 | Name | Type | Type |
 |------|------|-------------|
-| amount | `bigint` | **Require** |
+| amount | `bigint` | **Required** |
 
 #### Returns:
 
@@ -933,7 +935,7 @@ Retrieving a transaction to verify that the data went into the subgraph after th
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| hash | `string` | **Require** | Transaction hash |
+| hash | `string` | **Required** | Transaction hash |
 
 #### Returns:
 
@@ -963,9 +965,9 @@ Deposit (stake) in a vault
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| assets | `bigint` | **Require** | Deposit amount |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
+| assets | `bigint` | **Required** | Deposit amount |
+| userAddress | `string` | **Required** | - |
+| vaultAddress | `string` | **Required** | - |
 
 #### Example:
 
@@ -994,9 +996,9 @@ Withdrawal of funds from a vault
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| assets | `bigint` | **Require** | Withdraw amount |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
+| assets | `bigint` | **Required** | Withdraw amount |
+| userAddress | `string` | **Required** | - |
+| vaultAddress | `string` | **Required** | - |
 
 #### Example:
 
@@ -1057,9 +1059,9 @@ Take the freed tokens from the queue
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| positions | `string` | **Require** | `postions` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
+| positions | `string` | **Required** | `postions` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
+| userAddress | `string` | **Required** | - |
+| vaultAddress | `string` | **Required** | - |
 
 #### Example:
 
@@ -1093,6 +1095,97 @@ const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
+### `sdk.vault.updateWhitelist`
+
+#### Description:
+
+Update the whitelist of addresses for a private vault.
+The whitelist contains addresses allowed to stake or mint within
+the private vault. This method can only be called by the vault
+access manager.
+
+
+#### Arguments:
+
+| Name | Type                                         | Type | Description                                                                                                                 |
+|------|----------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------|
+| whitelist | `Array<{ address: string, isNew: boolean }>` | **Required** | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| userAddress | `string`                                     | **Required** | The address of the user making the update (access manager)                                                                                 |
+| vaultAddress | `string`                                     | **Required** | The address of the private vault                                                                                            |
+
+#### Example:
+
+```ts
+const whitelist = [
+  {
+    address: '0x...',
+    isNew: true,
+  },
+  {
+    address: '0x...',
+    isNew: false,
+  },
+]
+
+const params = {
+  whitelist,
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.updateWhitelist(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.updateWhitelist.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.updateWhitelist.estimateGas(params)
+```
+---
+### `sdk.vault.updateBlocklist`
+
+#### Description:
+
+Update the blocklist of addresses for a blocklisted vault.
+The blocklist contains addresses disallowed to stake or mint within
+the blocklisted vault. This method can only be called by the vault
+access manager.
+
+#### Arguments:
+
+| Name         | Type                                         | Type | Description                                                                                                                  |
+|--------------|----------------------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------|
+| blocklist    | `Array<{ address: string, isNew: boolean }>` | **Required** | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one  |
+| userAddress  | `string`                                     | **Required** | The address of the user making the update (access manager)                                                                   |
+| vaultAddress | `string`                                     | **Required** | The address of the blocklisted vault                                                                                         |
+
+#### Example:
+
+```ts
+const blocklist = [
+  {
+    address: '0x...',
+    isNew: true,
+  },
+  {
+    address: '0x...',
+    isNew: false,
+  },
+]
+
+const params = {
+  blocklist,
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.updateBlocklist(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.updateBlocklist.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.updateBlockList.estimateGas(params)
+```
+---
 ### `sdk.osToken.mint`
 
 #### Description:
@@ -1104,9 +1197,9 @@ Use data from methods [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) and [sdk.o
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| shares | `bigint` | **Require** | mint amount |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
+| shares | `bigint` | **Required** | mint amount |
+| userAddress | `string` | **Required** | - |
+| vaultAddress | `string` | **Required** | - |
 
 #### Example:
 
@@ -1184,9 +1277,9 @@ Burns your osToken
 
 | Name | Type | Type | Description |
 |------|------|-------------|---------|
-| shares | `bigint` | **Require** | Burn amount |
-| userAddress | `string` | **Require** | - |
-| vaultAddress | `string` | **Require** | - |
+| shares | `bigint` | **Required** | Burn amount |
+| userAddress | `string` | **Required** | - |
+| vaultAddress | `string` | **Required** | - |
 
 #### Example:
 

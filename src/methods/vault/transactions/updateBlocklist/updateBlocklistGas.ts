@@ -1,10 +1,10 @@
 import { commonLogic } from './common'
-import { UpdateWhitelistInput } from './types'
+import { UpdateBlocklistInput } from './types'
 import { getGas } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
 
-const updateWhitelistGas = async (values: UpdateWhitelistInput) => {
+const updateBlocklistGas = async (values: UpdateBlocklistInput) => {
   const { params, multicallCommonArgs } = commonLogic(values)
 
   const estimatedGas = await vaultMulticall<bigint>({
@@ -21,4 +21,4 @@ const updateWhitelistGas = async (values: UpdateWhitelistInput) => {
 }
 
 
-export default updateWhitelistGas
+export default updateBlocklistGas
