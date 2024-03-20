@@ -16,6 +16,8 @@ import getExitQueuePositions from './requests/getExitQueuePositions'
 import { deposit } from './transactions/deposit'
 import { withdraw } from './transactions/withdraw'
 import { claimExitQueue } from './transactions/claimExitQueue'
+import { updateWhitelist } from './transactions/updateWhitelist'
+import { updateBlocklist } from './transactions/updateBlocklist'
 
 
 export default {
@@ -37,5 +39,7 @@ export default {
     deposit,
     withdraw,
     claimExitQueue,
+    updateWhitelist,
+    updateBlocklist,
   },
 } as const

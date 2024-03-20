@@ -33,8 +33,17 @@ const number = (values: Record<string, number>) => {
   })
 }
 
+const array = (values: Record<string, any[]>) => {
+  Object.keys(values).forEach((key) => {
+    if (!Array.isArray(values[key])) {
+      throw new Error(`The "${key}" argument must be an array`)
+    }
+  })
+}
+
 
 export default {
+  array,
   bigint,
   string,
   number,
