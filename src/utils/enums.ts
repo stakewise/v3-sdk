@@ -15,6 +15,7 @@ export enum AllocatorActionType {
   OsTokenMinted = 'OsTokenMinted',
   OsTokenBurned = 'OsTokenBurned',
   OsTokenRedeemed = 'OsTokenRedeemed',
+  ExitQueueEntered = 'ExitQueueEntered',
   OsTokenLiquidated = 'OsTokenLiquidated',
   ExitedAssetsClaimed = 'ExitedAssetsClaimed',
 }
