@@ -76,20 +76,25 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   const claims: Position[] = []
   const indexes = (indexesResponse || [])
 
-  let queuedShares = 0n, queuedAssets = 0n
+  let queuedShares = 0n,
+      queuedAssets = 0n
+
   for (let i = 0; i < indexes.length; i++) {
     const { positionTicket, timestamp, totalShares, totalAssets } = exitRequests[i]
+
     queuedShares += BigInt(totalShares)
     queuedAssets += BigInt(totalAssets)
 
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
     const exitQueueIndex = indexes[i][0]
+
     if (exitQueueIndex < 0n) {
       continue
     }
 
     // 24 hours must have elapsed since the position was created
     const is24HoursPassed = await _checkTimestamp(timestamp, provider)
+
     if (is24HoursPassed) {
       const isV1Position = BigInt(totalShares) > 0
       const item = { exitQueueIndex, positionTicket, timestamp, isV1Position }
@@ -131,8 +136,10 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
 
   // Calculate total withdrawable assets
   let withdrawableAssets = 0n
+
   exitedAssetsResponse.forEach(({ exitedTickets, exitedAssets }, i) => {
     const { isV1Position } = claims[i]
+
     if (isV1Position) {
       // in V1 exit queue exit tickets are shares
       queuedShares -= exitedTickets
@@ -140,6 +147,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     else {
       queuedAssets -= exitedAssets
     }
+
     withdrawableAssets += exitedAssets
   })
 
