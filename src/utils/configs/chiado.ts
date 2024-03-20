@@ -11,7 +11,7 @@ export default {
   },
   network: {
     id: 'chiado',
-    name: 'Chiado Chain',
+    name: 'Chiado Testnet',
     chainId: Network.Chiado,
     hexadecimalChainId: '0x27D8',
     url: 'https://rpc.chiadochain.net',
