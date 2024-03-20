@@ -142,9 +142,11 @@ export const createContracts = (input: CreateContractsInput) => {
     factories: {
       vault: getVaultFactory(provider, config.addresses.factories.vault),
       erc20Vault: getVaultFactory(provider, config.addresses.factories.erc20Vault),
+
       privateVault: getVaultFactory(provider, config.addresses.factories.privateVault),
-      blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20PrivateVault: getVaultFactory(provider, config.addresses.factories.erc20PrivateVault),
+
+      blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20BlocklistVault: getVaultFactory(provider, config.addresses.factories.erc20BlocklistVault),
     },
     uniswap: {
