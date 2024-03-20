@@ -45,11 +45,13 @@ export default {
       rewardSplitterFactory: '0x6c56AC64457B8AeA1Bb8d1f5eA2d1E397C9c7a13',
     },
     factories: {
-      vault: '0x1428BB71261f01BbC03ce4eC7cEEA674f94b5F18',
-      erc20Vault: '0x4C1140F4A5E3DD459De642A46bd1df6FBe287e1B',
-      privateVault: '0x9741f8e49fFa322714511b5D17bD052698eAFA43',
+      vault: '0x61E12791C717B80CcE1a50bC97548fA281493e2a',
+      erc20Vault: '0x7a77934d32D78bFe8Dc1e23415b5679960a1c610',
+
+      privateVault: '0x47Bf64605a71f5ea1FBE230735ab04669cC312D5',
+      erc20PrivateVault: '0x93a3f880E07B27dacA6Ef2d3C23E77DBd6294487',
+
       blocklistVault: '0x0a57971758644A61279756591100c19e1691D068',
-      erc20PrivateVault: '0x930A2D0ADEbF4E69Bb929F6456C3D4bcabf52796',
       erc20BlocklistVault: '0x0F8c209445282d937DaC0eA0a6706590250F9aFD',
     },
     uniswap: {

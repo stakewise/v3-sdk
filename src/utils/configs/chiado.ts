@@ -6,7 +6,7 @@ import { Network } from '../enums'
 
 export default {
   api: {
-    backend: 'https://mainnet-api.stakewise.io/graphql',
+    backend: 'https://holesky-api.stakewise.io/graphql',
     subgraph: 'https://chiado-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
   },
   network: {
@@ -46,12 +46,12 @@ export default {
     },
     factories: {
       vault: '0xe79b759eF5835776b5A55A55552b86b57f66aA0E',
-      erc20Vault: '0xf9706bd4540e59B1D3Bd77b5B9E55C2486a7a145',
+      erc20Vault: '0x765a1B647cd2020FD08CDD810CB1D00Eeb02E151',
 
       privateVault: '0xd65846faa8fB7C22777869E9eDDB13F4D0DeD3be',
       erc20PrivateVault: '0x352FA9D876910D51A1Ed309605c899a3D93773F1',
 
-      blocklistVault: '0x765a1B647cd2020FD08CDD810CB1D00Eeb02E151',
+      blocklistVault: '0xf9706bd4540e59B1D3Bd77b5B9E55C2486a7a145',
       erc20BlocklistVault: '0x4e97Eca0aae622d49cc0ceC0e50a9880b1D6abD5',
     },
     uniswap: {

@@ -131,17 +131,17 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "leftShares",
+        "name": "leftTickets",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "claimedShares",
+        "name": "exitedTickets",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "claimedAssets",
+        "name": "exitedAssets",
         "type": "uint256"
       }
     ],
@@ -452,6 +452,19 @@
     "name": "setKeysManager",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "version",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
