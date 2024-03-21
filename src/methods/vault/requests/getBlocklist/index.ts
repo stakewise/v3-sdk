@@ -11,11 +11,12 @@ type GetBlocklistInput = {
   search?: string
   limit?: number
   skip?: number
+  addressIn?: BlocklistAccountsQueryVariables['where']['address_in']
   options: StakeWise.Options
 }
 
 const getBlocklist = (input: GetBlocklistInput) => {
-  const { vaultAddress, orderDirection, search, limit, skip, options } = input
+  const { vaultAddress, orderDirection, search, limit, skip, options, addressIn } = input
 
   validateArgs.address({ vaultAddress })
 
@@ -40,8 +41,8 @@ const getBlocklist = (input: GetBlocklistInput) => {
   const vault = vaultAddress.toLowerCase()
 
   const where = search
-    ? { vault, address_contains: search.toLowerCase() } as BlocklistAccountsQueryVariables['where']
-    : { vault } as BlocklistAccountsQueryVariables['where']
+    ? { vault, address_in: addressIn, address_contains: search.toLowerCase() } as BlocklistAccountsQueryVariables['where']
+    : { vault, address_in: addressIn } as BlocklistAccountsQueryVariables['where']
 
   return graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
     url: apiUrls.getSubgraphqlUrl(options),

@@ -49,7 +49,9 @@ export default {
       vault: ZeroAddress,
       erc20Vault: ZeroAddress,
       privateVault: ZeroAddress,
+      blocklistVault: ZeroAddress,
       erc20PrivateVault: ZeroAddress,
+      erc20BlocklistVault: ZeroAddress,
     },
     uniswap: {
       positionManager: ZeroAddress,
