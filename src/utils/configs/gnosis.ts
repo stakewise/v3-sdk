@@ -66,6 +66,7 @@ export default {
     mintToken: tokens.osGNO,
     nativeToken: tokens.xdai,
     depositToken: tokens.gno,
+    wrappedToken: tokens.wxDAI,
     v2RewardToken: tokens.rGNO,
     v2StakedToken: tokens.sGNO,
   },
