@@ -54,11 +54,16 @@ export default {
     uniswap: {
       positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     },
+    cow: {
+      ethFlow: '0x40A50cf069e992AA4536211B23F286eF88752187',
+      vaultRelayer: '0xc92e8bdf79f0507f65a392b0ab4667716bfe0110',
+    },
   },
   tokens: {
     mintToken: tokens.osETH,
     nativeToken: tokens.eth,
     depositToken: tokens.eth,
+    wrappedToken: tokens.wETH,
     v2RewardToken: tokens.rETH2,
     v2StakedToken: tokens.sETH2,
   },

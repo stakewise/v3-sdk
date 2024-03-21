@@ -4,8 +4,8 @@ import {
   Erc20Abi,
   VaultAbi,
   KeeperAbi,
+  EthFlowAbi,
   UsdRateAbi,
-  MintTokenAbi,
   MulticallAbi,
   UniswapPoolAbi,
   PriceOracleAbi,
@@ -65,7 +65,7 @@ const getKeeper = (provider: Provider, config: StakeWise.Config) => createContra
 
 const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintToken>(
   config.addresses.tokens.mintToken,
-  MintTokenAbi,
+  Erc20Abi,
   provider
 )
 
@@ -96,6 +96,12 @@ const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => creat
 const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.UniswapPositionManager>(
   config.addresses.uniswap.positionManager,
   UniswapPositionManagerAbi,
+  provider
+)
+
+const getEthFlow = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.EthFlow>(
+  config.addresses.cow.ethFlow,
+  EthFlowAbi,
   provider
 )
 
@@ -144,6 +150,9 @@ export const createContracts = (input: CreateContractsInput) => {
     },
     uniswap: {
       positionManager: getUniswapPositionManager(provider, config),
+    },
+    cow: {
+      ethFlow: getEthFlow(provider, config),
     },
   }
 }

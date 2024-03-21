@@ -3,11 +3,13 @@ export default {
   eth: 'ETH',
   swise: 'SWISE',
   osETH: 'osETH',
+  wETH: 'WETH',
 
   // Gnosis
   gno: 'GNO',
   xdai: 'xDAI',
   osGNO: 'osGNO',
+  wxDAI: 'WXDAI',
 
   // V2
   sGNO: 'sGNO',

@@ -13,8 +13,8 @@ import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
 import UniswapPoolAbi from './UniswapPoolAbi.json'
 import MulticallAbi from './MulticallAbi.json'
-import MintTokenAbi from './MintTokenAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
+import EthFlowAbi from './EthFlowAbi.json'
 import KeeperAbi from './KeeperAbi.json'
 import VaultAbi from './VaultAbi.json'
 import Erc20Abi from './Erc20Abi.json'
@@ -40,8 +40,8 @@ export {
   PriceOracleAbi,
   UniswapPoolAbi,
   MulticallAbi,
-  MintTokenAbi,
   UsdRateAbi,
+  EthFlowAbi,
   KeeperAbi,
   VaultAbi,
   Erc20Abi,

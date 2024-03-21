@@ -54,11 +54,16 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
+    cow: {
+      ethFlow: '0x40A50cf069e992AA4536211B23F286eF88752187',
+      vaultRelayer: '0xc92e8bdf79f0507f65a392b0ab4667716bfe0110',
+    },
   },
   tokens: {
     mintToken: tokens.osGNO,
     nativeToken: tokens.xdai,
     depositToken: tokens.gno,
+    wrappedToken: tokens.wxDAI,
     v2RewardToken: tokens.rGNO,
     v2StakedToken: tokens.sGNO,
   },

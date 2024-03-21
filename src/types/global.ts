@@ -8,9 +8,9 @@ import type {
   VaultAbi,
   Erc20Abi,
   KeeperAbi,
+  EthFlowAbi,
   UsdRateAbi,
   MulticallAbi,
-  MintTokenAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
   VaultFactoryAbi,
@@ -66,9 +66,10 @@ declare global {
       type Vault = VaultAbi
       type Keeper = KeeperAbi
       type UsdRate = UsdRateAbi
+      type EthFlow = EthFlowAbi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
-      type MintToken = MintTokenAbi
+      type MintToken = Erc20Abi
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type PrivateVault = VaultAbi & PrivateVaultDiffAbi
