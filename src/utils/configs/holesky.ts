@@ -63,6 +63,7 @@ export default {
     mintToken: tokens.osETH,
     nativeToken: tokens.eth,
     depositToken: tokens.eth,
+    wrappedToken: tokens.wETH,
     v2RewardToken: tokens.rETH2,
     v2StakedToken: tokens.sETH2,
   },
