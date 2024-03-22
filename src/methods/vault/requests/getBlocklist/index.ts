@@ -1,3 +1,4 @@
+import { isAddress } from 'ethers'
 import type { BlocklistAccountsQueryVariables, BlocklistAccountsQueryPayload } from '../../../../graphql/subgraph/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
@@ -16,12 +17,10 @@ type GetBlocklistInput = {
 }
 
 const validateList = (addressIn: string[]) => {
-  const isValid = addressIn.every((address) => (
-    typeof address === 'string'
-  ))
+  const isValid = addressIn.every((address) => isAddress(address))
 
   if (!isValid) {
-    throw new Error('The "addressIn" argument must be an array of strings')
+    throw new Error('The "addressIn" argument must be an array of valid addresses')
   }
 }
 
