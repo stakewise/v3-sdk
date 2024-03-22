@@ -49,7 +49,9 @@ export default {
       vault: '0xDada5a8E3703B1e3EA2bAe5Ab704627eb2659fCC',
       erc20Vault: '0x6DDc10eEeEBbBcF00E784bA44Fe4B038af26cB53',
       privateVault: '0x170618936cd96B1eD8112eC3D3778374B38DFe5e',
+      blocklistVault: ZeroAddress,
       erc20PrivateVault: '0xe84183EfFbcc76D022Cccc31b95EAa332bB5Bb11',
+      erc20BlocklistVault: ZeroAddress,
     },
     uniswap: {
       positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
