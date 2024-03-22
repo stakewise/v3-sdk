@@ -15,8 +15,18 @@ type GetBlocklistInput = {
   options: StakeWise.Options
 }
 
+const validateList = (addressIn: string[]) => {
+  const isValid = addressIn.every((address) => (
+    typeof address === 'string'
+  ))
+
+  if (!isValid) {
+    throw new Error('The "addressIn" argument must be an array of strings')
+  }
+}
+
 const getBlocklist = (input: GetBlocklistInput) => {
-  const { vaultAddress, orderDirection, search, limit, skip, options, addressIn } = input
+  const { vaultAddress, orderDirection, search, limit, skip, addressIn, options } = input
 
   validateArgs.address({ vaultAddress })
 
@@ -36,6 +46,11 @@ const getBlocklist = (input: GetBlocklistInput) => {
     if (![ 'asc', 'desc' ].includes(orderDirection)) {
       throw new Error(`The "orderDirection" argument must be "asc" or "desc"`)
     }
+  }
+
+  if (typeof addressIn !== 'undefined') {
+    validateArgs.array({ addressIn })
+    validateList(addressIn)
   }
 
   const vault = vaultAddress.toLowerCase()
