@@ -1,24 +1,17 @@
 import { commonLogic } from './common'
-import { UpdateBlocklistInput } from './types'
-import { getGas } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { getMulticallGas } from '../utils'
+import type { UpdateBlocklistInput } from './types'
 
 
-const updateBlocklistGas = async (values: UpdateBlocklistInput) => {
-  const { params, multicallCommonArgs } = commonLogic(values)
+type Input = UpdateBlocklistInput & {
+  provider: StakeWise.Provider
+}
 
-  const estimatedGas = await vaultMulticall<bigint>({
-    ...multicallCommonArgs,
-    request: {
-      estimateGas: true,
-      params,
-    },
-  })
+const setMetadataGas = ({ provider, ...values }: Input) => {
+  const multicallArgs = commonLogic(values)
 
-  const gas = await getGas({ estimatedGas, provider: values.provider })
-
-  return gas
+  return getMulticallGas({ ...multicallArgs, provider })
 }
 
 
-export default updateBlocklistGas
+export default setMetadataGas

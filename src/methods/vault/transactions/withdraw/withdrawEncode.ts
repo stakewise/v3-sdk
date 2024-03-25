@@ -1,23 +1,12 @@
 import { commonLogic } from './common'
 import { WithdrawInput } from './types'
-import { vaultMulticall } from '../../../../contracts'
+import { getMulticallEncode } from '../utils'
 
 
 const withdrawEncode = async (values: WithdrawInput): Promise<StakeWise.TransactionData> => {
-  const { params, multicallCommonArgs } = await commonLogic(values)
+  const multicallArgs = await commonLogic(values)
 
-  const rx = await vaultMulticall<{ data: string, to: string }>({
-    ...multicallCommonArgs,
-    request: {
-      params,
-      transactionData: true,
-    },
-  })
-
-  return {
-    data: rx.data,
-    to: rx.to,
-  }
+  return getMulticallEncode(multicallArgs)
 }
 
 

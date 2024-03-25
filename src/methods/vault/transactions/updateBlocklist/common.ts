@@ -4,6 +4,8 @@ import { vaultMulticall } from '../../../../contracts'
 
 
 const validateList = (blocklist: UpdateBlocklistInput['blocklist']) => {
+  validateArgs.array({ blocklist })
+
   const isValid = blocklist.every((blocklistItem) => (
     blocklistItem
     && typeof blocklistItem === 'object'
@@ -19,11 +21,10 @@ const validateList = (blocklist: UpdateBlocklistInput['blocklist']) => {
 export const commonLogic = (values: UpdateBlocklistInput) => {
   const { options, contracts, userAddress, vaultAddress, blocklist } = values
 
-  validateArgs.array({ blocklist })
   validateArgs.address({ vaultAddress, userAddress })
   validateList(blocklist)
 
-  const multicallCommonArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
+  const baseMulticallArgs = {
     vaultContract: contracts.helpers.createBlocklistVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     vaultAddress,
@@ -37,7 +38,9 @@ export const commonLogic = (values: UpdateBlocklistInput) => {
   }))
 
   return {
-    params,
-    multicallCommonArgs,
+    ...baseMulticallArgs,
+    request: {
+      params,
+    },
   }
 }

@@ -1,21 +1,23 @@
-import { ClaimExitQueueInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
+import { ClaimExitQueueInput } from './types'
 
 
-export const commonLogic = async (values: ClaimExitQueueInput) => {
-  const { options, contracts, positions, vaultAddress, userAddress } = values
-
-  if (!Array.isArray(positions) || !positions.length) {
-    throw new Error('Not valid or empty positions')
-  }
+const validatePositions = (positions: ClaimExitQueueInput['positions']) => {
+  validateArgs.array({ positions })
 
   positions.forEach(({ positionTicket, exitQueueIndex }) => {
     validateArgs.bigint({ exitQueueIndex })
     validateArgs.string({ positionTicket })
   })
+}
 
-  const multicallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
+export const commonLogic = (values: ClaimExitQueueInput) => {
+  const { options, contracts, positions, vaultAddress, userAddress } = values
+
+  validatePositions(positions)
+
+  const baseMulticallArgs = {
     vaultContract: contracts.helpers.createVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     vaultAddress,
@@ -33,7 +35,9 @@ export const commonLogic = async (values: ClaimExitQueueInput) => {
   })
 
   return {
-    multicallArgs,
-    params,
+    ...baseMulticallArgs,
+    request: {
+      params,
+    },
   }
 }

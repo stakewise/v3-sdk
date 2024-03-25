@@ -13,11 +13,11 @@ import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
-import { deposit } from './transactions/deposit'
-import { withdraw } from './transactions/withdraw'
-import { claimExitQueue } from './transactions/claimExitQueue'
-import { updateWhitelist } from './transactions/updateWhitelist'
-import { updateBlocklist } from './transactions/updateBlocklist'
+import { default as deposit } from './transactions/deposit'
+import { default as withdraw } from './transactions/withdraw'
+import { default as claimExitQueue } from './transactions/claimExitQueue'
+import { default as updateWhitelist } from './transactions/updateWhitelist'
+import { default as updateBlocklist } from './transactions/updateBlocklist'
 
 
 export default {

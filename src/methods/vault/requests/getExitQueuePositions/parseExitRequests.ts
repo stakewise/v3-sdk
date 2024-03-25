@@ -22,7 +22,7 @@ type Position = {
   timestamp: string
 }
 
-type ParseExitRequestsOutput = {
+export type ParseExitRequestsOutput = {
   total: bigint
   withdrawable: bigint
   positions: Position[]

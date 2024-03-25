@@ -1,9 +1,9 @@
 import { commonLogic } from './common'
 import { getMulticallGas } from '../utils'
-import type { UpdateWhitelistInput } from './types'
+import type { SetMetadataInput } from './types'
 
 
-type Input = UpdateWhitelistInput & {
+type Input = SetMetadataInput & {
   provider: StakeWise.Provider
 }
 

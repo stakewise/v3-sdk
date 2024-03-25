@@ -19,7 +19,7 @@ export const commonLogic = async (values: WithdrawInput) => {
   // the funds are always withdrawn via a queue
   const isSecondVersion = version === 2
 
-  const multicallCommonArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
+  const baseMulticallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
     keeperContract: contracts.base.keeper,
     vaultContract,
     vaultAddress,
@@ -31,7 +31,7 @@ export const commonLogic = async (values: WithdrawInput) => {
 
   if (isCollateralized || isSecondVersion) {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
-      ...multicallCommonArgs,
+      ...baseMulticallArgs,
       request: {
         params: [ { method: 'convertToShares', args: [ assets ] } ],
         callStatic: true,
@@ -47,7 +47,7 @@ export const commonLogic = async (values: WithdrawInput) => {
   }
   else {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
-      ...multicallCommonArgs,
+      ...baseMulticallArgs,
       request: {
         params: [ { method: 'convertToShares', args: [ assets ] } ],
         callStatic: true,
@@ -63,7 +63,9 @@ export const commonLogic = async (values: WithdrawInput) => {
   }
 
   return {
-    params,
-    multicallCommonArgs,
+    ...baseMulticallArgs,
+    request: {
+      params,
+    },
   }
 }

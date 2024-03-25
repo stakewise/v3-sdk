@@ -4,7 +4,7 @@ import { getNetworkTypes } from '../../../../utils'
 import type { DepositInput } from './types'
 
 
-const depositEncode = async (values: DepositInput) => {
+const depositEncode = (values: DepositInput) => {
   const { options } = values
 
   const { isEthereum } = getNetworkTypes(options)
