@@ -120,13 +120,18 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                             | **osToken** |
-|-------------------------------------------------------|------|
-| [sdk.vault.deposit](#sdkvaultdeposit)                 | [sdk.osToken.mint](#sdkostokenmint) |
-| [sdk.vault.withdraw](#sdkvaultwithdraw)               | [sdk.osToken.burn](#sdkostokenburn) |
-| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue)   |
-| [sdk.vault.updateWhitelist](#sdkvaultupdatewhitelist) |
-| [sdk.vault.updateBlocklist](#sdkvaultupdateblocklist)     |
+| **Vault**                                                     | **osToken** |
+|---------------------------------------------------------------|------|
+| [sdk.vault.deposit](#sdkvaultdeposit)                         | [sdk.osToken.mint](#sdkostokenmint) |
+| [sdk.vault.withdraw](#sdkvaultwithdraw)                       | [sdk.osToken.burn](#sdkostokenburn) |
+| [sdk.vault.setMetadata](#sdkvaultsetmetadata)                 |
+| [sdk.vault.setWhitelister](#sdkvaultsetwhitelister)           |
+| [sdk.vault.setKeysManager](#sdkvaultsetkeysmanager)           |
+| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue)           |
+| [sdk.vault.updateWhitelist](#sdkvaultupdatewhitelist)         |
+| [sdk.vault.updateBlocklist](#sdkvaultupdateblocklist)         |
+| [sdk.vault.setValidatorsRoot](#sdkvaultsetvalidatorsroot)     |
+| [sdk.vault.setBlocklistManager](#sdkvaultsetblocklistmanager) |
 
 ## API-Vault
 
@@ -1051,6 +1056,37 @@ const hash = await sdk.vault.withdraw(params)
 const { data, to } = await sdk.vault.withdraw.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.withdraw.estimateGas(params)
+```
+---
+### `sdk.vault.setMetadata`
+
+#### Description:
+
+Set IPFS hash for vault metadata
+
+#### Arguments:
+
+| Name | Type     | Required | Description |
+|------|----------|-------------|------------|
+| metadataIpfsHash | `string` | **Yes** | IPFS hash |
+| userAddress | `string` | **Yes** | -          |
+| vaultAddress | `string` | **Yes** | -          |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  metadataIpfsHash: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setMetadata(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setMetadata.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setMetadata.estimateGas(params)
 ```
 ---
 ### `sdk.vault.claimExitQueue`

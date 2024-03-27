@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
-import { WithdrawInput } from './types'
-import { getMulticallEncode } from '../utils'
+import type { WithdrawInput } from './types'
+import { getMulticallEncode } from '../../utils'
 
 
 const withdrawEncode = async (values: WithdrawInput): Promise<StakeWise.TransactionData> => {

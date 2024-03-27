@@ -1,6 +1,6 @@
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
-import { ClaimExitQueueInput } from './types'
+import type { ClaimExitQueueInput } from './types'
 
 
 const validatePositions = (positions: ClaimExitQueueInput['positions']) => {

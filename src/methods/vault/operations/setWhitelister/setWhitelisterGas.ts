@@ -1,17 +1,17 @@
 import { commonLogic } from './common'
 import { getMulticallGas } from '../../utils'
-import type { ClaimExitQueueInput } from './types'
+import type { SetWhitelisterInput } from './types'
 
 
-type Input = ClaimExitQueueInput & {
+type Input = SetWhitelisterInput & {
   provider: StakeWise.Provider
 }
 
-const claimExitQueueGas = ({ provider, ...values }: Input) => {
+const setWhitelisterGas = ({ provider, ...values }: Input) => {
   const multicallArgs = commonLogic(values)
 
   return getMulticallGas({ ...multicallArgs, provider })
 }
 
 
-export default claimExitQueueGas
+export default setWhitelisterGas

@@ -1,4 +1,4 @@
-import { WithdrawInput } from './types'
+import type { WithdrawInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 

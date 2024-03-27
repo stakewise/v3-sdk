@@ -7,6 +7,7 @@ type Methods = (
   typeof utils
 
   | typeof vault.requests
+  | typeof vault.operations
   | typeof vault.transactions
 
   | typeof osToken.requests
@@ -87,6 +88,7 @@ const methods = {
   createVaultMethods: (params: CommonParams) => ({
     ...createMethods<typeof vault.requests>(vault.requests, params),
     ...createMethods<typeof vault.transactions>(vault.transactions, params),
+    operate: createMethods<typeof vault.operations>(vault.operations, params),
   }),
   createOsTokenMethods: (params: CommonParams) => ({
     ...createMethods<typeof osToken.requests>(osToken.requests, params),

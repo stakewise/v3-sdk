@@ -1,5 +1,5 @@
-import { Withdraw } from './types'
 import { commonLogic } from './common'
+import type { Withdraw } from './types'
 import withdrawGas from './withdrawGas'
 import withdrawEncode from './withdrawEncode'
 import { vaultMulticall } from '../../../../contracts'

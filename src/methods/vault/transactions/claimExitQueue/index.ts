@@ -1,8 +1,8 @@
 import { commonLogic } from './common'
-import { ClaimExitQueue } from './types'
 import { vaultMulticall } from '../../../../contracts'
 import claimExitQueueGas from './claimExitQueueGas'
 import claimExitQueueEncode from './claimExitQueueEncode'
+import type { ClaimExitQueue } from './types'
 
 
 const claimExitQueue: ClaimExitQueue = async (values) => {
