@@ -1,5 +1,5 @@
 import { checkAccessCommon } from '../util'
-import type { SetMetadataInput as Input } from './types'
+import type { SetFeeRecipientInput as Input } from './types'
 
 
 type CheckAccessInput = {

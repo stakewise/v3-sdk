@@ -23,6 +23,7 @@ import { default as setWhitelister } from './operations/setWhitelister'
 import { default as setKeysManager } from './operations/setKeysManager'
 import { default as updateWhitelist } from './operations/updateWhitelist'
 import { default as updateBlocklist } from './operations/updateBlocklist'
+import { default as setFeeRecipient } from './operations/setFeeRecipient'
 import { default as setValidatorsRoot } from './operations/setValidatorsRoot'
 import { default as setBlocklistManager } from './operations/setBlocklistManager'
 
@@ -51,6 +52,7 @@ export default {
     setMetadata,
     setWhitelister,
     setKeysManager,
+    setFeeRecipient,
     updateWhitelist,
     updateBlocklist,
     setValidatorsRoot,

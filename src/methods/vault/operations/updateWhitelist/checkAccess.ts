@@ -11,9 +11,9 @@ type CheckAccessInput = {
 const handleCheckAccess = async ({ userAddress, vaultAddress, contracts }: CheckAccessInput) => {
   try {
     const vaultContract = await contracts.helpers.createPrivateVault(vaultAddress)
-    const keysManager = await vaultContract.whitelister()
+    const whitelister = await vaultContract.whitelister()
 
-    return keysManager.toLowerCase() === userAddress.toLowerCase()
+    return whitelister.toLowerCase() === userAddress.toLowerCase()
   }
   catch {
     return null
