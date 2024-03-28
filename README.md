@@ -1214,46 +1214,6 @@ const { data, to } = await sdk.vault.mulicall.encode(params)
 const gas = await sdk.vault.mulicall.estimateGas(params)
 ```
 ---
-### `sdk.vault.operate.updateWhitelist`
-
-#### Description:
-
-#### Arguments:
-
-| Name | Type                                         | Required | Description                                                                                                                 |
-|------|----------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist | `Array<{ address: string, isNew: boolean }>` | **Yes** | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| userAddress | `string`                                     | **Yes** | The address of the user making the update (access manager)                                                                                 |
-| vaultAddress | `string`                                     | **Yes** | The address of the private vault                                                                                            |
-
-#### Example:
-
-```ts
-const whitelist = [
-  {
-    address: '0x...',
-    isNew: true,
-  },
-  {
-    address: '0x...',
-    isNew: false,
-  },
-]
-
-const params = {
-  whitelist,
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.vault.updateWhitelist(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.vault.updateWhitelist.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.vault.updateWhitelist.estimateGas(params)
-```
----
 ### `sdk.osToken.mint`
 
 #### Description:
