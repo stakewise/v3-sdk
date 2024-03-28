@@ -24,6 +24,15 @@ type VaultMulticallInput = {
   vaultContract: VaultAbi | OtherTokenVaultAbi
 }
 
+// Methods with _checkHarvested() call
+const harvestCheckMethods = [
+  'deposit',
+  'mintOsToken',
+  'enterExitQueue',
+  'setFeeRecipient',
+  'claimExitedAssets',
+]
+
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
   const { options, vaultAddress, userAddress, request, vaultContract, keeperContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
@@ -44,15 +53,21 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     contract = vaultContract.connect(signer)
   }
 
-  const [ harvestParams, canHarvest ] = await Promise.all([
-    getHarvestParams({ options, vaultAddress }),
-    keeperContract.canHarvest(vaultAddress),
-  ])
+  let canHarvest = false
 
-  if (canHarvest) {
-    const fragment = contract.interface.encodeFunctionData('updateState', [ harvestParams ])
+  const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
-    calls.push(fragment)
+  if (needHarvest) {
+    const [ harvestParams ] = await Promise.all([
+      getHarvestParams({ options, vaultAddress }),
+      keeperContract.canHarvest(vaultAddress).then((value) => canHarvest = value),
+    ])
+
+    if (canHarvest) {
+      const fragment = contract.interface.encodeFunctionData('updateState', [ harvestParams ])
+
+      calls.push(fragment)
+    }
   }
 
   params.forEach(({ method, args }) => {

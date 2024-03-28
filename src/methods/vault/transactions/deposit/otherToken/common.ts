@@ -5,7 +5,7 @@ import { validateArgs } from '../../../../../utils'
 import { vaultMulticall } from '../../../../../contracts'
 
 
-export const commonLogic = (values: DepositInput) => {
+export const commonLogic = (values: Omit<DepositInput, 'provider'>) => {
   const { options, contracts, vaultAddress, userAddress, assets } = values
 
   validateArgs.bigint({ assets })
@@ -18,7 +18,7 @@ export const commonLogic = (values: DepositInput) => {
     },
   ]
 
-  const multicallArgs: Parameters<typeof vaultMulticall>[0] = {
+  return {
     vaultContract: contracts.helpers.createOtherTokenVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     request: { params },
@@ -26,6 +26,4 @@ export const commonLogic = (values: DepositInput) => {
     userAddress,
     options,
   }
-
-  return { multicallArgs }
 }

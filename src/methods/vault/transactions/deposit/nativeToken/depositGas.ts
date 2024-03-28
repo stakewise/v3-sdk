@@ -23,9 +23,7 @@ const depositGas = async (values: DepositInput) => {
     estimatedGas = await signedContract.deposit.estimateGas(userAddress, referrer, overrides)
   }
 
-  const gas = await getGas({ estimatedGas, provider })
-
-  return gas
+  return getGas({ estimatedGas, provider })
 }
 
 

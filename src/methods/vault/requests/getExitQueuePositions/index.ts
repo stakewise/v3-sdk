@@ -1,6 +1,7 @@
 import { validateArgs } from '../../../../utils'
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
+import type { ParseExitRequestsOutput } from './parseExitRequests'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
@@ -16,7 +17,7 @@ const mock = {
   withdrawable: 0n,
 }
 
-const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
+const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise<ParseExitRequestsOutput> => {
   const { options, contracts, provider, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress, userAddress })

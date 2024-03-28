@@ -1,13 +1,13 @@
 import { getMulticallEncode } from '../../utils'
+import type { MulticallInput } from './types'
 import { commonLogic } from './common'
-import type { ClaimExitQueueInput } from './types'
 
 
-const claimExitQueueEncode = (values: ClaimExitQueueInput) => {
+const multicallEncode = (values: MulticallInput): Promise<StakeWise.TransactionData> => {
   const multicallArgs = commonLogic(values)
 
   return getMulticallEncode(multicallArgs)
 }
 
 
-export default claimExitQueueEncode
+export default multicallEncode

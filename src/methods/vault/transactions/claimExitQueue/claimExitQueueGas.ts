@@ -1,23 +1,18 @@
 import { commonLogic } from './common'
-import { getGas } from '../../../../utils'
-import { ClaimExitQueueInput } from './types'
-import { vaultMulticall } from '../../../../contracts'
+import { getMulticallGas } from '../../utils'
+import type { ClaimExitQueueInput } from './types'
 
 
-const claimExitQueueGas = async (values: ClaimExitQueueInput) => {
-  const { params, multicallArgs } = await commonLogic(values)
+type Input = ClaimExitQueueInput & {
+  provider: StakeWise.Provider
+}
 
-  const estimatedGas = await vaultMulticall<bigint>({
-    ...multicallArgs,
-    request: {
-      params,
-      estimateGas: true,
-    },
-  })
+const claimExitQueueGas = (values: Input) => {
+  const { provider } = values
 
-  const gas = await getGas({ estimatedGas, provider: values.provider })
+  const multicallArgs = commonLogic(values)
 
-  return gas
+  return getMulticallGas({ ...multicallArgs, provider })
 }
 
 
