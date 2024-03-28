@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import { DepositInput } from '../types'
-import { getMulticallEncode } from '../../utils'
+import { getMulticallEncode } from '../../../utils'
 
 
 type DepositDataOutput = StakeWise.TransactionData & {

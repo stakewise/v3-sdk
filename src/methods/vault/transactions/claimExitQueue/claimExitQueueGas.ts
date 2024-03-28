@@ -7,7 +7,9 @@ type Input = ClaimExitQueueInput & {
   provider: StakeWise.Provider
 }
 
-const claimExitQueueGas = ({ provider, ...values }: Input) => {
+const claimExitQueueGas = (values: Input) => {
+  const { provider } = values
+
   const multicallArgs = commonLogic(values)
 
   return getMulticallGas({ ...multicallArgs, provider })

@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getMulticallGas } from '../../utils'
+import { getMulticallGas } from '../../../utils'
 import type { DepositInput } from '../types'
 
 
