@@ -1,12 +1,12 @@
-import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type SetKeysManagerParams = {
   keysManager: string
 }
 
-export const getParams = (values: SetKeysManagerParams) => {
+const getParams = (values: SetKeysManagerParams) => {
   const { keysManager } = values
 
   validateArgs.address({ keysManager })
@@ -19,3 +19,6 @@ export const getParams = (values: SetKeysManagerParams) => {
 
   return params
 }
+
+
+export default getParams

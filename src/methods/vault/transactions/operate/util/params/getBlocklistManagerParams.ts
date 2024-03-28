@@ -1,12 +1,12 @@
-import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type SetBlocklistManagerParams = {
   blocklistManager: string
 }
 
-export const getParams = (values: SetBlocklistManagerParams) => {
+const getParams = (values: SetBlocklistManagerParams) => {
   const { blocklistManager } = values
 
   validateArgs.address({ blocklistManager })
@@ -19,3 +19,6 @@ export const getParams = (values: SetBlocklistManagerParams) => {
 
   return params
 }
+
+
+export default getParams

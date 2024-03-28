@@ -1,12 +1,12 @@
-import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type SetWhitelisterParams = {
   whitelister: string
 }
 
-export const getParams = (values: SetWhitelisterParams) => {
+const getParams = (values: SetWhitelisterParams) => {
   const { whitelister } = values
 
   validateArgs.address({ whitelister })
@@ -19,3 +19,6 @@ export const getParams = (values: SetWhitelisterParams) => {
 
   return params
 }
+
+
+export default getParams

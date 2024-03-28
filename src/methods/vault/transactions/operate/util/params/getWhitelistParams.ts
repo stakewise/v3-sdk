@@ -1,6 +1,6 @@
-import { vaultMulticall } from '../../../../contracts'
-import { validateArgs } from '../../../../utils'
-import { validateList } from '../util'
+import { validateList } from '../../util'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type UpdateWhitelistParams = {
@@ -18,7 +18,7 @@ const validateWhitelist = (whitelist: UpdateWhitelistParams['whitelist']) => {
   }
 }
 
-export const getParams = (values: UpdateWhitelistParams) => {
+const getParams = (values: UpdateWhitelistParams) => {
   const { whitelist } = values
 
   validateArgs.array({ whitelist })
@@ -31,3 +31,6 @@ export const getParams = (values: UpdateWhitelistParams) => {
 
   return params
 }
+
+
+export default getParams

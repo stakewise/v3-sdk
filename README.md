@@ -120,20 +120,12 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                                                    | **osToken** |
-|------------------------------------------------------------------------------|------|
-| [sdk.vault.deposit](#sdkvaultdeposit)                                        | [sdk.osToken.mint](#sdkostokenmint) |
-| [sdk.vault.withdraw](#sdkvaultwithdraw)                                      | [sdk.osToken.burn](#sdkostokenburn) |
-| [sdk.claimExitQueue](#sdkvaultclaimexitqueue)                                |
-| [sdk.vault.operate.multicall](#sdkvaultoperatemulticall)                     |
-| [sdk.vault.operate.setFeeRecipient](#sdkvaultoperatesetfeerecipient)         |
-| [sdk.vault.operate.setMetadata](#sdkvaultoperatesetmetadata)                 |
-| [sdk.vault.operate.setWhitelister](#sdkvaultoperatesetwhitelister)           |
-| [sdk.vault.operate.setKeysManager](#sdkvaultoperatesetkeysmanager)           |
-| [sdk.vault.operate.updateWhitelist](#sdkvaultoperateupdatewhitelist)         |
-| [sdk.vault.operate.updateBlocklist](#sdkvaultoperateupdateblocklist)         |
-| [sdk.vault.operate.setValidatorsRoot](#sdkvaultoperatesetvalidatorsroot)     |
-| [sdk.vault.operate.setBlocklistManager](#sdkvaultoperatesetblocklistmanager) |
+| **Vault**                                                                   | **osToken** |
+|-----------------------------------------------------------------------------|------|
+| [sdk.vault.deposit](#sdkvaultdeposit)                                       | [sdk.osToken.mint](#sdkostokenmint) |
+| [sdk.vault.withdraw](#sdkvaultwithdraw)                                     | [sdk.osToken.burn](#sdkostokenburn) |
+| [sdk.claimExitQueue](#sdkvaultclaimexitqueue)                               |
+| [sdk.vault.operate](#sdkvaultoperate)                     |
 
 ## API-Vault
 
@@ -1137,28 +1129,27 @@ const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
-### `sdk.vault.operate.multicall`
+### `sdk.vault.operate`
 
 #### Description:
 
-Calls any vault.operate methods within one transaction.
-Saves gas when it is needed to make more than one call.
+Updates vault by the vault admin, whitelister, blocklist manager or keys manager.
 
 
 #### Arguments:
 
-| Name         | Type                                         | Required | Description                                                                                                                 |
-|--------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist    | `Array<{ address: string, isNew: boolean }>` | **No**   | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| blocklist    | `Array<{ address: string, isNew: boolean }>` | **No**   | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| keysManager  | `string`                                     | **No**   | Address of the vault keys manager                                                                                           |
-| whitelister  | `string`                                     | **No**   | Address of the vault whitelister                                                                                            |
-| feeRecipient  | `string`                                     | **No**   | Address of the vault fee recipient                                                                                          |
-| validatorsRoot  | `string`                                     | **No**   | The vault validators merkle tree root                                                                                       |
-| blocklistManager  | `string`                                     | **No**   | The blocklisted vault blocklist manager                                                                                  |
-| metadataIpfsHash    | `string`                                     | **No**   | The vault metadata IPFS hash |
-| userAddress  | `string`                                     | **Yes**  | The address of the user making the update (access manager)                                                                  |
-| vaultAddress | `string`                                     | **Yes**  | The address of the private vault                                                                                            |
+| Name         | Type                                         | Required | Access            | Description                                                                                                                 |
+|--------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| whitelist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| blocklist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| keysManager  | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                                 |
+| whitelister  | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                                  |
+| feeRecipient  | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                                |
+| validatorsRoot  | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                             |
+| blocklistManager  | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                           |
+| metadataIpfsHash    | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                      |
+| userAddress  | `string`                                     | **Yes**  | -                 | The address of the user making the update (access manager)                                                                        |
+| vaultAddress | `string`                                     | **Yes**  | -                 | The address of the private vault                                                                                                  |
 
 #### Example:
 

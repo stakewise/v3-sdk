@@ -6,7 +6,7 @@ import type { Multicall } from './types'
 import { vaultMulticall } from '../../../../contracts'
 
 
-const multicall: Multicall = async (values) => {
+const operate: Multicall = async (values) => {
   const multicallCommonArgs = commonLogic(values)
 
   const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)
@@ -14,8 +14,8 @@ const multicall: Multicall = async (values) => {
   return result.hash
 }
 
-multicall.encode = checkAccess<StakeWise.TransactionData>(multicallEncode)
-multicall.estimateGas = checkAccess<bigint>(multicallGas)
+operate.encode = checkAccess<StakeWise.TransactionData>(multicallEncode)
+operate.estimateGas = checkAccess<bigint>(multicallGas)
 
 
-export default checkAccess<string>(multicall)
+export default checkAccess<string>(operate)

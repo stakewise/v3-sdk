@@ -1,5 +1,5 @@
-import type { Action } from '../util'
-import { checkAccessCommon } from '../util'
+import type { Action } from './util'
+import { checkAccessCommon } from './util'
 import type { MulticallInput as Input } from './types'
 
 

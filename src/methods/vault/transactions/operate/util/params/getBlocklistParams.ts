@@ -1,6 +1,6 @@
-import { vaultMulticall } from '../../../../contracts'
-import { validateArgs } from '../../../../utils'
-import { validateList } from '../util'
+import { validateList } from '../../util'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type UpdateBlocklistParams = {
@@ -18,7 +18,7 @@ const validateBlocklist = (blocklist: UpdateBlocklistParams['blocklist']) => {
   }
 }
 
-export const getParams = (values: UpdateBlocklistParams) => {
+const getParams = (values: UpdateBlocklistParams) => {
   const { blocklist } = values
 
   validateArgs.array({ blocklist })
@@ -31,3 +31,6 @@ export const getParams = (values: UpdateBlocklistParams) => {
 
   return params
 }
+
+
+export default getParams

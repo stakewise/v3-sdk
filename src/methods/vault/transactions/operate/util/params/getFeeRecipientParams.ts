@@ -1,12 +1,12 @@
-import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type SetFeeRecipientParams = {
   feeRecipient: string
 }
 
-export const getParams = (values: SetFeeRecipientParams) => {
+const getParams = (values: SetFeeRecipientParams) => {
   const { feeRecipient } = values
 
   validateArgs.address({ feeRecipient })
@@ -19,3 +19,6 @@ export const getParams = (values: SetFeeRecipientParams) => {
 
   return params
 }
+
+
+export default getParams

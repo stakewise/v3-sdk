@@ -14,19 +14,9 @@ import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
 import { default as deposit } from './transactions/deposit'
+import { default as operate } from './transactions/operate'
 import { default as withdraw } from './transactions/withdraw'
 import { default as claimExitQueue } from './transactions/claimExitQueue'
-
-// Operations
-import { default as multicall } from './operations/multicall'
-import { default as setMetadata } from './operations/setMetadata'
-import { default as setWhitelister } from './operations/setWhitelister'
-import { default as setKeysManager } from './operations/setKeysManager'
-import { default as updateWhitelist } from './operations/updateWhitelist'
-import { default as updateBlocklist } from './operations/updateBlocklist'
-import { default as setFeeRecipient } from './operations/setFeeRecipient'
-import { default as setValidatorsRoot } from './operations/setValidatorsRoot'
-import { default as setBlocklistManager } from './operations/setBlocklistManager'
 
 
 export default {
@@ -46,18 +36,8 @@ export default {
   },
   transactions: {
     deposit,
+    operate,
     withdraw,
     claimExitQueue,
-  },
-  operations: {
-    multicall,
-    setMetadata,
-    setWhitelister,
-    setKeysManager,
-    setFeeRecipient,
-    updateWhitelist,
-    updateBlocklist,
-    setValidatorsRoot,
-    setBlocklistManager,
   },
 } as const

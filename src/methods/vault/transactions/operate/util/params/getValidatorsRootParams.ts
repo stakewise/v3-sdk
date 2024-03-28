@@ -1,12 +1,12 @@
-import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type SetValidatorsRootParams = {
   validatorsRoot: string
 }
 
-export const getParams = (values: SetValidatorsRootParams) => {
+const getParams = (values: SetValidatorsRootParams) => {
   const { validatorsRoot } = values
 
   validateArgs.string({ validatorsRoot })
@@ -19,3 +19,6 @@ export const getParams = (values: SetValidatorsRootParams) => {
 
   return params
 }
+
+
+export default getParams

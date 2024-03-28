@@ -1,12 +1,12 @@
-import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { validateArgs } from '../../../../../../utils'
+import { vaultMulticall } from '../../../../../../contracts'
 
 
 export type SetMetadataParams = {
   metadataIpfsHash: string
 }
 
-export const getParams = (values: SetMetadataParams) => {
+const getParams = (values: SetMetadataParams) => {
   const { metadataIpfsHash } = values
 
   validateArgs.string({ metadataIpfsHash })
@@ -19,4 +19,7 @@ export const getParams = (values: SetMetadataParams) => {
 
   return params
 }
+
+
+export default getParams
 
