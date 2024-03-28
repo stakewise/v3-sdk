@@ -1169,6 +1169,8 @@ const params = {
 // Data to update by vault keys manager 
 const params = {
   validatorsRoot: '...',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
 }
 
 // Data to update private vault by the vault whitelister
@@ -1186,6 +1188,8 @@ const params = {
       isNew: false,
     },
   ],
+  vaultAddress: '0x...',
+  userAddress: '0x...',
 }
 
 // Data to update blocklisted vault by the vault blocklist manager 
@@ -1204,6 +1208,8 @@ const params = {
       isNew: false,
     },
   ],
+  vaultAddress: '0x...',
+  userAddress: '0x...',
 }
 
 // Send transaction
