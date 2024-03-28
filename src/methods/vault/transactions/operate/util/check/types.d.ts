@@ -3,5 +3,3 @@ export type CheckInput = {
   vaultAddress: string
   contracts: StakeWise.Contracts
 }
-
-export type Action<Input, Output> = (props: Input) => Promise<Output>

@@ -2,14 +2,16 @@ import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 import type { MulticallInput } from './types'
 
-import getMetadataParams from './util/params/getMetadataParams'
-import getBlocklistParams from './util/params/getBlocklistParams'
-import getWhitelistParams from './util/params/getWhitelistParams'
-import getKeysManagerParams from './util/params/getKeysManagerParams'
-import getWhitelisterParams from './util/params/getWhitelisterParams'
-import getFeeRecipientParams from './util/params/getFeeRecipientParams'
-import getValidatorsRootParams from './util/params/getValidatorsRootParams'
-import getBlocklistManagerParams from './util/params/getBlocklistManagerParams'
+import {
+  getMetadataParams,
+  getBlocklistParams,
+  getWhitelistParams,
+  getKeysManagerParams,
+  getWhitelisterParams,
+  getFeeRecipientParams,
+  getValidatorsRootParams,
+  getBlocklistManagerParams,
+} from './util'
 
 
 export const commonLogic = (values: MulticallInput) => {

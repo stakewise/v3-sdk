@@ -1,3 +1,3 @@
-export type { Action, CheckInput } from './check/types'
+export * from './check'
+export * from './params'
 export { default as validateList } from './validateList'
-export { default as checkAccessCommon } from './check/checkAccessCommon'
