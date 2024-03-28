@@ -1,21 +1,21 @@
-import checkAccess from './checkAccess'
-import { commonLogic } from './common'
-import setFeeRecipientGas from './setFeeRecipientGas'
-import setMetadataEncode from './setMetadataEncode'
+import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
-import type { SetMetadata } from './types'
 
 
-const setMetadata: SetMetadata = async (values) => {
-  const multicallCommonArgs = commonLogic(values)
-
-  const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)
-
-  return result.hash
+export type SetFeeRecipientParams = {
+  feeRecipient: string
 }
 
-setMetadata.encode = checkAccess<StakeWise.TransactionData>(setMetadataEncode)
-setMetadata.estimateGas = checkAccess<bigint>(setFeeRecipientGas)
+export const getParams = (values: SetFeeRecipientParams) => {
+  const { feeRecipient } = values
 
+  validateArgs.address({ feeRecipient })
 
-export default checkAccess<string>(setMetadata)
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
+    {
+      method: 'setFeeRecipient', args: [ feeRecipient ],
+    },
+  ]
+
+  return params
+}

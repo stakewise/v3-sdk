@@ -1,21 +1,21 @@
-import checkAccess from './checkAccess'
-import { commonLogic } from './common'
-import setWhitelisterGas from './setWhitelisterGas'
-import setWhitelisterEncode from './setWhitelisterEncode'
-import type { SetWhitelister } from './types'
+import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
 
-const setWhitelister: SetWhitelister = async (values) => {
-  const multicallCommonArgs = commonLogic(values)
-
-  const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)
-
-  return result.hash
+export type SetWhitelisterParams = {
+  whitelister: string
 }
 
-setWhitelister.encode = checkAccess<StakeWise.TransactionData>(setWhitelisterEncode)
-setWhitelister.estimateGas = checkAccess<bigint>(setWhitelisterGas)
+export const getParams = (values: SetWhitelisterParams) => {
+  const { whitelister } = values
 
+  validateArgs.address({ whitelister })
 
-export default checkAccess<string>(setWhitelister)
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
+    {
+      method: 'setWhitelister', args: [ whitelister ],
+    },
+  ]
+
+  return params
+}

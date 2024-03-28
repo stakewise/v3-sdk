@@ -1,21 +1,33 @@
-import checkAccess from './checkAccess'
-import { commonLogic } from './common'
-import updateBlocklistGas from './updateBlocklistGas'
-import updateBlocklistEncode from './updateBlocklistEncode'
 import { vaultMulticall } from '../../../../contracts'
-import type { UpdateBlocklist } from './types'
+import { validateArgs } from '../../../../utils'
+import { validateList } from '../util'
 
 
-const updateBlocklist: UpdateBlocklist = async (values) => {
-  const multicallArgs = commonLogic(values)
-
-  const result = await vaultMulticall<{ hash: string }>(multicallArgs)
-
-  return result.hash
+export type UpdateBlocklistParams = {
+  blocklist: Array<{
+    address: string
+    isNew: boolean
+  }>
 }
 
-updateBlocklist.encode = checkAccess<StakeWise.TransactionData>(updateBlocklistEncode)
-updateBlocklist.estimateGas = checkAccess<bigint>(updateBlocklistGas)
+const validateBlocklist = (blocklist: UpdateBlocklistParams['blocklist']) => {
+  const isValid = validateList(blocklist)
 
+  if (!isValid) {
+    throw new Error('The "blocklist" argument must be an array of objects with "address" and "isNew" properties')
+  }
+}
 
-export default checkAccess<string>(updateBlocklist)
+export const getParams = (values: UpdateBlocklistParams) => {
+  const { blocklist } = values
+
+  validateArgs.array({ blocklist })
+  validateBlocklist(blocklist)
+
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = blocklist.map(({ address, isNew }) => ({
+    method: 'updateBlocklist',
+    args: [ address, isNew ],
+  }))
+
+  return params
+}

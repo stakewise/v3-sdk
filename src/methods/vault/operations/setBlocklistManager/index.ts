@@ -1,21 +1,21 @@
-import checkAccess from './checkAccess'
-import { commonLogic } from './common'
+import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
-import setBlocklistManagerGas from './setBlocklistManagerGas'
-import setBlocklistManagerEncode from './setBlocklistManagerEncode'
-import type { SetBlocklistManager } from './types'
 
 
-const setBlocklistManager: SetBlocklistManager = async (values) => {
-  const multicallCommonArgs = commonLogic(values)
-
-  const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)
-
-  return result.hash
+export type SetBlocklistManagerParams = {
+  blocklistManager: string
 }
 
-setBlocklistManager.encode = checkAccess<StakeWise.TransactionData>(setBlocklistManagerEncode)
-setBlocklistManager.estimateGas = checkAccess<bigint>(setBlocklistManagerGas)
+export const getParams = (values: SetBlocklistManagerParams) => {
+  const { blocklistManager } = values
 
+  validateArgs.address({ blocklistManager })
 
-export default checkAccess<string>(setBlocklistManager)
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
+    {
+      method: 'setBlocklistManager', args: [ blocklistManager ],
+    },
+  ]
+
+  return params
+}

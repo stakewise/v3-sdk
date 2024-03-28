@@ -120,18 +120,20 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                                     | **osToken** |
-|---------------------------------------------------------------|------|
-| [sdk.vault.deposit](#sdkvaultdeposit)                         | [sdk.osToken.mint](#sdkostokenmint) |
-| [sdk.vault.withdraw](#sdkvaultwithdraw)                       | [sdk.osToken.burn](#sdkostokenburn) |
-| [sdk.vault.setMetadata](#sdkvaultsetmetadata)                 |
-| [sdk.vault.setWhitelister](#sdkvaultsetwhitelister)           |
-| [sdk.vault.setKeysManager](#sdkvaultsetkeysmanager)           |
-| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue)           |
-| [sdk.vault.updateWhitelist](#sdkvaultupdatewhitelist)         |
-| [sdk.vault.updateBlocklist](#sdkvaultupdateblocklist)         |
-| [sdk.vault.setValidatorsRoot](#sdkvaultsetvalidatorsroot)     |
-| [sdk.vault.setBlocklistManager](#sdkvaultsetblocklistmanager) |
+| **Vault**                                                                    | **osToken** |
+|------------------------------------------------------------------------------|------|
+| [sdk.vault.deposit](#sdkvaultdeposit)                                        | [sdk.osToken.mint](#sdkostokenmint) |
+| [sdk.vault.withdraw](#sdkvaultwithdraw)                                      | [sdk.osToken.burn](#sdkostokenburn) |
+| [sdk.claimExitQueue](#sdkvaultclaimexitqueue)                                |
+| [sdk.vault.operate.multicall](#sdkvaultoperatemulticall)                     |
+| [sdk.vault.operate.setFeeRecipient](#sdkvaultoperatesetfeerecipient)         |
+| [sdk.vault.operate.setMetadata](#sdkvaultoperatesetmetadata)                 |
+| [sdk.vault.operate.setWhitelister](#sdkvaultoperatesetwhitelister)           |
+| [sdk.vault.operate.setKeysManager](#sdkvaultoperatesetkeysmanager)           |
+| [sdk.vault.operate.updateWhitelist](#sdkvaultoperateupdatewhitelist)         |
+| [sdk.vault.operate.updateBlocklist](#sdkvaultoperateupdateblocklist)         |
+| [sdk.vault.operate.setValidatorsRoot](#sdkvaultoperatesetvalidatorsroot)     |
+| [sdk.vault.operate.setBlocklistManager](#sdkvaultoperatesetblocklistmanager) |
 
 ## API-Vault
 
@@ -1135,15 +1137,95 @@ const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
-### `sdk.vault.updateWhitelist`
+### `sdk.vault.operate.multicall`
 
 #### Description:
 
-Update the whitelist of addresses for a private vault.
-The whitelist contains addresses allowed to stake or mint within
-the private vault. This method can only be called by the vault
-access manager.
+Calls any vault.operate methods within one transaction.
+Saves gas when it is needed to make more than one call.
 
+
+#### Arguments:
+
+| Name         | Type                                         | Required | Description                                                                                                                 |
+|--------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------|
+| whitelist    | `Array<{ address: string, isNew: boolean }>` | **No**   | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| blocklist    | `Array<{ address: string, isNew: boolean }>` | **No**   | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| keysManager  | `string`                                     | **No**   | Address of the vault keys manager                                                                                           |
+| whitelister  | `string`                                     | **No**   | Address of the vault whitelister                                                                                            |
+| feeRecipient  | `string`                                     | **No**   | Address of the vault fee recipient                                                                                          |
+| validatorsRoot  | `string`                                     | **No**   | The vault validators merkle tree root                                                                                       |
+| blocklistManager  | `string`                                     | **No**   | The blocklisted vault blocklist manager                                                                                  |
+| metadataIpfsHash    | `string`                                     | **No**   | The vault metadata IPFS hash |
+| userAddress  | `string`                                     | **Yes**  | The address of the user making the update (access manager)                                                                  |
+| vaultAddress | `string`                                     | **Yes**  | The address of the private vault                                                                                            |
+
+#### Example:
+
+```ts
+// Data to update by the vault admin 
+const params = {
+  keysManager: '0x...',
+  whitelister: '0x...',
+  feeRecipient: '0x...',
+  validatorsRoot: '0x...',
+  blocklistManager: '0x...',
+  metadataIpfsHash: '...',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Data to update by vault keys manager 
+const params = {
+  validatorsRoot: '...',
+}
+
+// Data to update private vault by the vault whitelister
+// The whitelist contains addresses allowed to stake or mint within
+// the private vault. This method can only be called by the vault
+// whitelister.
+const params = {
+  whitelist: [
+    {
+      address: '0x...',
+      isNew: true,
+    },
+    {
+      address: '0x...',
+      isNew: false,
+    },
+  ],
+}
+
+// Data to update blocklisted vault by the vault blocklist manager 
+// Update the blocklist of addresses for a blocklisted vault.
+// The blocklist contains addresses disallowed to stake or mint within
+// the blocklisted vault. This method can only be called by the vault
+// blocklist manager.
+const params = {
+  blocklist: [
+    {
+      address: '0x...',
+      isNew: true,
+    },
+    {
+      address: '0x...',
+      isNew: false,
+    },
+  ],
+}
+
+// Send transaction
+const hash = await sdk.vault.mulicall(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.mulicall.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.mulicall.estimateGas(params)
+```
+---
+### `sdk.vault.operate.updateWhitelist`
+
+#### Description:
 
 #### Arguments:
 
@@ -1179,51 +1261,6 @@ const hash = await sdk.vault.updateWhitelist(params)
 const { data, to } = await sdk.vault.updateWhitelist.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.updateWhitelist.estimateGas(params)
-```
----
-### `sdk.vault.updateBlocklist`
-
-#### Description:
-
-Update the blocklist of addresses for a blocklisted vault.
-The blocklist contains addresses disallowed to stake or mint within
-the blocklisted vault. This method can only be called by the vault
-access manager.
-
-#### Arguments:
-
-| Name         | Type                                         | Required | Description                                                                                                                  |
-|--------------|----------------------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------|
-| blocklist    | `Array<{ address: string, isNew: boolean }>` | **Yes** | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one  |
-| userAddress  | `string`                                     | **Yes** | The address of the user making the update (access manager)                                                                   |
-| vaultAddress | `string`                                     | **Yes** | The address of the blocklisted vault                                                                                         |
-
-#### Example:
-
-```ts
-const blocklist = [
-  {
-    address: '0x...',
-    isNew: true,
-  },
-  {
-    address: '0x...',
-    isNew: false,
-  },
-]
-
-const params = {
-  blocklist,
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.vault.updateBlocklist(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.vault.updateBlocklist.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.vault.updateBlockList.estimateGas(params)
 ```
 ---
 ### `sdk.osToken.mint`

@@ -2,14 +2,14 @@ import multicallGas from './multicallGas'
 import multicallEncode from './multicallEncode'
 import type { BaseInput } from '../../utils'
 
-import type { SetMetadataParams } from '../setMetadata/types'
-import type { SetKeysManagerParams } from '../setKeysManager/types'
-import type { SetWhitelisterParams } from '../setWhitelister/types'
-import type { SetFeeRecipientParams } from '../setFeeRecipient/types'
-import type { UpdateBlocklistParams } from '../updateBlocklist/types'
-import type { UpdateWhitelistParams } from '../updateWhitelist/types'
-import type { SetValidatorsRootParams } from '../setValidatorsRoot/types'
-import type { SetBlocklistManagerParams } from '../setBlocklistManager/types'
+import type { SetMetadataParams } from '../setMetadata'
+import type { SetKeysManagerParams } from '../setKeysManager'
+import type { SetWhitelisterParams } from '../setWhitelister'
+import type { SetFeeRecipientParams } from '../setFeeRecipient'
+import type { UpdateBlocklistParams } from '../updateBlocklist'
+import type { UpdateWhitelistParams } from '../updateWhitelist'
+import type { SetValidatorsRootParams } from '../setValidatorsRoot'
+import type { SetBlocklistManagerParams } from '../setBlocklistManager'
 
 type MulticallParams = Partial<
   SetMetadataParams

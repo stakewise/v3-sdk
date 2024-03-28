@@ -1,21 +1,21 @@
-import checkAccess from './checkAccess'
-import { commonLogic } from './common'
-import setValidatorsRootGas from './setValidatorsRootGas'
-import setValidatorsRootEncode from './setValidatorsRootEncode'
-import type { SetValidatorsRoot } from './types'
+import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
 
-const setValidatorsRoot: SetValidatorsRoot = async (values) => {
-  const multicallCommonArgs = commonLogic(values)
-
-  const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)
-
-  return result.hash
+export type SetValidatorsRootParams = {
+  validatorsRoot: string
 }
 
-setValidatorsRoot.encode = checkAccess<StakeWise.TransactionData>(setValidatorsRootEncode)
-setValidatorsRoot.estimateGas = checkAccess<bigint>(setValidatorsRootGas)
+export const getParams = (values: SetValidatorsRootParams) => {
+  const { validatorsRoot } = values
 
+  validateArgs.string({ validatorsRoot })
 
-export default checkAccess<string>(setValidatorsRoot)
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
+    {
+      method: 'setValidatorsRoot', args: [ validatorsRoot ],
+    },
+  ]
+
+  return params
+}

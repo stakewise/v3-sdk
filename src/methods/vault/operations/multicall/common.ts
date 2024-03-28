@@ -1,14 +1,15 @@
+import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 import type { MulticallInput } from './types'
 
-import { commonLogic as setMetadataCommon } from '../setMetadata/common'
-import { commonLogic as setKeysManagerCommon } from '../setKeysManager/common'
-import { commonLogic as setWhitelisterCommon } from '../setWhitelister/common'
-import { commonLogic as setFeeRecipientCommon } from '../setFeeRecipient/common'
-import { commonLogic as updateBlocklistCommon } from '../updateBlocklist/common'
-import { commonLogic as updateWhitelistCommon } from '../updateWhitelist/common'
-import { commonLogic as setValidatorsRootCommon } from '../setValidatorsRoot/common'
-import { commonLogic as setBlocklistManagerCommon } from '../setBlocklistManager/common'
+import { getParams as getParamsSetMetadata } from '../setMetadata'
+import { getParams as getParamsSetKeysManager } from '../setKeysManager'
+import { getParams as getParamsSetWhitelister } from '../setWhitelister'
+import { getParams as getParamsSetFeeRecipient } from '../setFeeRecipient'
+import { getParams as getParamsUpdateBlocklist } from '../updateBlocklist'
+import { getParams as getParamsUpdateWhitelist } from '../updateWhitelist'
+import { getParams as getParamsSetValidatorsRoot } from '../setValidatorsRoot'
+import { getParams as getParamsSetBlocklistManager } from '../setBlocklistManager'
 
 
 export const commonLogic = (values: MulticallInput) => {
@@ -17,7 +18,9 @@ export const commonLogic = (values: MulticallInput) => {
     blocklist, whitelist, keysManager, whitelister, feeRecipient, validatorsRoot, blocklistManager, metadataIpfsHash,
   } = values
 
-  const baseMulticallArgs = {
+  validateArgs.address({ vaultAddress, userAddress })
+
+  const baseMulticall = {
     vaultContract: contracts.helpers.createBlocklistedVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     vaultAddress,
@@ -36,48 +39,48 @@ export const commonLogic = (values: MulticallInput) => {
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
   if (blocklist) {
-    const setBlocklistCommonArgs = updateBlocklistCommon({ ...baseInput, blocklist })
+    const setBlocklistParams = getParamsUpdateBlocklist({ ...baseInput, blocklist })
 
-    params.push(...setBlocklistCommonArgs.request.params)
+    params.push(...setBlocklistParams)
   }
   if (whitelist) {
-    const setWhitelistCommonArgs = updateWhitelistCommon({ ...baseInput, whitelist })
+    const setWhitelistParams = getParamsUpdateWhitelist({ ...baseInput, whitelist })
 
-    params.push(...setWhitelistCommonArgs.request.params)
+    params.push(...setWhitelistParams)
   }
   if (keysManager) {
-    const setKeysManagerCommonArgs = setKeysManagerCommon({ ...baseInput, keysManager })
+    const setKeysManagerParams = getParamsSetKeysManager({ ...baseInput, keysManager })
 
-    params.push(...setKeysManagerCommonArgs.request.params)
+    params.push(...setKeysManagerParams)
   }
   if (whitelister) {
-    const setWhitelisterCommonArgs = setWhitelisterCommon({ ...baseInput, whitelister })
+    const setWhitelisterParams = getParamsSetWhitelister({ ...baseInput, whitelister })
 
-    params.push(...setWhitelisterCommonArgs.request.params)
+    params.push(...setWhitelisterParams)
   }
   if (feeRecipient) {
-    const setFeeRecipientCommonArgs = setFeeRecipientCommon({ ...baseInput, feeRecipient })
+    const setFeeRecipientParams = getParamsSetFeeRecipient({ ...baseInput, feeRecipient })
 
-    params.push(...setFeeRecipientCommonArgs.request.params)
+    params.push(...setFeeRecipientParams)
   }
   if (validatorsRoot) {
-    const setValidatorsRootCommonArgs = setValidatorsRootCommon({ ...baseInput, validatorsRoot })
+    const setValidatorsRootParams = getParamsSetValidatorsRoot({ ...baseInput, validatorsRoot })
 
-    params.push(...setValidatorsRootCommonArgs.request.params)
+    params.push(...setValidatorsRootParams)
   }
   if (blocklistManager) {
-    const setBlocklistManagerCommonArgs = setBlocklistManagerCommon({ ...baseInput, blocklistManager })
+    const setBlocklistManagerParams = getParamsSetBlocklistManager({ ...baseInput, blocklistManager })
 
-    params.push(...setBlocklistManagerCommonArgs.request.params)
+    params.push(...setBlocklistManagerParams)
   }
   if (metadataIpfsHash) {
-    const setMetadataCommonArgs = setMetadataCommon({ ...baseInput, metadataIpfsHash })
+    const setMetadataParams = getParamsSetMetadata({ ...baseInput, metadataIpfsHash })
 
-    params.push(...setMetadataCommonArgs.request.params)
+    params.push(...setMetadataParams)
   }
 
   return {
-    ...baseMulticallArgs,
+    ...baseMulticall,
     request: {
       params,
     },
