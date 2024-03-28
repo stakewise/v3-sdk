@@ -18,6 +18,7 @@ import { default as withdraw } from './transactions/withdraw'
 import { default as claimExitQueue } from './transactions/claimExitQueue'
 
 // Operations
+import { default as multicall } from './operations/multicall'
 import { default as setMetadata } from './operations/setMetadata'
 import { default as setWhitelister } from './operations/setWhitelister'
 import { default as setKeysManager } from './operations/setKeysManager'
@@ -49,6 +50,7 @@ export default {
     claimExitQueue,
   },
   operations: {
+    multicall,
     setMetadata,
     setWhitelister,
     setKeysManager,

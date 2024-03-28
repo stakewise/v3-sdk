@@ -1,8 +1,8 @@
-import checkAccess from './checkAccess'
 import { commonLogic } from './common'
-import type { UpdateWhitelist } from './types'
+import checkAccess from './checkAccess'
 import updateWhitelistGas from './updateWhitelistGas'
 import updateWhitelistEncode from './updateWhitelistEncode'
+import type { UpdateWhitelist } from './types'
 import { vaultMulticall } from '../../../../contracts'
 
 
@@ -14,7 +14,7 @@ const updateWhitelist: UpdateWhitelist = async (values) => {
   return result.hash
 }
 
-updateWhitelist.encode = checkAccess<Stakewise.TransactionData>(updateWhitelistEncode)
+updateWhitelist.encode = checkAccess<StakeWise.TransactionData>(updateWhitelistEncode)
 updateWhitelist.estimateGas = checkAccess<bigint>(updateWhitelistGas)
 
 

@@ -1,26 +1,60 @@
-type Action<Input, Output> = (props: Input) => Promise<Output>
-type Check<Input> = (props: Input) => Promise<boolean | null>
+import type { CheckInput } from './types'
+import checkAdminAccess from './checkAdminAccess'
+import checkWhitelisterAccess from './checkWhitelisterAccess'
+import checkKeysManagerAccess from './checkKeysManagerAccess'
+import checkBlocklistManagerAccess from './checkBlocklistManagerAccess'
 
-type CheckAccessCommonInput<Input, Output> = {
+
+type Action<Input, Output> = (props: Input) => Promise<Output>
+
+type CommonInput<Input, Output> = {
   action: Action<Input, Output>
-  check: Check<Input>
-  error: string
+  check: {
+    isAdmin?: boolean
+    isKeysManager?: boolean
+    isWhitelister?: boolean
+    isBlocklistManager?: boolean
+  }
 }
 
-const checkAccessCommon = <Input, Output>({ action, check, error }: CheckAccessCommonInput<Input, Output>): Action<Input, Output> => (
+const checkAccessCommon = <Input extends CheckInput, Output>({ action, check }: CommonInput<Input, Output>): Action<Input, Output> => (
   async (props) => {
     try {
       const result = await action(props)
 
       return result
-    } catch (actionError) {
-      const hasAccess = await check(props)
+    }
+    catch (actionError) {
+      const { isAdmin, isKeysManager, isWhitelister, isBlocklistManager } = check
 
-      if (hasAccess === false) {
-        return Promise.reject(error)
+      const checkPromises = []
+
+      if (isAdmin) {
+        checkPromises.push(
+          checkAdminAccess(props)
+        )
+      }
+      if (isKeysManager) {
+        checkPromises.push(
+          checkKeysManagerAccess(props)
+        )
+      }
+      if (isWhitelister) {
+        checkPromises.push(
+          checkWhitelisterAccess(props)
+        )
+      }
+      if (isBlocklistManager) {
+        checkPromises.push(
+          checkBlocklistManagerAccess(props)
+        )
       }
 
-      return Promise.reject(actionError)
+      return Promise.all(checkPromises)
+        .then(
+          () => Promise.reject(actionError),
+          (error) => Promise.reject(error)
+        )
     }
   }
 )

@@ -1,11 +1,13 @@
 import setKeysManagerGas from './setKeysManagerGas'
 import setKeysManagerEncode from './setKeysManagerEncode'
-import { BaseInput } from '../../utils'
+import type { BaseInput } from '../../utils'
 
 
-export type SetKeysManagerInput = BaseInput & {
+export type SetKeysManagerParams = {
   keysManager: string
 }
+
+export type SetKeysManagerInput = BaseInput & SetKeysManagerParams
 
 export interface SetKeysManager {
   (values: SetKeysManagerInput): Promise<StakeWise.TransactionHash>

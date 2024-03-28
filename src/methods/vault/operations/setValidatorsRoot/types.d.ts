@@ -1,11 +1,13 @@
 import setValidatorsRootGas from './setValidatorsRootGas'
 import setValidatorsRootEncode from './setValidatorsRootEncode'
-import { BaseInput } from '../../utils'
+import type { BaseInput } from '../../utils'
 
 
-export type SetValidatorsRootInput = BaseInput & {
+export type SetValidatorsRootParams = {
   validatorsRoot: string
 }
+
+export type SetValidatorsRootInput = BaseInput & SetValidatorsRootParams
 
 export interface SetValidatorsRoot {
   (values: SetValidatorsRootInput): Promise<StakeWise.TransactionHash>

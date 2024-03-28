@@ -1,11 +1,13 @@
 import setWhitelisterGas from './setWhitelisterGas'
 import setWhitelisterEncode from './setWhitelisterEncode'
-import { BaseInput } from '../../utils'
+import type { BaseInput } from '../../utils'
 
 
-export type SetWhitelisterInput = BaseInput & {
+export type SetWhitelisterParams = {
   whitelister: string
 }
+
+export type SetWhitelisterInput = BaseInput & SetWhitelisterParams
 
 export interface SetWhitelister {
   (values: SetWhitelisterInput): Promise<StakeWise.TransactionHash>

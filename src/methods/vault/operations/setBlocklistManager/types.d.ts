@@ -1,11 +1,13 @@
 import setBlocklistManagerGas from './setBlocklistManagerGas'
 import setBlocklistManagerEncode from './setBlocklistManagerEncode'
-import { BaseInput } from '../../utils'
+import type { BaseInput } from '../../utils'
 
 
-export type SetBlocklistManagerInput = BaseInput & {
+export type SetBlocklistManagerParams = {
   blocklistManager: string
 }
+
+export type SetBlocklistManagerInput = BaseInput & SetBlocklistManagerParams
 
 export interface SetBlocklistManager {
   (values: SetBlocklistManagerInput): Promise<StakeWise.TransactionHash>
