@@ -4,6 +4,7 @@ query Validators(
   $first: Int!
 ) {
   vaultValidators(
+    statusNotIn: [ "withdrawal_done" ],
     vaultAddress: $vaultAddress,
     skip: $skip,
     first: $first,
