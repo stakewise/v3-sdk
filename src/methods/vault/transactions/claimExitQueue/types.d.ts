@@ -1,13 +1,9 @@
 import claimExitQueueGas from './claimExitQueueGas'
 import claimExitQueueEncode from './claimExitQueueEncode'
+import { BaseInput } from '../../utils'
 
 
-export type ClaimExitQueueInput = {
-  userAddress: string
-  vaultAddress: string
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
+export type ClaimExitQueueInput = BaseInput & {
   positions: Awaited<ReturnType<StakeWise.VaultMethods['getExitQueuePositions']>>['positions']
 }
 

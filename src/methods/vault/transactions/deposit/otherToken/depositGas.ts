@@ -1,23 +1,14 @@
 import { commonLogic } from './common'
+import { getMulticallGas } from '../../../utils'
 import type { DepositInput } from '../types'
-import { getGas } from '../../../../../utils'
-import { vaultMulticall } from '../../../../../contracts'
 
 
 const depositGas = async (values: DepositInput) => {
-  const { multicallArgs } = commonLogic(values)
+  const { provider } = values
 
-  const estimatedGas = await vaultMulticall<bigint>({
-    ...multicallArgs,
-    request: {
-      ...multicallArgs.request,
-      estimateGas: true,
-    },
-  })
+  const multicallArgs = commonLogic(values)
 
-  const gas = await getGas({ estimatedGas, provider: values.provider })
-
-  return gas
+  return getMulticallGas({ ...multicallArgs, provider })
 }
 
 
