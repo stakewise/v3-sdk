@@ -1,4 +1,4 @@
-import { validateList } from '../../util'
+import validateList from './validateList'
 import { validateArgs } from '../../../../../../utils'
 import { vaultMulticall } from '../../../../../../contracts'
 
