@@ -18,7 +18,7 @@ export const commonLogic = (values: DepositInput) => {
     },
   ]
 
-  const multicallArgs: Parameters<typeof vaultMulticall>[0] = {
+  return {
     vaultContract: contracts.helpers.createOtherTokenVault(vaultAddress),
     keeperContract: contracts.base.keeper,
     request: { params },
@@ -26,6 +26,4 @@ export const commonLogic = (values: DepositInput) => {
     userAddress,
     options,
   }
-
-  return { multicallArgs }
 }

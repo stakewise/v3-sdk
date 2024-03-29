@@ -120,13 +120,12 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                             | **osToken** |
-|-------------------------------------------------------|------|
-| [sdk.vault.deposit](#sdkvaultdeposit)                 | [sdk.osToken.mint](#sdkostokenmint) |
-| [sdk.vault.withdraw](#sdkvaultwithdraw)               | [sdk.osToken.burn](#sdkostokenburn) |
-| [sdk.vault.claimExitQueue](#sdkvaultclaimexitqueue)   |
-| [sdk.vault.updateWhitelist](#sdkvaultupdatewhitelist) |
-| [sdk.vault.updateBlocklist](#sdkvaultupdateblocklist)     |
+| **Vault**                                                                   | **osToken** |
+|-----------------------------------------------------------------------------|------|
+| [sdk.vault.deposit](#sdkvaultdeposit)                                       | [sdk.osToken.mint](#sdkostokenmint) |
+| [sdk.vault.withdraw](#sdkvaultwithdraw)                                     | [sdk.osToken.burn](#sdkostokenburn) |
+| [sdk.claimExitQueue](#sdkvaultclaimexitqueue)                               |
+| [sdk.vault.operate](#sdkvaultoperate)                     |
 
 ## API-Vault
 
@@ -1099,95 +1098,92 @@ const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
-### `sdk.vault.updateWhitelist`
+### `sdk.vault.operate`
 
 #### Description:
 
-Update the whitelist of addresses for a private vault.
-The whitelist contains addresses allowed to stake or mint within
-the private vault. This method can only be called by the vault
-access manager.
+Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, or keys manager.
 
 
 #### Arguments:
 
-| Name | Type                                         | Required | Description                                                                                                                 |
-|------|----------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist | `Array<{ address: string, isNew: boolean }>` | **Yes** | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| userAddress | `string`                                     | **Yes** | The address of the user making the update (access manager)                                                                                 |
-| vaultAddress | `string`                                     | **Yes** | The address of the private vault                                                                                            |
+| Name         | Type                                         | Required | Access            | Description                                                                                                                 |
+|--------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| whitelist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| blocklist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| keysManager  | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                           |
+| whitelister  | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
+| feeRecipient  | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
+| validatorsRoot  | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                       |
+| blocklistManager  | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
+| metadataIpfsHash    | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
+| userAddress  | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |
+| vaultAddress | `string`                                     | **Yes**  | -                 | The address of the vault                                                                                                    |
 
 #### Example:
 
 ```ts
-const whitelist = [
-  {
-    address: '0x...',
-    isNew: true,
-  },
-  {
-    address: '0x...',
-    isNew: false,
-  },
-]
-
+// Data to update the vault by admin.
 const params = {
-  whitelist,
+  keysManager: '0x...',
+  whitelister: '0x...',
+  feeRecipient: '0x...',
+  validatorsRoot: '0x...',
+  blocklistManager: '0x...',
+  metadataIpfsHash: '...',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Data to update the vault by vault keys manager.
+const params = {
+  validatorsRoot: '...',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Data to update the private vault by whitelister.
+// The whitelist contains addresses allowed to stake or mint within
+// the vault.
+const params = {
+  whitelist: [
+    {
+      address: '0x...',
+      isNew: true,
+    },
+    {
+      address: '0x...',
+      isNew: false,
+    },
+  ],
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Data to update blocklisted vault by blocklist manager. 
+// The blocklist contains addresses disallowed to stake or mint within
+// the vault.
+const params = {
+  blocklist: [
+    {
+      address: '0x...',
+      isNew: true,
+    },
+    {
+      address: '0x...',
+      isNew: false,
+    },
+  ],
   vaultAddress: '0x...',
   userAddress: '0x...',
 }
 
 // Send transaction
-const hash = await sdk.vault.updateWhitelist(params)
+const hash = await sdk.vault.operate(params)
 // When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.vault.updateWhitelist.encode(params)
+const { data, to } = await sdk.vault.operate.encode(params)
 // Get an approximate gas per transaction
-const gas = await sdk.vault.updateWhitelist.estimateGas(params)
-```
----
-### `sdk.vault.updateBlocklist`
-
-#### Description:
-
-Update the blocklist of addresses for a blocklisted vault.
-The blocklist contains addresses disallowed to stake or mint within
-the blocklisted vault. This method can only be called by the vault
-access manager.
-
-#### Arguments:
-
-| Name         | Type                                         | Required | Description                                                                                                                  |
-|--------------|----------------------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------|
-| blocklist    | `Array<{ address: string, isNew: boolean }>` | **Yes** | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one  |
-| userAddress  | `string`                                     | **Yes** | The address of the user making the update (access manager)                                                                   |
-| vaultAddress | `string`                                     | **Yes** | The address of the blocklisted vault                                                                                         |
-
-#### Example:
-
-```ts
-const blocklist = [
-  {
-    address: '0x...',
-    isNew: true,
-  },
-  {
-    address: '0x...',
-    isNew: false,
-  },
-]
-
-const params = {
-  blocklist,
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.vault.updateBlocklist(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.vault.updateBlocklist.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.vault.updateBlockList.estimateGas(params)
+const gas = await sdk.vault.operate.estimateGas(params)
 ```
 ---
 ### `sdk.osToken.mint`

@@ -38,6 +38,9 @@ const array = (values: Record<string, any[]>) => {
     if (!Array.isArray(values[key])) {
       throw new Error(`The "${key}" argument must be an array`)
     }
+    if (!values[key].length) {
+      throw new Error(`The "${key}" argument is an empty array`)
+    }
   })
 }
 
