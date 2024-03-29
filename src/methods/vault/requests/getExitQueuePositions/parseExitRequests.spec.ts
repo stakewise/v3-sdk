@@ -25,7 +25,6 @@ describe('parseExitRequests function', () => {
 
   const input: ParseExitRequestsInput = {
     contracts,
-    totalShares: 1000n,
     options: { network },
     userAddress: ZeroAddress,
     vaultAddress: ZeroAddress,
@@ -34,12 +33,20 @@ describe('parseExitRequests function', () => {
       {
         positionTicket: 'positionTicket-1',
         timestamp: '123456',
+        totalAssets: '0',
         totalShares: '100',
       },
       {
         positionTicket: 'positionTicket-2',
-        timestamp: '123456',
+        timestamp: '123457',
+        totalAssets: '0',
         totalShares: '200',
+      },
+      {
+        positionTicket: 'positionTicket-2',
+        timestamp: '123458',
+        totalAssets: '300',
+        totalShares: '0',
       },
     ],
   }
@@ -53,17 +60,23 @@ describe('parseExitRequests function', () => {
       .mockResolvedValueOnce([
         [ 1n ],
         [ 2n ],
+        [ 3n ],
       ])
       .mockResolvedValueOnce([
         {
-          claimedAssets: 30n,
-          claimedShares: 50n,
-          leftShares: 10n,
+          exitedAssets: 30n,
+          exitedTickets: 50n,
+          leftTickets: 10n,
         },
         {
-          claimedAssets: 1n,
-          claimedShares: 100n,
-          leftShares: 20n,
+          exitedAssets: 1n,
+          exitedTickets: 100n,
+          leftTickets: 20n,
+        },
+        {
+          exitedAssets: 250n,
+          exitedTickets: 200n,
+          leftTickets: 30n,
         },
       ])
       .mockResolvedValueOnce([
@@ -79,16 +92,24 @@ describe('parseExitRequests function', () => {
         {
           exitQueueIndex: 1n,
           timestamp: '123456',
+          isV1Position: true,
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 2n,
-          timestamp: '123456',
+          timestamp: '123457',
+          isV1Position: true,
+          positionTicket: 'positionTicket-2',
+        },
+        {
+          exitQueueIndex: 3n,
+          timestamp: '123458',
+          isV1Position: false,
           positionTicket: 'positionTicket-2',
         },
       ],
-      total: 131n,
-      withdrawable: 31n,
+      total: 431n,
+      withdrawable: 281n,
     })
   })
 
@@ -138,12 +159,13 @@ describe('parseExitRequests function', () => {
       .mockResolvedValueOnce([
         [ -1n ],
         [ 1n ],
+        [ -1n ],
       ])
       .mockResolvedValueOnce([
         {
-          leftShares: 10n,
-          claimedShares: 50n,
-          claimedAssets: 30n,
+          leftTickets: 10n,
+          exitedTickets: 50n,
+          exitedAssets: 30n,
         },
       ])
       .mockResolvedValueOnce([ { assets: 50n } ])
@@ -153,10 +175,11 @@ describe('parseExitRequests function', () => {
     expect(result).toEqual({
       positions: [ {
         exitQueueIndex: 1n,
-        timestamp: '123456',
+        timestamp: '123457',
+        isV1Position: true,
         positionTicket: 'positionTicket-2',
       } ],
-      total: 80n,
+      total: 380n,
       withdrawable: 30n,
     })
   })
@@ -166,10 +189,12 @@ describe('parseExitRequests function', () => {
       .mockResolvedValueOnce([
         [ 0n ],
         [ 1n ],
+        [ 1n ],
       ])
       .mockResolvedValueOnce([
-        { leftShares: 0n, claimedShares: 0n, claimedAssets: 0n },
-        { leftShares: 0n, claimedShares: 0n, claimedAssets: 0n },
+        { leftTickets: 0n, exitedTickets: 100n, exitedAssets: 101n },
+        { leftTickets: 0n, exitedTickets: 200n, exitedAssets: 202n },
+        { leftTickets: 0n, exitedTickets: 300n, exitedAssets: 300n },
       ])
       .mockResolvedValueOnce([ { assets: 0n } ])
 
@@ -180,47 +205,24 @@ describe('parseExitRequests function', () => {
         {
           exitQueueIndex: 0n,
           timestamp: '123456',
+          isV1Position: true,
           positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 1n,
-          timestamp: '123456',
+          timestamp: '123457',
+          isV1Position: true,
           positionTicket: 'positionTicket-2',
-        },
-      ],
-      total: 0n,
-      withdrawable: 0n,
-    })
-  })
-
-  it('should handle remainingShares being 0', async () => {
-    (vaultMulticall as jest.Mock)
-      .mockResolvedValueOnce([
-        [ 0n ],
-        [ 1n ],
-      ])
-      .mockResolvedValueOnce([
-        { leftShares: 10n, claimedShares: 1000n, claimedAssets: 30n },
-      ])
-      .mockResolvedValueOnce([])
-
-    const result = await parseExitRequests(input)
-
-    expect(result).toEqual({
-      positions: [
-        {
-          exitQueueIndex: 0n,
-          timestamp: '123456',
-          positionTicket: 'positionTicket-1',
         },
         {
           exitQueueIndex: 1n,
-          timestamp: '123456',
+          timestamp: '123458',
+          isV1Position: false,
           positionTicket: 'positionTicket-2',
         },
       ],
-      total: 30n,
-      withdrawable: 30n,
+      total: 603n,
+      withdrawable: 603n,
     })
   })
 })
