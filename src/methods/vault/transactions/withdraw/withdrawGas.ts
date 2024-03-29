@@ -3,11 +3,7 @@ import { getMulticallGas } from '../../utils'
 import type { WithdrawInput } from './types'
 
 
-type Input = WithdrawInput & {
-  provider: StakeWise.Provider
-}
-
-const withdrawGas = async (values: Input) => {
+const withdrawGas = async (values: WithdrawInput) => {
   const { provider } = values
 
   const multicallArgs = await commonLogic(values)
