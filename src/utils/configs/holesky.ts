@@ -32,7 +32,6 @@ export default {
       depositToken: ZeroAddress,
       v2RewardToken: ZeroAddress,
       v2StakedToken: ZeroAddress,
-      strk: '0xe8a222D887b468a71Ee8a27df4fa3b886A4B7BA1',
     },
     base: {
       keeper: '0xB580799Bf7d62721D1a523f0FDF2f5Ed7BA4e259',
