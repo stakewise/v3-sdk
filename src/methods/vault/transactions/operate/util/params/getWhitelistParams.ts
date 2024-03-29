@@ -9,7 +9,7 @@ export type UpdateWhitelistParams = {
   }>
 }
 
-const getParams = (values: UpdateWhitelistParams) => {
+const getWhitelistParams = (values: UpdateWhitelistParams) => {
   const { whitelist } = values
 
   validateList({ whitelist })
@@ -23,4 +23,4 @@ const getParams = (values: UpdateWhitelistParams) => {
 }
 
 
-export default getParams
+export default getWhitelistParams

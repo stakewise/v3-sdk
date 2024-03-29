@@ -9,7 +9,7 @@ export type UpdateBlocklistParams = {
   }>
 }
 
-const getParams = (values: UpdateBlocklistParams) => {
+const getBlocklistParams = (values: UpdateBlocklistParams) => {
   const { blocklist } = values
 
   validateList({ blocklist })
@@ -23,4 +23,4 @@ const getParams = (values: UpdateBlocklistParams) => {
 }
 
 
-export default getParams
+export default getBlocklistParams

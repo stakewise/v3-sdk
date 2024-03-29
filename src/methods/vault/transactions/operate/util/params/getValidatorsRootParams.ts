@@ -6,7 +6,7 @@ export type SetValidatorsRootParams = {
   validatorsRoot: string
 }
 
-const getParams = (values: SetValidatorsRootParams) => {
+const getValidatorsRootParams = (values: SetValidatorsRootParams) => {
   const { validatorsRoot } = values
 
   validateArgs.string({ validatorsRoot })
@@ -21,4 +21,4 @@ const getParams = (values: SetValidatorsRootParams) => {
 }
 
 
-export default getParams
+export default getValidatorsRootParams

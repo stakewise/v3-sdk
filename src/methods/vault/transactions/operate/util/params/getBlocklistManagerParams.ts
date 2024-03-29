@@ -6,7 +6,7 @@ export type SetBlocklistManagerParams = {
   blocklistManager: string
 }
 
-const getParams = (values: SetBlocklistManagerParams) => {
+const getBlocklistManagerParams = (values: SetBlocklistManagerParams) => {
   const { blocklistManager } = values
 
   validateArgs.address({ blocklistManager })
@@ -21,4 +21,4 @@ const getParams = (values: SetBlocklistManagerParams) => {
 }
 
 
-export default getParams
+export default getBlocklistManagerParams

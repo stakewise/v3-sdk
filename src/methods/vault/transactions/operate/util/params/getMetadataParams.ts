@@ -6,7 +6,7 @@ export type SetMetadataParams = {
   metadataIpfsHash: string
 }
 
-const getParams = (values: SetMetadataParams) => {
+const getMetadataParams = (values: SetMetadataParams) => {
   const { metadataIpfsHash } = values
 
   validateArgs.string({ metadataIpfsHash })
@@ -21,5 +21,5 @@ const getParams = (values: SetMetadataParams) => {
 }
 
 
-export default getParams
+export default getMetadataParams
 

@@ -6,7 +6,7 @@ export type SetWhitelisterParams = {
   whitelister: string
 }
 
-const getParams = (values: SetWhitelisterParams) => {
+const getWhitelisterParams = (values: SetWhitelisterParams) => {
   const { whitelister } = values
 
   validateArgs.address({ whitelister })
@@ -21,4 +21,4 @@ const getParams = (values: SetWhitelisterParams) => {
 }
 
 
-export default getParams
+export default getWhitelisterParams

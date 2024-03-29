@@ -6,7 +6,7 @@ export type SetFeeRecipientParams = {
   feeRecipient: string
 }
 
-const getParams = (values: SetFeeRecipientParams) => {
+const getFeeRecipientParams = (values: SetFeeRecipientParams) => {
   const { feeRecipient } = values
 
   validateArgs.address({ feeRecipient })
@@ -21,4 +21,4 @@ const getParams = (values: SetFeeRecipientParams) => {
 }
 
 
-export default getParams
+export default getFeeRecipientParams

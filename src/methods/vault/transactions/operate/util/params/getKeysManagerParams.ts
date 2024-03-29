@@ -6,7 +6,7 @@ export type SetKeysManagerParams = {
   keysManager: string
 }
 
-const getParams = (values: SetKeysManagerParams) => {
+const getKeysManagerParams = (values: SetKeysManagerParams) => {
   const { keysManager } = values
 
   validateArgs.address({ keysManager })
@@ -21,4 +21,4 @@ const getParams = (values: SetKeysManagerParams) => {
 }
 
 
-export default getParams
+export default getKeysManagerParams
