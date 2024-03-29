@@ -1133,7 +1133,7 @@ const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 
 #### Description:
 
-Updates vault by the vault admin, whitelister, blocklist manager or keys manager.
+Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, or keys manager.
 
 
 #### Arguments:
@@ -1142,19 +1142,19 @@ Updates vault by the vault admin, whitelister, blocklist manager or keys manager
 |--------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | whitelist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
 | blocklist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| keysManager  | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                                 |
-| whitelister  | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                                  |
-| feeRecipient  | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                                |
-| validatorsRoot  | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                             |
-| blocklistManager  | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                           |
-| metadataIpfsHash    | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                      |
-| userAddress  | `string`                                     | **Yes**  | -                 | The address of the user making the update (access manager)                                                                        |
-| vaultAddress | `string`                                     | **Yes**  | -                 | The address of the private vault                                                                                                  |
+| keysManager  | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                           |
+| whitelister  | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
+| feeRecipient  | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
+| validatorsRoot  | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                       |
+| blocklistManager  | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
+| metadataIpfsHash    | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
+| userAddress  | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |
+| vaultAddress | `string`                                     | **Yes**  | -                 | The address of the vault                                                                                                    |
 
 #### Example:
 
 ```ts
-// Data to update by the vault admin 
+// Data to update the vault by admin.
 const params = {
   keysManager: '0x...',
   whitelister: '0x...',
@@ -1166,17 +1166,16 @@ const params = {
   userAddress: '0x...',
 }
 
-// Data to update by vault keys manager 
+// Data to update the vault by vault keys manager.
 const params = {
   validatorsRoot: '...',
   vaultAddress: '0x...',
   userAddress: '0x...',
 }
 
-// Data to update private vault by the vault whitelister
+// Data to update the private vault by whitelister.
 // The whitelist contains addresses allowed to stake or mint within
-// the private vault. This method can only be called by the vault
-// whitelister.
+// the vault.
 const params = {
   whitelist: [
     {
@@ -1192,11 +1191,9 @@ const params = {
   userAddress: '0x...',
 }
 
-// Data to update blocklisted vault by the vault blocklist manager 
-// Update the blocklist of addresses for a blocklisted vault.
+// Data to update blocklisted vault by blocklist manager. 
 // The blocklist contains addresses disallowed to stake or mint within
-// the blocklisted vault. This method can only be called by the vault
-// blocklist manager.
+// the vault.
 const params = {
   blocklist: [
     {
