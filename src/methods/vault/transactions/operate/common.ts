@@ -22,8 +22,17 @@ export const commonLogic = (values: MulticallInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
+  let vaultContract = contracts.helpers.createVault(vaultAddress)
+
+  if (whitelist) {
+    vaultContract = contracts.helpers.createPrivateVault(vaultAddress)
+  }
+  if (blocklist) {
+    vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
+  }
+
   const baseMulticall = {
-    vaultContract: contracts.helpers.createBlocklistedVault(vaultAddress),
+    vaultContract,
     keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,
