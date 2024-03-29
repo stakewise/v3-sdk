@@ -3,11 +3,7 @@ import { getMulticallGas } from '../../utils'
 import type { ClaimExitQueueInput } from './types'
 
 
-type Input = ClaimExitQueueInput & {
-  provider: StakeWise.Provider
-}
-
-const claimExitQueueGas = (values: Input) => {
+const claimExitQueueGas = (values: ClaimExitQueueInput) => {
   const { provider } = values
 
   const multicallArgs = commonLogic(values)

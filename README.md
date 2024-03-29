@@ -1052,37 +1052,6 @@ const { data, to } = await sdk.vault.withdraw.encode(params)
 const gas = await sdk.vault.withdraw.estimateGas(params)
 ```
 ---
-### `sdk.vault.setMetadata`
-
-#### Description:
-
-Set IPFS hash for vault metadata
-
-#### Arguments:
-
-| Name | Type     | Required | Description |
-|------|----------|-------------|------------|
-| metadataIpfsHash | `string` | **Yes** | IPFS hash |
-| userAddress | `string` | **Yes** | -          |
-| vaultAddress | `string` | **Yes** | -          |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-  metadataIpfsHash: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.vault.setMetadata(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.vault.setMetadata.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.vault.setMetadata.estimateGas(params)
-```
----
 ### `sdk.vault.claimExitQueue`
 
 #### Description:
@@ -1210,11 +1179,11 @@ const params = {
 }
 
 // Send transaction
-const hash = await sdk.vault.mulicall(params)
+const hash = await sdk.vault.operate(params)
 // When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.vault.mulicall.encode(params)
+const { data, to } = await sdk.vault.operate.encode(params)
 // Get an approximate gas per transaction
-const gas = await sdk.vault.mulicall.estimateGas(params)
+const gas = await sdk.vault.operate.estimateGas(params)
 ```
 ---
 ### `sdk.osToken.mint`

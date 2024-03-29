@@ -6,7 +6,9 @@ type Input = Parameters<typeof vaultMulticall>[0] & {
   provider: StakeWise.Provider
 }
 
-const getMulticallGas = async ({ provider, ...values }: Input) => {
+const getMulticallGas = async (values: Input) => {
+  const { provider } = values
+
   const estimatedGas = await vaultMulticall<bigint>({
     ...values,
     request: {

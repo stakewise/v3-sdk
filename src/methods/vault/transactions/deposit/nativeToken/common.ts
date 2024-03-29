@@ -4,7 +4,7 @@ import type { DepositInput } from '../types'
 import { validateArgs } from '../../../../../utils'
 
 
-export const commonLogic = async (values: Omit<DepositInput, 'provider'>) => {
+export const commonLogic = async (values: DepositInput) => {
   const { contracts, vaultAddress, userAddress, assets } = values
 
   validateArgs.bigint({ assets })

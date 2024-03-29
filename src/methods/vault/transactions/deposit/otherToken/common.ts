@@ -5,7 +5,7 @@ import { validateArgs } from '../../../../../utils'
 import { vaultMulticall } from '../../../../../contracts'
 
 
-export const commonLogic = (values: Omit<DepositInput, 'provider'>) => {
+export const commonLogic = (values: DepositInput) => {
   const { options, contracts, vaultAddress, userAddress, assets } = values
 
   validateArgs.bigint({ assets })
