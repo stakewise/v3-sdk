@@ -27,14 +27,11 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
         return mock
       }
 
-      const totalShares = data.reduce((acc, { totalShares }) => acc + BigInt(totalShares), 0n)
-
       return parseExitRequests({
         options,
         provider,
         contracts,
         userAddress,
-        totalShares,
         vaultAddress,
         exitRequests: data,
       })
