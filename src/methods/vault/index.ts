@@ -39,7 +39,13 @@ export default {
     deposit,
     withdraw,
     claimExitQueue,
+    /**
+     * @deprecated soon to be changed to vault.operate
+     */
     updateWhitelist,
+    /**
+     * @deprecated soon to be changed to vault.operate
+     */
     updateBlocklist,
   },
 } as const
