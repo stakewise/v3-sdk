@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getMulticallGas } from '../../utils'
+import { getVaultMulticallGas } from '../../../utils'
 import type { MulticallInput } from './types'
 
 
@@ -8,7 +8,7 @@ const multicallGas = (props: MulticallInput) => {
 
   const multicallArgs = commonLogic(props)
 
-  return getMulticallGas({ ...multicallArgs, provider })
+  return getVaultMulticallGas({ ...multicallArgs, provider })
 }
 
 

@@ -1,6 +1,6 @@
-import { MulticallAbi } from './types'
+import { MulticallAbi } from '../types'
 
-import multicall from './multicall'
+import multicall from './commonMulticall'
 
 
 describe('multicall function', () => {

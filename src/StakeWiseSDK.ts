@@ -1,9 +1,10 @@
 import methods from './methods'
 import { configs, getGas, createProvider } from './utils'
-import { createContracts, vaultMulticall } from './contracts'
+import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
+type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
 
 class StakeWiseSDK {
   readonly utils: StakeWise.Utils
@@ -13,6 +14,7 @@ class StakeWiseSDK {
   readonly vault: StakeWise.VaultMethods
   readonly contracts: StakeWise.Contracts
   readonly osToken: StakeWise.OsTokenMethods
+  readonly rewardSplitter: StakeWise.RewardSplitterMethods
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
@@ -31,11 +33,23 @@ class StakeWiseSDK {
     this.utils = methods.createUtils(argsForMethods)
     this.vault = methods.createVaultMethods(argsForMethods)
     this.osToken = methods.createOsTokenMethods(argsForMethods)
+    this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
   }
 
   vaultMulticall<T extends unknown>({ userAddress, vaultAddress, request }: VaultMulticallInput) {
     return vaultMulticall<T>({
       vaultContract: this.contracts.helpers.createVault(vaultAddress),
+      keeperContract: this.contracts.base.keeper,
+      options: this.options,
+      vaultAddress,
+      userAddress,
+      request,
+    })
+  }
+
+  rewardSplitterMulticall<T extends unknown>({ userAddress, vaultAddress, request }: RewardSplitterMulticallInput) {
+    return rewardSplitterMulticall<T>({
+      rewardSplitterContract: this.contracts.helpers.createRewardSplitter(vaultAddress),
       keeperContract: this.contracts.base.keeper,
       options: this.options,
       vaultAddress,

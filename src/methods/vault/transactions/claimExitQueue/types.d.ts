@@ -1,6 +1,6 @@
 import claimExitQueueGas from './claimExitQueueGas'
 import claimExitQueueEncode from './claimExitQueueEncode'
-import { BaseInput } from '../../utils'
+import { BaseInput } from '../../../utils'
 
 
 export type ClaimExitQueueInput = BaseInput & {

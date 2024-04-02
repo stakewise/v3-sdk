@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import { DepositInput } from '../types'
-import { getMulticallEncode } from '../../../utils'
+import { getVaultMulticallEncode } from '../../../../utils'
 
 
 type DepositDataOutput = StakeWise.TransactionData & {
@@ -10,7 +10,7 @@ type DepositDataOutput = StakeWise.TransactionData & {
 const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> => {
   const multicallArgs = commonLogic(values)
 
-  const data = await getMulticallEncode(multicallArgs)
+  const data = await getVaultMulticallEncode(multicallArgs)
 
   return {
     ...data,

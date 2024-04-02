@@ -25,7 +25,7 @@ import {
   UniswapPositionManagerAbi,
 } from './abis'
 
-import multicall from './multicall'
+import commonMulticall from './multicall/commonMulticall'
 import createContract from './createContract'
 
 
@@ -114,7 +114,7 @@ export const createContracts = (input: CreateContractsInput) => {
   return {
     helpers: {
       multicallContract,
-      createMulticall: multicall(multicallContract as StakeWise.ABI.Multicall),
+      createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
       createVault: (address: string) => createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider),
       createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),

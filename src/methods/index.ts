@@ -1,5 +1,6 @@
 import vault from './vault'
 import osToken from './osToken'
+import rewardSplitter from './rewardSplitter'
 import * as utils from './utils'
 
 
@@ -11,6 +12,8 @@ type Methods = (
 
   | typeof osToken.requests
   | typeof osToken.transactions
+
+  | typeof rewardSplitter.transactions
 )
 
 interface UnknownMethod {
@@ -91,6 +94,9 @@ const methods = {
   createOsTokenMethods: (params: CommonParams) => ({
     ...createMethods<typeof osToken.requests>(osToken.requests, params),
     ...createMethods<typeof osToken.transactions>(osToken.transactions, params),
+  }),
+  createRewardSplitterMethods: (params: CommonParams) => ({
+    ...createMethods<typeof rewardSplitter.transactions>(rewardSplitter.transactions, params),
   }),
 }
 

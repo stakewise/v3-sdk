@@ -39,6 +39,7 @@ declare global {
     type Utils = ReturnType<typeof methods.createUtils>
     type VaultMethods = ReturnType<typeof methods.createVaultMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
+    type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {
