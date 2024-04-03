@@ -35,12 +35,13 @@ export default {
     },
     base: {
       keeper: ZeroAddress,
+      multicall: '0xb5b692a88BDFc81ca69dcB1d924f59f0413A602a',
       priceOracle: ZeroAddress,
       vaultsRegistry: ZeroAddress,
       sharedMevEscrow: ZeroAddress,
       mintTokenConfig: ZeroAddress,
+      depositDataRegistry: ZeroAddress,
       mintTokenController: ZeroAddress,
-      multicall: '0xb5b692a88BDFc81ca69dcB1d924f59f0413A602a',
       rewardSplitterFactory: ZeroAddress,
     },
     factories: {

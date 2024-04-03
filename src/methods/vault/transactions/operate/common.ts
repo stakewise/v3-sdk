@@ -11,13 +11,14 @@ import {
   getFeeRecipientParams,
   getValidatorsRootParams,
   getBlocklistManagerParams,
-} from './util'
+} from '../util'
 
 
-export const commonLogic = (values: MulticallInput) => {
+export const commonLogic = async (values: MulticallInput) => {
   const {
     options, contracts, userAddress, vaultAddress, provider,
-    blocklist, whitelist, keysManager, whitelister, feeRecipient, validatorsRoot, blocklistManager, metadataIpfsHash,
+    blocklist, whitelist, keysManager, whitelister, feeRecipient,
+    validatorsRoot, blocklistManager, metadataIpfsHash,
   } = values
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -29,6 +30,14 @@ export const commonLogic = (values: MulticallInput) => {
   }
   if (blocklist) {
     vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
+  }
+
+  // Temporal logic while different types of vaults exist
+  const version = Number(await vaultContract.version())
+  const isSecondVersion = version === 2
+
+  if (isSecondVersion && validatorsRoot) {
+    throw new Error('To set validatorsRoot in version 2 of vault, use the vault.setDepositDataRoot method')
   }
 
   const baseMulticall = {

@@ -1,5 +1,11 @@
 import type { MulticallInput as Input } from './types'
-import { checkAdminAccess, checkKeysManagerAccess, checkWhitelisterAccess, checkBlocklistManagerAccess } from './util'
+
+import {
+  checkAdminAccess,
+  checkKeysManagerAccess,
+  checkWhitelisterAccess,
+  checkBlocklistManagerAccess,
+} from '../util'
 
 
 type Action<Input, Output> = (props: Input) => Promise<Output>

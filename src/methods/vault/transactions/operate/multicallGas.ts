@@ -3,10 +3,10 @@ import { getVaultMulticallGas } from '../../../utils'
 import type { MulticallInput } from './types'
 
 
-const multicallGas = (props: MulticallInput) => {
+const multicallGas = async (props: MulticallInput) => {
   const { provider } = props
 
-  const multicallArgs = commonLogic(props)
+  const multicallArgs = await commonLogic(props)
 
   return getVaultMulticallGas({ ...multicallArgs, provider })
 }

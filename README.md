@@ -1151,6 +1151,37 @@ const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
+### `sdk.vault.setDepositDataRoot`
+
+#### Description:
+
+Adding root validators to vaults **version 2** or higher
+
+#### Arguments:
+
+| Name | Type | Required | Description |
+|------|------|-------------|---------|
+| validatorsRoot | `string` | **Yes** | The vault validators merkle tree  |
+| userAddress | `string` | **Yes** | - |
+| vaultAddress | `string` | **Yes** | - |
+
+#### Example:
+
+```ts
+const params = {
+  validatorsRoot: 'hash',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setDepositDataRoot(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setDepositDataRoot.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setDepositDataRoot.estimateGas(params)
+```
+---
 ### `sdk.vault.operate`
 
 #### Description:
@@ -1164,10 +1195,10 @@ Updates the vault by authorized personnel such as the vault admin, whitelister, 
 |------------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | whitelist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
 | blocklist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| keysManager      | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                           |
+| depositDataManager      | `string`                                     | **No**   | Admin             | Address of the vault keys manager. Support only **first version** on valults.                                                                                           |
 | whitelister      | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
 | feeRecipient     | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
-| validatorsRoot   | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                       |
+| validatorsRoot   | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root. Support only **first version** on valults.                                                                                       |
 | blocklistManager | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
 | metadataIpfsHash | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
 | userAddress      | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |

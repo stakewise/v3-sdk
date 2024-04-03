@@ -18,6 +18,7 @@ import { default as deposit } from './transactions/deposit'
 import { default as operate } from './transactions/operate'
 import { default as withdraw } from './transactions/withdraw'
 import { default as claimExitQueue } from './transactions/claimExitQueue'
+import { default as setDepositDataRoot } from './transactions/setDepositDataRoot'
 
 
 export default {
@@ -41,5 +42,6 @@ export default {
     operate,
     withdraw,
     claimExitQueue,
+    setDepositDataRoot,
   },
 } as const
