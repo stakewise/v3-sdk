@@ -4,7 +4,9 @@ import { createContracts, vaultMulticall, rewardSplitterMulticall } from './cont
 
 
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
-type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
+type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
+  rewardSplitterAddress: string
+}
 
 class StakeWiseSDK {
   readonly utils: StakeWise.Utils
@@ -47,9 +49,11 @@ class StakeWiseSDK {
     })
   }
 
-  rewardSplitterMulticall<T extends unknown>({ userAddress, vaultAddress, request }: RewardSplitterMulticallInput) {
+  rewardSplitterMulticall<T extends unknown>(props: RewardSplitterMulticallInput) {
+    const { userAddress, vaultAddress, rewardSplitterAddress, request } = props
+
     return rewardSplitterMulticall<T>({
-      rewardSplitterContract: this.contracts.helpers.createRewardSplitter(vaultAddress),
+      rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
       keeperContract: this.contracts.base.keeper,
       options: this.options,
       vaultAddress,

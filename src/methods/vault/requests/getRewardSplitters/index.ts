@@ -6,20 +6,20 @@ import modifyRewardSplitters from './modifyRewardSplitters'
 
 
 type GetRewardSplittersInput = {
+  owner: string
   vaultAddress: string
-  userAddress: string
   rewardSplitterAddress?: string
   options: StakeWise.Options
 }
 
 const getRewardSplitters = (input: GetRewardSplittersInput) => {
-  const { vaultAddress, userAddress, rewardSplitterAddress, options } = input
+  const { owner, vaultAddress, rewardSplitterAddress, options } = input
 
-  validateArgs.address({ vaultAddress, userAddress })
+  validateArgs.address({ owner, vaultAddress })
 
   const where = {
     vault: vaultAddress.toLowerCase(),
-    owner: userAddress.toLowerCase(),
+    owner: owner.toLowerCase(),
   } as RewardSplittersQueryVariables['where']
 
   if (rewardSplitterAddress) {

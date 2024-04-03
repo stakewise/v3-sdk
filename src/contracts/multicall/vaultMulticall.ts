@@ -63,19 +63,24 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     }
   }
 
+  const commonInput = {
+    contract,
+    multicallParams,
+  }
+
   if (callStatic) {
-    return handleCallStatic({ contract, multicallParams, userAddress }) as Promise<T>
+    return handleCallStatic({ ...commonInput, userAddress }) as Promise<T>
   }
 
   if (estimateGas) {
-    return handleEstimateGas({ contract, multicallParams }) as Promise<T>
+    return handleEstimateGas(commonInput) as Promise<T>
   }
 
   if (transactionData) {
-    return handleTransactionData({ contract, multicallParams }) as Promise<T>
+    return handleTransactionData(commonInput) as Promise<T>
   }
 
-  return handleMulticall({ contract, multicallParams })
+  return handleMulticall(commonInput)
 }
 
 

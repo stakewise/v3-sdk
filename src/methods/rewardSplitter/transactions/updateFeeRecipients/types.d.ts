@@ -1,11 +1,11 @@
 import updateFeeRecipientsGas from './updateFeeRecipientsGas'
 import updateFeeRecipientsEncode from './updateFeeRecipientsEncode'
 import type { BaseInput } from '../../../utils'
+import type { FeeRecipient as SubgraphFeeRecipient } from '../../../vault/requests/getRewardSplitters/types'
 
 
-export type FeeRecipient = {
-  address: string
-  percent: bigint
+export type FeeRecipient = Pick<SubgraphFeeRecipient, 'address' | 'shares'> & {
+  percent?: number
 }
 
 export type UpdateFeeRecipientsInput = BaseInput & {

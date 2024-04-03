@@ -1,11 +1,12 @@
 type FeeRecipient = {
-  percent: bigint
+  shares: bigint
+  percent: number
   address: string
 }
 
 export type RewardSplitter = {
   owner: string
   address: string
-  totalPercent: bigint
+  totalShares: bigint
   feeRecipients: FeeRecipient[]
 }

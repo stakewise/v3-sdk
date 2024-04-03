@@ -7,32 +7,19 @@ import { rewardSplitterMulticall } from '../../../../contracts'
 import type { FeeRecipient, UpdateFeeRecipientsInput } from './types'
 
 
-const validateList = (values: Record<string, FeeRecipient[]>) => {
-  let totalPercent = 0n
-
+const validateList = (values: Record<string, FeeRecipient[]>, withEmptyCheck?: boolean) => {
   Object.keys(values).forEach((key) => {
     const list = values[key]
 
-    validateArgs.array({ [key]: values[key] })
+    validateArgs.array({ [key]: values[key] }, withEmptyCheck)
 
-    const isListValid = list.every(({ address, percent }) => {
-      const isFeeRecipientValid = (
-        isAddress(address)
-        && typeof percent === 'bigint'
-      )
-
-      if (isFeeRecipientValid) {
-        totalPercent += percent
-      }
-
-      return isFeeRecipientValid
-    })
+    const isListValid = list.every(({ address, shares }) => (
+      isAddress(address)
+      && typeof shares === 'bigint'
+    ))
 
     if (!isListValid) {
-      throw new Error(`The "${key}" argument must be an array of objects with "address" and "percent" keys`)
-    }
-    if (totalPercent !== 100n) {
-      throw new Error(`The sum of all percents in the "${key}" argument must be equal to 100`)
+      throw new Error(`The "${key}" argument must be an array of objects with "address" and "shares" keys`)
     }
   })
 }
@@ -40,14 +27,16 @@ const validateList = (values: Record<string, FeeRecipient[]>) => {
 export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   const {
     contracts, userAddress, vaultAddress, options,
-    rewardSplitterAddress, feeRecipients, oldFeeRecipients,
+    rewardSplitterAddress, feeRecipients,
   } = values
+
+  let oldFeeRecipients: FeeRecipient[] = values.oldFeeRecipients as FeeRecipient[]
 
   validateArgs.address({ vaultAddress, userAddress, rewardSplitterAddress })
   validateList({ feeRecipients })
 
   if (oldFeeRecipients) {
-    validateList({ oldFeeRecipients })
+    validateList({ oldFeeRecipients }, false)
   }
 
   await checkAdminAccess(values)
@@ -60,22 +49,16 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
     options,
   }
 
-  const params: Parameters<typeof rewardSplitterMulticall>[0]['request']['params'] = []
-  let currentShareHolders: FeeRecipient[]
-
-  if (oldFeeRecipients) {
-    currentShareHolders = oldFeeRecipients
-  }
-  else {
+  if (!oldFeeRecipients) {
     const [ rewardSplitter ] = await vault.requests.getRewardSplitters({
+      owner: userAddress,
       options,
-      userAddress,
       vaultAddress,
       rewardSplitterAddress,
     })
 
     if (rewardSplitter) {
-      currentShareHolders = rewardSplitter.feeRecipients
+      oldFeeRecipients = rewardSplitter.feeRecipients
     }
     else {
       throw new Error('Reward splitter not found')
@@ -84,35 +67,37 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
 
   const increaseList: Record<string, bigint> = {}
   const decreaseList: Record<string, bigint> = {}
-  const currentShareHolderAddresses = currentShareHolders.map(({ address }) => address.toLowerCase())
+  const oldFeeRecipientAddresses = oldFeeRecipients.map(({ address }) => address.toLowerCase())
 
-  currentShareHolders.forEach(({ address, percent }) => {
+  oldFeeRecipients.forEach(({ address, shares }) => {
     const lowerCasedAddress = address.toLowerCase()
     const feeRecipient = feeRecipients.find((feeRecipient) => feeRecipient.address.toLowerCase() === lowerCasedAddress)
 
     if (feeRecipient) {
-      const newPercent = feeRecipient.percent
-      const diff = newPercent - percent
+      const newShares = feeRecipient.shares
+      const diff = newShares - shares
 
       if (diff > 0n) {
         increaseList[address] = diff
       }
       if (diff < 0n) {
-        decreaseList[address] = percent - feeRecipient.percent
+        decreaseList[address] = shares - feeRecipient.shares
       }
     }
     else {
-      decreaseList[address] = percent
+      decreaseList[address] = shares
     }
   })
 
-  feeRecipients.forEach(({ address, percent }) => {
-    const isNew = !currentShareHolderAddresses.includes(address.toLowerCase())
+  feeRecipients.forEach(({ address, shares }) => {
+    const isNew = !oldFeeRecipientAddresses.includes(address.toLowerCase())
 
     if (isNew) {
-      increaseList[address] = percent
+      increaseList[address] = shares
     }
   })
+
+  const params: Parameters<typeof rewardSplitterMulticall>[0]['request']['params'] = []
 
   Object.keys(increaseList).forEach((address) => {
     params.push({
