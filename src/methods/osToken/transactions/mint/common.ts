@@ -19,7 +19,17 @@ export const commonLogic = (values: MintInput) => {
     options,
   }
 
-  return multicallArgs
-}
+  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
+    {
+      method: 'mintOsToken',
+      args: [ userAddress, shares, ZeroAddress ],
+    },
+  ]
 
-export const referrer = ZeroAddress
+  return {
+    ...multicallArgs,
+    request: {
+      params,
+    },
+  }
+}
