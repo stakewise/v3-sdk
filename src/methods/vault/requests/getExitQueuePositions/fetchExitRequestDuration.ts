@@ -22,7 +22,7 @@ const fetchExitRequestDuration = (values: FetchExitQueuePositionsInput) => {
         return 0
       }
 
-      const durations = data.exitRequests.map(request => request.duration)
+      const durations = data.exitRequests.map((request) => request.duration)
 
       return Math.max(...durations)
     },
