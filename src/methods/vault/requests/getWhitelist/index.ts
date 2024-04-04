@@ -1,3 +1,4 @@
+import { isAddress } from 'ethers'
 import type { WhitelistAccountsQueryVariables, WhitelistAccountsQueryPayload } from '../../../../graphql/subgraph/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
@@ -11,12 +12,20 @@ type GetWhitelistInput = {
   search?: string
   limit?: number
   skip?: number
+  addressIn?: WhitelistAccountsQueryVariables['where']['address_in']
   options: StakeWise.Options
 }
 
+const validateList = (addressIn: string[]) => {
+  const isValid = addressIn.every((address) => isAddress(address))
+
+  if (!isValid) {
+    throw new Error('The "addressIn" argument must be an array of valid addresses')
+  }
+}
 
 const getWhitelist = (input: GetWhitelistInput) => {
-  const { vaultAddress, orderDirection, search, limit, skip, options } = input
+  const { vaultAddress, orderDirection, search, limit, skip, addressIn, options } = input
 
   validateArgs.address({ vaultAddress })
 
@@ -38,11 +47,16 @@ const getWhitelist = (input: GetWhitelistInput) => {
     }
   }
 
+  if (typeof addressIn !== 'undefined') {
+    validateArgs.array({ addressIn })
+    validateList(addressIn)
+  }
+
   const vault = vaultAddress.toLowerCase()
 
   const where = search
-    ? { vault, address_contains: search.toLowerCase() } as WhitelistAccountsQueryVariables['where']
-    : { vault } as WhitelistAccountsQueryVariables['where']
+    ? { vault, address_in: addressIn, address_contains: search.toLowerCase() } as WhitelistAccountsQueryVariables['where']
+    : { vault, address_in: addressIn } as WhitelistAccountsQueryVariables['where']
 
   return graphql.subgraph.vault.fetchWhitelistAccountsQuery<ModifiedWhitelist>({
     url: apiUrls.getSubgraphqlUrl(options),

@@ -317,13 +317,14 @@ Fetch the whitelist for private vaults. Only addresses included in this list are
 
 #### Arguments:
 
-| Name | Type              | Type        | Description |
-|------|-------------------|-------------|---|
-| vaultAddress | `string`          | **Yes** | - |
-| orderDirection | `'asc' \| 'desc'` | **No** | Sort, by default `desc` (descending order) |
-| search | `string`          | **No** | Filters results by the address field |
-| limit | `number`          | **No** | Limit the number of addresses, default is 100 |
-| skip | `number`          | **No** | Skip the number of addresses, default is 0 |
+| Name | Type              | Type        | Description                                                                                                                                  |
+|------|-------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| vaultAddress | `string`          | **Yes** | -                                                                                                                                   |
+| addressIn | `string[]`   | **No** | Filters results to include only addresses in the provided list. Helps to check, for example, if several addresses are added to the whitelist |
+| orderDirection | `'asc' \| 'desc'` | **No** | Specifies the sorting order. Defaults to `desc` (descending order)                                                                 |
+| search | `string`        | **No** | Filters results by the address field                                                                                                         |
+| limit | `number`         | **No** | Limits the number of addresses returned. Defaults to 100                                                                                     |
+| skip | `number`          | **No** | Skips the specified number of addresses. Defaults to 0                                                                                       |
 
 #### Returns:
 
@@ -359,13 +360,14 @@ Fetch the blocklist for blocklisted vaults. Addresses included in this list are 
 
 #### Arguments:
 
-| Name | Type          | Type        | Description |
-|------|---------------|-------------|---|
-| vaultAddress | `string`      | **Yes** | - |
-| orderDirection | `'asc' \| 'desc'` | **No** | Sort, by default `desc` (descending order) |
-| search | `string`      | **No** | Filters results by the address field |
-| limit | `number`      | **No** | Limit the number of addresses, default is 100 |
-| skip | `number`      | **No** | Skip the number of addresses, default is 0 |
+| Name | Type              | Type        | Description                                                                                                                                |
+|------|-------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| vaultAddress | `string`  | **Yes** | -                                                                                                                                          |
+| addressIn | `string[]`   | **No** | Filters results to include only addresses in the provided list. Helps to check, for example, if all OFAC addresses are added to the blocklist |
+| orderDirection | `'asc' \| 'desc'` | **No** | Specifies the sorting order. Defaults to `desc` (descending order)                                                                                               |
+| search | `string`        | **No** | Filters results by the address field                                                                                                       |
+| limit | `number`         | **No** | Limits the number of addresses returned. Defaults to 100                                                                                              |
+| skip | `number`          | **No** | Skips the specified number of addresses. Defaults to 0                                                                                                 |
 
 #### Returns:
 
@@ -561,7 +563,7 @@ await sdk.vault.getVault({ vaultAddress: '0x...' })
 
 #### Description:
 
-How much a user can withdraw
+How much a user can withdraw. Use this method if the user has mintedAssets, if minted balance is null then maxWithdraw will be equal to stakedAssests.
 
 #### Arguments:
 

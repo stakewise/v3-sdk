@@ -1,3 +1,4 @@
+import { isAddress } from 'ethers'
 import type { BlocklistAccountsQueryVariables, BlocklistAccountsQueryPayload } from '../../../../graphql/subgraph/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
@@ -11,11 +12,20 @@ type GetBlocklistInput = {
   search?: string
   limit?: number
   skip?: number
+  addressIn?: BlocklistAccountsQueryVariables['where']['address_in']
   options: StakeWise.Options
 }
 
+const validateList = (addressIn: string[]) => {
+  const isValid = addressIn.every((address) => isAddress(address))
+
+  if (!isValid) {
+    throw new Error('The "addressIn" argument must be an array of valid addresses')
+  }
+}
+
 const getBlocklist = (input: GetBlocklistInput) => {
-  const { vaultAddress, orderDirection, search, limit, skip, options } = input
+  const { vaultAddress, orderDirection, search, limit, skip, addressIn, options } = input
 
   validateArgs.address({ vaultAddress })
 
@@ -37,11 +47,16 @@ const getBlocklist = (input: GetBlocklistInput) => {
     }
   }
 
+  if (typeof addressIn !== 'undefined') {
+    validateArgs.array({ addressIn })
+    validateList(addressIn)
+  }
+
   const vault = vaultAddress.toLowerCase()
 
   const where = search
-    ? { vault, address_contains: search.toLowerCase() } as BlocklistAccountsQueryVariables['where']
-    : { vault } as BlocklistAccountsQueryVariables['where']
+    ? { vault, address_in: addressIn, address_contains: search.toLowerCase() } as BlocklistAccountsQueryVariables['where']
+    : { vault, address_in: addressIn } as BlocklistAccountsQueryVariables['where']
 
   return graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
     url: apiUrls.getSubgraphqlUrl(options),

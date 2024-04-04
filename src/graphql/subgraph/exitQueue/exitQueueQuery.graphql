@@ -5,6 +5,7 @@ query exitQueue($receiver: Bytes, $vault: String!) {
   }) {
     positionTicket
     totalShares
+    totalAssets
     timestamp
   }
 }
