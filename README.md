@@ -97,6 +97,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)   
 | [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   
 | [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   
+| [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters)                   
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -389,6 +390,56 @@ type Output = {
 
 ```ts
 await sdk.vault.getBlocklist({
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getRewardSplitters`
+
+#### Description:
+
+Fetch the list of created reward splitters. A reward splitter is a contract designed to distribute vault rewards among multiple fee recipients in predefined proportions.
+To use a reward splitter, its address should be added to the vault as a fee recipient.
+
+
+#### Arguments:
+
+| Name | Type     | Type    | Description                                                                                                                                |
+|------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| vaultAddress | `string` | **Yes** | The address of the vault                                                                                                                                          |
+| owner | `string` | **Yes** | The owner of the reward splitter |
+| rewardSplitterAddress | `string` | **No**  | The address of the reward splitter (optional)                                                                                                 |
+
+#### Returns:
+
+```ts
+type FeeRecipient = {
+  shares: bigint
+  percent: number
+  address: string
+}
+
+type RewardSplitter = {
+  owner: string
+  address: string
+  totalShares: bigint
+  feeRecipients: FeeRecipient[]
+}
+
+type Output = {
+  rewardSplitters: RewardSplitter[]
+}
+```
+
+| Name              | Description |
+|-------------------|-------------|
+| `rewardSplitters` | An array of objects representing the result of the query based on your parameters |
+
+#### Example:
+
+```ts
+await sdk.vault.getRewardSplitters({
+  owner: '0x...',
   vaultAddress: '0x...',
 })
 ```

@@ -4,20 +4,26 @@ import { BigDecimal } from '../../../../utils'
 import type { RewardSplittersQueryPayload } from '../../../../graphql/subgraph/rewardSplitters'
 
 
+type Output = {
+  rewardSplitters: RewardSplitter[]
+}
+
 const getPercent = (total: bigint, value: bigint) => {
   const percent = new BigDecimal(100).divide(total).multiply(value).toString()
 
   return Number(percent)
 }
 
-const modifyRewardSplitters = (input: RewardSplittersQueryPayload): RewardSplitter[] => {
+const modifyRewardSplitters = (input: RewardSplittersQueryPayload): Output => {
   const { rewardSplitters } = input || {}
 
   if (!rewardSplitters) {
-    return []
+    return {
+      rewardSplitters: [],
+    }
   }
 
-  return rewardSplitters.map(({ id, owner, totalShares, shareHolders }) => {
+  const modifiedRewardSplitters = rewardSplitters.map(({ id, owner, totalShares, shareHolders }) => {
     const totalSharesBI = BigInt(totalShares)
 
     return {
@@ -35,6 +41,10 @@ const modifyRewardSplitters = (input: RewardSplittersQueryPayload): RewardSplitt
       }),
     }
   })
+
+  return {
+    rewardSplitters: modifiedRewardSplitters,
+  }
 }
 
 
