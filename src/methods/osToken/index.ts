@@ -10,8 +10,8 @@ import getAssetsFromShares from './requests/getAssetsFromShares'
 import getAvgRewardsPerSecond from './requests/getAvgRewardsPerSecond'
 
 // Transactions
-import { mint } from './transactions/mint'
-import { burn } from './transactions/burn'
+import { default as mint } from './transactions/mint'
+import { default as burn } from './transactions/burn'
 
 
 export default {

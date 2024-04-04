@@ -1,4 +1,4 @@
-import { getMulticallEncode } from '../../utils'
+import { getVaultMulticallEncode } from '../../../utils'
 import type { MulticallInput } from './types'
 import { commonLogic } from './common'
 
@@ -6,7 +6,7 @@ import { commonLogic } from './common'
 const multicallEncode = (values: MulticallInput): Promise<StakeWise.TransactionData> => {
   const multicallArgs = commonLogic(values)
 
-  return getMulticallEncode(multicallArgs)
+  return getVaultMulticallEncode(multicallArgs)
 }
 
 

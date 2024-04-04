@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
-import { getMulticallGas } from '../../utils'
 import type { WithdrawInput } from './types'
+import { getVaultMulticallGas } from '../../../utils'
 
 
 const withdrawGas = async (values: WithdrawInput) => {
@@ -8,7 +8,7 @@ const withdrawGas = async (values: WithdrawInput) => {
 
   const multicallArgs = await commonLogic(values)
 
-  return getMulticallGas({ ...multicallArgs, provider })
+  return getVaultMulticallGas({ ...multicallArgs, provider })
 }
 
 

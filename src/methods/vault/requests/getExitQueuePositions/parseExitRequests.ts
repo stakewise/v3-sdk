@@ -1,4 +1,4 @@
-import vaultMulticall from '../../../../contracts/vaultMulticall'
+import vaultMulticall from '../../../../contracts/multicall/vaultMulticall'
 
 
 export type ParseExitRequestsInput = {

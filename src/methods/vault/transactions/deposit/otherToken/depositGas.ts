@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getMulticallGas } from '../../../utils'
+import { getVaultMulticallGas } from '../../../../utils'
 import type { DepositInput } from '../types'
 
 
@@ -8,7 +8,7 @@ const depositGas = async (values: DepositInput) => {
 
   const multicallArgs = commonLogic(values)
 
-  return getMulticallGas({ ...multicallArgs, provider })
+  return getVaultMulticallGas({ ...multicallArgs, provider })
 }
 
 

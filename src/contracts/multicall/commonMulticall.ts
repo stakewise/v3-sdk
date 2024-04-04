@@ -1,4 +1,4 @@
-import type { MulticallAbi } from './types'
+import type { MulticallAbi } from '../types'
 
 
 type Params = {
@@ -12,7 +12,7 @@ type Params = {
 
 export type Output = <T extends object>(params: Params[]) => () => Promise<T>
 
-const multicall = (multicallContract: MulticallAbi): Output => {
+const commonMulticall = (multicallContract: MulticallAbi): Output => {
   return (<T extends unknown>(params: Params[]) => {
     let index = 0
 
@@ -69,4 +69,4 @@ const multicall = (multicallContract: MulticallAbi): Output => {
 }
 
 
-export default multicall
+export default commonMulticall
