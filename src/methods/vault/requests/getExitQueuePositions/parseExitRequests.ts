@@ -5,6 +5,7 @@ export type ParseExitRequestsInput = {
   contracts: StakeWise.Contracts
   provider: StakeWise.Provider
   options: StakeWise.Options
+  duration: number
   userAddress: string
   vaultAddress: string
   exitRequests: Array<{
@@ -24,6 +25,7 @@ type Position = {
 
 export type ParseExitRequestsOutput = {
   total: bigint
+  duration: number
   withdrawable: bigint
   positions: Position[]
 }
@@ -47,7 +49,7 @@ const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) 
 }
 
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, contracts, provider, userAddress, vaultAddress, exitRequests } = values
+  const { options, contracts, provider, userAddress, vaultAddress, duration, exitRequests } = values
 
   const keeperContract = contracts.base.keeper
   const vaultContract = contracts.helpers.createVault(vaultAddress)
@@ -116,6 +118,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     // If there are no positions with an index greater than 0 or their timestamp has failed the 24-hour check.
     // Then we can use totalShares from the subgraph to show total
     return {
+      duration,
       positions: [],
       withdrawable: 0n,
       total: totalV1QueuedAssets + queuedAssets,
@@ -167,6 +170,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
 
   return {
     total,
+    duration,
     positions: claims,
     withdrawable: withdrawableAssets,
   }

@@ -1,6 +1,7 @@
 import { validateArgs } from '../../../../utils'
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
+import fetchExitRequestDuration from './fetchExitRequestDuration'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
@@ -21,6 +22,8 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
+  const duration = await fetchExitRequestDuration({ options, vaultAddress, userAddress })
+
   return fetchExitQueuePositions({ options, vaultAddress, userAddress })
     .then((data) => {
       if (!data) {
@@ -29,6 +32,7 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
 
       return parseExitRequests({
         options,
+        duration,
         provider,
         contracts,
         userAddress,

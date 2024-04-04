@@ -418,15 +418,17 @@ type Position = {
 
 type Output = {
   total: bigint
+  duration: number
   withdrawable: bigint
   positions: Position[]
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `positions` | Queue positions |
-| `total` | Total withdrawal amount (in ETH) |
+| Name | Description                              |
+|------|------------------------------------------|
+| `positions` | Queue positions                          |
+| `total` | Total withdrawal amount (in ETH)         |
+| `duration` | Queue duration time (in minutes)         |
 | `withdrawable` | Amount available for withdrawal (in ETH) |
 
 #### Example:
