@@ -50,15 +50,15 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   }
 
   if (!oldFeeRecipients) {
-    const [ rewardSplitter ] = await vault.requests.getRewardSplitters({
+    const { rewardSplitters } = await vault.requests.getRewardSplitters({
       owner: userAddress,
       options,
       vaultAddress,
       rewardSplitterAddress,
     })
 
-    if (rewardSplitter) {
-      oldFeeRecipients = rewardSplitter.feeRecipients
+    if (rewardSplitters) {
+      oldFeeRecipients = rewardSplitters[0]?.feeRecipients || []
     }
     else {
       throw new Error('Reward splitter not found')
