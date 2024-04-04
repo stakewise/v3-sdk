@@ -8,14 +8,22 @@ import modifyRewardSplitters from './modifyRewardSplitters'
 type GetRewardSplittersInput = {
   owner: string
   vaultAddress: string
+  shareHolderAddress?: string
   rewardSplitterAddress?: string
   options: StakeWise.Options
 }
 
 const getRewardSplitters = (input: GetRewardSplittersInput) => {
-  const { owner, vaultAddress, rewardSplitterAddress, options } = input
+  const { owner, vaultAddress, shareHolderAddress, rewardSplitterAddress, options } = input
 
   validateArgs.address({ owner, vaultAddress })
+
+  if (typeof shareHolderAddress !== 'undefined') {
+    validateArgs.address({ shareHolderAddress })
+  }
+  if (typeof rewardSplitterAddress !== 'undefined') {
+    validateArgs.address({ rewardSplitterAddress })
+  }
 
   const where = {
     vault: vaultAddress.toLowerCase(),
@@ -24,6 +32,9 @@ const getRewardSplitters = (input: GetRewardSplittersInput) => {
 
   if (rewardSplitterAddress) {
     where.id = rewardSplitterAddress.toLowerCase()
+  }
+  if (shareHolderAddress) {
+    where.shareHolders_ = { address: shareHolderAddress.toLowerCase() }
   }
 
   return fetchRewardSplittersQuery({
