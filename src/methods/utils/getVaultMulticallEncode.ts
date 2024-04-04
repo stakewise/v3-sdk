@@ -1,9 +1,9 @@
-import { vaultMulticall } from '../../../contracts'
+import { vaultMulticall } from '../../contracts'
 
 
 type Input = Parameters<typeof vaultMulticall>[0]
 
-const getMulticallEncode = async (values: Input): Promise<StakeWise.TransactionData> => {
+const getVaultMulticallEncode = async (values: Input): Promise<StakeWise.TransactionData> => {
   const rx = await vaultMulticall<{ data: string, to: string }>({
     ...values,
     request: {
@@ -19,4 +19,4 @@ const getMulticallEncode = async (values: Input): Promise<StakeWise.TransactionD
 }
 
 
-export default getMulticallEncode
+export default getVaultMulticallEncode

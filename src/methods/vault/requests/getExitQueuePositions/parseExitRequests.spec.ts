@@ -2,11 +2,11 @@ import { JsonRpcProvider, ZeroAddress } from 'ethers'
 
 import { Network, configs } from '../../../../utils'
 import { createContracts } from '../../../../contracts'
-import vaultMulticall from '../../../../contracts/vaultMulticall'
+import vaultMulticall from '../../../../contracts/multicall/vaultMulticall'
 import parseExitRequests, { ParseExitRequestsInput } from './parseExitRequests'
 
 
-jest.mock('../../../../contracts/vaultMulticall')
+jest.mock('../../../../contracts/multicall/vaultMulticall')
 
 const getMockProvider = (timestamp: number) => ({
   getBlock() {

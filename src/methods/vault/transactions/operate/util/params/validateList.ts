@@ -18,7 +18,7 @@ const validateList = (values: Record<string, ListItem[]>) => {
     ))
 
     if (!isValid) {
-      throw new Error(`The "${key}" argument must be an array of objects with "address" and "isNew" properties`)
+      throw new Error(`The "${key}" argument must be an array of objects with "address" and "isNew" keys`)
     }
   })
 }

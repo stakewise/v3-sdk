@@ -1,4 +1,4 @@
-import { getMulticallEncode } from '../../utils'
+import { getVaultMulticallEncode } from '../../../utils'
 import { commonLogic } from './common'
 import type { ClaimExitQueueInput } from './types'
 
@@ -6,7 +6,7 @@ import type { ClaimExitQueueInput } from './types'
 const claimExitQueueEncode = (values: ClaimExitQueueInput) => {
   const multicallArgs = commonLogic(values)
 
-  return getMulticallEncode(multicallArgs)
+  return getVaultMulticallEncode(multicallArgs)
 }
 
 

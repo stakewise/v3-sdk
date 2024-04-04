@@ -84,19 +84,21 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                         | **osToken**                                                     | **Utils** |
-|-------------------------------------------------------------------|-----------------------------------------------------------------|------|
-| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions)           | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount)           | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots)                   | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)       | [sdk.utils.getTransactions](#sdkutilsgettransactions) |
-| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy)                         |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators)                 | [sdk.osToken.getPosition](#sdkostokengetposition)               |
-| [sdk.vault.getVault](#sdkvaultgetvault)                           | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint)                 | 
-| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [sdk.osToken.getBaseData](#sdkostokengetbasedata)               |
-| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams)           | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
-| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance)             | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
-| [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               | [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)   
-| [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   
-| [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   
+| **Vault**                                                         | **osToken**                                                       | **Utils**                                               |
+|-------------------------------------------------------------------|-------------------------------------------------------------------|---------------------------------------------------------|
+| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions)           | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount)             | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots)                   | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)         | [sdk.utils.getTransactions](#sdkutilsgettransactions)   |
+| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy)                           |                                                         |
+| [sdk.vault.getValidators](#sdkvaultgetvalidators)                 | [sdk.osToken.getPosition](#sdkostokengetposition)                 |                                                         |
+| [sdk.vault.getVault](#sdkvaultgetvault)                           | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                         |
+| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [sdk.osToken.getBaseData](#sdkostokengetbasedata)                 |                                                         |
+| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams)           | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                         |
+| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance)             | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                         |
+| [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                                   |                                                         |
+| [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                                   |                                                         |
+| [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                                   |                                                         |
+| [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                                   |                                                         |
+| [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                                   |                                                         |
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -120,12 +122,13 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                                                   | **osToken** |
-|-----------------------------------------------------------------------------|------|
-| [sdk.vault.deposit](#sdkvaultdeposit)                                       | [sdk.osToken.mint](#sdkostokenmint) |
-| [sdk.vault.withdraw](#sdkvaultwithdraw)                                     | [sdk.osToken.burn](#sdkostokenburn) |
-| [sdk.claimExitQueue](#sdkvaultclaimexitqueue)                               |
-| [sdk.vault.operate](#sdkvaultoperate)                     |
+| **Vault**                                     | **osToken**                         | **RewardSplitter**                                                              |
+|-----------------------------------------------|-------------------------------------|---------------------------------------------------------------------------------|
+| [sdk.vault.deposit](#sdkvaultdeposit)         | [sdk.osToken.mint](#sdkostokenmint) | [sdk.rewardSplitter.create](#sdkrewardsplittercreate)                           |
+| [sdk.vault.withdraw](#sdkvaultwithdraw)       | [sdk.osToken.burn](#sdkostokenburn) | [sdk.rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) |
+| [sdk.vault.operate](#sdkvaultoperate)         |                                     |                                                                                 |
+| [sdk.claimExitQueue](#sdkvaultclaimexitqueue) |                                     |                                                                                 |
+
 
 ## API-Vault
 
@@ -389,6 +392,56 @@ type Output = {
 
 ```ts
 await sdk.vault.getBlocklist({
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getRewardSplitters`
+
+#### Description:
+
+Fetch the list of created reward splitters. A reward splitter is a contract designed to distribute vault rewards among multiple fee recipients in predefined proportions.
+To use a reward splitter, its address should be added to the vault as a fee recipient.
+
+
+#### Arguments:
+
+| Name | Type     | Type    | Description                                                                                                                                |
+|------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| vaultAddress | `string` | **Yes** | The address of the vault                                                                                                                                          |
+| owner | `string` | **Yes** | The owner of the reward splitter |
+| rewardSplitterAddress | `string` | **No**  | The address of the reward splitter (optional)                                                                                                 |
+
+#### Returns:
+
+```ts
+type FeeRecipient = {
+  shares: bigint
+  percent: number
+  address: string
+}
+
+type RewardSplitter = {
+  owner: string
+  address: string
+  totalShares: bigint
+  feeRecipients: FeeRecipient[]
+}
+
+type Output = {
+  rewardSplitters: RewardSplitter[]
+}
+```
+
+| Name              | Description |
+|-------------------|-------------|
+| `rewardSplitters` | An array of objects representing the result of the query based on your parameters |
+
+#### Example:
+
+```ts
+await sdk.vault.getRewardSplitters({
+  owner: '0x...',
   vaultAddress: '0x...',
 })
 ```
@@ -936,9 +989,9 @@ Retrieving a transaction to verify that the data went into the subgraph after th
 
 #### Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| hash | `string` | **Yes** | Transaction hash |
+| Name | Type     | Required | Description      |
+|------|----------|----------|------------------|
+| hash | `string` | **Yes**  | Transaction hash |
 
 #### Returns:
 
@@ -966,11 +1019,11 @@ Deposit (stake) in a vault
 
 #### Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| assets | `bigint` | **Yes** | Deposit amount |
-| userAddress | `string` | **Yes** | - |
-| vaultAddress | `string` | **Yes** | - |
+| Name         | Type     | Required | Description    |
+|--------------|----------|----------|----------------|
+| assets       | `bigint` | **Yes**  | Deposit amount |
+| userAddress  | `string` | **Yes**  | -              |
+| vaultAddress | `string` | **Yes**  | -              |
 
 #### Example:
 
@@ -997,11 +1050,11 @@ Withdrawal of funds from a vault
 
 #### Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| assets | `bigint` | **Yes** | Withdraw amount |
-| userAddress | `string` | **Yes** | - |
-| vaultAddress | `string` | **Yes** | - |
+| Name         | Type     | Required | Description     |
+|--------------|----------|----------|-----------------|
+| assets       | `bigint` | **Yes**  | Withdraw amount |
+| userAddress  | `string` | **Yes**  | -               |
+| vaultAddress | `string` | **Yes**  | -               |
 
 #### Example:
 
@@ -1060,11 +1113,11 @@ Take the freed tokens from the queue
 
 #### Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| positions | `string` | **Yes** | `postions` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
-| userAddress | `string` | **Yes** | - |
-| vaultAddress | `string` | **Yes** | - |
+| Name         | Type     | Required | Description                                                                       |
+|--------------|----------|----------|-----------------------------------------------------------------------------------|
+| positions    | `string` | **Yes**  | `postions` from [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) |
+| userAddress  | `string` | **Yes**  | -                                                                                 |
+| vaultAddress | `string` | **Yes**  | -                                                                                 |
 
 #### Example:
 
@@ -1107,18 +1160,18 @@ Updates the vault by authorized personnel such as the vault admin, whitelister, 
 
 #### Arguments:
 
-| Name         | Type                                         | Required | Access            | Description                                                                                                                 |
-|--------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| blocklist    | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| keysManager  | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                           |
-| whitelister  | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
-| feeRecipient  | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
-| validatorsRoot  | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                       |
-| blocklistManager  | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
-| metadataIpfsHash    | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
-| userAddress  | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |
-| vaultAddress | `string`                                     | **Yes**  | -                 | The address of the vault                                                                                                    |
+| Name             | Type                                         | Required | Access            | Description                                                                                                                 |
+|------------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| whitelist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| blocklist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| keysManager      | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                           |
+| whitelister      | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
+| feeRecipient     | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
+| validatorsRoot   | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                       |
+| blocklistManager | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
+| metadataIpfsHash | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
+| userAddress      | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |
+| vaultAddress     | `string`                                     | **Yes**  | -                 | The address of the vault                                                                                                    |
 
 #### Example:
 
@@ -1195,11 +1248,11 @@ Use data from methods [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) and [sdk.o
 
 #### Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| shares | `bigint` | **Yes** | mint amount |
-| userAddress | `string` | **Yes** | - |
-| vaultAddress | `string` | **Yes** | - |
+| Name         | Type     | Required | Description |
+|--------------|----------|----------|-------------|
+| shares       | `bigint` | **Yes**  | mint amount |
+| userAddress  | `string` | **Yes**  | -           |
+| vaultAddress | `string` | **Yes**  | -           |
 
 #### Example:
 
@@ -1275,11 +1328,11 @@ Burns your osToken
 
 #### Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| shares | `bigint` | **Yes** | Burn amount |
-| userAddress | `string` | **Yes** | - |
-| vaultAddress | `string` | **Yes** | - |
+| Name         | Type     | Required | Description |
+|--------------|----------|----------|-------------|
+| shares       | `bigint` | **Yes**  | Burn amount |
+| userAddress  | `string` | **Yes**  | -           |
+| vaultAddress | `string` | **Yes**  | -           |
 
 #### Example:
 
@@ -1298,6 +1351,96 @@ const { data, to, value } = await sdk.osToken.burn.encode(params)
 const gas = await sdk.osToken.burn.estimateGas(params)
 ```
 ---
+### `sdk.rewardSplitter.create`
+
+#### Description:
+
+Creates a reward splitter contract to distribute vault rewards among multiple fee recipients in predefined proportions.
+Subsequently, the address of the created reward splitter must be added to the vault as a fee recipient in order to
+utilize it. Please note that only vault admin is permitted to perform this action.
+
+
+#### Arguments:
+| Name         | Type     | Required | Description                                                                                                                          |
+|--------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress  | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
+| vaultAddress | `string` | **Yes**  | The address of the vault                                                                                                             |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.create(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.create.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.create.estimateGas(params)
+```
+---
+### `sdk.rewardSplitter.updateFeeRecipients`
+
+#### Description:
+
+Updates the reward splitter fee recipients and predefined fee splitting proportions.
+Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
+
+
+#### Arguments:
+
+| Name                  | Type                                         | Required | Description                                                                                                                                                                                                                                                                                         |
+|-----------------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress           | `string`                                     | **Yes**  | The address of the user initiating the action. It should be the vault admin, who is also the owner of the reward splitter.                                                                                                                                                                          |
+| vaultAddress          | `string`                                     | **Yes**  | The address of the vault                                                                                                                                                                                                                                                                            |
+| rewardSplitterAddress | `string`                                     | **Yes**  | The address of the reward splitter                                                                                                                                                                                                                                                                  |
+| feeRecipients         | `Array<{ address: string, shares: bigint }>` | **Yes**  | The list of the vault fee recipients with their addresses and shares amount. For simplicity, we suggest setting the amount as a percentage converted to a BigInt value. For example, for 100% shares: `parseEther('100')`                                                                           |
+| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters) action |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  rewardSplitterAddress: '0x...',
+  feeRecipients: [
+    {
+      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
+      shares: parseEther('50'),
+    },
+    {
+      address: '0x...4', // This address will be added as a fee recipient with 50% fee distribution.
+      shares: parseEther('50'),
+    },
+  ],
+  oldFeeRecipients: [
+    {
+      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
+      shares: parseEther('20'),
+    },
+    {
+      address: '0x...2', // This address will be removed from the fee recipients since it is not in the `feeRecipients` list.
+      shares: parseEther('40'),
+    },
+    {
+      address: '0x...3', // This address will also be removed from the fee recipients.
+      shares: parseEther('40'),
+    },
+  ],
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.updateFeeRecipients(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.updateFeeRecipients.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.updateFeeRecipients.estimateGas(params)
+```
+---
 
 ## Description of other parts of the api
 
@@ -1305,18 +1448,19 @@ To retrieve the storage data, you just need the method above. Other parts of the
 
 ### StakeWise class
 
-| Name | Description |
-|------|-------------|
-| **contracts** | Instances of our contracts |
-| **vaultMulticall** | A method to implement a transaction with vault update |
-| **config** | Object with contract addresses and other data |
-| **provider** | Current provider for blockchain communication |
-| **network** | Selected network |
+| Name                        | Description                                                           |
+|-----------------------------|-----------------------------------------------------------------------|
+| **contracts**               | Instances of our contracts                                            |
+| **vaultMulticall**          | A method to implement a transaction with vault update                 |
+| **rewardSplitterMulticall** | A method to implement a reward splitter transaction with vault update |
+| **config**                  | Object with contract addresses and other data                         |
+| **provider**                | Current provider for blockchain communication                         |
+| **network**                 | Selected network                                                      |
 
 ### SDK
 
-| Name | Description |
-|------|------|
-| **BigDecimal** | Wrapper over bignumber.js |
-| **configs** | Data for each network |
+| Name               | Description                                               |
+|--------------------|-----------------------------------------------------------|
+| **BigDecimal**     | Wrapper over bignumber.js                                 |
+| **configs**        | Data for each network                                     |
 | **createContract** | A wrapper over the Contract class from the ethers package |

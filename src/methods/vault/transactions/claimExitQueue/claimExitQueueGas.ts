@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getMulticallGas } from '../../utils'
+import { getVaultMulticallGas } from '../../../utils'
 import type { ClaimExitQueueInput } from './types'
 
 
@@ -8,7 +8,7 @@ const claimExitQueueGas = (values: ClaimExitQueueInput) => {
 
   const multicallArgs = commonLogic(values)
 
-  return getMulticallGas({ ...multicallArgs, provider })
+  return getVaultMulticallGas({ ...multicallArgs, provider })
 }
 
 

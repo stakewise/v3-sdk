@@ -9,6 +9,7 @@ import getMaxWithdraw from './requests/getMaxWithdraw'
 import getStakeBalance from './requests/getStakeBalance'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
+import getRewardSplitters from './requests/getRewardSplitters'
 import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
@@ -23,6 +24,7 @@ export default {
   requests: {
     getExitQueuePositions,
     getScorePercentiles,
+    getRewardSplitters,
     getHarvestParams,
     getStakerActions,
     getStakeBalance,
