@@ -2,6 +2,8 @@ import { validateArgs } from '../../../../utils'
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
 import fetchExitRequestDuration from './fetchExitRequestDuration'
+import { wrapAbortPromise } from '../../../../modules/gql-module'
+import type { ParseExitRequestsOutput } from './parseExitRequests'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
@@ -11,8 +13,9 @@ type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
   options: StakeWise.Options
 }
 
-const mock = {
+const mock: ParseExitRequestsOutput = {
   total: 0n,
+  duration: 0,
   positions: [],
   withdrawable: 0n,
 }
@@ -22,25 +25,25 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const duration = await fetchExitRequestDuration({ options, vaultAddress, userAddress })
+  const [ duration, data ] = await Promise.all([
+    fetchExitRequestDuration({ options, vaultAddress, userAddress }),
+    fetchExitQueuePositions({ options, vaultAddress, userAddress }),
+  ])
 
-  return fetchExitQueuePositions({ options, vaultAddress, userAddress })
-    .then((data) => {
-      if (!data) {
-        return mock
-      }
+  if (!data) {
+    return mock
+  }
 
-      return parseExitRequests({
-        options,
-        duration,
-        provider,
-        contracts,
-        userAddress,
-        vaultAddress,
-        exitRequests: data,
-      })
-    })
+  return parseExitRequests({
+    options,
+    duration,
+    provider,
+    contracts,
+    userAddress,
+    vaultAddress,
+    exitRequests: data,
+  })
 }
 
 
-export default getExitQueuePositions
+export default wrapAbortPromise<GetExitQueuePositionsInput, ParseExitRequestsOutput>(getExitQueuePositions)
