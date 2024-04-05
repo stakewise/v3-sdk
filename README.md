@@ -126,8 +126,10 @@ promise.abort()
 |-----------------------------------------------|-------------------------------------|---------------------------------------------------------------------------------|
 | [sdk.vault.deposit](#sdkvaultdeposit)         | [sdk.osToken.mint](#sdkostokenmint) | [sdk.rewardSplitter.create](#sdkrewardsplittercreate)                           |
 | [sdk.vault.withdraw](#sdkvaultwithdraw)       | [sdk.osToken.burn](#sdkostokenburn) | [sdk.rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) |
-| [sdk.vault.operate](#sdkvaultoperate)         |                                     |                                                                                 |
-| [sdk.claimExitQueue](#sdkvaultclaimexitqueue) |                                     |                                                                                 |
+| [sdk.vault.operate](#sdkvaultoperate)         |  |  |
+| [sdk.vault.setDepositDataManager](#sdkvaultsetdepositdatamanager)         |  |  |
+| [sdk.vault.setDepositDataRoot](#sdkvaultsetdepositdataroot)         |  |  |
+| [sdk.claimExitQueue](#sdkvaultclaimexitqueue) |  |  |
 
 
 ## API-Vault
@@ -1180,6 +1182,37 @@ const hash = await sdk.vault.setDepositDataRoot(params)
 const { data, to } = await sdk.vault.setDepositDataRoot.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.setDepositDataRoot.estimateGas(params)
+```
+---
+### `sdk.vault.setDepositDataManager`
+
+#### Description:
+
+Adding deposit data manager to vaults **version 2** or higher
+
+#### Arguments:
+
+| Name | Type | Required | Description |
+|------|------|-------------|---------|
+| validatorsRoot | `string` | **Yes** | The vault validators merkle tree  |
+| userAddress | `string` | **Yes** | - |
+| vaultAddress | `string` | **Yes** | - |
+
+#### Example:
+
+```ts
+const params = {
+  validatorsRoot: 'hash',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setDepositDataManager(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setDepositDataManager.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setDepositDataManager.estimateGas(params)
 ```
 ---
 ### `sdk.vault.operate`
