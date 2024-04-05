@@ -1,4 +1,4 @@
-import { checkKeysManagerAccess } from '../util'
+import { checkDepositDataManagerAccess } from '../util'
 import type { SetDepositDataRootInput as Input } from './types'
 
 
@@ -12,7 +12,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
       return result
     }
     catch (actionError) {
-      return checkKeysManagerAccess(values)
+      return checkDepositDataManagerAccess(values)
         .then(
           () => Promise.reject(actionError),
           (error) => Promise.reject(error)

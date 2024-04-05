@@ -6,18 +6,18 @@ import {
   getMetadataParams,
   getBlocklistParams,
   getWhitelistParams,
-  getKeysManagerParams,
   getWhitelisterParams,
   getFeeRecipientParams,
   getValidatorsRootParams,
   getBlocklistManagerParams,
+  getDepositDataManagerParams,
 } from '../util'
 
 
 export const commonLogic = async (values: MulticallInput) => {
   const {
     options, contracts, userAddress, vaultAddress, provider,
-    blocklist, whitelist, keysManager, whitelister, feeRecipient,
+    blocklist, whitelist, depositDataManager, whitelister, feeRecipient,
     validatorsRoot, blocklistManager, metadataIpfsHash,
   } = values
 
@@ -68,10 +68,10 @@ export const commonLogic = async (values: MulticallInput) => {
 
     params.push(...whitelistParams)
   }
-  if (keysManager) {
-    const keysManagerParams = getKeysManagerParams({ ...baseInput, keysManager })
+  if (depositDataManager) {
+    const depositDataManagerParams = getDepositDataManagerParams({ ...baseInput, depositDataManager })
 
-    params.push(...keysManagerParams)
+    params.push(...depositDataManagerParams)
   }
   if (whitelister) {
     const whitelisterParams = getWhitelisterParams({ ...baseInput, whitelister })

@@ -19,38 +19,44 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
   }
 
   const {
+    apy,
     admin,
     address,
     version,
     mevEscrow,
     createdAt,
     feePercent,
-    performance,
     keysManager,
+    performance,
     totalAssets,
     feeRecipient,
     blocklistCount,
     whitelistCount,
-    apy,
+    validatorsManager,
+    depositDataManager: initialDepositDataManager,
     ...rest
   } = vault
 
+  const depositDataManager = Number(version) > 1 ? initialDepositDataManager : keysManager
+
   return {
     ...rest,
+    apy: Number(apy),
+    version: Number(version),
     isSmoothingPool: !mevEscrow,
     feePercent: feePercent / 100,
-    version: Number(version),
     vaultAdmin: getAddress(admin),
     performance: Number(performance),
     vaultAddress: getAddress(address),
     createdAt: Number(createdAt) * 1000,
     totalAssets: formatEther(totalAssets),
     feeRecipient: getAddress(feeRecipient),
-    vaultKeysManager: getAddress(keysManager),
-    apy: Number(apy),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
+    keysManager: keysManager ? getAddress(keysManager) : '',
     whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
+    validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
+    depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',
     blocklistManager: vault.blocklistManager ? getAddress(vault.blocklistManager) : '',
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)

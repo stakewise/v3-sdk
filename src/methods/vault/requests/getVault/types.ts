@@ -3,7 +3,16 @@ import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 export type ModifiedVault = Omit<
   VaultQueryPayload['vault'],
-  'admin' | 'address' | 'mevEscrow' | 'keysManager' | 'apy' | 'performance' | 'createdAt' | 'blocklistCount' | 'whitelistCount' | 'version'
+  'apy'
+  | 'admin'
+  | 'address'
+  | 'version'
+  | 'createdAt'
+  | 'mevEscrow'
+  | 'keysManager'
+  | 'performance'
+  | 'blocklistCount'
+  | 'whitelistCount'
 > & {
   apy: number
   version: number
@@ -14,6 +23,10 @@ export type ModifiedVault = Omit<
   mevRecipient: string
   blocklistCount: number
   whitelistCount: number
-  vaultKeysManager: string
   isSmoothingPool: boolean
+
+  /**
+   * @deprecated use depositDataManager
+   */
+  keysManager: string
 }

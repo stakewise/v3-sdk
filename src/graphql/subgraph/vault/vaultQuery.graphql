@@ -19,12 +19,14 @@ query Vault($address: ID!) {
     displayName
     description
     whitelister
-    keysManager
     tokenSymbol
+    keysManager
     feeRecipient
     validatorsRoot
     blocklistCount
     whitelistCount
     blocklistManager
+    validatorsManager
+    depositDataManager
   }
 }

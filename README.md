@@ -566,7 +566,7 @@ type Output = {
   blocklistCount: number
   imageUrl: string | null
   blocklistManager: string
-  vaultKeysManager: string
+  depositDataManager: string
   isSmoothingPool: boolean
   tokenName: string | null
   tokenSymbol: string | null
@@ -596,7 +596,7 @@ type Output = {
 | `blocklistCount`   | Number of addresses in the [blocklist](#sdkvaultgetblocklist) |
 | `imageUrl`         | Link for vault logo                                           |
 | `blocklistManager` | Blocklist manager                                             |
-| `vaultKeysManager` | Keys manager address                                          |
+| `depositDataManager` | Keys manager address                                          |
 | `isSmoothingPool`  | Smoothing poll or Vault escrow                                |
 | `tokenName`        | ERC20 token name                                              |
 | `tokenSymbol`      | ERC20 token symbol                                            |
@@ -1209,11 +1209,11 @@ Updates the vault by authorized personnel such as the vault admin, whitelister, 
 ```ts
 // Data to update the vault by admin.
 const params = {
-  keysManager: '0x...',
   whitelister: '0x...',
   feeRecipient: '0x...',
   validatorsRoot: '0x...',
   blocklistManager: '0x...',
+  depositDataManager: '0x...',
   metadataIpfsHash: '...',
   vaultAddress: '0x...',
   userAddress: '0x...',
