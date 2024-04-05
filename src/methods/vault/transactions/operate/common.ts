@@ -37,7 +37,11 @@ export const commonLogic = async (values: MulticallInput) => {
   const isSecondVersion = version === 2
 
   if (isSecondVersion && validatorsRoot) {
-    throw new Error('To set validatorsRoot in version 2 of vault, use the vault.setDepositDataRoot method')
+    throw new Error('To set validatorsRoot in version 2 of vault, use the vault.setDepositDataRoot() method')
+  }
+
+  if (isSecondVersion && depositDataManager) {
+    throw new Error('To set depositDataManager in version 2 of vault, use the vault.setDepositDataManager() method')
   }
 
   const baseMulticall = {

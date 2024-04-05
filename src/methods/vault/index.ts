@@ -19,6 +19,7 @@ import { default as operate } from './transactions/operate'
 import { default as withdraw } from './transactions/withdraw'
 import { default as claimExitQueue } from './transactions/claimExitQueue'
 import { default as setDepositDataRoot } from './transactions/setDepositDataRoot'
+import { default as setDepositDataManager } from './transactions/setDepositDataManager'
 
 
 export default {
@@ -43,5 +44,6 @@ export default {
     withdraw,
     claimExitQueue,
     setDepositDataRoot,
+    setDepositDataManager,
   },
 } as const
