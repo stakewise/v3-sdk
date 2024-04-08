@@ -796,7 +796,7 @@ const apy = await sdk.osToken.getAPY()
 
 #### Description:
 
-Os token average rewards per second
+osETH average rewards per second
 
 #### Returns:
 
@@ -1219,7 +1219,7 @@ const gas = await sdk.vault.setDepositDataManager.estimateGas(params)
 
 #### Description:
 
-Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, or keys manager.
+Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, validators manager, or deposit-data manager.
 
 
 #### Arguments:
@@ -1309,7 +1309,7 @@ const gas = await sdk.vault.operate.estimateGas(params)
 
 #### Description:
 
-Getting osToken. The amount of token you can get depends on the user's current deposit in the storage. 
+Getting osToken. The amount of token you can get depends on the user's current deposit in the vault. 
 Use data from methods [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) and [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) to block a call to mint() if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction would make the position unhealthy
 
 #### Arguments:
