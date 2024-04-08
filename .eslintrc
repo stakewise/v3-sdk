@@ -23,6 +23,7 @@
 
     // Common
 
+    "no-empty": 0,
     "no-trailing-spaces": 1,
     "semi": [ "error", "never" ],
     "max-len": [ "warn", { "code": 140 } ],

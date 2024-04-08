@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
+import type { CreateRewardSplitter } from './types'
 import createRewardSplitterGas from './createRewardSplitterGas'
 import createRewardSplitterEncode from './createRewardSplitterEncode'
-import type { CreateRewardSplitter } from './types'
 
 
 const createRewardSplitter: CreateRewardSplitter = async (values) => {

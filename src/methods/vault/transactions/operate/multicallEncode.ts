@@ -3,8 +3,8 @@ import type { MulticallInput } from './types'
 import { commonLogic } from './common'
 
 
-const multicallEncode = (values: MulticallInput): Promise<StakeWise.TransactionData> => {
-  const multicallArgs = commonLogic(values)
+const multicallEncode = async (values: MulticallInput): Promise<StakeWise.TransactionData> => {
+  const multicallArgs = await commonLogic(values)
 
   return getVaultMulticallEncode(multicallArgs)
 }

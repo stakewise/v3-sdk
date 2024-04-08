@@ -16,18 +16,65 @@ import { default as burn } from './transactions/burn'
 
 export default {
   requests: {
+    /**
+     * @description Current os token APY.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetapy
+    */
     getAPY,
+    /**
+     * @description Maximum number of **shares** for minting
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetmaxmint
+    */
     getMaxMint,
+    /**
+     * @description Basic information on the token
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetbasedata
+    */
     getBaseData,
+    /**
+     * @description User position data
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetposition
+    */
     getPosition,
+    /**
+     * @description How many osToken burn do you need to make to withdraw all deposit.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetburnamount
+    */
     getBurnAmount,
+    /**
+     * @description Get the health of osETH position
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengethealthfactor
+    */
     getHealthFactor,
+    /**
+     * @description Convert ETH (assets) to osToken (shares)
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetsharesfromassets
+    */
     getSharesFromAssets,
+    /**
+     * @description Convert osToken (shares) to ETH (assets)
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetassetsfromshares
+    */
     getAssetsFromShares,
+    /**
+     * @description osETH average rewards per second
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetavgrewardspersecond
+    */
     getAvgRewardsPerSecond,
   },
   transactions: {
+    /**
+     * @description Getting osToken. The amount of token you can get depends on the user's current deposit in the vault.
+     * Use data from methods osToken.getMaxMint and osToken.getHealthFactor to block a call to mint()
+     * if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction
+     * would make the position unhealthy
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenmint
+    */
     mint,
+    /**
+     * @description Burns your osToken
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenburn
+    */
     burn,
   },
 } as const

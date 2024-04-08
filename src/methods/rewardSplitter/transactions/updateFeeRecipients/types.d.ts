@@ -1,6 +1,6 @@
+import type { BaseInput } from '../../../utils'
 import updateFeeRecipientsGas from './updateFeeRecipientsGas'
 import updateFeeRecipientsEncode from './updateFeeRecipientsEncode'
-import type { BaseInput } from '../../../utils'
 import type { FeeRecipient as SubgraphFeeRecipient } from '../../../vault/requests/getRewardSplitters/types'
 
 

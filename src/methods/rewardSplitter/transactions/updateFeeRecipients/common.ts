@@ -2,8 +2,8 @@ import { isAddress } from 'ethers'
 
 import vault from '../../../vault'
 import { validateArgs } from '../../../../utils'
-import { checkAdminAccess } from '../../../vault/transactions/operate/util'
 import { rewardSplitterMulticall } from '../../../../contracts'
+import { checkAdminAccess } from '../../../vault/transactions/util'
 import type { FeeRecipient, UpdateFeeRecipientsInput } from './types'
 
 

@@ -1,6 +1,6 @@
+import { BaseInput } from '../../../utils'
 import createRewardSplitterGas from './createRewardSplitterGas'
 import createRewardSplitterEncode from './createRewardSplitterEncode'
-import { BaseInput } from '../../../utils'
 
 
 export type CreateRewardSplitterInput = BaseInput
