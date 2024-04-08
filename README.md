@@ -1226,16 +1226,17 @@ Updates the vault by authorized personnel such as the vault admin, whitelister, 
 
 | Name             | Type                                         | Required | Access            | Description                                                                                                                 |
 |------------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| blocklist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| depositDataManager      | `string`                                     | **No**   | Admin             | Address of the vault keys manager. Support only **first version** on valults.                                                                                           |
-| whitelister      | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
-| feeRecipient     | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
-| validatorsRoot   | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root. Support only **first version** on valults.                                                                                       |
-| blocklistManager | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
-| metadataIpfsHash | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
-| userAddress      | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |
-| vaultAddress     | `string`                                     | **Yes**  | -                 | The address of the vault                                                                                                    |
+| whitelist          | `Array<{ address: string, isNew: boolean }>` | **No** | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| depositDataManager | `string` | **No**  | Deposit Data Manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager` |
+| validatorsManager  | `string` | **No**  | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |
+| whitelister        | `string` | **No**  | Admin                | Address of the vault whitelister |
+| feeRecipient       | `string` | **No**  | Admin                | Address of the vault fee recipient |
+| validatorsRoot     | `string` | **No**  | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot` |
+| blocklistManager   | `string` | **No**  | Admin                | The blocklisted vault blocklist manager |
+| metadataIpfsHash   | `string` | **No**  | Admin                | The vault metadata IPFS hash |
+| userAddress        | `string` | **Yes** | -                    | The address of the user making the update (admin, whitelister, blocklist manager or keys manager) |
+| vaultAddress       | `string` | **Yes** | -                    | The address of the vault  |
 
 #### Example:
 
@@ -1246,6 +1247,7 @@ const params = {
   feeRecipient: '0x...',
   validatorsRoot: '0x...',
   blocklistManager: '0x...',
+  validatorsManager: '0x...',
   depositDataManager: '0x...',
   metadataIpfsHash: '...',
   vaultAddress: '0x...',

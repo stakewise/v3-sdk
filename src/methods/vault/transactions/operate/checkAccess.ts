@@ -14,7 +14,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
       blocklist, whitelist, depositDataManager, whitelister, feeRecipient,
-      validatorsRoot, blocklistManager, metadataIpfsHash,
+      validatorsRoot, blocklistManager, metadataIpfsHash, validatorsManager,
     } = values
 
     try {
@@ -23,9 +23,17 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
       return result
     }
     catch (actionError) {
-      const isAdmin = Boolean(whitelister || depositDataManager || feeRecipient || blocklistManager || metadataIpfsHash)
-      const isDepositData = Boolean(validatorsRoot)
+      const isAdmin = Boolean(
+        whitelister
+        || feeRecipient
+        || blocklistManager
+        || metadataIpfsHash
+        || validatorsManager
+        || depositDataManager
+      )
+
       const isWhitelister = Boolean(whitelist)
+      const isDepositData = Boolean(validatorsRoot)
       const isBlocklistManager = Boolean(blocklist)
 
       const checkPromises = []
