@@ -1,5 +1,5 @@
-import { checkDepositDataManagerAccess } from '../util'
-import type { SetDepositDataRootInput as Input } from './types'
+import { checkAdminAccess } from '../util'
+import type { SetDepositDataManagerInput as Input } from './types'
 
 
 type Action<Input, Output> = (props: Input) => Promise<Output>
@@ -12,7 +12,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
       return result
     }
     catch (actionError) {
-      return checkDepositDataManagerAccess(values)
+      return checkAdminAccess(values)
         .then(
           () => Promise.reject(actionError),
           (error) => Promise.reject(error)
