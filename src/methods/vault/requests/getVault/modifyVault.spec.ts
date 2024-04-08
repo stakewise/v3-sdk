@@ -35,6 +35,8 @@ describe('modifyVault', () => {
       keysManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       feeRecipient: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
     },
   }
 
@@ -61,11 +63,13 @@ describe('modifyVault', () => {
       description: 'This is a mock vault',
       vaultAdmin: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       whitelister: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      keysManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       vaultAddress: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       feeRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       mevRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      vaultKeysManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       blocklistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      validatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
     }
 
     const result = modifyVault({

@@ -73,32 +73,32 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ```
 #### SDK Constructor Arguments:
 
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| network | `Network` | **Yes** | Chain id |
-| provider | `BrowserProvider or JsonRpcProvider` | **No** | You can provide your implementation of the provender for ethers |
-| endpoints.web3 | `string OR string[]` | **No** | Your urls for connect to blockchain |
-| endpoints.subgraph | `string` | **No** | stakewise sbugraph url |
-| endpoints.api | `string` | **No** | stakewise backend url |
+| Name               | Type                                 | Required | Description |
+|--------------------|--------------------------------------|----------|----------------|
+| network            | `Network`                            | **Yes**  | Chain id |
+| provider           | `BrowserProvider or JsonRpcProvider` | **No**   | You can provide your implementation of the provender for ethers |
+| endpoints.web3     | `string OR string[]`                 | **No**   | Your urls for connect to blockchain |
+| endpoints.subgraph | `string`                             | **No**   | stakewise sbugraph url |
+| endpoints.api      | `string`                             | **No**   | stakewise backend url |
 
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                         | **osToken**                                                       | **Utils**                                               |
-|-------------------------------------------------------------------|-------------------------------------------------------------------|---------------------------------------------------------|
-| [sdk.vault.getStakerActions](#sdkvaultgetstakeractions)           | [sdk.osToken.getBurnAmount](#sdkostokengetburnamount)             | [sdk.utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [sdk.vault.getSnapshots](#sdkvaultgetsnapshots)                   | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)         | [sdk.utils.getTransactions](#sdkutilsgettransactions)   |
-| [sdk.vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [sdk.osToken.getAPY](#sdkostokengetapy)                           |                                                         |
-| [sdk.vault.getValidators](#sdkvaultgetvalidators)                 | [sdk.osToken.getPosition](#sdkostokengetposition)                 |                                                         |
-| [sdk.vault.getVault](#sdkvaultgetvault)                           | [sdk.osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                         |
-| [sdk.vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [sdk.osToken.getBaseData](#sdkostokengetbasedata)                 |                                                         |
-| [sdk.vault.getHarvestParams](#sdkvaultgetharvestparams)           | [sdk.osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                         |
-| [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance)             | [sdk.osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                         |
-| [sdk.vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                                   |                                                         |
-| [sdk.vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                                   |                                                         |
-| [sdk.vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                                   |                                                         |
-| [sdk.vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                                   |                                                         |
-| [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                                   |                                                         |
+| **Vault**                                                     | **osToken**                                                   | **Utils**                                           |
+|---------------------------------------------------------------|---------------------------------------------------------------|-----------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)             | [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [vault.getSnapshots](#sdkvaultgetsnapshots)                   | [osToken.getHealthFactor](#sdkostokengethealthfactor)         | [utils.getTransactions](#sdkutilsgettransactions)   |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                           |                                                     |
+| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                 |                                                     |
+| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                     |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getBaseData](#sdkostokengetbasedata)                 |                                                     |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                     |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                     |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                     |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                     |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                     |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                     |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                               |                                                     |
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -126,8 +126,10 @@ promise.abort()
 |-----------------------------------------------|-------------------------------------|---------------------------------------------------------------------------------|
 | [sdk.vault.deposit](#sdkvaultdeposit)         | [sdk.osToken.mint](#sdkostokenmint) | [sdk.rewardSplitter.create](#sdkrewardsplittercreate)                           |
 | [sdk.vault.withdraw](#sdkvaultwithdraw)       | [sdk.osToken.burn](#sdkostokenburn) | [sdk.rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) |
-| [sdk.vault.operate](#sdkvaultoperate)         |                                     |                                                                                 |
-| [sdk.claimExitQueue](#sdkvaultclaimexitqueue) |                                     |                                                                                 |
+| [sdk.vault.operate](#sdkvaultoperate)                             |  |  |
+| [sdk.vault.setDepositDataManager](#sdkvaultsetdepositdatamanager) |  |  |
+| [sdk.vault.setDepositDataRoot](#sdkvaultsetdepositdataroot)       |  |  |
+| [sdk.claimExitQueue](#sdkvaultclaimexitqueue)                     |  |  |
 
 
 ## API-Vault
@@ -566,7 +568,7 @@ type Output = {
   blocklistCount: number
   imageUrl: string | null
   blocklistManager: string
-  vaultKeysManager: string
+  depositDataManager: string
   isSmoothingPool: boolean
   tokenName: string | null
   tokenSymbol: string | null
@@ -596,7 +598,7 @@ type Output = {
 | `blocklistCount`   | Number of addresses in the [blocklist](#sdkvaultgetblocklist) |
 | `imageUrl`         | Link for vault logo                                           |
 | `blocklistManager` | Blocklist manager                                             |
-| `vaultKeysManager` | Keys manager address                                          |
+| `depositDataManager` | Keys manager address                                        |
 | `isSmoothingPool`  | Smoothing poll or Vault escrow                                |
 | `tokenName`        | ERC20 token name                                              |
 | `tokenSymbol`      | ERC20 token symbol                                            |
@@ -794,7 +796,7 @@ const apy = await sdk.osToken.getAPY()
 
 #### Description:
 
-Os token average rewards per second
+osETH average rewards per second
 
 #### Returns:
 
@@ -1151,38 +1153,102 @@ const { data, to } = await sdk.vault.claimExitQueue.encode(params)
 const gas = await sdk.vault.claimExitQueue.estimateGas(params)
 ```
 ---
+### `sdk.vault.setDepositDataRoot`
+
+#### Description:
+
+Adding root validators to vaults **version 2** or higher
+
+#### Arguments:
+
+| Name           | Type     | Required | Description |
+|----------------|----------|----------|-------------|
+| validatorsRoot | `string` | **Yes**  | The vault validators merkle tree  |
+| userAddress    | `string` | **Yes**  | - |
+| vaultAddress   | `string` | **Yes**  | - |
+
+#### Example:
+
+```ts
+const params = {
+  validatorsRoot: 'hash',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setDepositDataRoot(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setDepositDataRoot.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setDepositDataRoot.estimateGas(params)
+```
+---
+### `sdk.vault.setDepositDataManager`
+
+#### Description:
+
+Adding deposit data manager to vaults **version 2** or higher
+
+#### Arguments:
+
+| Name           | Type     | Required | Description |
+|----------------|----------|----------|-------------|
+| managerAddress | `string` | **Yes**  | New deposit-data manager  |
+| userAddress    | `string` | **Yes**  | - |
+| vaultAddress   | `string` | **Yes**  | - |
+
+#### Example:
+
+```ts
+const params = {
+  managerAddress: '0x...',
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setDepositDataManager(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setDepositDataManager.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setDepositDataManager.estimateGas(params)
+```
+---
 ### `sdk.vault.operate`
 
 #### Description:
 
-Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, or keys manager.
+Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, validators manager, or deposit-data manager.
 
 
 #### Arguments:
 
 | Name             | Type                                         | Required | Access            | Description                                                                                                                 |
 |------------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| blocklist        | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| keysManager      | `string`                                     | **No**   | Admin             | Address of the vault keys manager                                                                                           |
-| whitelister      | `string`                                     | **No**   | Admin             | Address of the vault whitelister                                                                                            |
-| feeRecipient     | `string`                                     | **No**   | Admin             | Address of the vault fee recipient                                                                                          |
-| validatorsRoot   | `string`                                     | **No**   | Keys manager      | The vault validators merkle tree root                                                                                       |
-| blocklistManager | `string`                                     | **No**   | Admin             | The blocklisted vault blocklist manager                                                                                     |
-| metadataIpfsHash | `string`                                     | **No**   | Admin             | The vault metadata IPFS hash                                                                                                |
-| userAddress      | `string`                                     | **Yes**  | -                 | The address of the user making the update (admin, whitelister, blocklist manager or keys manager)                           |
-| vaultAddress     | `string`                                     | **Yes**  | -                 | The address of the vault                                                                                                    |
+| whitelist          | `Array<{ address: string, isNew: boolean }>` | **No** | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| depositDataManager | `string` | **No**  | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager` |
+| validatorsManager  | `string` | **No**  | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |
+| whitelister        | `string` | **No**  | Admin                | Address of the vault whitelister |
+| feeRecipient       | `string` | **No**  | Admin                | Address of the vault fee recipient |
+| validatorsRoot     | `string` | **No**  | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot` |
+| blocklistManager   | `string` | **No**  | Admin                | The blocklisted vault blocklist manager |
+| metadataIpfsHash   | `string` | **No**  | Admin                | The vault metadata IPFS hash |
+| userAddress        | `string` | **Yes** | -                    | The address of the user making the update (admin, whitelister, blocklist manager or keys manager) |
+| vaultAddress       | `string` | **Yes** | -                    | The address of the vault  |
 
 #### Example:
 
 ```ts
 // Data to update the vault by admin.
 const params = {
-  keysManager: '0x...',
   whitelister: '0x...',
   feeRecipient: '0x...',
   validatorsRoot: '0x...',
   blocklistManager: '0x...',
+  validatorsManager: '0x...',
+  depositDataManager: '0x...',
   metadataIpfsHash: '...',
   vaultAddress: '0x...',
   userAddress: '0x...',
@@ -1243,7 +1309,7 @@ const gas = await sdk.vault.operate.estimateGas(params)
 
 #### Description:
 
-Getting osToken. The amount of token you can get depends on the user's current deposit in the storage. 
+Getting osToken. The amount of token you can get depends on the user's current deposit in the vault. 
 Use data from methods [sdk.osToken.getMaxMint](#sdkostokengetmaxmint) and [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) to block a call to mint() if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction would make the position unhealthy
 
 #### Arguments:

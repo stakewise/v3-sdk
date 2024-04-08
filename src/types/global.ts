@@ -22,6 +22,7 @@ import type {
   OtherTokenVaultAbi,
   PrivateVaultDiffAbi,
   BlocklistVaultDiffAbi,
+  DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
@@ -80,6 +81,7 @@ declare global {
       type VaultsRegistry = VaultsRegistryAbi
       type MintTokenConfig = MintTokenConfigAbi
       type OtherTokenVault = OtherTokenVaultAbi
+      type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
       type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi

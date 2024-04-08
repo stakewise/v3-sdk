@@ -1,5 +1,5 @@
 import validateList from './validateList'
-import { vaultMulticall } from '../../../../../../contracts'
+import { vaultMulticall } from '../../../../../contracts'
 
 
 export type UpdateBlocklistParams = {

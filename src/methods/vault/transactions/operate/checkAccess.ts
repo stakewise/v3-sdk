@@ -1,5 +1,11 @@
 import type { MulticallInput as Input } from './types'
-import { checkAdminAccess, checkKeysManagerAccess, checkWhitelisterAccess, checkBlocklistManagerAccess } from './util'
+
+import {
+  checkAdminAccess,
+  checkWhitelisterAccess,
+  checkBlocklistManagerAccess,
+  checkDepositDataManagerAccess,
+} from '../util'
 
 
 type Action<Input, Output> = (props: Input) => Promise<Output>
@@ -7,8 +13,8 @@ type Action<Input, Output> = (props: Input) => Promise<Output>
 const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
-      blocklist, whitelist, keysManager, whitelister, feeRecipient,
-      validatorsRoot, blocklistManager, metadataIpfsHash,
+      blocklist, whitelist, depositDataManager, whitelister, feeRecipient,
+      validatorsRoot, blocklistManager, metadataIpfsHash, validatorsManager,
     } = values
 
     try {
@@ -17,9 +23,17 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
       return result
     }
     catch (actionError) {
-      const isAdmin = Boolean(whitelister || keysManager || feeRecipient || blocklistManager || metadataIpfsHash)
-      const isKeysManager = Boolean(validatorsRoot)
+      const isAdmin = Boolean(
+        whitelister
+        || feeRecipient
+        || blocklistManager
+        || metadataIpfsHash
+        || validatorsManager
+        || depositDataManager
+      )
+
       const isWhitelister = Boolean(whitelist)
+      const isDepositData = Boolean(validatorsRoot)
       const isBlocklistManager = Boolean(blocklist)
 
       const checkPromises = []
@@ -29,9 +43,9 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
           checkAdminAccess(values)
         )
       }
-      if (isKeysManager) {
+      if (isDepositData) {
         checkPromises.push(
-          checkKeysManagerAccess(values)
+          checkDepositDataManagerAccess(values)
         )
       }
       if (isWhitelister) {

@@ -19,6 +19,7 @@ import {
   RewardSplitterAbi,
   MintTokenConfigAbi,
   OtherTokenVaultAbi,
+  DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
@@ -101,6 +102,12 @@ const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config)
   provider
 )
 
+const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.DepositDataRegistry>(
+  config.addresses.base.depositDataRegistry,
+  DepositDataRegistryAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -131,6 +138,7 @@ export const createContracts = (input: CreateContractsInput) => {
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
       mintTokenConfig: getMintTokenConfig(provider, config),
+      depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),
     },

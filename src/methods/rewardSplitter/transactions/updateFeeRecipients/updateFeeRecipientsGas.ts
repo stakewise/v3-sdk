@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import { getGas } from '../../../../utils'
-import { rewardSplitterMulticall } from '../../../../contracts'
 import type { UpdateFeeRecipientsInput } from './types'
+import { rewardSplitterMulticall } from '../../../../contracts'
 
 
 const updateFeeRecipientsGas = async (values: UpdateFeeRecipientsInput) => {

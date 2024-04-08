@@ -1,4 +1,4 @@
-import { validateArgs } from '../../../../../../utils'
+import { validateArgs } from '../../../../../utils'
 
 
 type ListItem = {

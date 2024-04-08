@@ -1,6 +1,6 @@
 import { validateArgs } from '../../../../utils'
 import type { CreateRewardSplitterInput } from './types'
-import { checkAdminAccess } from '../../../vault/transactions/operate/util'
+import { checkAdminAccess } from '../../../vault/transactions/util'
 
 
 export const commonLogic = async (values: CreateRewardSplitterInput) => {
