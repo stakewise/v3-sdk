@@ -6,7 +6,7 @@ import setDepositDataManagerEncode from './setDepositDataManagerEncode'
 
 
 const setDepositDataManager: SetDepositDataManagerRoot = async (values) => {
-  const contract = await commonLogic(values)
+  const contract = commonLogic(values)
 
   const result = await contract.setDepositDataManager(values.vaultAddress, values.managerAddress)
 

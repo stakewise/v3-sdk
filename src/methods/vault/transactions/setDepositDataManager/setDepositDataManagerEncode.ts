@@ -3,7 +3,7 @@ import type { SetDepositDataManagerInput } from './types'
 
 
 const setDepositDataManagerEncode = async (values: SetDepositDataManagerInput) => {
-  const contract = await commonLogic(values)
+  const contract = commonLogic(values)
 
   const rx = await contract.setDepositDataManager.populateTransaction(values.vaultAddress, values.managerAddress)
 

@@ -2,7 +2,7 @@ import { SetDepositDataManagerInput } from './types'
 import { validateArgs } from '../../../../utils'
 
 
-export const commonLogic = async (values: SetDepositDataManagerInput) => {
+export const commonLogic = (values: SetDepositDataManagerInput) => {
   const { vaultAddress, managerAddress, userAddress } = values
 
   validateArgs.address({ vaultAddress, userAddress, managerAddress })
