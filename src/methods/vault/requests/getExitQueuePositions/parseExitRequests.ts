@@ -82,8 +82,8 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   for (let i = 0; i < indexes.length; i++) {
     const { positionTicket, timestamp, totalShares, totalAssets } = exitRequests[i]
 
-    queuedShares += BigInt(totalShares)
-    queuedAssets += BigInt(totalAssets)
+    queuedShares += BigInt(totalShares || 0)
+    queuedAssets += BigInt(totalAssets || 0)
 
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.
     const exitQueueIndex = indexes[i][0]
@@ -142,13 +142,13 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
 
     if (isV1Position) {
       // in V1 exit queue exit tickets are shares
-      queuedShares -= exitedTickets
+      queuedShares -= BigInt(exitedTickets || 0)
     }
     else {
-      queuedAssets -= exitedAssets
+      queuedAssets -= BigInt(exitedAssets || 0)
     }
 
-    withdrawableAssets += exitedAssets
+    withdrawableAssets += BigInt(exitedAssets || 0)
   })
 
   if (queuedShares > 0) {
