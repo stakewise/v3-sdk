@@ -1,8 +1,0 @@
-export { default as getMetadataParams }  from './getMetadataParams'
-export { default as getBlocklistParams }  from './getBlocklistParams'
-export { default as getWhitelistParams }  from './getWhitelistParams'
-export { default as getKeysManagerParams }  from './getKeysManagerParams'
-export { default as getWhitelisterParams }  from './getWhitelisterParams'
-export { default as getFeeRecipientParams }  from './getFeeRecipientParams'
-export { default as getValidatorsRootParams }  from './getValidatorsRootParams'
-export { default as getBlocklistManagerParams }  from './getBlocklistManagerParams'
