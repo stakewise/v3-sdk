@@ -2,7 +2,7 @@ import AbortRequest from './abortRequest'
 import type { FetchInput } from './types'
 
 
-interface ExtendedFetchInput<Data, Variables, ModifiedData> extends FetchInput<Data, Variables, ModifiedData> {
+type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variables, ModifiedData> & {
   retryCount?: number
 }
 
