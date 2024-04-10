@@ -7,8 +7,11 @@ type FirstCallback<Data> = (value: Data) => Data | any
 
 type EmptyCallback = () => void
 
+type ErrorCallback<Data, ModifiedData = Data> = (error: Error | any) => Promise<void> | AbortRequest<Data, ModifiedData>
+
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
   onSuccess: ModifyCallback<Data, ModifiedData>
+  onError?: ErrorCallback<Data, ModifiedData>
 }
 
 type PendingRequest = {
@@ -28,7 +31,7 @@ class AbortRequest<Data, ModifiedData> {
   isAborted: boolean
 
   constructor(url: RequestInfo | URL, abortRequestInit: AbortRequestInit<Data, ModifiedData>) {
-    const { onSuccess, ...init } = abortRequestInit
+    const { onSuccess, onError, ...init } = abortRequestInit
 
     this.body = init.body as string
     this.isAborted = false
@@ -47,10 +50,19 @@ class AbortRequest<Data, ModifiedData> {
         .then((res) => res.json())
         .then((json) => {
           requestsQueue[this.body] = undefined
+
+          if (json?.errors) {
+            throw new Error(json.errors[0].message)
+          }
+
           return json?.data as Data
         })
         .catch((error) => {
           requestsQueue[this.body] = undefined
+
+          if (typeof onError === 'function') {
+            onError(error)
+          }
 
           return Promise.reject(error)
         })
@@ -72,6 +84,10 @@ class AbortRequest<Data, ModifiedData> {
         return resolve(result as ModifiedData)
       }
       catch (error) {
+        if (typeof onError === 'function') {
+          return onError(error) as Promise<ModifiedData>
+        }
+
         return reject(error)
       }
     }, this.abort.bind(this))
