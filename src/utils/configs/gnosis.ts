@@ -44,6 +44,9 @@ export default {
       multicall: '0xb5b692a88BDFc81ca69dcB1d924f59f0413A602a',
       rewardSplitterFactory: ZeroAddress,
     },
+    balancer: {
+      vault: ZeroAddress,
+    },
     factories: {
       vault: ZeroAddress,
       erc20Vault: ZeroAddress,
