@@ -1,5 +1,4 @@
 import multicallGas from './multicallGas'
-import type { BaseInput } from '../../utils'
 import multicallEncode from './multicallEncode'
 
 import type { SetMetadataParams } from '../util/params/getMetadataParams'
@@ -11,6 +10,14 @@ import type { SetValidatorsRootParams } from '../util/params/getValidatorsRootPa
 import type { SetBlocklistManagerParams } from '../util/params/getBlocklistManagerParams'
 import type { SetValidatorsManagerParams } from '../util/params/getValidatorsManagerParams'
 import type { SetDepositDataManagerParams } from '../util/params/getDepositDataManagerParams'
+
+type BaseInput = {
+  userAddress: string
+  vaultAddress: string
+  options: StakeWise.Options
+  contracts: StakeWise.Contracts
+  provider: StakeWise.Provider
+}
 
 type MulticallParams = Partial<
   SetMetadataParams

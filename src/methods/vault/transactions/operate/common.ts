@@ -26,11 +26,19 @@ export const commonLogic = async (values: MulticallInput) => {
 
   let vaultContract = contracts.helpers.createVault(vaultAddress)
 
-  if (whitelist) {
+  if (whitelist?.length) {
+    if (whitelist.length > 700) {
+      throw new Error('Your transaction is likely to fail, we do not recommend passing more than 700 addresses to the whitelist at a time')
+    }
+
     vaultContract = contracts.helpers.createPrivateVault(vaultAddress)
   }
 
-  if (blocklist) {
+  if (blocklist?.length) {
+    if (blocklist.length > 700) {
+      throw new Error('Your transaction is likely to fail, we do not recommend passing more than 700 addresses to the block list at a time')
+    }
+
     vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
   }
 
@@ -66,13 +74,13 @@ export const commonLogic = async (values: MulticallInput) => {
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
-  if (blocklist) {
+  if (blocklist?.length) {
     const blocklistParams = getBlocklistParams({ ...baseInput, blocklist })
 
     params.push(...blocklistParams)
   }
 
-  if (whitelist) {
+  if (whitelist?.length) {
     const whitelistParams = getWhitelistParams({ ...baseInput, whitelist })
 
     params.push(...whitelistParams)
