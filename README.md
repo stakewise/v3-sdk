@@ -1226,8 +1226,8 @@ Updates the vault by authorized personnel such as the vault admin, whitelister, 
 
 | Name             | Type                                         | Required | Access            | Description                                                                                                                 |
 |------------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist          | `Array<{ address: string, isNew: boolean }>` | **No** | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
-| blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one |
+| whitelist          | `Array<{ address: string, isNew: boolean }>` | **No** | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses. |
+| blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses. |
 | depositDataManager | `string` | **No**  | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager` |
 | validatorsManager  | `string` | **No**  | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |
 | whitelister        | `string` | **No**  | Admin                | Address of the vault whitelister |
