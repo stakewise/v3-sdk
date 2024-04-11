@@ -44,6 +44,9 @@ export default {
       mintTokenController: ZeroAddress,
       rewardSplitterFactory: ZeroAddress,
     },
+    balancer: {
+      vault: ZeroAddress,
+    },
     factories: {
       vault: ZeroAddress,
       erc20Vault: ZeroAddress,
@@ -56,9 +59,6 @@ export default {
     },
     uniswap: {
       positionManager: ZeroAddress,
-    },
-    balancer: {
-      vault: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
     },
   },
   tokens: {
