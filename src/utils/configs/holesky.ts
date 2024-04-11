@@ -57,9 +57,8 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
-    cow: {
-      ethFlow: ZeroAddress,
-      vaultRelayer: ZeroAddress,
+    balancer: {
+      vault: ZeroAddress,
     },
   },
   tokens: {
