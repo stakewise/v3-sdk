@@ -1,4 +1,4 @@
-import AbortCallback from './abortCallback'
+import AbortPromise from './abortPromise'
 
 
 type ModifyCallback<Data, ModifiedData = Data> = (value: Data) => ModifiedData | PromiseLike<ModifiedData>
@@ -18,14 +18,12 @@ type PendingRequest = {
 
 const requestsQueue: Record<string, PendingRequest | undefined> = {}
 
-const dummyPromise = new Promise(() => {})
-
 // Returns fetch promise that can be aborted
 // If we create several promises, only one request will be executed
 class AbortRequest<Data, ModifiedData> {
   private controller = new AbortController()
   request: Promise<Data>
-  promise: Promise<ModifiedData>
+  promise: AbortPromise<ModifiedData>
   body: string
   isAborted: boolean
 
@@ -63,42 +61,32 @@ class AbortRequest<Data, ModifiedData> {
       }
     }
 
-    this.promise = this.request
-      .then((data) => {
-        try {
-          if (this.isAborted) {
-            return dummyPromise as Promise<ModifiedData>
-          }
+    this.promise = new AbortPromise<ModifiedData>(async (resolve, reject) => {
+      try {
+        const result = await this.request
 
-          if (typeof onSuccess === 'function') {
-            return onSuccess(data) as Promise<ModifiedData>
-          }
-
-          return data as Promise<ModifiedData>
-        }
-        catch (error) {
-          return Promise.reject(error)
-        }
-      })
-      .catch((error) => {
-        if (this.isAborted) {
-          return dummyPromise as Promise<ModifiedData>
+        if (typeof onSuccess === 'function') {
+          return resolve(onSuccess(result) as ModifiedData)
         }
 
-        return Promise.reject(error)
-      })
+        return resolve(result as ModifiedData)
+      }
+      catch (error) {
+        return reject(error)
+      }
+    }, this.abort.bind(this))
   }
 
   then(onSuccess: FirstCallback<ModifiedData>, onError?: FirstCallback<ModifiedData>) {
-    return new AbortCallback(this.promise.then(onSuccess, onError), this.abort.bind(this))
+    return this.promise.then(onSuccess, onError)
   }
 
   catch(callback: FirstCallback<ModifiedData>) {
-    return new AbortCallback(this.promise.catch(callback), this.abort.bind(this))
+    return this.promise.catch(callback)
   }
 
   finally(callback: EmptyCallback) {
-    return new AbortCallback(this.promise.finally(callback), this.abort.bind(this))
+    return this.promise.finally(callback)
   }
 
   abort() {
