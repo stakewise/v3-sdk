@@ -27,9 +27,9 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
     .replace(/[({].*/, '')
     .trim()
 
-  const isUrlArrayValid = Array.isArray(url) && url.length > 1
+  const isUrlArrayValid = Array.isArray(url) && url.length > 0
   const primaryUrl = isUrlArrayValid ? url[0] : url
-  const backupUrl = isUrlArrayValid ? url[1] : null
+  const backupUrl = isUrlArrayValid && url.length > 1 ? url[1] : null
 
   const errorUrls = JSON.parse(sessionStorage.getItem(sessionErrorUrls) || '[]')
   const validUrl = errorUrls.includes(primaryUrl) ? backupUrl : primaryUrl
