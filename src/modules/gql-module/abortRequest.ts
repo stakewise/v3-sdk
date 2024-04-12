@@ -85,7 +85,8 @@ class AbortRequest<Data, ModifiedData> {
       }
       catch (error) {
         if (typeof onError === 'function') {
-          return onError(error) as Promise<ModifiedData>
+          // ATTN use resolve because onError can return a promise
+          return resolve(onError(error) as ModifiedData)
         }
 
         return reject(error)
@@ -102,7 +103,7 @@ class AbortRequest<Data, ModifiedData> {
   }
 
   finally(callback: EmptyCallback) {
-    return this.promise.finally(callback)
+    return this.promise.catch(callback)
   }
 
   abort() {
