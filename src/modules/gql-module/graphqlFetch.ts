@@ -6,15 +6,32 @@ type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variab
   retryCount?: number
 }
 
-const sessionErrorUrls = 'errorUrls'
+const sessionErrorUrl = 'errorUrl'
 
 const saveErrorUrlToSessionStorage = (url: string) => {
-  const errorUrls = JSON.parse(sessionStorage.getItem(sessionErrorUrls) || '[]')
+  try {
+    const currentErrorUrl = sessionStorage.getItem(sessionErrorUrl)
 
-  if (!errorUrls.includes(url)) {
-    errorUrls.push(url)
-    sessionStorage.setItem(sessionErrorUrls, JSON.stringify(errorUrls))
+    if (currentErrorUrl !== url) {
+      sessionStorage.setItem(sessionErrorUrl, url)
+    }
+  } catch (error) {
+    console.error('Failed to save error URL to sessionStorage:', error)
   }
+}
+
+const clearErrorUrlInterval = () => {
+  setInterval(() => {
+    try {
+      const currentErrorUrl = sessionStorage.getItem(sessionErrorUrl)
+      if (currentErrorUrl) {
+        sessionStorage.removeItem(sessionErrorUrl)
+      }
+
+    } catch (error) {
+      console.error('Failed to clear sessionErrorUrl from sessionStorage:', error)
+    }
+  }, 3_600_000) // 1 hour
 }
 
 const graphqlFetch = <Data, Variables, ModifiedData>(
@@ -28,13 +45,15 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
     .trim()
 
   const isUrlArrayValid = Array.isArray(url) && url.length > 0
-  const primaryUrl = isUrlArrayValid ? url[0] : url
-  const backupUrl = isUrlArrayValid && url.length > 1 ? url[1] : null
+  const primaryUrl: string = isUrlArrayValid ? url[0] : url
+  const backupUrl: string | null = isUrlArrayValid && url.length > 1 ? url[1] : null
 
-  const errorUrls = JSON.parse(sessionStorage.getItem(sessionErrorUrls) || '[]')
-  const validUrl = errorUrls.includes(primaryUrl) ? backupUrl : primaryUrl
+  const currentErrorUrl = sessionStorage.getItem(sessionErrorUrl)
+  const validUrl = (currentErrorUrl === primaryUrl && backupUrl) ? backupUrl : primaryUrl
   const opName = operationName ? `?opName=${operationName}` : ''
   const requestUrl = `${validUrl}${opName}`
+
+  clearErrorUrlInterval()
 
   return new AbortRequest<Data, ModifiedData>(requestUrl, {
     method: 'POST',
