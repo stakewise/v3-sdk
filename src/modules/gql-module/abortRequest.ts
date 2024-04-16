@@ -103,7 +103,7 @@ class AbortRequest<Data, ModifiedData> {
   }
 
   finally(callback: EmptyCallback) {
-    return this.promise.catch(callback)
+    return this.promise.finally(callback)
   }
 
   abort() {
