@@ -17,7 +17,7 @@ const saveErrorUrlToSessionStorage = (url: string) => {
 
   clearIntervalId = setInterval(() => {
     sessionStorage.removeItem(sessionErrorUrl)
-  }, 3_600_000)
+  }, 3_600_000) // 1 hour
 }
 
 
