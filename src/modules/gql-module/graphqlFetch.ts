@@ -1,6 +1,6 @@
 import AbortRequest from './abortRequest'
 import type { FetchInput } from './types'
-import { getRequestUrl, clearErrorUrlInterval, saveErrorUrlToSessionStorage } from './utils'
+import { getRequestUrl, saveErrorUrlToSessionStorage } from './utils'
 
 
 type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variables, ModifiedData> & {
@@ -20,8 +20,6 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
   const currentUrl = getRequestUrl(url)
   const opName = operationName ? `?opName=${operationName}` : ''
   const requestUrl = `${currentUrl}${opName}`
-
-  clearErrorUrlInterval()
 
   return new AbortRequest<Data, ModifiedData>(requestUrl, {
     method: 'POST',
