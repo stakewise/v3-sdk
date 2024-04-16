@@ -51,7 +51,7 @@ class AbortRequest<Data, ModifiedData> {
         .then((json) => {
           requestsQueue[this.body] = undefined
 
-          if (json?.errors) {
+          if (json?.data?._meta?.hasIndexingErrors) {
             throw new Error(json.errors[0].message)
           }
 
