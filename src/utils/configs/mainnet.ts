@@ -7,7 +7,10 @@ import { Network } from '../enums'
 export default {
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
-    subgraph: 'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: [
+      'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+      'https://mainnet-graph-b.stakewise.io/subgraphs/name/stakewise/stakewise',
+    ],
   },
   network: {
     id: 'mainnet',
