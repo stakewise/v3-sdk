@@ -51,8 +51,13 @@ class AbortRequest<Data, ModifiedData> {
         .then((json) => {
           requestsQueue[this.body] = undefined
 
-          if (json?.data?._meta?.hasIndexingErrors) {
+          if (json?.errors) {
             throw new Error(json.errors[0].message)
+          }
+
+          // Subgraph encountered indexing errors at some past block
+          if (json?.data?._meta?.hasIndexingErrors) {
+            throw new Error('Subgraph indexing error')
           }
 
           return json?.data as Data
