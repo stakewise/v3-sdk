@@ -18,7 +18,7 @@ import {
 export const commonLogic = async (values: MulticallInput) => {
   const {
     validatorsRoot, blocklistManager, metadataIpfsHash,
-    blocklist, whitelist, depositDataManager, whitelister, feeRecipient,
+    blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
     options, contracts, userAddress, vaultAddress, provider, validatorsManager,
   } = values
 
@@ -92,8 +92,8 @@ export const commonLogic = async (values: MulticallInput) => {
     params.push(...depositDataManagerParams)
   }
 
-  if (whitelister) {
-    const whitelisterParams = getWhitelisterParams({ ...baseInput, whitelister })
+  if (whitelistManager) {
+    const whitelisterParams = getWhitelisterParams({ ...baseInput, whitelistManager })
 
     params.push(...whitelisterParams)
   }

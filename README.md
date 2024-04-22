@@ -561,12 +561,12 @@ type Output = {
   vaultAdmin: string
   totalAssets: string
   feeRecipient: string
-  whitelister: string
   vaultAddress: string
   mevRecipient: string
   whitelistCount: number
   blocklistCount: number
   imageUrl: string | null
+  whitelistManager: string
   blocklistManager: string
   depositDataManager: string
   isSmoothingPool: boolean
@@ -591,7 +591,7 @@ type Output = {
 | `vaultAdmin`       | Vault administrator address                                   |
 | `totalAssets`      | TVL of Vault                                                  |
 | `feeRecipient`     | Vault fee address                                             |
-| `whitelister`      | Whitelist manager                                             |
+| `whitelistManager` | Whitelist manager                                             |
 | `vaultAddress`     | Address of vault                                              |
 | `mevRecipient`     | Validator fee recipient                                       |
 | `whitelistCount`   | Number of addresses in the [whitelist](#sdkvaultgetwhitelist) |
@@ -1219,23 +1219,23 @@ const gas = await sdk.vault.setDepositDataManager.estimateGas(params)
 
 #### Description:
 
-Updates the vault by authorized personnel such as the vault admin, whitelister, blocklist manager, validators manager, or deposit-data manager.
+Updates the vault by authorized personnel such as the vault admin, whitelistManager, blocklist manager, validators manager, or deposit-data manager.
 
 
 #### Arguments:
 
 | Name             | Type                                         | Required | Access            | Description                                                                                                                 |
 |------------------|----------------------------------------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| whitelist          | `Array<{ address: string, isNew: boolean }>` | **No** | Whitelister       | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses. |
+| whitelistManager   | `Array<{ address: string, isNew: boolean }>` | **No** | whitelistManager  | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses. |
 | blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses. |
 | depositDataManager | `string` | **No**  | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager` |
 | validatorsManager  | `string` | **No**  | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |
-| whitelister        | `string` | **No**  | Admin                | Address of the vault whitelister |
+| whitelistManager   | `string` | **No**  | Admin                | Address of the vault whitelistManager |
 | feeRecipient       | `string` | **No**  | Admin                | Address of the vault fee recipient |
 | validatorsRoot     | `string` | **No**  | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot` |
 | blocklistManager   | `string` | **No**  | Admin                | The blocklisted vault blocklist manager |
 | metadataIpfsHash   | `string` | **No**  | Admin                | The vault metadata IPFS hash |
-| userAddress        | `string` | **Yes** | -                    | The address of the user making the update (admin, whitelister, blocklist manager or keys manager) |
+| userAddress        | `string` | **Yes** | -                    | The address of the user making the update (admin, whitelist manager, blocklist manager or keys manager) |
 | vaultAddress       | `string` | **Yes** | -                    | The address of the vault  |
 
 #### Example:
@@ -1243,10 +1243,10 @@ Updates the vault by authorized personnel such as the vault admin, whitelister, 
 ```ts
 // Data to update the vault by admin.
 const params = {
-  whitelister: '0x...',
   feeRecipient: '0x...',
   validatorsRoot: '0x...',
   blocklistManager: '0x...',
+  whitelistManager: '0x...',
   validatorsManager: '0x...',
   depositDataManager: '0x...',
   metadataIpfsHash: '...',
@@ -1261,7 +1261,7 @@ const params = {
   userAddress: '0x...',
 }
 
-// Data to update the private vault by whitelister.
+// Data to update the private vault by whitelist manager.
 // The whitelist contains addresses allowed to stake or mint within
 // the vault.
 const params = {
