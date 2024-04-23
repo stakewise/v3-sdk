@@ -47,7 +47,13 @@ class AbortRequest<Data, ModifiedData> {
         ...init,
         signal: this.controller.signal,
       })
-        .then((res) => res.json())
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          }
+
+          return response.json().then((json) => Promise.reject(json))
+        })
         .then((json) => {
           requestsQueue[this.body] = undefined
 
