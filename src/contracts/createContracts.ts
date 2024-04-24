@@ -6,7 +6,6 @@ import {
   VaultAbi,
   KeeperAbi,
   UsdRateAbi,
-  MintTokenAbi,
   MulticallAbi,
   UniswapPoolAbi,
   PriceOracleAbi,
@@ -68,7 +67,7 @@ const getKeeper = (provider: Provider, config: StakeWise.Config) => createContra
 
 const getMintToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintToken>(
   config.addresses.tokens.mintToken,
-  MintTokenAbi,
+  Erc20Abi,
   provider
 )
 
