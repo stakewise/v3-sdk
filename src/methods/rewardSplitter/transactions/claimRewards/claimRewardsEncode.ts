@@ -1,9 +1,9 @@
 import { commonLogic } from './common'
-import type { UpdateFeeRecipientsInput } from './types'
+import type { ClaimRewardsInput } from './types'
 import { rewardSplitterMulticall } from '../../../../contracts'
 
 
-const claimRewardsEncode = async (values: UpdateFeeRecipientsInput) => {
+const claimRewardsEncode = async (values: ClaimRewardsInput) => {
   const multicallArgs = await commonLogic(values)
 
   const rx = await rewardSplitterMulticall<{ data: string, to: string }>({

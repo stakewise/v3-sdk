@@ -1,5 +1,5 @@
 import type { BaseInput } from '../../../utils'
-import ClaimRewardsGas from './ClaimRewardsGas'
+import claimRewardsGas from './claimRewardsGas'
 import claimRewardsEncode from './claimRewardsEncode'
 
 
@@ -10,6 +10,6 @@ export type ClaimRewardsInput = BaseInput & {
 
 export interface ClaimRewards {
   (values: ClaimRewardsInput): Promise<StakeWise.TransactionHash>
-  estimateGas: typeof ClaimRewardsGas
+  estimateGas: typeof claimRewardsGas
   encode: typeof claimRewardsEncode
 }

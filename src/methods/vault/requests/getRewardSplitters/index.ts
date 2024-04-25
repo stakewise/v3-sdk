@@ -34,7 +34,7 @@ const getRewardSplitters = (input: GetRewardSplittersInput) => {
     where.id = rewardSplitterAddress.toLowerCase()
   }
   if (shareHolderAddress) {
-    where.shareHolders_ = { address: shareHolderAddress.toLowerCase() }
+    where.shareHolders_ = { address: shareHolderAddress.toLowerCase() } as RewardSplittersQueryVariables['where']['shareHolders_']
   }
 
   return fetchRewardSplittersQuery({
