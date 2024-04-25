@@ -32,7 +32,7 @@ export default {
     updateFeeRecipients,
     /**
      * @description Claims rewards from the reward splitter contract.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterclarimrewards
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterclaimrewards
      */
     claimRewards,
   },
