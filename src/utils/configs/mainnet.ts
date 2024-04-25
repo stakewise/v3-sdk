@@ -47,9 +47,6 @@ export default {
       mintTokenController: '0x2A261e60FB14586B474C208b1B7AC6D0f5000306',
       rewardSplitterFactory: '0x90a9428b8c58cA80B28aAF46B936D42e87797449',
     },
-    balancer: {
-      vault: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
-    },
     factories: {
       vault: '0xDada5a8E3703B1e3EA2bAe5Ab704627eb2659fCC',
       erc20Vault: '0x6DDc10eEeEBbBcF00E784bA44Fe4B038af26cB53',

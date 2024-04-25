@@ -52,7 +52,7 @@ declare global {
       provider?: Provider
       endpoints?: {
         api?: string
-        subgraph?: string | ReadonlyArray<string>
+        subgraph?: string
         web3?: string | string[]
       }
     }
