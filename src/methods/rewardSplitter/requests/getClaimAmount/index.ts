@@ -1,8 +1,8 @@
-import type { BlocklistAccountsQueryVariables, BlocklistAccountsQueryPayload } from '../../../../graphql/subgraph/vault'
-import { apiUrls, validateArgs } from '../../../../utils'
-import graphql from '../../../../graphql'
-import { ModifiedBlocklist } from './types'
-import modifyBlocklist from './modifyBlocklist'
+import { validateArgs } from '../../../../utils'
+import { wrapAbortPromise } from '../../../../modules/gql-module'
+
+import getShares from './getShares'
+import getAssetsFromShares from './getAssetsFromShares'
 
 
 type GetClaimAmountInput = {
@@ -10,30 +10,23 @@ type GetClaimAmountInput = {
   userAddress: string
   rewardSplitterAddress: string
   options: StakeWise.Options
+  contracts: StakeWise.Contracts
 }
 
-const getClaimAmount = (input: GetClaimAmountInput) => {
-  const { vaultAddress, userAddress, rewardSplitterAddress, options } = input
+const getClaimAmount = async (input: GetClaimAmountInput) => {
+  const { vaultAddress, userAddress, rewardSplitterAddress, options, contracts } = input
 
   validateArgs.address({ vaultAddress, userAddress, rewardSplitterAddress })
 
-  const vault = vaultAddress.toLowerCase()
+  const commonInput = { vaultAddress, userAddress, rewardSplitterAddress, options, contracts }
+  const shares = await getShares({ ...commonInput, rewardSplitterAddress })
 
-  const where = search
-    ? { vault, address_in: addressIn, address_contains: search.toLowerCase() } as BlocklistAccountsQueryVariables['where']
-    : { vault, address_in: addressIn } as BlocklistAccountsQueryVariables['where']
+  if (shares) {
+    return getAssetsFromShares({ ...commonInput, shares })
+  }
 
-  return graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
-    url: apiUrls.getSubgraphqlUrl(options),
-    variables: {
-      where,
-      skip: skip || 0,
-      limit: limit || 100,
-      orderDirection: orderDirection || 'desc',
-    },
-    modifyResult: (data: BlocklistAccountsQueryPayload) => modifyBlocklist({ data }),
-  })
+  return 0n
 }
 
 
-export default getClaimAmount
+export default wrapAbortPromise<GetClaimAmountInput, bigint>(getClaimAmount)
