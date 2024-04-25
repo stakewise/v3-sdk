@@ -35,7 +35,10 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const withSigner = !callStatic && !transactionData
 
   if (withSigner) {
-    const library = options.provider || createProvider(options)
+    const library = options.provider || createProvider({
+      urls: options.endpoints?.web3 || '',
+      network: options.network,
+    })
 
     const signer = options.provider
       ? await options.provider.getSigner(userAddress)
