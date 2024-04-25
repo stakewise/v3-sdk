@@ -1,4 +1,4 @@
-import AbortPromise from './abortPromise'
+import AbortCallback from './abortCallback'
 
 
 type ModifyCallback<Data, ModifiedData = Data> = (value: Data) => ModifiedData | PromiseLike<ModifiedData>
@@ -7,11 +7,8 @@ type FirstCallback<Data> = (value: Data) => Data | any
 
 type EmptyCallback = () => void
 
-type ErrorCallback<Data, ModifiedData = Data> = (error: Error | any) => Promise<void> | AbortRequest<Data, ModifiedData>
-
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
   onSuccess: ModifyCallback<Data, ModifiedData>
-  onError?: ErrorCallback<Data, ModifiedData>
 }
 
 type PendingRequest = {
@@ -21,17 +18,19 @@ type PendingRequest = {
 
 const requestsQueue: Record<string, PendingRequest | undefined> = {}
 
+const dummyPromise = new Promise(() => {})
+
 // Returns fetch promise that can be aborted
 // If we create several promises, only one request will be executed
 class AbortRequest<Data, ModifiedData> {
   private controller = new AbortController()
   request: Promise<Data>
-  promise: AbortPromise<ModifiedData>
+  promise: Promise<ModifiedData>
   body: string
   isAborted: boolean
 
   constructor(url: RequestInfo | URL, abortRequestInit: AbortRequestInit<Data, ModifiedData>) {
-    const { onSuccess, onError, ...init } = abortRequestInit
+    const { onSuccess, ...init } = abortRequestInit
 
     this.body = init.body as string
     this.isAborted = false
@@ -47,33 +46,13 @@ class AbortRequest<Data, ModifiedData> {
         ...init,
         signal: this.controller.signal,
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json()
-          }
-
-          return response.json().then((json) => Promise.reject(json))
-        })
+        .then((res) => res.json())
         .then((json) => {
           requestsQueue[this.body] = undefined
-
-          if (json?.errors) {
-            throw new Error(json.errors[0].message)
-          }
-
-          // Subgraph encountered indexing errors at some past block
-          if (json?.data?._meta?.hasIndexingErrors) {
-            throw new Error('Subgraph indexing error')
-          }
-
           return json?.data as Data
         })
         .catch((error) => {
           requestsQueue[this.body] = undefined
-
-          if (typeof onError === 'function') {
-            onError(error)
-          }
 
           return Promise.reject(error)
         })
@@ -84,37 +63,42 @@ class AbortRequest<Data, ModifiedData> {
       }
     }
 
-    this.promise = new AbortPromise<ModifiedData>(async (resolve, reject) => {
-      try {
-        const result = await this.request
+    this.promise = this.request
+      .then((data) => {
+        try {
+          if (this.isAborted) {
+            return dummyPromise as Promise<ModifiedData>
+          }
 
-        if (typeof onSuccess === 'function') {
-          return resolve(onSuccess(result) as ModifiedData)
+          if (typeof onSuccess === 'function') {
+            return onSuccess(data) as Promise<ModifiedData>
+          }
+
+          return data as Promise<ModifiedData>
+        }
+        catch (error) {
+          return Promise.reject(error)
+        }
+      })
+      .catch((error) => {
+        if (this.isAborted) {
+          return dummyPromise as Promise<ModifiedData>
         }
 
-        return resolve(result as ModifiedData)
-      }
-      catch (error) {
-        if (typeof onError === 'function') {
-          // ATTN use resolve because onError can return a promise
-          return resolve(onError(error) as ModifiedData)
-        }
-
-        return reject(error)
-      }
-    }, this.abort.bind(this))
+        return Promise.reject(error)
+      })
   }
 
   then(onSuccess: FirstCallback<ModifiedData>, onError?: FirstCallback<ModifiedData>) {
-    return this.promise.then(onSuccess, onError)
+    return new AbortCallback(this.promise.then(onSuccess, onError), this.abort.bind(this))
   }
 
   catch(callback: FirstCallback<ModifiedData>) {
-    return this.promise.catch(callback)
+    return new AbortCallback(this.promise.catch(callback), this.abort.bind(this))
   }
 
   finally(callback: EmptyCallback) {
-    return this.promise.finally(callback)
+    return new AbortCallback(this.promise.finally(callback), this.abort.bind(this))
   }
 
   abort() {

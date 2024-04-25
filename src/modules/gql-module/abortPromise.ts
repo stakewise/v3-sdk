@@ -16,12 +16,9 @@ const dummyPromise = new Promise(() => {})
 class AbortPromise<Data> {
   private promise: Promise<Data>
   private isAborted: boolean
-  private onAbort?: () => void
 
-  constructor(callback: AbortPromiseCallback<Data>, onAbort?: () => void) {
+  constructor(callback: AbortPromiseCallback<Data>) {
     this.isAborted = false
-    this.onAbort = onAbort
-
     this.promise = new Promise(callback)
       .then((data) => {
         try {
@@ -61,7 +58,6 @@ class AbortPromise<Data> {
         }
       })
     }
-
     const allPromises = Promise.all(promises).then((data) => {
       if (isAborted) {
         return dummyPromise as Promise<T[]>
@@ -99,10 +95,6 @@ class AbortPromise<Data> {
 
   abort() {
     this.isAborted = true
-
-    if (typeof this.onAbort === 'function') {
-      this.onAbort()
-    }
   }
 }
 
