@@ -1,20 +1,12 @@
 import { JsonRpcProvider, FallbackProvider, FetchRequest, FetchResponse } from 'ethers'
 
-import configs from './configs'
-import { Network } from './enums'
+import apiUrls from './apiUrls'
 
 
-type Input = {
-  urls: string | string[]
-  network: Network
-}
+const createProvider = (options: StakeWise.Options) => {
+  const { network } = options
 
-const createProvider = (values: Input) => {
-  const { urls, network } = values
-
-  if (!urls) {
-    return new JsonRpcProvider(configs[network].network.url)
-  }
+  const urls = apiUrls.getWeb3Url(options)
 
   if (Array.isArray(urls)) {
     if (urls.length === 1) {
@@ -29,7 +21,7 @@ const createProvider = (values: Input) => {
         const fetchRequest = new FetchRequest(url)
 
         fetchRequest.setThrottleParams({
-          slotInterval: 500,
+          slotInterval: 2 * 1000,
           maxAttempts: 2,
         })
 

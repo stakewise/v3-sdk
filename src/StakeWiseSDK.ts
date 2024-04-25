@@ -17,10 +17,7 @@ class StakeWiseSDK {
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
 
-    const provider = options.provider || createProvider({
-      urls: options.endpoints?.web3 || '',
-      network: options.network,
-    })
+    const provider = options.provider || createProvider(options)
 
     const contracts = createContracts({ provider, config })
 
