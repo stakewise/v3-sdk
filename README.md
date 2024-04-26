@@ -84,21 +84,27 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                     | **osToken**                                                   | **Utils**                                           |
-|---------------------------------------------------------------|---------------------------------------------------------------|-----------------------------------------------------|
-| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)             | [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [vault.getSnapshots](#sdkvaultgetsnapshots)                   | [osToken.getHealthFactor](#sdkostokengethealthfactor)         | [utils.getTransactions](#sdkutilsgettransactions)   |
-| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                           |                                                     |
-| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                 |                                                     |
-| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                     |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getBaseData](#sdkostokengetbasedata)                 |                                                     |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                     |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                     |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                     |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                     |
-| [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                     |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                     |
-| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                               |                                                     |
+| **Vault**                                                     | **osToken**                                                   | **RewardSplitter**                                                |
+|---------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)             | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
+| [vault.getSnapshots](#sdkvaultgetsnapshots)                   | [osToken.getHealthFactor](#sdkostokengethealthfactor)         |                                                                   |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                           |                                                                   |
+| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                 |                                                                   |
+| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                                   |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getBaseData](#sdkostokengetbasedata)                 |                                                                   |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                               |                                                                   |
+
+| **Utils**                                           |
+|-----------------------------------------------------|
+| [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
+| [utils.getTransactions](#sdkutilsgettransactions)   |
+
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -961,6 +967,37 @@ type Output = bigint
 
 ```ts
 await sdk.utils.getSharesFromAssets({ amount: 0n })
+```
+---
+## RewardSplitter
+
+### `sdk.rewardSplitter.getClaimAmount`
+
+#### Description:
+
+Calculates the amount of assets that the user can claim from the reward splitter.
+
+#### Arguments:
+| Name                  | Type     | Required | Description                                |
+|-----------------------|----------|----------|--------------------------------------------|
+| userAddress           | `string` | **Yes**  | The address of the user making the request |
+| vaultAddress          | `string` | **Yes**  | The address of the vault                   |
+| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter         |
+
+#### Returns:
+
+```ts
+type Output = bigint
+```
+
+#### Example:
+
+```ts
+const claimAmount = await sdk.rewardSplitter.getClaimAmount({
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  rewardSplitterAddress: '0x...',
+})
 ```
 ---
 ## API-utils
