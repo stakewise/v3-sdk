@@ -13,7 +13,7 @@ type Action<Input, Output> = (props: Input) => Promise<Output>
 const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
-      blocklist, whitelist, depositDataManager, whitelister, feeRecipient,
+      blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
       validatorsRoot, blocklistManager, metadataIpfsHash, validatorsManager,
     } = values
 
@@ -24,7 +24,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
     }
     catch (actionError) {
       const isAdmin = Boolean(
-        whitelister
+        whitelistManager
         || feeRecipient
         || blocklistManager
         || metadataIpfsHash
@@ -32,8 +32,8 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
         || depositDataManager
       )
 
-      const isWhitelister = Boolean(whitelist)
       const isDepositData = Boolean(validatorsRoot)
+      const isWhitelistManager = Boolean(whitelist)
       const isBlocklistManager = Boolean(blocklist)
 
       const checkPromises = []
@@ -48,7 +48,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
           checkDepositDataManagerAccess(values)
         )
       }
-      if (isWhitelister) {
+      if (isWhitelistManager) {
         checkPromises.push(
           checkWhitelisterAccess(values)
         )

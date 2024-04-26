@@ -67,6 +67,7 @@ describe('modifyVault', () => {
       vaultAddress: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       feeRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       mevRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      whitelistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       blocklistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       validatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
