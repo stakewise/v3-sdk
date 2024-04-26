@@ -1,27 +1,29 @@
-<<<<<<<< HEAD:src/methods/vault/transactions/deposit/nativeToken/deposit.ts
 import depositGas from './depositGas'
 import type { Deposit } from '../types'
 import depositEncode from './depositEncode'
 import { commonLogic, referrer } from './common'
 import getHarvestParams from '../../../requests/getHarvestParams'
-========
-import nativeTokenDeposit from './nativeToken/deposit'
-import otherTokenDeposit from './otherToken/deposit'
-import { getNetworkTypes } from '../../../../utils'
-import depositEncode from './depositEncode'
-import type { Deposit } from './types'
-import depositGas from './depositGas'
->>>>>>>> 1f5684d (Add Chiado network & change deposit logic (#79)):src/methods/vault/transactions/deposit/deposit.ts
 
 
 const deposit: Deposit = async (values) => {
-  const { options } = values
+  const { options, provider, vaultAddress, userAddress } = values
 
-  const { isEthereum } = getNetworkTypes(options)
+  const { vaultContract, canHarvest, overrides } = await commonLogic(values)
 
-  return isEthereum
-    ? nativeTokenDeposit(values)
-    : otherTokenDeposit(values)
+  const signer = await provider.getSigner(userAddress)
+  const signedContract = vaultContract.connect(signer)
+
+  if (canHarvest) {
+    const harvestParams = await getHarvestParams({ options, vaultAddress })
+
+    const response = await signedContract.updateStateAndDeposit(userAddress, referrer, harvestParams, overrides)
+    return response.hash
+  }
+  else {
+    const response = await signedContract.deposit(userAddress, referrer, overrides)
+
+    return response.hash
+  }
 }
 
 deposit.encode = depositEncode
