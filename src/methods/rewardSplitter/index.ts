@@ -25,15 +25,15 @@ export default {
     */
     create: createRewardSplitter,
     /**
+     * @description Claims rewards from the reward splitter contract.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterclaimrewards
+     */
+    claimRewards,
+    /**
      * @description Updates the reward splitter fee recipients and predefined fee splitting proportions.
      * Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterupdatefeerecipients
     */
     updateFeeRecipients,
-    /**
-     * @description Claims rewards from the reward splitter contract.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterclaimrewards
-     */
-    claimRewards,
   },
 } as const
