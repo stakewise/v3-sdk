@@ -51,3 +51,6 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
     },
   })
 }
+
+
+export default graphqlFetch
