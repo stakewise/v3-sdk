@@ -1,7 +1,7 @@
-import { sessionStorageNames } from 'sw-helpers/constants'
+import { constants } from '../../../utils'
 
 
-const sessionErrorUrl = sessionStorageNames.moduleErrorUrl
+const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
 const getRequestUrl = (url: string | ReadonlyArray<string>): string => {
   const isArray = Array.isArray(url)

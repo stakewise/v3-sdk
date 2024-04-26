@@ -7,9 +7,11 @@ type FirstCallback<Data> = (value: Data) => Data | any
 
 type EmptyCallback = () => void
 
+type ErrorCallback<Data, ModifiedData = Data> = (error: Error | any) => Promise<void> | AbortRequest<Data, ModifiedData>
+
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
   onSuccess: ModifyCallback<Data, ModifiedData>
-  onError?: (error: any) => Promise<any> | AbortRequest<Data, ModifiedData>
+  onError?: ErrorCallback<Data, ModifiedData>
 }
 
 type PendingRequest = {
@@ -45,7 +47,13 @@ class AbortRequest<Data, ModifiedData> {
         ...init,
         signal: this.controller.signal,
       })
-        .then((res) => res.json())
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          }
+
+          return response.json().then((json) => Promise.reject(json))
+        })
         .then((json) => {
           requestsQueue[this.body] = undefined
 

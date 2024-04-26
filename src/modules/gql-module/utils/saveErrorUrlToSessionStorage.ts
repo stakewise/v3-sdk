@@ -1,7 +1,7 @@
-import { sessionStorageNames } from 'sw-helpers/constants'
+import { constants } from '../../../utils'
 
 
-const sessionErrorUrl = sessionStorageNames.moduleErrorUrl
+const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
 const saveErrorUrlToSessionStorage = (url: string) => {
   const currentErrorUrl = sessionStorage.getItem(sessionErrorUrl)
@@ -17,4 +17,3 @@ const saveErrorUrlToSessionStorage = (url: string) => {
 
 
 export default saveErrorUrlToSessionStorage
-

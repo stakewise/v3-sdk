@@ -17,6 +17,7 @@ const deposit: Deposit = async (values) => {
     const harvestParams = await getHarvestParams({ options, vaultAddress })
 
     const response = await signedContract.updateStateAndDeposit(userAddress, referrer, harvestParams, overrides)
+
     return response.hash
   }
   else {
