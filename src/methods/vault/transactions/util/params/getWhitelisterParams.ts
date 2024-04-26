@@ -3,17 +3,17 @@ import { vaultMulticall } from '../../../../../contracts'
 
 
 export type SetWhitelisterParams = {
-  whitelister: string
+  whitelistManager: string
 }
 
 const getWhitelisterParams = (values: SetWhitelisterParams) => {
-  const { whitelister } = values
+  const { whitelistManager } = values
 
-  validateArgs.address({ whitelister })
+  validateArgs.address({ whitelistManager })
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
     {
-      method: 'setWhitelister', args: [ whitelister ],
+      method: 'setWhitelister', args: [ whitelistManager ],
     },
   ]
 

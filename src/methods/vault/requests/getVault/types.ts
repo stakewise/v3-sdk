@@ -11,6 +11,7 @@ export type ModifiedVault = Omit<
   | 'mevEscrow'
   | 'keysManager'
   | 'performance'
+  | 'whitelister'
   | 'blocklistCount'
   | 'whitelistCount'
 > & {
@@ -24,9 +25,15 @@ export type ModifiedVault = Omit<
   blocklistCount: number
   whitelistCount: number
   isSmoothingPool: boolean
+  whitelistManager: string
 
   /**
    * @deprecated use depositDataManager
    */
   keysManager: string
+
+  /**
+   * @deprecated use whitelistManager
+  */
+  whitelister: string
 }
