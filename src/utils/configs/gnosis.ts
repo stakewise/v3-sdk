@@ -44,6 +44,9 @@ export default {
       mintTokenController: ZeroAddress,
       rewardSplitterFactory: ZeroAddress,
     },
+    balancer: {
+      vault: ZeroAddress,
+    },
     factories: {
       vault: ZeroAddress,
       erc20Vault: ZeroAddress,

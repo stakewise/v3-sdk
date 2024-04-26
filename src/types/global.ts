@@ -10,7 +10,6 @@ import type {
   KeeperAbi,
   UsdRateAbi,
   MulticallAbi,
-  MintTokenAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
   VaultFactoryAbi,
@@ -53,7 +52,7 @@ declare global {
       provider?: Provider
       endpoints?: {
         api?: string
-        subgraph?: string
+        subgraph?: string | ReadonlyArray<string>
         web3?: string | string[]
       }
     }
@@ -71,7 +70,7 @@ declare global {
       type UsdRate = UsdRateAbi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
-      type MintToken = MintTokenAbi
+      type MintToken = Erc20Abi
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type VaultFactory = VaultFactoryAbi
