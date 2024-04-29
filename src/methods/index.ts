@@ -13,6 +13,7 @@ type Methods = (
   | typeof osToken.requests
   | typeof osToken.transactions
 
+  | typeof rewardSplitter.requests
   | typeof rewardSplitter.transactions
 )
 
@@ -96,6 +97,7 @@ const methods = {
     ...createMethods<typeof osToken.transactions>(osToken.transactions, params),
   }),
   createRewardSplitterMethods: (params: CommonParams) => ({
+    ...createMethods<typeof rewardSplitter.requests>(rewardSplitter.requests, params),
     ...createMethods<typeof rewardSplitter.transactions>(rewardSplitter.transactions, params),
   }),
 }

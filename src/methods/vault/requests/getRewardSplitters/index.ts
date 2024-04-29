@@ -17,6 +17,10 @@ const getRewardSplitters = (input: GetRewardSplittersInput) => {
 
   validateArgs.address({ owner, vaultAddress })
 
+  if (typeof rewardSplitterAddress !== 'undefined') {
+    validateArgs.address({ rewardSplitterAddress })
+  }
+
   const where = {
     vault: vaultAddress.toLowerCase(),
     owner: owner.toLowerCase(),
