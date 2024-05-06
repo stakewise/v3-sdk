@@ -1,4 +1,5 @@
 import { constants } from '../../../utils'
+import localStorage from './local-storage'
 
 
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
@@ -19,7 +20,7 @@ const getRequestUrl = (url: string | ReadonlyArray<string>): string => {
 
     const [ primaryUrl, backupUrl ] = url
 
-    const hasError = sessionStorage.getItem(sessionErrorUrl) === primaryUrl
+    const hasError = localStorage.getSessionItem<string>(sessionErrorUrl) === primaryUrl
 
     return hasError ? backupUrl : primaryUrl
   }
