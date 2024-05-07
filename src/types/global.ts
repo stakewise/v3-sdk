@@ -44,13 +44,20 @@ declare global {
       send: () => any
     }
 
+    type UrlWithHeaders = {
+      url: string
+      headers: Record<string, string>
+    }
+
+    type Web3Endpoints = string | string[] | UrlWithHeaders[]
+
     type Options = {
       network: Network
       provider?: Provider
       endpoints?: {
         api?: string
         subgraph?: string | ReadonlyArray<string>
-        web3?: string | string[]
+        web3?: Web3Endpoints
       }
     }
 
