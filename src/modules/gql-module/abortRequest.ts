@@ -29,14 +29,16 @@ class AbortRequest<Data, ModifiedData> {
   promise: AbortPromise<ModifiedData>
   body: string
   isAborted: boolean
+  requestId: string
 
   constructor(url: RequestInfo | URL, abortRequestInit: AbortRequestInit<Data, ModifiedData>) {
     const { onSuccess, onError, ...init } = abortRequestInit
 
     this.body = init.body as string
     this.isAborted = false
+    this.requestId = `${url}_${this.body}`
 
-    const pendingRequest = requestsQueue[this.body]
+    const pendingRequest = requestsQueue[this.requestId]
 
     if (pendingRequest) {
       pendingRequest.count += 1
@@ -55,7 +57,7 @@ class AbortRequest<Data, ModifiedData> {
           return response.json().then((json) => Promise.reject(json))
         })
         .then((json) => {
-          requestsQueue[this.body] = undefined
+          requestsQueue[this.requestId] = undefined
 
           if (json?.errors) {
             throw new Error(json.errors[0].message)
@@ -69,7 +71,7 @@ class AbortRequest<Data, ModifiedData> {
           return json?.data as Data
         })
         .catch((error) => {
-          requestsQueue[this.body] = undefined
+          requestsQueue[this.requestId] = undefined
 
           if (typeof onError === 'function') {
             onError(error)
@@ -78,7 +80,7 @@ class AbortRequest<Data, ModifiedData> {
           return Promise.reject(error)
         })
 
-      requestsQueue[this.body] = {
+      requestsQueue[this.requestId] = {
         promise: this.request,
         count: 1,
       }
@@ -120,13 +122,13 @@ class AbortRequest<Data, ModifiedData> {
   abort() {
     this.isAborted = true
 
-    const count = requestsQueue[this.body]?.count || 0
+    const count = requestsQueue[this.requestId]?.count || 0
 
     if (count > 1) {
-      (requestsQueue[this.body] as PendingRequest).count -= 1
+      (requestsQueue[this.requestId] as PendingRequest).count -= 1
     }
     else {
-      requestsQueue[this.body] = undefined
+      requestsQueue[this.requestId] = undefined
       this.controller.abort()
     }
   }
