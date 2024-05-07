@@ -30,8 +30,8 @@ export default {
       swise: '0x484871C6D54a3dAEBeBBDB0AB7a54c97D72986Bb',
       mintToken: '0xF603c5A3F774F05d4D848A9bB139809790890864',
       depositToken: ZeroAddress,
-      v2RewardToken: ZeroAddress,
-      v2StakedToken: ZeroAddress,
+      v2RewardToken: '0xd57c19f20168406d162852515030e00e49bB7781',
+      v2StakedToken: '0xFb534BB912Eb83b7b629329195b8DF798Ea325b2',
     },
     base: {
       keeper: '0xB580799Bf7d62721D1a523f0FDF2f5Ed7BA4e259',
@@ -39,23 +39,23 @@ export default {
       priceOracle: '0xe31FAf135A6047Cbe595F91B4b6802cDB9B46E2b',
       vaultsRegistry: '0xAa773c035Af95721C518eCd8250CadAC0AAB7ed0',
       sharedMevEscrow: '0xc98F25BcAA6B812a07460f18da77AF8385be7b56',
-      mintTokenConfig: '0x4483965Ed85cd5e67f2a7a0EB462aCcC37b23D72',
-      depositDataRegistry: ZeroAddress,
+      mintTokenConfig: '0x8f347eb308707DC1FA1acCF3ea889CF554b6B8A5',
+      depositDataRegistry: '0x1Dfb40a149940300f183d21E5B200c5DaaF3A842',
       mintTokenController: '0x7BbC1733ee018f103A9a9052a18fA9273255Cf36',
-      rewardSplitterFactory: '0x6c56AC64457B8AeA1Bb8d1f5eA2d1E397C9c7a13',
+      rewardSplitterFactory: '0x384B388A040C6b32c9B5927aB25891F2bAd4E5f7',
     },
     balancer: {
       vault: ZeroAddress,
     },
     factories: {
-      vault: '0x61E12791C717B80CcE1a50bC97548fA281493e2a',
-      erc20Vault: '0x7a77934d32D78bFe8Dc1e23415b5679960a1c610',
+      vault: '0xc93C070124Cb78fE9Dee9F0527168F81850a384b',
+      erc20Vault: '0x2B324944213F5781A23A07ea3f55884b535DcF36',
 
-      privateVault: '0x47Bf64605a71f5ea1FBE230735ab04669cC312D5',
-      erc20PrivateVault: '0x93a3f880E07B27dacA6Ef2d3C23E77DBd6294487',
+      privateVault: '0xDe0b026f1A7b143A650732EdcCce5a30784BFe20',
+      erc20PrivateVault: '0x400f8E12c8503D6803141E3F5CCc3e0C01A44899',
 
-      blocklistVault: '0x0a57971758644A61279756591100c19e1691D068',
-      erc20BlocklistVault: '0x0F8c209445282d937DaC0eA0a6706590250F9aFD',
+      blocklistVault: '0x1F05A6F83e72732046DF4cac3215d1fd00E2Bc5C',
+      erc20BlocklistVault: '0x76FC9b44D4b18eef3CdF8FEeee0B926775F00e6e',
     },
     uniswap: {
       positionManager: ZeroAddress,
