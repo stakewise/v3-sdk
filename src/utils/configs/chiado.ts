@@ -6,7 +6,7 @@ import { Network } from '../enums'
 
 export default {
   api: {
-    backend: 'https://holesky-api.stakewise.io/graphql',
+    backend: 'https://chiado-api.stakewise.io/graphql',
     subgraph: 'https://chiado-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
   },
   network: {
