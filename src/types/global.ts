@@ -1,4 +1,4 @@
-import { BrowserProvider, JsonRpcProvider, FallbackProvider } from 'ethers'
+import type { BrowserProvider, JsonRpcProvider, FallbackProvider } from 'ethers'
 
 import methods from '../methods'
 import { Network, configs } from '../utils'

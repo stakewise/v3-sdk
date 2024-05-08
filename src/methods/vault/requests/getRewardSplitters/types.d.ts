@@ -1,4 +1,4 @@
-type FeeRecipient = {
+export type FeeRecipient = {
   shares: bigint
   percent: number
   address: string
