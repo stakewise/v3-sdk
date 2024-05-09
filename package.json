@@ -19,7 +19,7 @@
   },
   "engines": {
     "node": "20.x",
-    "npm": "=10.x"
+    "npm": "10.x"
   },
   "files": [
     "dist/",
