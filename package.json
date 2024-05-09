@@ -17,6 +17,10 @@
     "graphql": "graphql-codegen && ts-node -O '{\"module\": \"commonjs\"}' ./scripts/generateGraphqlExports",
     "rollup": "rollup --config rollup.config.js --bundleConfigAsCjs"
   },
+  "engines": {
+    "npm": "20.x",
+    "npm": "=10.x"
+  },
   "files": [
     "dist/",
     "package.json"
