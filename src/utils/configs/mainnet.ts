@@ -1,29 +1,16 @@
 import { ZeroAddress } from 'ethers'
 
-import tokens from '../constants/tokens'
-import { Network } from '../enums'
+import constants from '../constants'
 
 
 export default {
+  network: constants.chains.mainnet,
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
     subgraph: [
       'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
       'https://mainnet-graph-b.stakewise.io/subgraphs/name/stakewise/stakewise',
     ],
-  },
-  network: {
-    id: 'mainnet',
-    name: 'Ethereum',
-    chainId: Network.Mainnet,
-    hexadecimalChainId: '0x1',
-    blockExplorerUrl: 'https://etherscan.io',
-    url: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
-    nativeCurrency: {
-      symbol: tokens.eth,
-      name: 'Ethereum',
-      decimals: 18,
-    },
   },
   pages: {
     beaconchain: 'https://beaconcha.in',
@@ -65,11 +52,10 @@ export default {
     },
   },
   tokens: {
-    mintToken: tokens.osETH,
-    nativeToken: tokens.eth,
-    depositToken: tokens.eth,
-    v2RewardToken: tokens.rETH2,
-    v2StakedToken: tokens.sETH2,
+    mintToken: constants.tokens.osETH,
+    nativeToken: constants.tokens.eth,
+    depositToken: constants.tokens.eth,
+    v2RewardToken: constants.tokens.rETH2,
+    v2StakedToken: constants.tokens.sETH2,
   },
-  isTestnet: false,
 } as const

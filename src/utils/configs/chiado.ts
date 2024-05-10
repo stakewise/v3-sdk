@@ -1,26 +1,13 @@
 import { ZeroAddress } from 'ethers'
 
-import tokens from '../constants/tokens'
-import { Network } from '../enums'
+import constants from '../constants'
 
 
 export default {
+  network: constants.chains.chiado,
   api: {
     backend: 'https://chiado-api.stakewise.io/graphql',
     subgraph: 'https://chiado-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
-  },
-  network: {
-    id: 'chiado',
-    name: 'Chiado Testnet',
-    chainId: Network.Chiado,
-    hexadecimalChainId: '0x27D8',
-    url: 'https://rpc.chiadochain.net',
-    blockExplorerUrl: 'https://gnosis-chiado.blockscout.com/',
-    nativeCurrency: {
-      symbol: tokens.xdai,
-      name: tokens.xdai,
-      decimals: 18,
-    },
   },
   pages: {
     beaconchain: 'https://gnosis.beaconcha.in',
@@ -62,11 +49,10 @@ export default {
     },
   },
   tokens: {
-    mintToken: tokens.osGNO,
-    nativeToken: tokens.xdai,
-    depositToken: tokens.gno,
-    v2RewardToken: tokens.rGNO,
-    v2StakedToken: tokens.sGNO,
+    mintToken: constants.tokens.osGNO,
+    nativeToken: constants.tokens.xdai,
+    depositToken: constants.tokens.gno,
+    v2RewardToken: constants.tokens.rGNO,
+    v2StakedToken: constants.tokens.sGNO,
   },
-  isTestnet: true,
 } as const
