@@ -1,16 +1,17 @@
 import { constants } from '../../../utils'
+import localStorage from './local-storage'
 
 
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
 const saveErrorUrlToSessionStorage = (url: string) => {
-  const currentErrorUrl = sessionStorage.getItem(sessionErrorUrl)
+  const currentErrorUrl = localStorage.getSessionItem<string>(sessionErrorUrl)
 
   if (currentErrorUrl !== url) {
-    sessionStorage.setItem(sessionErrorUrl, url)
+    localStorage.setSessionItem(sessionErrorUrl, url)
 
     setTimeout(() => {
-      sessionStorage.removeItem(sessionErrorUrl)
+      localStorage.removeSessionItem(sessionErrorUrl)
     },  60 * 60 * 1000) // 1 hour
   }
 }
