@@ -1,26 +1,13 @@
 import { ZeroAddress } from 'ethers'
 
-import tokens from '../constants/tokens'
-import { Network } from '../enums'
+import constants from '../constants'
 
 
 export default {
+  network: constants.chains.holesky,
   api: {
     backend: 'https://holesky-api.stakewise.io/graphql',
     subgraph: 'https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
-  },
-  network: {
-    id: 'holesky',
-    name: 'Holesky Testnet',
-    chainId: Network.Holesky,
-    hexadecimalChainId: '0x4268',
-    url: 'https://ethereum-holesky.publicnode.com/',
-    blockExplorerUrl: 'https://holesky.etherscan.io',
-    nativeCurrency: {
-      symbol: tokens.eth,
-      name: 'Ethereum',
-      decimals: 18,
-    },
   },
   pages: {
     beaconchain: 'https://holesky.beaconcha.in',
@@ -62,11 +49,10 @@ export default {
     },
   },
   tokens: {
-    mintToken: tokens.osETH,
-    nativeToken: tokens.eth,
-    depositToken: tokens.eth,
-    v2RewardToken: tokens.rETH2,
-    v2StakedToken: tokens.sETH2,
+    mintToken: constants.tokens.osETH,
+    nativeToken: constants.tokens.eth,
+    depositToken: constants.tokens.eth,
+    v2RewardToken: constants.tokens.rETH2,
+    v2StakedToken: constants.tokens.sETH2,
   },
-  isTestnet: true,
 } as const
