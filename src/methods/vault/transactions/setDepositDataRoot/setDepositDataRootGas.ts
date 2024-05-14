@@ -4,9 +4,14 @@ import type { SetDepositDataRootInput } from './types'
 
 
 const setDepositDataRootGas = async (values: SetDepositDataRootInput) => {
+  const { provider, userAddress } = values
+
   const contract = commonLogic(values)
 
-  const estimatedGas = await contract.setDepositDataRoot.estimateGas(values.vaultAddress, values.validatorsRoot)
+  const signer = await provider.getSigner(userAddress)
+  const signedVaultContract = contract.connect(signer)
+
+  const estimatedGas = await signedVaultContract.setDepositDataRoot.estimateGas(values.vaultAddress, values.validatorsRoot)
 
   return getGas({ estimatedGas, provider: values.provider })
 }

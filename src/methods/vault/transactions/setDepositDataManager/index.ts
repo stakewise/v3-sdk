@@ -6,9 +6,14 @@ import setDepositDataManagerEncode from './setDepositDataManagerEncode'
 
 
 const setDepositDataManager: SetDepositDataManagerRoot = async (values) => {
+  const { provider, userAddress } = values
+
   const contract = commonLogic(values)
 
-  const result = await contract.setDepositDataManager(values.vaultAddress, values.managerAddress)
+  const signer = await provider.getSigner(userAddress)
+  const signedVaultContract = contract.connect(signer)
+
+  const result = await signedVaultContract.setDepositDataManager(values.vaultAddress, values.managerAddress)
 
   return result?.hash
 }
