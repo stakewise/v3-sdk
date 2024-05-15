@@ -4,14 +4,14 @@ import type { SetDepositDataManagerInput } from './types'
 
 
 const setDepositDataManagerGas = async (values: SetDepositDataManagerInput) => {
-  const { provider, userAddress } = values
+  const { provider, userAddress, vaultAddress, managerAddress } = values
 
   const contract = commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedVaultContract = contract.connect(signer)
 
-  const estimatedGas = await signedVaultContract.setDepositDataManager.estimateGas(values.vaultAddress, values.managerAddress)
+  const estimatedGas = await signedVaultContract.setDepositDataManager.estimateGas(vaultAddress, managerAddress)
 
   return getGas({ estimatedGas, provider: values.provider })
 }

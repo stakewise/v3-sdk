@@ -6,14 +6,14 @@ import setDepositDataRootEncode from './setDepositDataRootEncode'
 
 
 const setDepositDataRoot: SetDepositDataRoot = async (values) => {
-  const { provider, userAddress } = values
+  const { provider, userAddress, vaultAddress, validatorsRoot } = values
 
   const contract = commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedVaultContract = contract.connect(signer)
 
-  const result = await signedVaultContract.setDepositDataRoot(values.vaultAddress, values.validatorsRoot)
+  const result = await signedVaultContract.setDepositDataRoot(vaultAddress, validatorsRoot)
 
   return result?.hash
 }
