@@ -39,7 +39,7 @@
     "staking"
   ],
   "peerDependencies": {
-    "ethers": "^6.7.1"
+    "ethers": "^6.12.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.0",
