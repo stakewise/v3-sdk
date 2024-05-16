@@ -9,9 +9,9 @@ const setDepositDataRootGas = async (values: SetDepositDataRootInput) => {
   const contract = commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
-  const signedVaultContract = contract.connect(signer)
+  const signedDepositDataRegistryContract = contract.connect(signer)
 
-  const estimatedGas = await signedVaultContract.setDepositDataRoot.estimateGas(vaultAddress, validatorsRoot)
+  const estimatedGas = await signedDepositDataRegistryContract.setDepositDataRoot.estimateGas(vaultAddress, validatorsRoot)
 
   return getGas({ estimatedGas, provider: values.provider })
 }
