@@ -1,8 +1,6 @@
 import { validateArgs } from '../../../../utils'
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
-import fetchExitRequestDuration from './fetchExitRequestDuration'
-import { wrapAbortPromise } from '../../../../modules/gql-module'
 import type { ParseExitRequestsOutput } from './parseExitRequests'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
@@ -25,25 +23,22 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const [ duration, data ] = await Promise.all([
-    fetchExitRequestDuration({ options, vaultAddress, userAddress }),
-    fetchExitQueuePositions({ options, vaultAddress, userAddress }),
-  ])
+  return fetchExitQueuePositions({ options, vaultAddress, userAddress })
+    .then((data) => {
+      if (!data) {
+        return mock
+      }
 
-  if (!data) {
-    return mock
-  }
-
-  return parseExitRequests({
-    options,
-    duration,
-    provider,
-    contracts,
-    userAddress,
-    vaultAddress,
-    exitRequests: data,
-  })
+      return parseExitRequests({
+        options,
+        provider,
+        contracts,
+        userAddress,
+        vaultAddress,
+        exitRequests: data,
+      })
+    })
 }
 
 
-export default wrapAbortPromise<GetExitQueuePositionsInput, ParseExitRequestsOutput>(getExitQueuePositions)
+export default getExitQueuePositions

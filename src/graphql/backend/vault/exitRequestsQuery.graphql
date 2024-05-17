@@ -1,5 +1,0 @@
-query ExitRequests($user: String!, $vault: String!) {
-  exitRequests(user: $user, vault: $vault) {
-    duration
-  }
-}

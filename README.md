@@ -418,18 +418,18 @@ type Position = {
 
 type Output = {
   total: bigint
-  duration: number
+  duration: number | null
   withdrawable: bigint
   positions: Position[]
 }
 ```
 
-| Name | Description                              |
-|------|------------------------------------------|
-| `positions` | Queue positions                          |
-| `total` | Total withdrawal amount (in ETH)         |
-| `duration` | Queue duration time (in minutes)         |
-| `withdrawable` | Amount available for withdrawal (in ETH) |
+| Name | Description                                                                                                      |
+|------|------------------------------------------------------------------------------------------------------------------|
+| `positions` | Queue positions                                                                                                  |
+| `total` | Total withdrawal amount (in ETH)                                                                                 |
+| `duration` | Queue duration time (in timestamps), but if the value is "null" it means that the time is still being calculated |
+| `withdrawable` | Amount available for withdrawal (in ETH)                                                                         |
 
 #### Example:
 

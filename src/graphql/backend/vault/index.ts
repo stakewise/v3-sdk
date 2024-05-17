@@ -7,8 +7,5 @@ export type { ValidatorsQueryPayload, ValidatorsQueryVariables } from './validat
 export { fetchUserRewardsQuery } from './userRewardsQuery.graphql'
 export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql'
 
-export { fetchExitRequestsQuery } from './exitRequestsQuery.graphql'
-export type { ExitRequestsQueryPayload, ExitRequestsQueryVariables } from './exitRequestsQuery.graphql'
-
 export { fetchScorePercentilesQuery } from './scorePercentilesQuery.graphql'
 export type { ScorePercentilesQueryPayload, ScorePercentilesQueryVariables } from './scorePercentilesQuery.graphql'

@@ -5,10 +5,10 @@ export type ParseExitRequestsInput = {
   contracts: StakeWise.Contracts
   provider: StakeWise.Provider
   options: StakeWise.Options
-  duration: number
   userAddress: string
   vaultAddress: string
   exitRequests: Array<{
+    withdrawalTimestamp: string | null
     positionTicket: string
     totalShares: string
     totalAssets: string
@@ -25,8 +25,8 @@ type Position = {
 
 export type ParseExitRequestsOutput = {
   total: bigint
-  duration: number
   withdrawable: bigint
+  duration: number | null
   positions: Position[]
 }
 
@@ -35,6 +35,24 @@ type ExitedAssetsResponse = Array<{
   exitedTickets: bigint
   exitedAssets: bigint
 }>
+
+const _getDuration = (data: ParseExitRequestsInput['exitRequests']): ParseExitRequestsOutput['duration'] => {
+  if (!data || !data.length) {
+    return 0
+  }
+
+  // which means the exit queue withdrawal time is still being calculated
+  const hasNullWithdrawal = data.some((item) => item.withdrawalTimestamp === null)
+
+  if (hasNullWithdrawal) {
+    return null
+  }
+
+  const durations = data.map((item) => Number(item.withdrawalTimestamp))
+  const biggestValue = Math.max(...durations)
+
+  return biggestValue
+}
 
 const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) => {
   const lastBlock = await provider.getBlock('latest')
@@ -49,7 +67,7 @@ const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) 
 }
 
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, contracts, provider, userAddress, vaultAddress, duration, exitRequests } = values
+  const { options, contracts, provider, userAddress, vaultAddress, exitRequests } = values
 
   const keeperContract = contracts.base.keeper
   const vaultContract = contracts.helpers.createVault(vaultAddress)
@@ -118,7 +136,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     // If there are no positions with an index greater than 0 or their timestamp has failed the 24-hour check.
     // Then we can use totalShares from the subgraph to show total
     return {
-      duration,
+      duration: 0,
       positions: [],
       withdrawable: 0n,
       total: totalV1QueuedAssets + queuedAssets,
@@ -167,6 +185,8 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   }
 
   const total = withdrawableAssets + queuedAssets
+
+  const duration = _getDuration(exitRequests)
 
   return {
     total,

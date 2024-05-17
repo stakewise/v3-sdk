@@ -25,7 +25,6 @@ describe('parseExitRequests function', () => {
 
   const input: ParseExitRequestsInput = {
     contracts,
-    duration: 1440,
     options: { network },
     userAddress: ZeroAddress,
     vaultAddress: ZeroAddress,
@@ -33,18 +32,21 @@ describe('parseExitRequests function', () => {
     exitRequests: [
       {
         positionTicket: 'positionTicket-1',
+        withdrawalTimestamp: '1718536919',
         timestamp: '123456',
         totalAssets: '0',
         totalShares: '100',
       },
       {
         positionTicket: 'positionTicket-2',
+        withdrawalTimestamp: '1718536919',
         timestamp: '123457',
         totalAssets: '0',
         totalShares: '200',
       },
       {
         positionTicket: 'positionTicket-2',
+        withdrawalTimestamp: '1718536919',
         timestamp: '123458',
         totalAssets: '300',
         totalShares: '0',
@@ -110,7 +112,7 @@ describe('parseExitRequests function', () => {
         },
       ],
       total: 431n,
-      duration: 1440,
+      duration: 1718536919,
       withdrawable: 281n,
     })
   })
@@ -134,7 +136,7 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       total: 100n,
-      duration: 1440,
+      duration: 0,
       positions: [],
       withdrawable: 0n,
     })
@@ -153,7 +155,7 @@ describe('parseExitRequests function', () => {
     expect(result).toEqual({
       positions: [],
       total: 50n,
-      duration: 1440,
+      duration: 0,
       withdrawable: 0n,
     })
   })
@@ -184,7 +186,7 @@ describe('parseExitRequests function', () => {
         positionTicket: 'positionTicket-2',
       } ],
       total: 380n,
-      duration: 1440,
+      duration: 1718536919,
       withdrawable: 30n,
     })
   })
@@ -227,7 +229,7 @@ describe('parseExitRequests function', () => {
         },
       ],
       total: 603n,
-      duration: 1440,
+      duration: 1718536919,
       withdrawable: 603n,
     })
   })
