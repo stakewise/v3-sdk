@@ -1058,7 +1058,7 @@ const gas = await sdk.vault.withdraw.estimateGas(params)
 
 #### Description:
 
-Take the freed tokens from the queue
+Withdraws exited assets from the queue.
 
 #### Arguments:
 
