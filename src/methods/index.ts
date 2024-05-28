@@ -31,7 +31,7 @@ type WithEncode<M extends UnknownMethod> = WithoutEncode<M> & {
   )
 }
 
-type WithEstimateGas<M extends UnknownMethod> = WithoutEncode<M> & {
+type WithEstimateGas<M extends UnknownMethod> = WithEncode<M> & {
   estimateGas: (...values: CheckArgs<Omit<Parameters<NonNullable<M['estimateGas']>>[0], 'options' | 'contracts' | 'provider'>>) => (
     ReturnType<NonNullable<M['estimateGas']>>
   )
@@ -40,8 +40,8 @@ type WithEstimateGas<M extends UnknownMethod> = WithoutEncode<M> & {
 type ModifiedMethod<M extends UnknownMethod> = 'encode' extends keyof M
   ? 'estimateGas' extends keyof M
     ? WithEstimateGas<M>
-    : WithoutEncode<M>
-  : WithEncode<M>
+    : WithEncode<M>
+  : WithoutEncode<M>
 
 type CommonParams = {
   options: StakeWise.Options
