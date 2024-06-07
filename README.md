@@ -24,11 +24,11 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 
 ## Prerequisites
 
-For successful utilization of this library, ensure you have `ethers` version 6.7.1 or higher installed. The `ethers` package isn't bundled within the SDK. Instead, we leverage `peerDependencies` to maintain a lean package size.
+For successful utilization of this library, ensure you have `ethers` version 6.12.1 or higher installed. The `ethers` package isn't bundled within the SDK. Instead, we leverage `peerDependencies` to maintain a lean package size.
 
 **Note**: If your project uses version 5 of `ethers`, consider installing version 6 alongside it. Adjust import paths via a bundler. Additionally, you might consider loading our SDK asynchronously using dynamic imports to optimize your application's initial load performance. Here's a sample configuration with webpack:
 
-`npm i ethers-6@npm:ethers@6.7.1`
+`npm i ethers-6@npm:ethers@6.12.1`
 
 ```typescript
 webpackConfig.plugins.push(
