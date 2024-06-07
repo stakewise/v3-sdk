@@ -1,5 +1,6 @@
 import path from 'path'
 
+import removeOldFiles from './removeOldFiles'
 import addGraphqlNamespace from './addGraphqlNamespace'
 import generateGraphqlQueryFiles from './generateGraphqlQueryFiles'
 
@@ -19,6 +20,7 @@ const endpoints = [
 
 try {
   endpoints.forEach(({ dir, types, client }) => {
+    removeOldFiles(dir)
     addGraphqlNamespace(types, client)
     generateGraphqlQueryFiles(dir, client)
   })
