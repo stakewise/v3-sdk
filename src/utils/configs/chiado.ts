@@ -17,8 +17,8 @@ export default {
       swise: '0x460d2c6c3254809949a7d0b4646ce15F77e9c545',
       mintToken: '0x11Bd460C704b74Dc84Fce0C45d7dDA49EffCA59f',
       depositToken: '0x19C653Da7c37c66208fbfbE8908A5051B57b4C70',
-      v2RewardToken: '0x3A945FD94A1d810B5e1c4536747F0de358d32854',
-      v2StakedToken: '0x5da7d1De2e84047De2A7988a7E01B494d54284e7',
+      v2RewardToken: '0x0d6736e4ee767B1Bdfc1daeEfB74150643a50C15',
+      v2StakedToken: '0x61A58F486c9E23D3ACB88792c50ddcdde7cda656',
     },
     base: {
       keeper: '0x13Af1266d8664aF3da4c711E7C86725D4779EA72',
