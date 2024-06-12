@@ -26,23 +26,23 @@ export default {
       priceOracle: '0xe31FAf135A6047Cbe595F91B4b6802cDB9B46E2b',
       vaultsRegistry: '0xAa773c035Af95721C518eCd8250CadAC0AAB7ed0',
       sharedMevEscrow: '0xc98F25BcAA6B812a07460f18da77AF8385be7b56',
-      mintTokenConfig: '0x8f347eb308707DC1FA1acCF3ea889CF554b6B8A5',
-      depositDataRegistry: '0x1Dfb40a149940300f183d21E5B200c5DaaF3A842',
+      mintTokenConfig: '0x191599BAF9ad40Ae28EeD7ee6F5C38B5325746E7',
+      depositDataRegistry: '0xf25f9A254F38aF10Dc352bF8F446Dc09a820ca76',
       mintTokenController: '0x7BbC1733ee018f103A9a9052a18fA9273255Cf36',
-      rewardSplitterFactory: '0x384B388A040C6b32c9B5927aB25891F2bAd4E5f7',
+      rewardSplitterFactory: '0x7Fcb1857011BAF51003018e9299deE9012de0967',
     },
     balancer: {
       vault: ZeroAddress,
     },
     factories: {
-      vault: '0xc93C070124Cb78fE9Dee9F0527168F81850a384b',
-      erc20Vault: '0x2B324944213F5781A23A07ea3f55884b535DcF36',
+      vault: '0xd68ef965D4E32b99Fd2D014Fc35304f3C273277E',
+      erc20Vault: '0x10C5066FB5DA1C0D7eb189DE4dfA26d23e8e4aDa',
 
-      privateVault: '0xDe0b026f1A7b143A650732EdcCce5a30784BFe20',
-      erc20PrivateVault: '0x400f8E12c8503D6803141E3F5CCc3e0C01A44899',
+      privateVault: '0x09fD091483d64b3b9d5474F374ddFE6039F79aAd',
+      erc20PrivateVault: '0x5da7d1De2e84047De2A7988a7E01B494d54284e7',
 
-      blocklistVault: '0x1F05A6F83e72732046DF4cac3215d1fd00E2Bc5C',
-      erc20BlocklistVault: '0x76FC9b44D4b18eef3CdF8FEeee0B926775F00e6e',
+      blocklistVault: '0x473a94aBe8f173cac48A6213f61335E21B913875',
+      erc20BlocklistVault: '0x3A945FD94A1d810B5e1c4536747F0de358d32854',
     },
     uniswap: {
       positionManager: ZeroAddress,
