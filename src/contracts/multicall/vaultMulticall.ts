@@ -1,4 +1,5 @@
 import {
+  getSwapParams,
   getHarvestArgs,
   handleMulticall,
   handleCallStatic,
@@ -8,7 +9,8 @@ import {
 } from './util'
 
 import type { MulticallRequestInput } from './types'
-import type { VaultAbi, OtherTokenVaultAbi, KeeperAbi } from '../types'
+import type { KeeperAbi, OtherTokenVaultAbi, VaultAbi } from '../types'
+import { Network } from '../../utils'
 
 
 type VaultContractAbi = VaultAbi | OtherTokenVaultAbi
@@ -60,6 +62,21 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
         },
         ...multicallParams,
       ]
+
+      const needSwap = [ Network.Chiado, Network.Gnosis ].includes(options.network)
+
+      if (needSwap) {
+        // This call depends on the balancer pool, so we should check if it works before making the call
+        // otherwise we shouldn't add it to multicallParams
+        const swapParams = await getSwapParams({
+          contract,
+          multicallParams,
+        })
+
+        if (swapParams) {
+          multicallParams.push(swapParams)
+        }
+      }
     }
   }
 

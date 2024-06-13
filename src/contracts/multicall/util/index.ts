@@ -1,3 +1,4 @@
+export { default as getSwapParams } from './getSwapParams'
 export { default as getHarvestArgs } from './getHarvestArgs'
 export { default as handleMulticall } from './handleMulticall'
 export { default as handleCallStatic } from './handleCallStatic'
