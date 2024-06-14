@@ -1,3 +1,4 @@
+import { ZeroAddress } from 'ethers'
 import { constants, BigDecimal } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
@@ -7,9 +8,8 @@ export type GetOsTokenDataInput = {
 }
 
 export type OsTokenDataMulticallReturnType = {
-  ltvPercent: bigint
   mintTokenRate: bigint
-  thresholdPercent: bigint
+  config: [ bigint, bigint, bigint ]
 }
 
 type Output = {
@@ -30,22 +30,16 @@ const getOsTokenData = async (input: GetOsTokenDataInput) => {
       args: [],
     },
     {
-      returnName: 'ltvPercent',
-      methodName: 'ltvPercent',
+      returnName: 'config',
+      methodName: 'getConfig',
       contract: contracts.base.mintTokenConfig ,
       noContractValue: constants.blockchain.amount0,
-      args: [],
-    },
-    {
-      returnName: 'thresholdPercent',
-      methodName: 'liqThresholdPercent',
-      contract: contracts.base.mintTokenConfig,
-      noContractValue: constants.blockchain.amount0,
-      args: [],
+      args: [ ZeroAddress ],
     },
   ])
 
-  const { mintTokenRate, ltvPercent, thresholdPercent } = await multicall()
+  const { mintTokenRate, config } = await multicall()
+  const [ bonusPercent, thresholdPercent, ltvPercent ] = config
 
   const rate = new BigDecimal(mintTokenRate)
     .divide(constants.blockchain.amount1)
