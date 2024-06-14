@@ -1,10 +1,10 @@
 import {
-  getSwapParams,
   getHarvestArgs,
   handleMulticall,
   handleCallStatic,
   getSignedContract,
   handleEstimateGas,
+  testMulticallParams,
   handleTransactionData,
 } from './util'
 
@@ -55,27 +55,38 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     })
 
     if (harvestArgs) {
-      multicallParams = [
-        {
-          method: 'updateState',
-          args: [ harvestArgs ],
-        },
+      const needSwap = [ Network.Chiado, Network.Gnosis ].includes(options.network)
+
+      const updateStateParams = {
+        method: 'updateState',
+        args: [ harvestArgs ],
+      }
+
+      const swapParams = {
+        method: 'swapXdaiToGno',
+        args: [],
+      }
+
+      const fallbackParams = [
+        updateStateParams,
         ...multicallParams,
       ]
-
-      const needSwap = [ Network.Chiado, Network.Gnosis ].includes(options.network)
 
       if (needSwap) {
         // This call depends on the balancer pool, so we should check if it works before making the call
         // otherwise we shouldn't add it to multicallParams
-        const swapParams = await getSwapParams({
+        multicallParams = await testMulticallParams({
           contract,
-          multicallParams,
+          multicallParams: [
+            updateStateParams,
+            swapParams,
+            ...multicallParams,
+          ],
+          fallbackParams,
         })
-
-        if (swapParams) {
-          multicallParams.push(swapParams)
-        }
+      }
+      else {
+        multicallParams = fallbackParams
       }
     }
   }
