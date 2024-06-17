@@ -1,6 +1,8 @@
 // Requests
 import getAPY from './requests/getOsTokenAPY'
+import getRate from './requests/getOsTokenRate'
 import getMaxMint from './requests/getMaxMint'
+import getConfig from './requests/getOsTokenConfig'
 import getBaseData from './requests/getOsTokenData'
 import getBurnAmount from './helpers/getBurnAmount'
 import getPosition from './requests/getOsTokenPosition'
@@ -22,6 +24,16 @@ export default {
     */
     getAPY,
     /**
+     * @description Current os token rate.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetrate
+    */
+    getRate,
+    /**
+     * @description os token ltvPercent and thresholdPercent for provided vault
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetconfig
+    */
+    getConfig,
+    /**
      * @description Maximum number of **shares** for minting
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetmaxmint
     */
@@ -29,7 +41,8 @@ export default {
     /**
      * @description Basic information on the token
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetbasedata
-    */
+     * @deprecated use getConfig(vaultAddress) and getRate
+     */
     getBaseData,
     /**
      * @description User position data

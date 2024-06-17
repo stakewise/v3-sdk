@@ -94,8 +94,8 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getBaseData](#sdkostokengetbasedata)                 |                                                                   |
 | [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
 | [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getConfig](#sdkostokengetconfig)                     |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
 | [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                               |                                                                   |
@@ -898,6 +898,7 @@ await sdk.osToken.getMaxMint({
 
 #### Description:
 
+**Deprecated, use getConfig(vaultAddress) and getRate instead**
 Basic information on the token
 
 #### Returns:
@@ -967,6 +968,55 @@ type Output = bigint
 
 ```ts
 await sdk.utils.getSharesFromAssets({ amount: 0n })
+```
+---
+### `sdk.osToken.getRate`
+
+#### Description:
+
+Returns ETH - osToken rate
+
+#### Returns:
+
+```ts
+type Output = string
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getRate()
+```
+---
+### `sdk.osToken.getConfig`
+
+#### Description:
+
+Basic information on the token
+
+#### Arguments:
+
+| Name         | Type     | Required | Description   |
+|--------------|----------|----------|---------------|
+| vaultAddress | `string` | **Yes**  | Vault address |
+
+#### Returns:
+
+```ts
+type Output = {
+  ltvPercent: bigint
+  thresholdPercent: bigint
+}
+```
+| Name | Description |
+|------|-------------|
+| `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
+| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
+
+#### Example:
+
+```ts
+await sdk.osToken.getConfig({ vaultAddress: '0x...' })
 ```
 ---
 ## RewardSplitter

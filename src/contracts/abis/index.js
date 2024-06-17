@@ -1,4 +1,5 @@
 import UniswapPositionManagerAbi from './UniswapPositionManagerAbi.json'
+import MintTokenConfigMainnetAbi from './MintTokenConfigMainnetAbi.json'
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
@@ -27,6 +28,7 @@ const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
 
 export {
   UniswapPositionManagerAbi,
+  MintTokenConfigMainnetAbi,
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
   MintTokenControllerAbi,

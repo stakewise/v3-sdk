@@ -1,15 +1,19 @@
 import { ZeroAddress } from 'ethers'
-import { constants, BigDecimal } from '../../../utils'
+import { BigDecimal, Network, constants } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
 export type GetOsTokenDataInput = {
+  options: StakeWise.Options
   contracts: StakeWise.Contracts
 }
 
+type MainnetConfig = [ bigint, bigint, bigint, bigint, bigint ]
+type NetworksConfig = [ bigint, bigint, bigint ]
+
 export type OsTokenDataMulticallReturnType = {
   mintTokenRate: bigint
-  config: [ bigint, bigint, bigint ]
+  config: MainnetConfig | NetworksConfig
 }
 
 type Output = {
@@ -19,8 +23,9 @@ type Output = {
 }
 
 const getOsTokenData = async (input: GetOsTokenDataInput) => {
-  const { contracts } = input
+  const { options, contracts } = input
 
+  const isMainnet = options.network === Network.Mainnet
   const multicall = contracts.helpers.createMulticall<OsTokenDataMulticallReturnType>([
     {
       returnName: 'mintTokenRate',
@@ -34,12 +39,26 @@ const getOsTokenData = async (input: GetOsTokenDataInput) => {
       methodName: 'getConfig',
       contract: contracts.base.mintTokenConfig ,
       noContractValue: constants.blockchain.amount0,
-      args: [ ZeroAddress ],
+      args: isMainnet ? [] : [ ZeroAddress ],
     },
   ])
 
   const { mintTokenRate, config } = await multicall()
-  const [ bonusPercent, thresholdPercent, ltvPercent ] = config
+
+  let ltvPercent = 0n
+  let thresholdPercent = 0n
+
+  // On mainnet getConfig returns
+  // [ redeemFromLtvPercent, redeemToLtvPercent, thresholdPercent, liqBonusPercent, ltvPercent ]
+  if (isMainnet) {
+    ltvPercent = (config as MainnetConfig)[4]
+    thresholdPercent = config[2]
+  }
+  else {
+    // On other networks getConfig returns [ bonusPercent, thresholdPercent, ltvPercent ]
+    ltvPercent = config[2]
+    thresholdPercent = config[1]
+  }
 
   const rate = new BigDecimal(mintTokenRate)
     .divide(constants.blockchain.amount1)
