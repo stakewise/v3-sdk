@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import type { Provider } from 'ethers'
+import { Network } from '../utils/enums'
 
 import {
   Erc20Abi,
@@ -22,6 +23,7 @@ import {
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
+  MintTokenConfigMainnetAbi,
   UniswapPositionManagerAbi,
 } from './abis'
 
@@ -77,6 +79,12 @@ const getMintTokenConfig = (provider: Provider, config: StakeWise.Config) => cre
   provider
 )
 
+const getMintTokenMainnetConfig = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfigMainnet>(
+  config.addresses.base.mintTokenConfig,
+  MintTokenConfigMainnetAbi,
+  provider
+)
+
 const getMintTokenController = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenController>(
   config.addresses.base.mintTokenController,
   MintTokenControllerAbi,
@@ -116,6 +124,7 @@ export const createContracts = (input: CreateContractsInput) => {
   const { provider, config } = input
 
   const multicallContract = getMulticall(provider, config)
+  const isMainnet = config.network.chainId === Network.Mainnet
 
   return {
     helpers: {
@@ -136,7 +145,7 @@ export const createContracts = (input: CreateContractsInput) => {
       keeper: getKeeper(provider, config),
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
-      mintTokenConfig: getMintTokenConfig(provider, config),
+      mintTokenConfig: isMainnet ? getMintTokenMainnetConfig(provider, config) : getMintTokenConfig(provider, config),
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),

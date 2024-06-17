@@ -25,6 +25,7 @@ import type {
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
+  MintTokenConfigMainnetAbi,
   UniswapPositionManagerAbi,
 } from '../contracts/types'
 
@@ -93,6 +94,7 @@ declare global {
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
       type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
+      type MintTokenConfigMainnet = MintTokenConfigMainnetAbi
       type UniswapPositionManager = UniswapPositionManagerAbi
     }
   }
