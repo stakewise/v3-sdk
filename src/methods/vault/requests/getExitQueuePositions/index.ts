@@ -1,6 +1,7 @@
 import { validateArgs } from '../../../../utils'
 import parseExitRequests from './parseExitRequests'
 import fetchExitQueuePositions from './fetchExitQueuePositions'
+import type { ParseExitRequestsOutput } from './parseExitRequests'
 import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
 
 
@@ -10,8 +11,9 @@ type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
   options: StakeWise.Options
 }
 
-const mock = {
+const mock: ParseExitRequestsOutput = {
   total: 0n,
+  duration: 0,
   positions: [],
   withdrawable: 0n,
 }
