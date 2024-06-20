@@ -28,5 +28,7 @@ query Vault($address: ID!) {
     blocklistManager
     validatorsManager
     depositDataManager
+    restakeOperatorsManager
+    restakeWithdrawalsManager
   }
 }
