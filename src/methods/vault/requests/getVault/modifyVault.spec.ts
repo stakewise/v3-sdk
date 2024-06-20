@@ -37,6 +37,8 @@ describe('modifyVault', () => {
       blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      restakeOperatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      restakeWithdrawalsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
     },
   }
 
@@ -71,6 +73,8 @@ describe('modifyVault', () => {
       blocklistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       validatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      restakeOperatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      restakeWithdrawalsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
     }
 
     const result = modifyVault({
