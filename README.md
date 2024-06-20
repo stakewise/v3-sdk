@@ -559,29 +559,32 @@ Returns the master data of the vault
 ```ts
 type Output = {
   apy: number
+  version: number
   isErc20: boolean
   capacity: string
   createdAt: number
   feePercent: number
   isPrivate: boolean
+  isRestake: boolean
   vaultAdmin: string
   totalAssets: string
+  performance: number
   feeRecipient: string
   vaultAddress: string
   mevRecipient: string
   whitelistCount: number
   blocklistCount: number
   imageUrl: string | null
+  isSmoothingPool: boolean
+  tokenName: string | null
   whitelistManager: string
   blocklistManager: string
   depositDataManager: string
-  isSmoothingPool: boolean
-  tokenName: string | null
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
-  performance: number
-  version: number
+  restakeOperatorsManager: string
+  restakeWithdrawalsManager: string
 }
 ```
 
@@ -593,6 +596,7 @@ type Output = {
 | `createdAt`        | Date of Creation                                              |
 | `feePercent`       | Commission rate                                               |
 | `isPrivate`        | Whether the storage is private                                |
+| `isRestake`        | Indicates whether the Vault is a restaking vault                                |
 | `isBlocklist`      | Whether the storage has blocklist                             |
 | `vaultAdmin`       | Vault administrator address                                   |
 | `totalAssets`      | TVL of Vault                                                  |
@@ -614,6 +618,8 @@ type Output = {
 | `blocklist`        | List of blocked users for deposits                            |
 | `performance`      | Vault performance indicator (percent)                         |
 | `version`          | Vault version                                                 |
+| `restakeOperatorsManager`          | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                 |
+| `restakeWithdrawalsManager`          | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                 |
 
 #### Example:
 
