@@ -10,6 +10,8 @@ import type { SetValidatorsRootParams } from '../util/params/getValidatorsRootPa
 import type { SetBlocklistManagerParams } from '../util/params/getBlocklistManagerParams'
 import type { SetValidatorsManagerParams } from '../util/params/getValidatorsManagerParams'
 import type { SetDepositDataManagerParams } from '../util/params/getDepositDataManagerParams'
+import type { SetRestakeOperatorsManagerParams } from '../util/params/getRestakeOperatorsManagerParams'
+import type { SetRestakeWithdrawalsManagerParams } from '../util/params/getRestakeWithdrawalsManagerParams'
 
 type BaseInput = {
   userAddress: string
@@ -29,6 +31,8 @@ type MulticallParams = Partial<
   & SetBlocklistManagerParams
   & SetValidatorsManagerParams
   & SetDepositDataManagerParams
+  & SetRestakeOperatorsManagerParams
+  & SetRestakeWithdrawalsManagerParams
 >
 
 export type MulticallInput = BaseInput & MulticallParams

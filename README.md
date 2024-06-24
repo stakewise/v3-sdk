@@ -1302,6 +1302,8 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses. |
 | depositDataManager | `string` | **No**  | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager` |
 | validatorsManager  | `string` | **No**  | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |
+| restakeWithdrawalsManager  | `string` | **No**  | Admin                | The restake withdrawals manager must be assigned to the wallet connected to the operator service. It is responsible for withdrawing exiting validators from the EigenLayer. |
+| restakeOperatorsManager  | `string` | **No**  | Admin                | The restake operators manager can add EigenPods and update EigenLayer operators. |
 | whitelistManager   | `string` | **No**  | Admin                | Address of the vault whitelistManager |
 | feeRecipient       | `string` | **No**  | Admin                | Address of the vault fee recipient |
 | validatorsRoot     | `string` | **No**  | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot` |
@@ -1315,15 +1317,18 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 ```ts
 // Data to update the vault by admin.
 const params = {
+  userAddress: '0x...',
+  vaultAddress: '0x...',
   feeRecipient: '0x...',
+  metadataIpfsHash: '...',
   validatorsRoot: '0x...',
   blocklistManager: '0x...',
   whitelistManager: '0x...',
   validatorsManager: '0x...',
   depositDataManager: '0x...',
-  metadataIpfsHash: '...',
-  vaultAddress: '0x...',
-  userAddress: '0x...',
+  restakeOperatorsManager: '0x...',
+  restakeWithdrawalsManager: '0x...',
+  
 }
 
 // Data to update the vault by vault keys manager.
