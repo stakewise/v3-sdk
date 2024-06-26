@@ -542,6 +542,52 @@ await sdk.vault.getValidators({
 })
 ```
 ---
+### `sdk.vault.getEigenPods`
+
+#### Description:
+
+Returns eigen pods for restake vault.
+
+#### Arguments:
+
+| Name | Type | Required |
+|------|------|-------------|
+| vaultAddress | `string` | **Yes** | 
+| limit | `number` | **Yes** | To implement pagination |
+| skip | `number` | **Yes** | To implement pagination |
+
+#### Returns:
+
+```ts
+type Output = {
+  id: string
+  link: string
+  operator: string
+  restaked: string
+  createdAt: number
+  podAddress: string
+}
+```
+
+| Name        | Description                     |
+|-------------|---------------------------------|
+| `createdAt` | Date of Creation                |
+| `link` | Link to beaconchain             |
+| `operator`  | The eigenPod's operator         |
+| `podAddress`   | The eigenPod's address          |
+| `restaked` | EgenPod's restaked (in ETH)      |
+| `id`        | The address of the eigen pod owner |
+
+#### Example:
+
+```ts
+await sdk.vault.getEigenPods({
+  skip: 0,
+  limit: 5,
+  vaultAddress: '0x...'
+})
+```
+---
 ### `sdk.vault.getVault`
 
 #### Description:
@@ -1285,6 +1331,35 @@ const hash = await sdk.vault.setDepositDataManager(params)
 const { data, to } = await sdk.vault.setDepositDataManager.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.setDepositDataManager.estimateGas(params)
+```
+---
+### `sdk.vault.createEigenPod`
+
+#### Description:
+
+Adding eigen pod to the vault. Only for restake vaults and only restake operators manager can perform this action.
+
+#### Arguments:
+
+| Name           | Type     | Required | Description |
+|----------------|----------|----------|-------------|
+| userAddress    | `string` | **Yes**  | - |
+| vaultAddress   | `string` | **Yes**  | - |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.createEigenPod(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.createEigenPod.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.createEigenPod.estimateGas(params)
 ```
 ---
 ### `sdk.vault.operate`
