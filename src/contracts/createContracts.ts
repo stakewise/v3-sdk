@@ -17,13 +17,13 @@ import {
   BlocklistVaultAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  MintTokenConfigAbi,
   OtherTokenVaultAbi,
+  MintTokenConfigV1Abi,
+  MintTokenConfigV2Abi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
-  MintTokenConfigMainnetAbi,
   UniswapPositionManagerAbi,
 } from './abis'
 
@@ -73,15 +73,15 @@ const getMintToken = (provider: Provider, config: StakeWise.Config) => createCon
   provider
 )
 
-const getMintTokenConfig = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfig>(
-  config.addresses.base.mintTokenConfig,
-  MintTokenConfigAbi,
+const getMintTokenConfigV1 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfigV1>(
+  config.addresses.base.mintTokenConfigV1,
+  MintTokenConfigV1Abi,
   provider
 )
 
-const getMintTokenMainnetConfig = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfigMainnet>(
-  config.addresses.base.mintTokenConfig,
-  MintTokenConfigMainnetAbi,
+const getMintTokenConfigV2 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfigV2>(
+  config.addresses.base.mintTokenConfigV2,
+  MintTokenConfigV1Abi,
   provider
 )
 
@@ -124,7 +124,6 @@ export const createContracts = (input: CreateContractsInput) => {
   const { provider, config } = input
 
   const multicallContract = getMulticall(provider, config)
-  const isMainnet = config.network.chainId === Network.Mainnet
 
   return {
     helpers: {
@@ -145,7 +144,10 @@ export const createContracts = (input: CreateContractsInput) => {
       keeper: getKeeper(provider, config),
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
-      mintTokenConfig: isMainnet ? getMintTokenMainnetConfig(provider, config) : getMintTokenConfig(provider, config),
+      mintTokenConfig: {
+        v1: getMintTokenConfigV1(provider, config),
+        v2: getMintTokenConfigV2(provider, config)
+      },
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),

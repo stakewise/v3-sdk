@@ -91,11 +91,11 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                           |                                                                   |
 | [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                 |                                                                   |
 | [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                                   |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getBaseData](#sdkostokengetbasedata)                 |                                                                   |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getConfig](#sdkostokengetconfig)                     |                                                                   |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     | [osToken.getConfig](#sdkostokengetconfig)                     |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
 | [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                               |                                                                   |
@@ -631,7 +631,7 @@ How much a user can withdraw. Use this method if the user has mintedAssets, if m
 
 | Name | Type | Required | Info |
 |------|------|-------------|-------|
-| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
@@ -721,7 +721,7 @@ How many osToken burn do you need to make to withdraw all deposit.
 #### Arguments:
 | Name | Type | Required | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 | newStakedAssets | `bigint` | **Yes** | The future amount of stake after the deposit |
@@ -752,7 +752,7 @@ Get the health of the position
 #### Arguments:
 | Name | Type | Required | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Yes** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| thresholdPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
@@ -825,7 +825,7 @@ User position data
 #### Arguments:
 | Name | Type | Required | Description |
 |------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Yes** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| thresholdPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 | userAddress | `string` | **Yes** | - |
 | vaultAddress | `string` | **Yes** | - |
@@ -875,7 +875,7 @@ Maximum number of **shares** for minting
 #### Arguments:
 | Name | Type | Required | Description |
 |------|------|-------------|---------|
-| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getBaseData](#sdkostokengetbasedata) |
+| ltvPercent   | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 
@@ -892,34 +892,6 @@ await sdk.osToken.getMaxMint({
   mintedAssets: 0n,
   stakedAssets: 0n,
 })
-```
----
-### `sdk.osToken.getBaseData`
-
-#### Description:
-
-**Deprecated, use getConfig(vaultAddress) and getRate instead**
-Basic information on the token
-
-#### Returns:
-
-```ts
-type Output = {
-  rate: string
-  ltvPercent: bigint
-  thresholdPercent: bigint
-}
-```
-| Name | Description |
-|------|-------------|
-| `rate` | ETH - osToken rate |
-| `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
-| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
-
-#### Example:
-
-```ts
-await sdk.osToken.getBaseData()
 ```
 ---
 ### `sdk.osToken.getAssetsFromShares`
@@ -1154,7 +1126,7 @@ const [
   { ltvPercent, thresholdPercent },
   stake,
 ] = await Promise.all([
-  sdk.osToken.getBaseData(),
+  sdk.osToken.getConfig(),
   sdk.vault.getStakeBalance({
     vaultAddress: '0x...',
     userAddress: '0x...',
@@ -1418,7 +1390,7 @@ const [
   { ltvPercent, thresholdPercent },
   stake,
 ] = await Promise.all([
-  sdk.osToken.getBaseData(),
+  sdk.osToken.getConfig(),
   sdk.vault.getStakeBalance({
     vaultAddress: '0x...',
     userAddress: '0x...',

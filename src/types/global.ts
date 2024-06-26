@@ -17,15 +17,15 @@ import type {
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  MintTokenConfigAbi,
   OtherTokenVaultAbi,
   PrivateVaultDiffAbi,
+  MintTokenConfigV1Abi,
+  MintTokenConfigV2Abi,
   BlocklistVaultDiffAbi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
-  MintTokenConfigMainnetAbi,
   UniswapPositionManagerAbi,
 } from '../contracts/types'
 
@@ -86,15 +86,15 @@ declare global {
       type VestingEscrow = VestingEscrowAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
-      type MintTokenConfig = MintTokenConfigAbi
       type OtherTokenVault = OtherTokenVaultAbi
+      type MintTokenConfigV1 = MintTokenConfigV1Abi
+      type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
       type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
       type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
-      type MintTokenConfigMainnet = MintTokenConfigMainnetAbi
       type UniswapPositionManager = UniswapPositionManagerAbi
     }
   }

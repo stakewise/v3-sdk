@@ -1,12 +1,12 @@
 import UniswapPositionManagerAbi from './UniswapPositionManagerAbi.json'
-import MintTokenConfigMainnetAbi from './MintTokenConfigMainnetAbi.json'
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
+import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
+import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
-import MintTokenConfigAbi from './MintTokenConfigAbi.json'
 import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
@@ -28,13 +28,13 @@ const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
 
 export {
   UniswapPositionManagerAbi,
-  MintTokenConfigMainnetAbi,
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
   MintTokenControllerAbi,
   DepositDataRegistryAbi,
+  MintTokenConfigV1Abi,
+  MintTokenConfigV2Abi,
   OtherTokenVaultAbi,
-  MintTokenConfigAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   BlocklistVaultAbi,
