@@ -33,7 +33,7 @@ describe('modifyEigenPods function', () => {
         podAddress: '0x0000000000000000000000000000000000000000',
         operator: '0x0000000000000000000000000000000000000000',
         id: '0x285e4dcf02bfa8f8c6a656b85a565d962d1831556f5d2df03c082e9b82f4344f-52',
-        link: `${configs[network].pages.beaconchain}/operator/${0x0000000000000000000000000000000000000000}`,
+        link: `${configs[network].pages.beaconchain}/operator/0x0000000000000000000000000000000000000000`,
       },
     ]
 

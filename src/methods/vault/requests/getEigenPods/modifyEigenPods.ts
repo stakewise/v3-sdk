@@ -16,10 +16,11 @@ const modifyEigenPods = (input: ModifyEigenPodsInput): ModifiedEigenPods => {
   const eigenPods = data?.eigenPods || []
 
   return eigenPods.map((item) => {
-    const { shares, operator, createdAt, address } = item
+    const { id, shares, operator, createdAt, address } = item
 
     return {
-      ...item,
+      id,
+      operator,
       podAddress: address,
       createdAt: Number(createdAt) * 1000,
       restaked: formatEther(shares || 0),
