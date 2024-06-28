@@ -81,7 +81,7 @@ const getMintTokenConfigV1 = (provider: Provider, config: StakeWise.Config) => c
 
 const getMintTokenConfigV2 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MintTokenConfigV2>(
   config.addresses.base.mintTokenConfigV2,
-  MintTokenConfigV1Abi,
+  MintTokenConfigV2Abi,
   provider
 )
 
