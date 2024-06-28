@@ -721,6 +721,7 @@ How many osToken burn do you need to make to withdraw all deposit.
 #### Arguments:
 | Name | Type | Required | Description |
 |------|------|-------------|---------|
+| vaultAddress | `string` | **Yes** | Address of vault |
 | ltvPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
@@ -740,6 +741,7 @@ sdk.osToken.getBurnAmount({
   mintedAssets: 0n,
   stakedAssets: 0n,
   newStakedAssets: 0n,
+  vaultAddress: '0x...',
 })
 ```
 ---
@@ -875,6 +877,7 @@ Maximum number of **shares** for minting
 #### Arguments:
 | Name | Type | Required | Description |
 |------|------|-------------|---------|
+| vaultAddress | `string` | **Yes** | Address of vault |
 | ltvPercent   | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
@@ -891,6 +894,7 @@ await sdk.osToken.getMaxMint({
   ltvPercent: 0n,
   mintedAssets: 0n,
   stakedAssets: 0n,
+  vaultAddress: '0x...',
 })
 ```
 ---
@@ -1407,6 +1411,7 @@ const osToken = await sdk.osToken.getPosition({
 const maxMint = await sdk.osToken.getMaxMint({
   mintedAssets: osToken.minted.assets,
   stakedAssets: stake.assets,
+  vaultAddress: '0x...',
   ltvPercent,
 })
 
