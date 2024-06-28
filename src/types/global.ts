@@ -14,6 +14,7 @@ import type {
   UniswapPoolAbi,
   VaultFactoryAbi,
   V2RewardTokenAbi,
+  EigenPodOwnerAbi,
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
@@ -82,6 +83,7 @@ declare global {
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type VaultFactory = VaultFactoryAbi
+      type EigenPodOwner = EigenPodOwnerAbi
       type V2RewardToken = V2RewardTokenAbi
       type VestingEscrow = VestingEscrowAbi
       type RewardSplitter = RewardSplitterAbi

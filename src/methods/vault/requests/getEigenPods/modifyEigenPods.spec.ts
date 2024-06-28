@@ -1,6 +1,6 @@
 import { formatEther } from 'ethers'
 
-import { Network, configs } from '../../../../utils'
+import { Network } from '../../../../utils'
 
 import type { ModifiedEigenPods } from './types'
 import modifyEigenPods from './modifyEigenPods'
@@ -32,8 +32,8 @@ describe('modifyEigenPods function', () => {
         restaked: formatEther('160000000000000000'),
         podAddress: '0x0000000000000000000000000000000000000000',
         operator: '0x0000000000000000000000000000000000000000',
-        id: '0x285e4dcf02bfa8f8c6a656b85a565d962d1831556f5d2df03c082e9b82f4344f-52',
-        link: `${configs[network].pages.beaconchain}/operator/0x0000000000000000000000000000000000000000`,
+        owner: '0x285e4dcf02bfa8f8c6a656b85a565d962d1831556f5d2df03c082e9b82f4344f-52',
+        link: `https://app.eigenlayer.xyz/operator/0x0000000000000000000000000000000000000000`,
       },
     ]
 

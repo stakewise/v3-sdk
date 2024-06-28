@@ -582,47 +582,5 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint256",
-            "name": "expiry",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IEigenDelegationManager.SignatureWithExpiry",
-        "name": "approverSignatureAndExpiry",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "approverSalt",
-        "type": "bytes32"
-      }
-    ],
-    "name": "delegateTo",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "undelegate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   }
 ]

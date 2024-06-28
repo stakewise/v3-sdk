@@ -11,6 +11,7 @@ import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
 import V2RewardTokenAbi from './V2RewardTokenAbi.json'
+import EigenPodOwnerAbi from './EigenPodOwnerAbi.json'
 import VestingEscrowAbi from './VestingEscrowAbi.json'
 import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
@@ -39,6 +40,7 @@ export {
   RewardSplitterAbi,
   BlocklistVaultAbi,
   V2RewardTokenAbi,
+  EigenPodOwnerAbi,
   VestingEscrowAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,

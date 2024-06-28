@@ -560,8 +560,8 @@ Returns eigen pods for restake vault.
 
 ```ts
 type Output = {
-  id: string
   link: string
+  owner: string
   operator: string
   restaked: string
   createdAt: number
@@ -576,7 +576,7 @@ type Output = {
 | `operator`  | The eigenPod's operator         |
 | `podAddress`   | The eigenPod's address          |
 | `restaked` | EgenPod's restaked (in ETH)      |
-| `id`        | The address of the eigen pod owner |
+| `owner`        | The address of the eigen pod owner |
 
 #### Example:
 
@@ -1360,6 +1360,33 @@ const hash = await sdk.vault.createEigenPod(params)
 const { data, to } = await sdk.vault.createEigenPod.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.createEigenPod.estimateGas(params)
+```
+---
+### `sdk.vault.setEigenPodOperator`
+
+#### Description:
+
+Adding operator to the current eigen pod. Only for restake vaults and only restake operators manager can perform this action.
+
+#### Arguments:
+
+| Name           | Type     | Required | Description                        |
+|----------------|----------|----------|------------------------------------|
+| operatorAddress    | `string` | **Yes**  | new opetaor for current eigen pods |
+
+#### Example:
+
+```ts
+const params = {
+  operatorAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setEigenPodOperator(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setEigenPodOperator.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setEigenPodOperator.estimateGas(params)
 ```
 ---
 ### `sdk.vault.operate`

@@ -21,6 +21,7 @@ import { default as withdraw } from './transactions/withdraw'
 import { default as claimExitQueue } from './transactions/claimExitQueue'
 import { default as createEigenPod } from './transactions/createEigenPod'
 import { default as setDepositDataRoot } from './transactions/setDepositDataRoot'
+import { default as setEigenPodOperator } from './transactions/setEigenPodOperator'
 import { default as setDepositDataManager } from './transactions/setDepositDataManager'
 
 
@@ -147,5 +148,11 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultcreateeigenpod
      */
     createEigenPod,
+    /**
+     * @description Adding operator to the current eigen pod
+     * @throws Supports only restake operators manager can perform this action
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultseteigenpodoperator
+     */
+    setEigenPodOperator,
   },
 } as const
