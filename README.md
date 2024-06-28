@@ -631,6 +631,7 @@ How much a user can withdraw. Use this method if the user has mintedAssets, if m
 
 | Name | Type | Required | Info |
 |------|------|-------------|-------|
+| vaultAddress | `bigint` | **Yes** | Address of vault |
 | ltvPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
 | mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
 | stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
@@ -648,6 +649,7 @@ await sdk.vault.getMaxWithdraw({
   ltvPercent: 0n,
   mintedAssets: 0n,
   stakedAssets: 0n,
+  vaultAddress: '0x...',
 })
 ```
 ---
@@ -1147,6 +1149,7 @@ const osToken = await sdk.osToken.getPosition({
 const maxWithdrawAssets = await sdk.vault.getMaxWithdraw({
   mintedAssets: osToken.minted.assets,
   stakedAssets: stake.assets,
+  vaultAddress: '0x...',
   ltvPercent,
 })
 
