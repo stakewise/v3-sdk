@@ -1372,7 +1372,10 @@ Adding operator to the current eigen pod. Only for restake vaults and only resta
 
 | Name           | Type     | Required | Description                        |
 |----------------|----------|----------|------------------------------------|
-| operatorAddress    | `string` | **Yes**  | new opetaor for current eigen pods |
+| userAddress    | `string` | **Yes**  | - |
+| vaultAddress   | `string` | **Yes**  | - |
+| ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner |
+| operatorAddress    | `string` | **Yes**  | New operator for current eigen pods |
 
 #### Example:
 
@@ -1387,6 +1390,36 @@ const hash = await sdk.vault.setEigenPodOperator(params)
 const { data, to } = await sdk.vault.setEigenPodOperator.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.setEigenPodOperator.estimateGas(params)
+```
+---
+### `sdk.vault.updateEigenPodOperator`
+
+#### Description:
+
+Update operator to the current eigen pod. Only for restake vaults and only restake operators manager can perform this action.
+
+#### Arguments:
+
+| Name           | Type     | Required | Description                         |
+|----------------|----------|----------|-------------------------------------|
+| userAddress    | `string` | **Yes**  | -                                   |
+| vaultAddress   | `string` | **Yes**  | -                                   |
+| ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner  |
+| operatorAddress    | `string` | **Yes**  | New operator for current eigen pods |
+
+#### Example:
+
+```ts
+const params = {
+  operatorAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.updateEigenPodOperator(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.updateEigenPodOperator.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.updateEigenPodOperator.estimateGas(params)
 ```
 ---
 ### `sdk.vault.operate`

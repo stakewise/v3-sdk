@@ -23,6 +23,7 @@ import { default as createEigenPod } from './transactions/createEigenPod'
 import { default as setDepositDataRoot } from './transactions/setDepositDataRoot'
 import { default as setEigenPodOperator } from './transactions/setEigenPodOperator'
 import { default as setDepositDataManager } from './transactions/setDepositDataManager'
+import { default as updateEigenPodOperator } from './transactions/updateEigenPodOperator'
 
 
 export default {
@@ -154,5 +155,11 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultseteigenpodoperator
      */
     setEigenPodOperator,
+    /**
+     * @description Update operator to the current eigen pod
+     * @throws Supports only restake operators manager can perform this action
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultupdateeigenpodoperator
+     */
+    updateEigenPodOperator,
   },
 } as const

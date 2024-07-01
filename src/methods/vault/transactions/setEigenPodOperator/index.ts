@@ -19,7 +19,8 @@ const setEigenPodOperator: SetEigenPodOperator = async (values) => {
       signature: '0x',
       expiry: 0,
     },
-    '0x0000000000000000000000000000000000000000000000000000000000000000')
+    '0x0000000000000000000000000000000000000000000000000000000000000000'
+  )
 
   return response.hash
 }

@@ -1,4 +1,4 @@
-import { VaultAbi, RewardSplitterAbi, OtherTokenVaultAbi } from '../types'
+import { VaultAbi, RewardSplitterAbi, OtherTokenVaultAbi, EigenPodOwnerAbi } from '../types'
 
 
 export type MulticallParameter = {
@@ -13,4 +13,4 @@ export type MulticallRequestInput = {
   transactionData?: boolean
 }
 
-export type ContractAbi = VaultAbi | OtherTokenVaultAbi | RewardSplitterAbi
+export type ContractAbi = VaultAbi | OtherTokenVaultAbi | RewardSplitterAbi | EigenPodOwnerAbi
