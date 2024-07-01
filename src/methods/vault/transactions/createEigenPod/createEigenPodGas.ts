@@ -6,10 +6,10 @@ import type { CreateEigenPodInput } from './types'
 const depositGas = async (values: CreateEigenPodInput) => {
   const { provider, userAddress } = values
 
-  const { vaultContract } = await commonLogic(values)
+  const contract = await commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
-  const signedContract = vaultContract.connect(signer)
+  const signedContract = contract.connect(signer)
 
   const estimatedGas = await signedContract.createEigenPod.estimateGas()
 

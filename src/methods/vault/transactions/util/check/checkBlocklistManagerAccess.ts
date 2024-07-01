@@ -3,7 +3,7 @@ import type { CheckInput } from './types'
 
 const checkBlocklistManagerAccess = async ({ userAddress, vaultAddress, contracts }: CheckInput) => {
   try {
-    const vaultContract = await contracts.helpers.createBlocklistedVault(vaultAddress)
+    const vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
     const blocklistManager = await vaultContract.blocklistManager()
     const hasAccess = blocklistManager.toLowerCase() === userAddress.toLowerCase()
 

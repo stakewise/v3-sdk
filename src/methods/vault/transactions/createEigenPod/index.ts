@@ -8,10 +8,10 @@ import createEigenPodEncode from './createEigenPodEncode'
 const createEigenPod: CreateEigenPod = async (values) => {
   const { provider, userAddress } = values
 
-  const { vaultContract } = await commonLogic(values)
+  const contract = await commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
-  const signedContract = vaultContract.connect(signer)
+  const signedContract = contract.connect(signer)
 
   const response = await signedContract.createEigenPod()
 

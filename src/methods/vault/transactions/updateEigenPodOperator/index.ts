@@ -1,4 +1,5 @@
 import { commonLogic } from './common'
+import checkAccess from './checkAccess'
 import updateEigenPodOperatorGas from './updateEigenPodOperatorGas'
 import updateEigenPodOperatorEncode from './updateEigenPodOperatorEncode'
 import type { UpdateEigenPodOperator } from './types'
@@ -13,8 +14,8 @@ const updateEigenPodOperator: UpdateEigenPodOperator = async (values) => {
   return result.hash
 }
 
-updateEigenPodOperator.encode = updateEigenPodOperatorEncode
-updateEigenPodOperator.estimateGas = updateEigenPodOperatorGas
+updateEigenPodOperator.encode = checkAccess(updateEigenPodOperatorEncode)
+updateEigenPodOperator.estimateGas = checkAccess(updateEigenPodOperatorGas)
 
 
-export default updateEigenPodOperator
+export default checkAccess(updateEigenPodOperator)

@@ -44,6 +44,10 @@ export const commonLogic = async (values: MulticallInput) => {
     vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
   }
 
+  if (restakeOperatorsManager || restakeWithdrawalsManager) {
+    vaultContract = contracts.helpers.createRestakingVault(vaultAddress)
+  }
+
   // Temporal logic while different types of vaults exist
   const version = Number(await vaultContract.version())
   const isSecondVersion = version === 2

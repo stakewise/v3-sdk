@@ -3,9 +3,9 @@ import { CreateEigenPodInput } from './types'
 
 
 const depositEncode = async (values: CreateEigenPodInput) => {
-  const { vaultContract } = await commonLogic(values)
+  const contract = await commonLogic(values)
 
-  const rx = await vaultContract.createEigenPod.populateTransaction()
+  const rx = await contract.createEigenPod.populateTransaction()
 
   return {
     to: rx.to,

@@ -506,11 +506,11 @@ Returns the running vault validators.
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|-------------|
-| vaultAddress | `string` | **Yes** | 
-| limit | `number` | **Yes** | To implement pagination |
-| skip | `number` | **Yes** | To implement pagination |
+| Name | Type | Required | Description                                               |
+|------|------|----------|-----------------------------------------------------------|
+| vaultAddress | `string` | **Yes**  | The address of the vault                                  |
+| limit | `number` | **No**   | Limits the number of validators returned. Defaults to 100 |
+| skip | `number` | **No**   | Skips the specified number of validators. Defaults to 0   |
 
 #### Returns:
 
@@ -550,11 +550,11 @@ Returns eigen pods for restake vault.
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|-------------|
-| vaultAddress | `string` | **Yes** | 
-| limit | `number` | **Yes** | To implement pagination |
-| skip | `number` | **Yes** | To implement pagination |
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| vaultAddress | `string` | **Yes**  | The address of the vault |
+| limit | `number` | **No**   | Limits the number of eigen pods returned. Defaults to 100 |
+| skip | `number` | **No**   | Skips the specified number of eigen pods. Defaults to 0 |
 
 #### Returns:
 
@@ -1342,9 +1342,9 @@ Adding eigen pod to the vault. Only for restake vaults and only restake operator
 #### Arguments:
 
 | Name           | Type     | Required | Description |
-|----------------|----------|----------|-------------|
-| userAddress    | `string` | **Yes**  | - |
-| vaultAddress   | `string` | **Yes**  | - |
+|----------------|----------|----------|-----------|
+| userAddress    | `string` | **Yes**  | The address of the user making the request |
+| vaultAddress   | `string` | **Yes**  | The address of the vault |
 
 #### Example:
 
@@ -1366,14 +1366,14 @@ const gas = await sdk.vault.createEigenPod.estimateGas(params)
 
 #### Description:
 
-Adding operator to the current eigen pod. Only for restake vaults and only restake operators manager can perform this action.
+Adding operator to the current eigen pod. This action is specific to restake vaults and can only be executed by the restake operators manager.
 
 #### Arguments:
 
-| Name           | Type     | Required | Description                        |
-|----------------|----------|----------|------------------------------------|
-| userAddress    | `string` | **Yes**  | - |
-| vaultAddress   | `string` | **Yes**  | - |
+| Name           | Type     | Required | Description                      |
+|----------------|----------|----------|----------------------------------|
+| userAddress    | `string` | **Yes**  | The address of the user making the request |
+| vaultAddress   | `string` | **Yes**  | The address of the vault |
 | ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner |
 | operatorAddress    | `string` | **Yes**  | New operator for current eigen pods |
 
@@ -1396,15 +1396,15 @@ const gas = await sdk.vault.setEigenPodOperator.estimateGas(params)
 
 #### Description:
 
-Update operator to the current eigen pod. Only for restake vaults and only restake operators manager can perform this action.
+Update operator to the current eigen pod. This action is specific to restake vaults and can only be executed by the restake operators manager.
 
 #### Arguments:
 
-| Name           | Type     | Required | Description                         |
-|----------------|----------|----------|-------------------------------------|
-| userAddress    | `string` | **Yes**  | -                                   |
-| vaultAddress   | `string` | **Yes**  | -                                   |
-| ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner  |
+| Name           | Type     | Required | Description                      |
+|----------------|----------|----------|----------------------------------|
+| userAddress    | `string` | **Yes**  | The address of the user making the request                                 |
+| vaultAddress   | `string` | **Yes**  | The address of the vault                                 |
+| ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner |
 | operatorAddress    | `string` | **Yes**  | New operator for current eigen pods |
 
 #### Example:

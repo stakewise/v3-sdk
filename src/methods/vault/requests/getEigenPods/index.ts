@@ -8,21 +8,28 @@ import graphql from '../../../../graphql'
 type GetEigenPodsInput = {
   options: StakeWise.Options
   vaultAddress: EigenPodsQueryVariables['where']['address']
-  skip: EigenPodsQueryVariables['skip']
-  limit: EigenPodsQueryVariables['first']
+  skip?: EigenPodsQueryVariables['skip']
+  limit?: EigenPodsQueryVariables['first']
 }
 
 const getEigenPods = (input: GetEigenPodsInput) => {
   const { options, skip, limit, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })
-  validateArgs.number({ skip, limit })
+
+  if (typeof skip !== 'undefined') {
+    validateArgs.number({ skip })
+  }
+
+  if (typeof limit !== 'undefined') {
+    validateArgs.number({ limit })
+  }
 
   return graphql.subgraph.eigenPods.fetchEigenPodsQuery<ModifiedEigenPods>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      skip,
-      first: limit,
+      skip: skip || 0,
+      first: limit || 100,
       where: {
         vault_: { id: vaultAddress.toLowerCase() },
       } as EigenPodsQueryVariables['where'],
