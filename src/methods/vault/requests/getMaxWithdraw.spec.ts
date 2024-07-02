@@ -1,4 +1,5 @@
-import { parseEther } from 'ethers'
+import { parseEther, ZeroAddress } from 'ethers'
+
 import getMaxWithdraw from './getMaxWithdraw'
 
 
@@ -9,12 +10,18 @@ describe('getMaxWithdraw function', () => {
       ltvPercent: 0n,
       mintedAssets: 1000n,
       stakedAssets: 2000n,
+      vaultAddress: ZeroAddress,
       contracts: {
         base: {
           mintTokenController: {
             avgRewardPerSecond: jest.fn(),
           },
         },
+        helpers: {
+          createVault: jest.fn().mockReturnValue({
+            version: () => Promise.resolve(1n)
+          })
+        }
       } as unknown as StakeWise.Contracts,
     }
 
@@ -30,21 +37,52 @@ describe('getMaxWithdraw function', () => {
           avgRewardPerSecond: jest.fn().mockResolvedValue(mockedReward),
         },
       },
+      helpers: {
+        createVault: jest.fn().mockReturnValue({
+          version: () => Promise.resolve(1n)
+        })
+      }
     }
 
     const input = {
       ltvPercent: 8000n, // 80%
       mintedAssets: parseEther('1'),
       stakedAssets: parseEther('3'),
+      vaultAddress: ZeroAddress,
       contracts: contracts as any,
     }
 
     const result = await getMaxWithdraw(input)
 
-    const expectedLocked = (input.mintedAssets + mockedReward * 60n * 60n) * 10_000n / input.ltvPercent
-    const expectedWithdraw = input.stakedAssets - expectedLocked
+    expect(result).toBe(1749999999999955000n)
+  })
 
-    expect(result).toBe(expectedWithdraw)
+  it('should return correct valeu with second vault version', async () => {
+    const mockedReward = 10n
+    const contracts = {
+      base: {
+        mintTokenController: {
+          avgRewardPerSecond: jest.fn().mockResolvedValue(mockedReward),
+        },
+      },
+      helpers: {
+        createVault: jest.fn().mockReturnValue({
+          version: () => Promise.resolve(2n)
+        })
+      }
+    }
+
+    const input = {
+      ltvPercent: 800000000000000000n, // 80%
+      mintedAssets: parseEther('1'),
+      stakedAssets: parseEther('3'),
+      vaultAddress: ZeroAddress,
+      contracts: contracts as any,
+    }
+
+    const result = await getMaxWithdraw(input)
+
+    expect(result).toBe(1749999999999955000n)
   })
 
   it('should return 0 if locked assets exceed staked assets', async () => {
@@ -55,6 +93,11 @@ describe('getMaxWithdraw function', () => {
           avgRewardPerSecond: jest.fn().mockResolvedValue(mockedReward),
         },
       },
+      helpers: {
+        createVault: jest.fn().mockReturnValue({
+          version: () => Promise.resolve(1n)
+        })
+      }
     }
 
     const input = {
@@ -62,6 +105,7 @@ describe('getMaxWithdraw function', () => {
       mintedAssets: parseEther('4'),
       stakedAssets: parseEther('3'),
       contracts: contracts as any,
+      vaultAddress: ZeroAddress,
     }
 
     const result = await getMaxWithdraw(input)

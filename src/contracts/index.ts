@@ -1,4 +1,6 @@
 export { default as createContracts } from './createContracts'
-export { default as vaultMulticall } from './vaultMulticall'
 export { default as createContract } from './createContract'
-export { default as multicall } from './multicall'
+export { default as multicall } from './multicall/commonMulticall'
+export { default as vaultMulticall } from './multicall/vaultMulticall'
+export { default as eigenPodOwnerMulticall } from './multicall/eigenPodOwnerMulticall'
+export { default as rewardSplitterMulticall } from './multicall/rewardSplitterMulticall'

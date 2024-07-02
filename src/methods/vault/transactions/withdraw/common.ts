@@ -1,4 +1,4 @@
-import { WithdrawInput } from './types'
+import type { WithdrawInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
@@ -11,9 +11,17 @@ export const commonLogic = async (values: WithdrawInput) => {
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
-  const multicallCommonArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
-    vaultContract: contracts.helpers.createVault(vaultAddress),
+  const vaultContract = contracts.helpers.createVault(vaultAddress)
+
+  const version = Number(await vaultContract.version())
+
+  // In the second version of the vault we do not use the redeem method,
+  // the funds are always withdrawn via a queue
+  const isSecondVersion = version === 2
+
+  const baseMulticallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
     keeperContract: contracts.base.keeper,
+    vaultContract,
     vaultAddress,
     userAddress,
     options,
@@ -21,9 +29,9 @@ export const commonLogic = async (values: WithdrawInput) => {
 
   const isCollateralized = await contracts.base.keeper.isCollateralized(vaultAddress)
 
-  if (isCollateralized) {
+  if (isCollateralized || isSecondVersion) {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
-      ...multicallCommonArgs,
+      ...baseMulticallArgs,
       request: {
         params: [ { method: 'convertToShares', args: [ assets ] } ],
         callStatic: true,
@@ -39,7 +47,7 @@ export const commonLogic = async (values: WithdrawInput) => {
   }
   else {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
-      ...multicallCommonArgs,
+      ...baseMulticallArgs,
       request: {
         params: [ { method: 'convertToShares', args: [ assets ] } ],
         callStatic: true,
@@ -55,7 +63,9 @@ export const commonLogic = async (values: WithdrawInput) => {
   }
 
   return {
-    params,
-    multicallCommonArgs,
+    ...baseMulticallArgs,
+    request: {
+      params,
+    },
   }
 }
