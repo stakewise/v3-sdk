@@ -14,6 +14,7 @@ import type {
   UniswapPoolAbi,
   VaultFactoryAbi,
   V2RewardTokenAbi,
+  EigenPodOwnerAbi,
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
@@ -21,6 +22,7 @@ import type {
   PrivateVaultDiffAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  RestakingVaultDiffAbi,
   BlocklistVaultDiffAbi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
@@ -82,6 +84,7 @@ declare global {
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type VaultFactory = VaultFactoryAbi
+      type EigenPodOwner = EigenPodOwnerAbi
       type V2RewardToken = V2RewardTokenAbi
       type VestingEscrow = VestingEscrowAbi
       type RewardSplitter = RewardSplitterAbi
@@ -94,6 +97,7 @@ declare global {
       type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
+      type RestakingVault = RestakingVaultDiffAbi & VaultAbi
       type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
       type UniswapPositionManager = UniswapPositionManagerAbi
     }

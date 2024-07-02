@@ -506,11 +506,11 @@ Returns the running vault validators.
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|-------------|
-| vaultAddress | `string` | **Yes** | 
-| limit | `number` | **Yes** | To implement pagination |
-| skip | `number` | **Yes** | To implement pagination |
+| Name | Type | Required | Description                                               |
+|------|------|----------|-----------------------------------------------------------|
+| vaultAddress | `string` | **Yes**  | The address of the vault                                  |
+| limit | `number` | **No**   | Limits the number of validators returned. Defaults to 100 |
+| skip | `number` | **No**   | Skips the specified number of validators. Defaults to 0   |
 
 #### Returns:
 
@@ -542,6 +542,52 @@ await sdk.vault.getValidators({
 })
 ```
 ---
+### `sdk.vault.getEigenPods`
+
+#### Description:
+
+Returns eigen pods for restake vault.
+
+#### Arguments:
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| vaultAddress | `string` | **Yes**  | The address of the vault |
+| limit | `number` | **No**   | Limits the number of eigen pods returned. Defaults to 100 |
+| skip | `number` | **No**   | Skips the specified number of eigen pods. Defaults to 0 |
+
+#### Returns:
+
+```ts
+type Output = {
+  link: string
+  owner: string
+  operator: string
+  restaked: string
+  createdAt: number
+  podAddress: string
+}
+```
+
+| Name        | Description                     |
+|-------------|---------------------------------|
+| `createdAt` | Date of Creation                |
+| `link` | Link to beaconchain             |
+| `operator`  | The eigenPod's operator         |
+| `podAddress`   | The eigenPod's address          |
+| `restaked` | EgenPod's restaked (in ETH)      |
+| `owner`        | The address of the eigen pod owner |
+
+#### Example:
+
+```ts
+await sdk.vault.getEigenPods({
+  skip: 0,
+  limit: 5,
+  vaultAddress: '0x...'
+})
+```
+---
 ### `sdk.vault.getVault`
 
 #### Description:
@@ -559,29 +605,32 @@ Returns the master data of the vault
 ```ts
 type Output = {
   apy: number
+  version: number
   isErc20: boolean
   capacity: string
   createdAt: number
   feePercent: number
   isPrivate: boolean
+  isRestake: boolean
   vaultAdmin: string
   totalAssets: string
+  performance: number
   feeRecipient: string
   vaultAddress: string
   mevRecipient: string
   whitelistCount: number
   blocklistCount: number
   imageUrl: string | null
+  isSmoothingPool: boolean
+  tokenName: string | null
   whitelistManager: string
   blocklistManager: string
   depositDataManager: string
-  isSmoothingPool: boolean
-  tokenName: string | null
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
-  performance: number
-  version: number
+  restakeOperatorsManager: string
+  restakeWithdrawalsManager: string
 }
 ```
 
@@ -593,6 +642,7 @@ type Output = {
 | `createdAt`        | Date of Creation                                              |
 | `feePercent`       | Commission rate                                               |
 | `isPrivate`        | Whether the storage is private                                |
+| `isRestake`        | Indicates whether the Vault is a restaking vault                                |
 | `isBlocklist`      | Whether the storage has blocklist                             |
 | `vaultAdmin`       | Vault administrator address                                   |
 | `totalAssets`      | TVL of Vault                                                  |
@@ -614,6 +664,8 @@ type Output = {
 | `blocklist`        | List of blocked users for deposits                            |
 | `performance`      | Vault performance indicator (percent)                         |
 | `version`          | Vault version                                                 |
+| `restakeOperatorsManager`          | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                 |
+| `restakeWithdrawalsManager`          | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                 |
 
 #### Example:
 
@@ -1281,6 +1333,95 @@ const { data, to } = await sdk.vault.setDepositDataManager.encode(params)
 const gas = await sdk.vault.setDepositDataManager.estimateGas(params)
 ```
 ---
+### `sdk.vault.createEigenPod`
+
+#### Description:
+
+Adding eigen pod to the vault. Only for restake vaults and only restake operators manager can perform this action.
+
+#### Arguments:
+
+| Name           | Type     | Required | Description |
+|----------------|----------|----------|-----------|
+| userAddress    | `string` | **Yes**  | The address of the user making the request |
+| vaultAddress   | `string` | **Yes**  | The address of the vault |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.createEigenPod(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.createEigenPod.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.createEigenPod.estimateGas(params)
+```
+---
+### `sdk.vault.setEigenPodOperator`
+
+#### Description:
+
+Adding operator to the current eigen pod. This action is specific to restake vaults and can only be executed by the restake operators manager.
+
+#### Arguments:
+
+| Name           | Type     | Required | Description                      |
+|----------------|----------|----------|----------------------------------|
+| userAddress    | `string` | **Yes**  | The address of the user making the request |
+| vaultAddress   | `string` | **Yes**  | The address of the vault |
+| ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner |
+| operatorAddress    | `string` | **Yes**  | New operator for current eigen pods |
+
+#### Example:
+
+```ts
+const params = {
+  operatorAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.setEigenPodOperator(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.setEigenPodOperator.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.setEigenPodOperator.estimateGas(params)
+```
+---
+### `sdk.vault.updateEigenPodOperator`
+
+#### Description:
+
+Update operator to the current eigen pod. This action is specific to restake vaults and can only be executed by the restake operators manager.
+
+#### Arguments:
+
+| Name           | Type     | Required | Description                      |
+|----------------|----------|----------|----------------------------------|
+| userAddress    | `string` | **Yes**  | The address of the user making the request                                 |
+| vaultAddress   | `string` | **Yes**  | The address of the vault                                 |
+| ownerAddress    | `string` | **Yes**  | The address of the eigen pod owner |
+| operatorAddress    | `string` | **Yes**  | New operator for current eigen pods |
+
+#### Example:
+
+```ts
+const params = {
+  operatorAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.vault.updateEigenPodOperator(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.vault.updateEigenPodOperator.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.vault.updateEigenPodOperator.estimateGas(params)
+```
+---
 ### `sdk.vault.operate`
 
 #### Description:
@@ -1296,6 +1437,8 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | blocklist          | `Array<{ address: string, isNew: boolean }>` | **No** | Blocklist manager | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses. |
 | depositDataManager | `string` | **No**  | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager` |
 | validatorsManager  | `string` | **No**  | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |
+| restakeWithdrawalsManager  | `string` | **No**  | Admin                | The restake withdrawals manager must be assigned to the wallet connected to the operator service. It is responsible for withdrawing exiting validators from the EigenLayer. |
+| restakeOperatorsManager  | `string` | **No**  | Admin                | The restake operators manager can add EigenPods and update EigenLayer operators. |
 | whitelistManager   | `string` | **No**  | Admin                | Address of the vault whitelistManager |
 | feeRecipient       | `string` | **No**  | Admin                | Address of the vault fee recipient |
 | validatorsRoot     | `string` | **No**  | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot` |
@@ -1309,15 +1452,18 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 ```ts
 // Data to update the vault by admin.
 const params = {
+  userAddress: '0x...',
+  vaultAddress: '0x...',
   feeRecipient: '0x...',
+  metadataIpfsHash: '...',
   validatorsRoot: '0x...',
   blocklistManager: '0x...',
   whitelistManager: '0x...',
   validatorsManager: '0x...',
   depositDataManager: '0x...',
-  metadataIpfsHash: '...',
-  vaultAddress: '0x...',
-  userAddress: '0x...',
+  restakeOperatorsManager: '0x...',
+  restakeWithdrawalsManager: '0x...',
+  
 }
 
 // Data to update the vault by vault keys manager.

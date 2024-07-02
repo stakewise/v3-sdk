@@ -12,6 +12,8 @@ import {
   getBlocklistManagerParams,
   getValidatorsManagerParams,
   getDepositDataManagerParams,
+  getRestakeOperatorsManagerParams,
+  getRestakeWithdrawalsManagerParams,
 } from '../util'
 
 
@@ -19,7 +21,7 @@ export const commonLogic = async (values: MulticallInput) => {
   const {
     validatorsRoot, blocklistManager, metadataIpfsHash,
     blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
-    options, contracts, userAddress, vaultAddress, provider, validatorsManager,
+    options, contracts, userAddress, vaultAddress, provider, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
   } = values
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -40,6 +42,10 @@ export const commonLogic = async (values: MulticallInput) => {
     }
 
     vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
+  }
+
+  if (restakeOperatorsManager || restakeWithdrawalsManager) {
+    vaultContract = contracts.helpers.createRestakingVault(vaultAddress)
   }
 
   // Temporal logic while different types of vaults exist
@@ -126,6 +132,18 @@ export const commonLogic = async (values: MulticallInput) => {
     const validatorsManagerParams = getValidatorsManagerParams({ ...baseInput, validatorsManager })
 
     params.push(...validatorsManagerParams)
+  }
+
+  if (restakeOperatorsManager) {
+    const restakeOperatorsManagerParams = getRestakeOperatorsManagerParams({ ...baseInput, restakeOperatorsManager })
+
+    params.push(...restakeOperatorsManagerParams)
+  }
+
+  if (restakeWithdrawalsManager) {
+    const restakeWithdrawalsManagerParams = getRestakeWithdrawalsManagerParams({ ...baseInput, restakeWithdrawalsManager })
+
+    params.push(...restakeWithdrawalsManagerParams)
   }
 
   return {

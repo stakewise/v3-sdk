@@ -1,0 +1,19 @@
+query EigenPods(
+  $skip: Int!
+  $first: Int!
+  $where: EigenPod_filter
+) {
+  eigenPods(
+    skip: $skip,
+    first: $first,
+    orderBy: createdAt,
+    orderDirection: desc,
+    where: $where,
+  ) {
+    id
+    shares
+    address
+    operator
+    createdAt
+  }
+}

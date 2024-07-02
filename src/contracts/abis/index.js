@@ -4,6 +4,7 @@ import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
+import RestakingVaultDiffAbi from './RestakingVaultDiffAbi.json'
 import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
 import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
@@ -11,6 +12,7 @@ import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
 import V2RewardTokenAbi from './V2RewardTokenAbi.json'
+import EigenPodOwnerAbi from './EigenPodOwnerAbi.json'
 import VestingEscrowAbi from './VestingEscrowAbi.json'
 import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
@@ -24,6 +26,7 @@ import Erc20Abi from './Erc20Abi.json'
 
 const PrivateVaultAbi = VaultAbi.concat(PrivateVaultDiffAbi)
 const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
+const RestakingVaultAbi = VaultAbi.concat(RestakingVaultDiffAbi)
 
 
 export {
@@ -36,9 +39,11 @@ export {
   MintTokenConfigV2Abi,
   OtherTokenVaultAbi,
   VaultsRegistryAbi,
+  RestakingVaultAbi,
   RewardSplitterAbi,
   BlocklistVaultAbi,
   V2RewardTokenAbi,
+  EigenPodOwnerAbi,
   VestingEscrowAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,
