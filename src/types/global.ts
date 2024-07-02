@@ -78,9 +78,9 @@ declare global {
       type Vault = VaultAbi
       type Keeper = KeeperAbi
       type UsdRate = UsdRateAbi
+      type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
-      type MintToken = Erc20Abi
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type VaultFactory = VaultFactoryAbi
