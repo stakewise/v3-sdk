@@ -21,10 +21,18 @@ import KeeperAbi from './KeeperAbi.json'
 import VaultAbi from './VaultAbi.json'
 import Erc20Abi from './Erc20Abi.json'
 
-
 const PrivateVaultAbi = VaultAbi.concat(PrivateVaultDiffAbi)
 const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
 
+const VaultGnosisAbi = (() => {
+  const copyVaultAbi = JSON.parse(JSON.stringify(VaultAbi))
+  const burnIndex = VaultAbi.findIndex(({ name }) => name === 'burnOsToken')
+
+  // Mainnet has uint128
+  copyVaultAbi[burnIndex].inputs[0].type = 'uint256'
+
+  return copyVaultAbi
+})()
 
 export {
   UniswapPositionManagerAbi,
@@ -44,6 +52,7 @@ export {
   VaultFactoryAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
+  VaultGnosisAbi,
   MulticallAbi,
   UsdRateAbi,
   KeeperAbi,

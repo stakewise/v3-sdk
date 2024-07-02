@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import type { Provider } from 'ethers'
-import { Network } from '../utils/enums'
 
 import {
   Erc20Abi,
@@ -29,6 +28,7 @@ import {
 
 import commonMulticall from './multicall/commonMulticall'
 import createContract from './createContract'
+import createVault from './createVault'
 
 
 const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Erc20Token>(
@@ -128,9 +128,9 @@ export const createContracts = (input: CreateContractsInput) => {
   return {
     helpers: {
       multicallContract,
+      createVault: createVault(provider),
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
-      createVault: (address: string) => createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider),
       createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),
       createPrivateVault: (address: string) => createContract<StakeWise.ABI.PrivateVault>(address, PrivateVaultAbi, provider),
       createBlocklistedVault: (address: string) => createContract<StakeWise.ABI.BlocklistVault>(address, BlocklistVaultAbi, provider),

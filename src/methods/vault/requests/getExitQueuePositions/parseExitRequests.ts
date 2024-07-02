@@ -49,6 +49,14 @@ const _checkTimestamp = async (timestamp: string, provider: StakeWise.Provider) 
 const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
   const { options, contracts, provider, userAddress, vaultAddress, exitRequests } = values
 
+  if (!exitRequests.length) {
+    return {
+      total: 0n,
+      positions: [],
+      withdrawable: 0n,
+    }
+  }
+
   const keeperContract = contracts.base.keeper
   const vaultContract = contracts.helpers.createVault(vaultAddress)
 
