@@ -3,6 +3,7 @@ query exitQueue($receiver: Bytes, $vault: String!) {
     receiver: $receiver,
     vault: $vault,
   }) {
+    withdrawalTimestamp
     positionTicket
     totalShares
     totalAssets
