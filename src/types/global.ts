@@ -18,6 +18,7 @@ import type {
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
+  GnosisVaultDiffAbi,
   OtherTokenVaultAbi,
   PrivateVaultDiffAbi,
   MintTokenConfigV1Abi,
@@ -75,7 +76,7 @@ declare global {
     type TransactionHash = string
 
     namespace ABI {
-      type Vault = VaultAbi
+      type Vault = VaultAbi & GnosisVaultDiffAbi
       type Keeper = KeeperAbi
       type UsdRate = UsdRateAbi
       type MintToken = Erc20Abi
