@@ -5,7 +5,7 @@ import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
 import type {
-  VaultAbi,
+  VaultAbi as InitialVaultAbi,
   Erc20Abi,
   KeeperAbi,
   UsdRateAbi,
@@ -32,6 +32,7 @@ import type {
   UniswapPositionManagerAbi,
 } from '../contracts/types'
 
+type VaultAbi = InitialVaultAbi & GnosisVaultDiffAbi
 
 declare global {
 
@@ -76,7 +77,7 @@ declare global {
     type TransactionHash = string
 
     namespace ABI {
-      type Vault = VaultAbi & GnosisVaultDiffAbi
+      type Vault = VaultAbi
       type Keeper = KeeperAbi
       type UsdRate = UsdRateAbi
       type MintToken = Erc20Abi
