@@ -1,7 +1,7 @@
 import type { Provider } from 'ethers'
 
 import createContract from './createContract'
-import { VaultAbi, VaultGnosisAbi } from './abis'
+import { VaultAbi, GnosisVaultAbi } from './abis'
 
 
 type Options = {
@@ -12,7 +12,7 @@ const createVault = (provider: Provider) => (address: string, options: Options =
   const { isGnosis } = options
 
   if (isGnosis) {
-    return createContract<StakeWise.ABI.Vault>(address, VaultGnosisAbi, provider)
+    return createContract<StakeWise.ABI.Vault>(address, GnosisVaultAbi, provider)
   }
 
   return createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider)
