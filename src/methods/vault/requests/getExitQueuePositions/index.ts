@@ -11,8 +11,9 @@ type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
   options: StakeWise.Options
 }
 
-const mock = {
+const mock: ParseExitRequestsOutput = {
   total: 0n,
+  duration: 0,
   positions: [],
   withdrawable: 0n,
 }
