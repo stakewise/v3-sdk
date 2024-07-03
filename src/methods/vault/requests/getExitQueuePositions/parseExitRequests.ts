@@ -72,6 +72,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   if (!exitRequests.length) {
     return {
       total: 0n,
+      duration: 0,
       positions: [],
       withdrawable: 0n,
     }
