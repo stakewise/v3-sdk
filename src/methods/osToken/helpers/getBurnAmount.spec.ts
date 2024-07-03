@@ -1,17 +1,18 @@
+import { ZeroAddress } from 'ethers'
+
 import getBurnAmount from './getBurnAmount'
 
 
 describe('getBurnAmount', () => {
   it('should return 0 if there are no minted assets', async () => {
-    const input = {
+    const result = await getBurnAmount({
       ltvPercent: 8000n,
       mintedAssets: 0n,
       stakedAssets: 1000n,
       newStakedAssets: 900n,
+      vaultAddress: ZeroAddress,
       contracts: {} as any,
-    }
-
-    const result = await getBurnAmount(input)
+    })
 
     expect(result).toBe(0n)
   })
@@ -25,17 +26,49 @@ describe('getBurnAmount', () => {
           convertToShares: jest.fn().mockResolvedValue(mockedShares),
         },
       },
+      helpers: {
+        createVault: jest.fn().mockReturnValue({
+          version: () => Promise.resolve(1n)
+        })
+      }
     }
 
-    const input = {
+    const result = await getBurnAmount({
       ltvPercent: 8000n,
       mintedAssets: 100n,
       stakedAssets: 1000n,
       newStakedAssets: 1900n,
+      vaultAddress: ZeroAddress,
       contracts: contracts as any,
+    })
+
+    expect(result).toBe(100n)
+  })
+
+  it('should calculate the correct burn amount with second vault version', async () => {
+    const mockedShares = 100n
+
+    const contracts = {
+      base: {
+        mintTokenController: {
+          convertToShares: jest.fn().mockResolvedValue(mockedShares),
+        },
+      },
+      helpers: {
+        createVault: jest.fn().mockReturnValue({
+          version: () => Promise.resolve(2n)
+        })
+      }
     }
 
-    const result = await getBurnAmount(input)
+    const result = await getBurnAmount({
+      ltvPercent: 800000000000000000n,
+      mintedAssets: 100n,
+      stakedAssets: 1000n,
+      newStakedAssets: 1900n,
+      vaultAddress: ZeroAddress,
+      contracts: contracts as any,
+    })
 
     expect(result).toBe(100n)
   })
@@ -47,17 +80,21 @@ describe('getBurnAmount', () => {
           convertToShares: jest.fn(),
         },
       },
+      helpers: {
+        createVault: jest.fn().mockReturnValue({
+          version: () => Promise.resolve(1n)
+        })
+      }
     }
 
-    const input = {
+    const result = await getBurnAmount({
       ltvPercent: 8000n,
       mintedAssets: 50n,
       stakedAssets: 1000n,
       newStakedAssets: 1200n,
+      vaultAddress: ZeroAddress,
       contracts: contracts as any,
-    }
-
-    const result = await getBurnAmount(input)
+    })
 
     expect(result).toBe(0n)
   })

@@ -4,11 +4,13 @@ query Vault($address: ID!) {
     performance: score
     apy
     admin
+    version
     isErc20
     imageUrl
     capacity
     mevEscrow
     isPrivate
+    isRestake
     createdAt
     mevEscrow
     tokenName
@@ -18,12 +20,16 @@ query Vault($address: ID!) {
     displayName
     description
     whitelister
-    keysManager
     tokenSymbol
+    keysManager
     feeRecipient
     validatorsRoot
     blocklistCount
     whitelistCount
     blocklistManager
+    validatorsManager
+    depositDataManager
+    restakeOperatorsManager
+    restakeWithdrawalsManager
   }
 }

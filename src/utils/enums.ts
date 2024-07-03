@@ -1,7 +1,9 @@
 export enum Network {
   Mainnet = 1,
-  Gnosis = 100,
   Holesky = 17000,
+
+  Gnosis = 100,
+  Chiado = 10200,
 }
 
 export enum AllocatorActionType {
@@ -13,6 +15,7 @@ export enum AllocatorActionType {
   OsTokenMinted = 'OsTokenMinted',
   OsTokenBurned = 'OsTokenBurned',
   OsTokenRedeemed = 'OsTokenRedeemed',
+  ExitQueueEntered = 'ExitQueueEntered',
   OsTokenLiquidated = 'OsTokenLiquidated',
   ExitedAssetsClaimed = 'ExitedAssetsClaimed',
 }

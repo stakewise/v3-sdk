@@ -33,10 +33,13 @@ const number = (values: Record<string, number>) => {
   })
 }
 
-const array = (values: Record<string, any[]>) => {
+const array = (values: Record<string, any[]>, withEmptyCheck: boolean = true) => {
   Object.keys(values).forEach((key) => {
     if (!Array.isArray(values[key])) {
       throw new Error(`The "${key}" argument must be an array`)
+    }
+    if (withEmptyCheck && !values[key].length) {
+      throw new Error(`The "${key}" argument is an empty array`)
     }
   })
 }

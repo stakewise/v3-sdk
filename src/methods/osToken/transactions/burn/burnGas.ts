@@ -12,9 +12,7 @@ const burnGas = async (values: BurnInput) => {
     from: userAddress,
   })
 
-  const gas = await getGas({ estimatedGas, provider })
-
-  return gas
+  return getGas({ estimatedGas, provider })
 }
 
 

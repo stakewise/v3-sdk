@@ -77,6 +77,10 @@ class AbortRequest<Data, ModifiedData> {
             onError(error)
           }
 
+          if (typeof onError === 'function') {
+            onError(error)
+          }
+
           return Promise.reject(error)
         })
 

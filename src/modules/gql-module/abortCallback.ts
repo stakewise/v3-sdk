@@ -1,3 +1,6 @@
+const dummyPromise = new Promise(() => {})
+
+
 class AbortCallback {
   private isAborted: boolean
   callback: Promise<any>

@@ -1,7 +1,3 @@
-import depositGas from './depositGas'
-import depositEncode from './depositEncode'
-
-
 export type DepositInput = {
   assets: bigint
   userAddress: string
@@ -13,6 +9,6 @@ export type DepositInput = {
 
 export interface Deposit {
   (values: DepositInput): Promise<StakeWise.TransactionHash>
-  estimateGas: typeof depositGas
-  encode: typeof depositEncode
+  estimateGas: (values: DepositInput) => Promise<bigint>
+  encode: (values: DepositInput) => Promise<StakeWise.TransactionData & { value: bigint }>
 }

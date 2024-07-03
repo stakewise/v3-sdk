@@ -1,4 +1,4 @@
-import { validateArgs } from '../../../utils'
+import { validateArgs, getValidLtvPercent } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
@@ -6,13 +6,15 @@ type GetBurnAmountInput = {
   ltvPercent: bigint
   mintedAssets: bigint
   stakedAssets: bigint
+  vaultAddress: string
   newStakedAssets: bigint
   contracts: StakeWise.Contracts
 }
 
 const getBurnAmount = async (values: GetBurnAmountInput) => {
-  const { contracts, ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = values
+  const { contracts, vaultAddress, ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = values
 
+  validateArgs.address({ vaultAddress })
   validateArgs.bigint({ ltvPercent, mintedAssets, stakedAssets, newStakedAssets })
 
   const hasMinted = mintedAssets && mintedAssets > 0
@@ -21,7 +23,9 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
     return 0n
   }
 
-  const stakedWithPercent = (stakedAssets - newStakedAssets) * ltvPercent / 10_000n
+  const percent = await getValidLtvPercent({ vaultAddress, ltvPercent, contracts })
+
+  const stakedWithPercent = (stakedAssets - newStakedAssets) * percent / 10_000n
   const assetsToBurn = mintedAssets - stakedWithPercent
 
   if (assetsToBurn > 0) {

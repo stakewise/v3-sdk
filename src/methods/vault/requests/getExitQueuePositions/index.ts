@@ -18,7 +18,7 @@ const mock: ParseExitRequestsOutput = {
   withdrawable: 0n,
 }
 
-const getExitQueuePositions = async (input: GetExitQueuePositionsInput) => {
+const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise<ParseExitRequestsOutput> => {
   const { options, contracts, provider, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress, userAddress })

@@ -11,7 +11,7 @@ const getOsTokenAPY = (input: FetchOsTokenSnapshotsInput) => {
 
   return graphql.subgraph.osToken.fetchOsTokenApyQuery({
     url: apiUrls.getSubgraphqlUrl(options),
-    modifyResult: (data) => data?.osTokens?.[0].apy || '0',
+    modifyResult: (data) => data?.osTokens?.[0]?.apy || '0',
   })
 }
 

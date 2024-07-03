@@ -1,11 +1,11 @@
-import { BrowserProvider, JsonRpcProvider, FallbackProvider } from 'ethers'
+import type { BrowserProvider, JsonRpcProvider, FallbackProvider } from 'ethers'
 
 import methods from '../methods'
 import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
 import type {
-  VaultAbi,
+  VaultAbi as InitialVaultAbi,
   Erc20Abi,
   KeeperAbi,
   UsdRateAbi,
@@ -14,18 +14,25 @@ import type {
   UniswapPoolAbi,
   VaultFactoryAbi,
   V2RewardTokenAbi,
+  EigenPodOwnerAbi,
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  MintTokenConfigAbi,
+  GnosisVaultDiffAbi,
+  OtherTokenVaultAbi,
   PrivateVaultDiffAbi,
+  MintTokenConfigV1Abi,
+  MintTokenConfigV2Abi,
+  RestakingVaultDiffAbi,
   BlocklistVaultDiffAbi,
+  DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
   UniswapPositionManagerAbi,
 } from '../contracts/types'
 
+type VaultAbi = InitialVaultAbi & GnosisVaultDiffAbi
 
 declare global {
 
@@ -37,6 +44,7 @@ declare global {
     type Utils = ReturnType<typeof methods.createUtils>
     type VaultMethods = ReturnType<typeof methods.createVaultMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
+    type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {
@@ -72,22 +80,27 @@ declare global {
       type Vault = VaultAbi
       type Keeper = KeeperAbi
       type UsdRate = UsdRateAbi
+      type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
-      type MintToken = Erc20Abi
       type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
-      type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VaultFactory = VaultFactoryAbi
+      type EigenPodOwner = EigenPodOwnerAbi
       type V2RewardToken = V2RewardTokenAbi
       type VestingEscrow = VestingEscrowAbi
-      type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
-      type MintTokenConfig = MintTokenConfigAbi
+      type OtherTokenVault = OtherTokenVaultAbi
+      type MintTokenConfigV1 = MintTokenConfigV1Abi
+      type MintTokenConfigV2 = MintTokenConfigV2Abi
+      type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
+      type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
+      type RestakingVault = RestakingVaultDiffAbi & VaultAbi
+      type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
       type UniswapPositionManager = UniswapPositionManagerAbi
     }
   }

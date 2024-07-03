@@ -1,37 +1,17 @@
-import { DepositInput } from './types'
-import { commonLogic, referrer } from './common'
-import getHarvestParams from '../../requests/getHarvestParams'
+import nativeTokenDeposit from './nativeToken/deposit'
+import otherTokenDeposit from './otherToken/deposit'
+import { getNetworkTypes } from '../../../../utils'
+import type { DepositInput } from './types'
 
 
-type DepositDataOutput = StakeWise.TransactionData & {
-  value: bigint
-}
+const depositEncode = (values: DepositInput) => {
+  const { options } = values
 
-const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> => {
-  const { options, vaultAddress, userAddress } = values
+  const { isEthereum } = getNetworkTypes(options)
 
-  const { vaultContract, canHarvest, overrides } = await commonLogic(values)
-
-  if (canHarvest) {
-    const harvestParams = await getHarvestParams({ options, vaultAddress })
-
-    const rx = await vaultContract.updateStateAndDeposit.populateTransaction(userAddress, referrer, harvestParams, overrides)
-
-    return {
-      to: rx.to,
-      data: rx.data,
-      value: overrides.value,
-    }
-  }
-  else {
-    const rx = await vaultContract.deposit.populateTransaction(userAddress, referrer, overrides)
-
-    return {
-      to: rx.to,
-      data: rx.data,
-      value: overrides.value,
-    }
-  }
+  return isEthereum
+    ? nativeTokenDeposit.encode(values)
+    : otherTokenDeposit.encode(values)
 }
 
 
