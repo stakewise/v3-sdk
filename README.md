@@ -13,6 +13,7 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
 ![GitHub forks](https://img.shields.io/github/forks/stakewise/v3-sdk)
+![Ethers version](https://img.shields.io/badge/ethers-6.12.1-purple)
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -478,16 +479,19 @@ type Position = {
 
 type Output = {
   total: bigint
+  duration: number | null
   withdrawable: bigint
   positions: Position[]
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `positions` | Queue positions |
-| `total` | Total withdrawal amount (in ETH) |
-| `withdrawable` | Amount available for withdrawal (in ETH) |
+| Name | Description                                                                                                                                                                 |
+|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `positions` | Queue positions                                                                                                                                                             |
+| `total` | Total queued assets (e.g. ETH)                                                                                                                                              |
+| `duration` | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
+|      |                                                                                                                                                                             |- 
+| `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                  |
 
 #### Example:
 
@@ -1229,7 +1233,7 @@ const gas = await sdk.vault.withdraw.estimateGas(params)
 
 #### Description:
 
-Take the freed tokens from the queue
+Withdraws exited assets from the queue.
 
 #### Arguments:
 
