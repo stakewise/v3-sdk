@@ -10,7 +10,7 @@ export default {
     subgraph: 'https://chiado-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
   },
   pages: {
-    beaconchain: 'https://gnosis.beaconcha.in',
+    beaconchain: 'https://beacon.chiadochain.net',
   },
   addresses: {
     tokens: {
