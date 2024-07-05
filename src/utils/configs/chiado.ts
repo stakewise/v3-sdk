@@ -32,9 +32,6 @@ export default {
       mintTokenController: '0x28637130e692F821843eBAbeB8708dAB3F82cFa5',
       rewardSplitterFactory: '0x63De511Ff504E70109Bb8312d1329f2C88c14f77',
     },
-    balancer: {
-      vault: ZeroAddress,
-    },
     factories: {
       vault: '0x3092C23185bCEFB440B0Bc8bFA1E340E40b3A410',
       erc20Vault: '0x951D3BAB6BebB42BEabf807df808b58a5c4FC55D',
@@ -44,6 +41,9 @@ export default {
 
       blocklistVault: '0x6e16fc22013e07B8C8e6d4b30280F44d42A60a97',
       erc20BlocklistVault: '0xdd9e0dBFb218fb17f0A2f96E77224e00dF095bf2',
+    },
+    balancer: {
+      vault: ZeroAddress,
     },
     uniswap: {
       positionManager: ZeroAddress,
