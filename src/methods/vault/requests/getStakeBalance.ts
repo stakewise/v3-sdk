@@ -1,5 +1,5 @@
-import { vaultMulticall } from '../../../contracts'
 import { validateArgs } from '../../../utils'
+import { vaultMulticall } from '../../../contracts'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
 

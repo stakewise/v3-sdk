@@ -30,9 +30,18 @@ const harvestCheckMethods = [
   'mintOsToken',
   'enterExitQueue',
   'setFeeRecipient',
+  'convertToAssets',
+  'convertToShares',
+  'getExitQueueIndex',
   'claimExitedAssets',
+  'calculateExitedAssets',
 ]
 
+/**
+ * @description This method will automatically add the execution of the updateState method to the vault,
+ * __but this method must be added to the whitelist__ inside the vaultMulticall method (harvestCheckMethods)
+ * This method will also add swapXdaiToGno execution if needed.
+*/
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
   const { options, vaultAddress, userAddress, request, vaultContract, keeperContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
