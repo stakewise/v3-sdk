@@ -30,7 +30,7 @@ export default {
       vaultsRegistry: '0x3a0008a588772446f6e656133C2D5029CC4FC20E',
       sharedMevEscrow: '0x48319f97E5Da1233c21c48b80097c0FB7a20Ff86',
       mintTokenConfigV1: '0xE8822246F8864DA92015813A39ae776087Fb1Cd5',
-      mintTokenConfigV2: ZeroAddress,
+      mintTokenConfigV2: '0x287d1e2A8dE183A8bf8f2b09Fa1340fBd766eb59',
       depositDataRegistry: ZeroAddress,
       mintTokenController: '0x2A261e60FB14586B474C208b1B7AC6D0f5000306',
       rewardSplitterFactory: '0x90a9428b8c58cA80B28aAF46B936D42e87797449',
