@@ -19,9 +19,9 @@ const handleCallStatic = async ({ contract, multicallParams, userAddress }: Inpu
     return contract.interface.decodeFunctionResult(method, data)
   })
 
-  const [ firstResult, ...rest ] = formattedResult
+  const [ _, ...rest ] = formattedResult
 
-  if (firstResult?.method === 'updateState') {
+  if (multicallParams[0]?.method === 'updateState') {
     return rest
   }
 
