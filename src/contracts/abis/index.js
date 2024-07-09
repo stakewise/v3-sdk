@@ -32,16 +32,6 @@ const PrivateVaultAbi = VaultAbi.concat(PrivateVaultDiffAbi)
 const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
 const RestakingVaultAbi = VaultAbi.concat(RestakingVaultDiffAbi)
 
-const GnosisVaultAbi = (() => {
-  const copyVaultAbi = JSON.parse(JSON.stringify(VaultAbi))
-  const burnIndex = VaultAbi.findIndex(({ name }) => name === 'burnOsToken')
-
-  // Mainnet has uint128
-  copyVaultAbi[burnIndex].inputs[0].type = 'uint256'
-
-  return copyVaultAbi
-})()
-
 export {
   UniswapPositionManagerAbi,
   RewardSplitterFactoryAbi,
@@ -62,7 +52,6 @@ export {
   VaultFactoryAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
-  GnosisVaultAbi,
   MulticallAbi,
   UsdRateAbi,
   KeeperAbi,
