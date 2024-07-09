@@ -54,6 +54,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   })
 
   let multicallParams = [ ...params ]
+
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
   if (needHarvest) {
