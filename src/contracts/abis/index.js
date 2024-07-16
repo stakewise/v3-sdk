@@ -3,13 +3,14 @@ import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
+import InitialOtherTokenVaultAbi from './OtherTokenVaultAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
 import RestakingVaultDiffAbi from './RestakingVaultDiffAbi.json'
 import MerkleDistributorAbi from './MerkleDistributorAbi.json'
 import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
 import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
-import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
+import GenesisVaultDiffAbi from './GenesisVaultDiffAbi.json'
 import GnosisVaultDiffAbi from './GnosisVaultDiffAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
@@ -20,16 +21,18 @@ import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
 import UniswapPoolAbi from './UniswapPoolAbi.json'
 import MulticallAbi from './MulticallAbi.json'
+import InitialVaultAbi from './VaultAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
 import OraclesAbi from './OraclesAbi.json'
 import KeeperAbi from './KeeperAbi.json'
 import Erc20Abi from './Erc20Abi.json'
-import InitialVaultAbi from './VaultAbi.json'
 
 
 // ATTN temp solution to handle swapXdaiToGno, need to fix within https://app.clickup.com/t/8694zcfv8
 const VaultAbi = InitialVaultAbi.concat(GnosisVaultDiffAbi)
+const OtherTokenVaultAbi = InitialOtherTokenVaultAbi.concat(GnosisVaultDiffAbi)
 
+const GenesisVaultAbi = VaultAbi.concat(GenesisVaultDiffAbi)
 const PrivateVaultAbi = VaultAbi.concat(PrivateVaultDiffAbi)
 const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
 const RestakingVaultAbi = VaultAbi.concat(RestakingVaultDiffAbi)
@@ -52,6 +55,7 @@ export {
   EigenPodOwnerAbi,
   VestingEscrowAbi,
   PrivateVaultAbi,
+  GenesisVaultAbi,
   VaultFactoryAbi,
   PriceOracleAbi,
   UniswapPoolAbi,
