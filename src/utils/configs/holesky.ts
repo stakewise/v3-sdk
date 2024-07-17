@@ -30,7 +30,7 @@ export default {
       mintTokenConfigV2: '0x124C33d07F94B31aDF87C12F7cA3a586d3510928',
       depositDataRegistry: '0xAC0F906E433d58FA868F936E8A43230473652885',
       mintTokenController: '0x7BbC1733ee018f103A9a9052a18fA9273255Cf36',
-      rewardSplitterFactory: '0xe31FAf135A6047Cbe595F91B4b6802cDB9B46E2b',
+      rewardSplitterFactory: '0x2Ed24638b3aB48cF0076f19199c78A62bfEb5889',
     },
     factories: {
       vault: '0xA1424Bd00e6940A58B1232ad4160A77dD0AC3099',
