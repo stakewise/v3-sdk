@@ -1,19 +1,21 @@
 import vaultMulticall from '../../../../contracts/multicall/vaultMulticall'
 
 
+type ExitRequest = {
+  withdrawalTimestamp: string | null
+  positionTicket: string
+  totalShares: string
+  totalAssets: string
+  timestamp: string
+}
+
 export type ParseExitRequestsInput = {
   contracts: StakeWise.Contracts
   provider: StakeWise.Provider
+  exitRequests: ExitRequest[]
   options: StakeWise.Options
   userAddress: string
   vaultAddress: string
-  exitRequests: Array<{
-    withdrawalTimestamp: string | null
-    positionTicket: string
-    totalShares: string
-    totalAssets: string
-    timestamp: string
-  }>
 }
 
 type Position = {
@@ -26,8 +28,9 @@ type Position = {
 export type ParseExitRequestsOutput = {
   total: bigint
   withdrawable: bigint
-  duration: number | null
   positions: Position[]
+  pending: ExitRequest[]
+  duration: number | null
 }
 
 type ExitedAssetsResponse = Array<{
@@ -73,6 +76,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     return {
       total: 0n,
       duration: 0,
+      pending: [],
       positions: [],
       withdrawable: 0n,
     }
@@ -102,6 +106,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     },
   })
 
+  const pending = []
   const claims: Position[] = []
   const indexes = (indexesResponse || [])
 
@@ -118,6 +123,8 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     const exitQueueIndex = indexes[i][0]
 
     if (exitQueueIndex < 0n) {
+      pending.push(exitRequests[i])
+
       continue
     }
 
@@ -129,6 +136,9 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       const item = { exitQueueIndex, positionTicket, timestamp, isV1Position }
 
       claims.push(item)
+    }
+    else {
+      pending.push(exitRequests[i])
     }
   }
 
@@ -145,6 +155,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     // If there are no positions with an index greater than 0 or their timestamp has failed the 24-hour check.
     // Then we can use totalShares from the subgraph to show total
     return {
+      pending,
       duration: 0,
       positions: [],
       withdrawable: 0n,
@@ -199,6 +210,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
 
   return {
     total,
+    pending,
     duration,
     positions: claims,
     withdrawable: withdrawableAssets,

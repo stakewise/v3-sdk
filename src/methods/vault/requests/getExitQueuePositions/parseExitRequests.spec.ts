@@ -111,6 +111,7 @@ describe('parseExitRequests function', () => {
           positionTicket: 'positionTicket-2',
         },
       ],
+      pending: [],
       total: 431n,
       duration: 1718536919,
       withdrawable: 281n,
@@ -139,6 +140,22 @@ describe('parseExitRequests function', () => {
       duration: 0,
       positions: [],
       withdrawable: 0n,
+      pending: [
+        {
+          positionTicket: 'positionTicket-1',
+          withdrawalTimestamp: '1718536919',
+          timestamp: '123456',
+          totalAssets: '0',
+          totalShares: '100',
+        },
+        {
+          positionTicket: 'positionTicket-2',
+          withdrawalTimestamp: '1718536919',
+          timestamp: '123457',
+          totalAssets: '0',
+          totalShares: '200',
+        },
+      ],
     })
   })
 
@@ -153,10 +170,26 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      positions: [],
       total: 50n,
       duration: 0,
+      positions: [],
       withdrawable: 0n,
+      pending: [
+        {
+          positionTicket: 'positionTicket-1',
+          withdrawalTimestamp: '1718536919',
+          timestamp: '123456',
+          totalAssets: '0',
+          totalShares: '100',
+        },
+        {
+          positionTicket: 'positionTicket-2',
+          withdrawalTimestamp: '1718536919',
+          timestamp: '123457',
+          totalAssets: '0',
+          totalShares: '200',
+        },
+      ],
     })
   })
 
@@ -179,12 +212,30 @@ describe('parseExitRequests function', () => {
     const result = await parseExitRequests(input)
 
     expect(result).toEqual({
-      positions: [ {
-        exitQueueIndex: 1n,
-        timestamp: '123457',
-        isV1Position: true,
-        positionTicket: 'positionTicket-2',
-      } ],
+      positions: [
+        {
+          exitQueueIndex: 1n,
+          timestamp: '123457',
+          isV1Position: true,
+          positionTicket: 'positionTicket-2',
+        },
+      ],
+      pending: [
+        {
+          positionTicket: 'positionTicket-1',
+          withdrawalTimestamp: '1718536919',
+          timestamp: '123456',
+          totalAssets: '0',
+          totalShares: '100',
+        },
+        {
+          positionTicket: 'positionTicket-2',
+          withdrawalTimestamp: '1718536919',
+          timestamp: '123458',
+          totalAssets: '300',
+          totalShares: '0',
+        },
+      ],
       total: 380n,
       duration: 1718536919,
       withdrawable: 30n,
@@ -228,6 +279,7 @@ describe('parseExitRequests function', () => {
           positionTicket: 'positionTicket-2',
         },
       ],
+      pending: [],
       total: 603n,
       duration: 1718536919,
       withdrawable: 603n,

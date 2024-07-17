@@ -89,6 +89,25 @@ Use **sdk.vault.operate** instead
 Use **osToken.getConfig** and **osToken.getRate**
 
 ---
+### sdk.vault.getExitQueuePositions
+Added positions that are not yet available for claim
+
+#### Returns:
+```ts
+type ExitRequest = {
+  withdrawalTimestamp: string | null
+  positionTicket: string
+  totalShares: string
+  totalAssets: string
+  timestamp: string
+}
+
+type Output = {
+  ...oldOutput,
+  pending: ExitRequest[]
+}
+```
+
 
 # New
 ## Vault

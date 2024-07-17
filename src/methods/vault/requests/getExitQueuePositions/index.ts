@@ -13,6 +13,7 @@ type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
 
 const mock: ParseExitRequestsOutput = {
   total: 0n,
+  pending: [],
   duration: 0,
   positions: [],
   withdrawable: 0n,

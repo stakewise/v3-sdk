@@ -470,6 +470,14 @@ Returns the withdrawal queue for a specific user.
 #### Returns:
 
 ```ts
+type ExitRequest = {
+  withdrawalTimestamp: string | null
+  positionTicket: string
+  totalShares: string
+  totalAssets: string
+  timestamp: string
+}
+
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
@@ -481,15 +489,17 @@ type Output = {
   duration: number | null
   withdrawable: bigint
   positions: Position[]
+  pending: ExitRequest[]
 }
 ```
 
 | Name | Description                                                                                                                                                                 |
 |------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `positions` | Queue positions                                                                                                                                                             |
-| `total` | Total queued assets (e.g. ETH)                                                                                                                                              |
+| `pending` |  Positions not yet available for claim  |
+| `positions` | Positions in a special format that are required for claiming |
+| `total` | Total queued assets (e.g. ETH) |
 | `duration` | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
-|      |                                                                                                                                                                             |- 
+| | |- 
 | `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                  |
 
 #### Example:
