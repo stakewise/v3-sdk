@@ -1,6 +1,7 @@
-import { validateArgs } from '../../../../utils'
 import getHealthFactor from '../../helpers/getHealthFactor'
 import getOsTokenPositionShares from './getOsTokenPositionShares'
+import { wrapAbortPromise } from '../../../../modules/gql-module'
+import { validateArgs, OsTokenPositionHealth } from '../../../../utils'
 
 
 type GetOsTokenPositionInput = {
@@ -12,35 +13,50 @@ type GetOsTokenPositionInput = {
   contracts: StakeWise.Contracts
 }
 
-const getOsTokenPosition = (values: GetOsTokenPositionInput) => {
+type Output = {
+  minted: {
+    assets: bigint
+    shares: bigint
+    fee: bigint
+  }
+  healthFactor: {
+    value: number
+    health: OsTokenPositionHealth
+  }
+  protocolFeePercent: bigint
+}
+
+const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
 
-  return getOsTokenPositionShares({ options, vaultAddress, userAddress })
-    .then(async (gqlMintedShares) => {
-      const vaultContract = contracts.helpers.createVault(vaultAddress)
-      const mintedShares = await vaultContract.osTokenPositions(userAddress)
+  const gqlMintedShares = await getOsTokenPositionShares({ options, vaultAddress, userAddress })
 
-      const [ mintedAssets, feePercent ] = await Promise.all([
-        contracts.base.mintTokenController.convertToAssets(mintedShares),
-        contracts.base.mintTokenController.feePercent(),
-      ])
+  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  const mintedShares = await vaultContract.osTokenPositions(userAddress)
 
-      const protocolFeePercent = feePercent / 100n
-      const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
+  const [ mintedAssets, feePercent ] = await Promise.all([
+    contracts.base.mintTokenController.convertToAssets(mintedShares),
+    contracts.base.mintTokenController.feePercent(),
+  ])
 
-      return {
-        minted: {
-          assets: mintedAssets,
-          shares: mintedShares,
-          fee: mintedShares - gqlMintedShares,
-        },
-        healthFactor,
-        protocolFeePercent,
-      }
-    })
+  const protocolFeePercent = feePercent / 100n
+  const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
+
+  const result: Output = {
+    minted: {
+      assets: mintedAssets,
+      shares: mintedShares,
+      fee: mintedShares - gqlMintedShares,
+    },
+    healthFactor,
+    protocolFeePercent,
+  }
+
+  return result
 }
 
-export default getOsTokenPosition
+
+export default wrapAbortPromise<GetOsTokenPositionInput, Output>(getOsTokenPosition)
