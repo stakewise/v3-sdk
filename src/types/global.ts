@@ -21,6 +21,7 @@ import type {
   RewardSplitterAbi,
   GnosisVaultDiffAbi,
   OtherTokenVaultAbi,
+  GenesisVaultDiffAbi,
   PrivateVaultDiffAbi,
   MerkleDistributorAbi,
   MintTokenConfigV1Abi,
@@ -92,6 +93,7 @@ declare global {
       type EigenPodOwner = EigenPodOwnerAbi
       type V2RewardToken = V2RewardTokenAbi
       type VestingEscrow = VestingEscrowAbi
+      type GenesisVault = GenesisVaultDiffAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type OtherTokenVault = OtherTokenVaultAbi

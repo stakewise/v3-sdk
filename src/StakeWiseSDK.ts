@@ -1,5 +1,5 @@
 import methods from './methods'
-import { configs, getGas, createProvider } from './utils'
+import { configs, getGas, createProvider, getVaultContract } from './utils'
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 
@@ -38,19 +38,27 @@ class StakeWiseSDK {
     this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
   }
 
-  vaultMulticall<T extends unknown>({ userAddress, vaultAddress, request }: VaultMulticallInput) {
+  vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
+    const { userAddress, vaultAddress, request } = values
+
+    const vaultContract = getVaultContract({
+      contracts: this.contracts,
+      network: this.network,
+      vaultAddress,
+    })
+
     return vaultMulticall<T>({
-      vaultContract: this.contracts.helpers.createVault(vaultAddress),
       keeperContract: this.contracts.base.keeper,
       options: this.options,
+      vaultContract,
       vaultAddress,
       userAddress,
       request,
     })
   }
 
-  rewardSplitterMulticall<T extends unknown>(props: RewardSplitterMulticallInput) {
-    const { userAddress, vaultAddress, rewardSplitterAddress, request } = props
+  rewardSplitterMulticall<T extends unknown>(values: RewardSplitterMulticallInput) {
+    const { userAddress, vaultAddress, rewardSplitterAddress, request } = values
 
     return rewardSplitterMulticall<T>({
       rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
