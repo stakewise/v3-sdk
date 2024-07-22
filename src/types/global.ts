@@ -21,6 +21,7 @@ import type {
   RewardSplitterAbi,
   GnosisVaultDiffAbi,
   OtherTokenVaultAbi,
+  StakeCalculatorAbi,
   GenesisVaultDiffAbi,
   PrivateVaultDiffAbi,
   MerkleDistributorAbi,
@@ -96,6 +97,7 @@ declare global {
       type GenesisVault = GenesisVaultDiffAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
+      type StakeCalculator = StakeCalculatorAbi
       type OtherTokenVault = OtherTokenVaultAbi
       type MerkleDistributor = MerkleDistributorAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi

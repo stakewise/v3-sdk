@@ -50,6 +50,9 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
+    helpers: {
+      stakeCalculator: '0xAc640d35448F43e03229455EF1D799a8F77321A7',
+    },
   },
   tokens: {
     mintToken: constants.tokens.osETH,

@@ -50,6 +50,9 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
+    helpers: {
+      stakeCalculator: ZeroAddress,
+    },
   },
   tokens: {
     mintToken: constants.tokens.osGNO,

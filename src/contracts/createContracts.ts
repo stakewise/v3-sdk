@@ -20,6 +20,7 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   RestakingVaultAbi,
+  StakeCalculatorAbi,
   OtherTokenVaultAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
@@ -131,6 +132,12 @@ const getOracles = (provider: Provider, config: StakeWise.Config) => createContr
   provider
 )
 
+const getStakeCalculator = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.StakeCalculator>(
+  config.addresses.helpers.stakeCalculator,
+  StakeCalculatorAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -144,6 +151,8 @@ export const createContracts = (input: CreateContractsInput) => {
   return {
     helpers: {
       multicallContract,
+      stakeCalculator: getStakeCalculator(provider, config),
+
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
       createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),

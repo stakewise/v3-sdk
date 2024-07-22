@@ -12,6 +12,7 @@ import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
 import GenesisVaultDiffAbi from './GenesisVaultDiffAbi.json'
 import GnosisVaultDiffAbi from './GnosisVaultDiffAbi.json'
+import StakeCalculatorAbi from './StakeCalculatorAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
 import V2RewardTokenAbi from './V2RewardTokenAbi.json'
@@ -46,6 +47,7 @@ export {
   MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  StakeCalculatorAbi,
   OtherTokenVaultAbi,
   VaultsRegistryAbi,
   RestakingVaultAbi,
