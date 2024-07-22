@@ -46,6 +46,9 @@ export default {
       stakeCalculator: '0x8381012Dad419808125F009351732af36d4e1507',
       leverageStrategy: '0xdB38cfc6e98a34Cdc60c568f607417E646C75B34',
     },
+    helpers: {
+      stakeCalculator: '0xAc640d35448F43e03229455EF1D799a8F77321A7',
+    },
   },
   tokens: {
     swise: constants.tokens.swise,
