@@ -5,6 +5,7 @@ import {
   Erc20Abi,
   VaultAbi,
   KeeperAbi,
+  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   UniswapPoolAbi,
@@ -21,6 +22,7 @@ import {
   OtherTokenVaultAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  MerkleDistributorAbi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
@@ -116,6 +118,18 @@ const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) =>
   provider
 )
 
+const getMerkleDistributor = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MerkleDistributor>(
+  config.addresses.base.merkleDistributor,
+  MerkleDistributorAbi,
+  provider
+)
+
+const getOracles = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Oracles>(
+  config.addresses.base.oracles,
+  OraclesAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -145,12 +159,14 @@ export const createContracts = (input: CreateContractsInput) => {
     },
     base: {
       keeper: getKeeper(provider, config),
+      oracles: getOracles(provider, config),
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
       mintTokenConfig: {
         v1: getMintTokenConfigV1(provider, config),
-        v2: getMintTokenConfigV2(provider, config)
+        v2: getMintTokenConfigV2(provider, config),
       },
+      merkleDistributor: getMerkleDistributor(provider, config),
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),

@@ -8,6 +8,7 @@ import type {
   VaultAbi as InitialVaultAbi,
   Erc20Abi,
   KeeperAbi,
+  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
@@ -21,6 +22,7 @@ import type {
   GnosisVaultDiffAbi,
   OtherTokenVaultAbi,
   PrivateVaultDiffAbi,
+  MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   RestakingVaultDiffAbi,
@@ -79,6 +81,7 @@ declare global {
     namespace ABI {
       type Vault = VaultAbi
       type Keeper = KeeperAbi
+      type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
       type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
@@ -92,6 +95,7 @@ declare global {
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type OtherTokenVault = OtherTokenVaultAbi
+      type MerkleDistributor = MerkleDistributorAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
