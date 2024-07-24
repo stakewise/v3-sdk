@@ -38,7 +38,7 @@ const chiado = {
   chainId: Network.Chiado,
   hexadecimalChainId: '0x27D8',
   url: 'https://rpc.chiadochain.net',
-  blockExplorerUrl: 'https://gnosis-chiado.blockscout.com/',
+  blockExplorerUrl: 'https://gnosis-chiado.blockscout.com',
   nativeCurrency: {
     symbol: tokens.xdai,
     name: tokens.xdai,
@@ -53,7 +53,7 @@ const gnosis = {
   chainId: Network.Gnosis,
   hexadecimalChainId: '0x64',
   url: 'https://rpc.gnosischain.com',
-  blockExplorerUrl: 'https://blockscout.com/xdai/mainnet',
+  blockExplorerUrl: 'https://gnosisscan.io',
   nativeCurrency: {
     symbol: tokens.xdai,
     name: tokens.xdai,
