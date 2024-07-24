@@ -5,6 +5,7 @@ import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
 import RestakingVaultDiffAbi from './RestakingVaultDiffAbi.json'
+import MerkleDistributorAbi from './MerkleDistributorAbi.json'
 import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
 import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
@@ -20,6 +21,7 @@ import PriceOracleAbi from './PriceOracleAbi.json'
 import UniswapPoolAbi from './UniswapPoolAbi.json'
 import MulticallAbi from './MulticallAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
+import OraclesAbi from './OraclesAbi.json'
 import KeeperAbi from './KeeperAbi.json'
 import Erc20Abi from './Erc20Abi.json'
 import InitialVaultAbi from './VaultAbi.json'
@@ -38,6 +40,7 @@ export {
   VestingEscrowFactoryAbi,
   MintTokenControllerAbi,
   DepositDataRegistryAbi,
+  MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   OtherTokenVaultAbi,
@@ -53,6 +56,7 @@ export {
   PriceOracleAbi,
   UniswapPoolAbi,
   MulticallAbi,
+  OraclesAbi,
   UsdRateAbi,
   KeeperAbi,
   VaultAbi,
