@@ -1,0 +1,9 @@
+mutation UploadMetadata (
+  $payload: PayloadType!
+) {
+  uploadMetadata(
+    payload: $payload
+  ) {
+    ipfsHash
+  }
+}
