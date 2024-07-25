@@ -172,6 +172,9 @@ export const createContracts = (input: CreateContractsInput) => {
       stakeCalculator: getStakeCalculator(provider, config),
       leverageStrategy: getLeverageStrategy(provider, config),
     },
+    special: {
+      stakeCalculator: getStakeCalculator(provider, config),
+    },
   }
 }
 

@@ -46,7 +46,7 @@ export default {
       stakeCalculator: '0x2A415b65207049AC7481BF69ff9fc1B3Def97c9A',
       leverageStrategy: ZeroAddress,
     },
-    helpers: {
+    special: {
       stakeCalculator: ZeroAddress,
     },
   },
