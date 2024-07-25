@@ -1,1 +1,356 @@
-[{"inputs":[{"internalType":"address","name":"keeper","type":"address"},{"internalType":"address","name":"osTokenConfigV1","type":"address"},{"internalType":"address","name":"osTokenConfigV2","type":"address"},{"internalType":"address","name":"osTokenController","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"InvalidLtvProvided","type":"error"},{"inputs":[],"name":"MathOverflowedMulDiv","type":"error"},{"inputs":[{"components":[{"internalType":"address","name":"vault","type":"address"},{"internalType":"address","name":"user","type":"address"},{"internalType":"uint256","name":"stakeAssets","type":"uint256"},{"internalType":"uint256","name":"osTokenLtv","type":"uint256"},{"components":[{"internalType":"bytes32","name":"rewardsRoot","type":"bytes32"},{"internalType":"int160","name":"reward","type":"int160"},{"internalType":"uint160","name":"unlockedMevReward","type":"uint160"},{"internalType":"bytes32[]","name":"proof","type":"bytes32[]"}],"internalType":"struct IKeeperRewards.HarvestParams","name":"harvestParams","type":"tuple"}],"internalType":"struct Helpers.StakeInput","name":"inputData","type":"tuple"}],"name":"calculateStake","outputs":[{"components":[{"internalType":"uint256","name":"receivedOsTokenShares","type":"uint256"},{"internalType":"uint256","name":"exchangeRate","type":"uint256"}],"internalType":"struct Helpers.StakeOutput","name":"outputData","type":"tuple"}],"stateMutability":"nonpayable","type":"function"}]
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "keeper",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "osTokenConfigV1",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "osTokenConfigV2",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "osTokenController",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "osToken",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "MathOverflowedMulDiv",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stakeAssets",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "rewardsRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "int160",
+                "name": "reward",
+                "type": "int160"
+              },
+              {
+                "internalType": "uint160",
+                "name": "unlockedMevReward",
+                "type": "uint160"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+              }
+            ],
+            "internalType": "struct IKeeperRewards.HarvestParams",
+            "name": "harvestParams",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct Helpers.StakeInput",
+        "name": "inputData",
+        "type": "tuple"
+      }
+    ],
+    "name": "calculateStake",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "receivedOsTokenShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "exchangeRate",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Helpers.StakeOutput",
+        "name": "outputData",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unstakeAssets",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "rewardsRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "int160",
+                "name": "reward",
+                "type": "int160"
+              },
+              {
+                "internalType": "uint160",
+                "name": "unlockedMevReward",
+                "type": "uint160"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+              }
+            ],
+            "internalType": "struct IKeeperRewards.HarvestParams",
+            "name": "harvestParams",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct Helpers.UnstakeAssetsInput",
+        "name": "inputData",
+        "type": "tuple"
+      }
+    ],
+    "name": "calculateUnstakeAssets",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "unstakeAssets",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "unstakeShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "burnOsTokenShares",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Helpers.UnstakeAssetsOutput",
+        "name": "outputData",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "osTokenShares",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "rewardsRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "int160",
+                "name": "reward",
+                "type": "int160"
+              },
+              {
+                "internalType": "uint160",
+                "name": "unlockedMevReward",
+                "type": "uint160"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+              }
+            ],
+            "internalType": "struct IKeeperRewards.HarvestParams",
+            "name": "harvestParams",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct Helpers.UnstakeOsTokenSharesInput",
+        "name": "inputData",
+        "type": "tuple"
+      }
+    ],
+    "name": "calculateUnstakeOsTokenShares",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "unstakeOsTokenShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "swapOsTokenShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "receivedAssets",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Helpers.UnstakeOsTokenSharesOutput",
+        "name": "outputData",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "rewardsRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "int160",
+                "name": "reward",
+                "type": "int160"
+              },
+              {
+                "internalType": "uint160",
+                "name": "unlockedMevReward",
+                "type": "uint160"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+              }
+            ],
+            "internalType": "struct IKeeperRewards.HarvestParams",
+            "name": "harvestParams",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct Helpers.UnstakeAmountsInput",
+        "name": "inputData",
+        "type": "tuple"
+      }
+    ],
+    "name": "getUnstakeAmounts",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "maxUnstakeAssets",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxUnstakeOsTokenShares",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Helpers.UnstakeAmountsOutput",
+        "name": "outputData",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxLeftStakeAssetsPercent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

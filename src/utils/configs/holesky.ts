@@ -50,8 +50,8 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
-    helpers: {
-      stakeCalculator: '0xAc640d35448F43e03229455EF1D799a8F77321A7',
+    special: {
+      stakeCalculator: '0x7151c611d7f76AFF8F53E87B3846Dc38C444dE0A',
     },
   },
   tokens: {

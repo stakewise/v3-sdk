@@ -50,7 +50,7 @@ export default {
     uniswap: {
       positionManager: ZeroAddress,
     },
-    helpers: {
+    special: {
       stakeCalculator: ZeroAddress,
     },
   },

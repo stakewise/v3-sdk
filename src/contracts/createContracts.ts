@@ -133,7 +133,7 @@ const getOracles = (provider: Provider, config: StakeWise.Config) => createContr
 )
 
 const getStakeCalculator = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.StakeCalculator>(
-  config.addresses.helpers.stakeCalculator,
+  config.addresses.special.stakeCalculator,
   StakeCalculatorAbi,
   provider
 )
@@ -151,8 +151,6 @@ export const createContracts = (input: CreateContractsInput) => {
   return {
     helpers: {
       multicallContract,
-      stakeCalculator: getStakeCalculator(provider, config),
-
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
       createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),
@@ -201,6 +199,9 @@ export const createContracts = (input: CreateContractsInput) => {
     },
     uniswap: {
       positionManager: getUniswapPositionManager(provider, config),
+    },
+    special: {
+      stakeCalculator: getStakeCalculator(provider, config),
     },
   }
 }

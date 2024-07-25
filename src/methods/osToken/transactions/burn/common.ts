@@ -1,14 +1,9 @@
 import type { BurnInput } from './types'
-import { validateArgs, Network } from '../../../../utils'
+import { validateArgs } from '../../../../utils'
 
 
 export const commonLogic = (values: BurnInput) => {
-  const { contracts, options, vaultAddress, userAddress, shares } = values
-
-  const isGnosis = (
-    options.network === Network.Gnosis
-    || options.network === Network.Chiado
-  )
+  const { contracts, vaultAddress, userAddress, shares } = values
 
   validateArgs.bigint({ shares })
   validateArgs.address({ vaultAddress, userAddress })
