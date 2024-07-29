@@ -48,7 +48,7 @@ const uploadMetadata = async (input: Input) => {
     }
   }
 
-  return null
+  return ''
 }
 
 

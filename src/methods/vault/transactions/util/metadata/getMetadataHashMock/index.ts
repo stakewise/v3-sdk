@@ -10,7 +10,7 @@ const getMetadataHashMock = ({ image, displayName, description }: Input) => {
     return '00000000000000000000000000000000000000000000000000000000000'
   }
 
-  return null
+  return ''
 }
 
 
