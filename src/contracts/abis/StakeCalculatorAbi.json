@@ -20,11 +20,6 @@
         "internalType": "address",
         "name": "osTokenController",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "osToken",
-        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -168,7 +163,12 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "unstakeOsTokenShares",
+            "name": "burnOsTokenShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "exitQueueShares",
             "type": "uint256"
           },
           {
@@ -183,19 +183,6 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxLeftStakeAssetsPercent",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]
