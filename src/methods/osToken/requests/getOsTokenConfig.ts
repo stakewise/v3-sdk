@@ -16,10 +16,13 @@ const getOsTokenData = async (input: GetOsTokenConfigInput) => {
 
   const vaultContract = contracts.helpers.createVault(vaultAddress)
   const version = await vaultContract.version()
-  const isNewVersion = version > 1n
+  const isV1Version = version === 1n
 
-  if (isNewVersion) {
-    const [ _, thresholdPercent, ltvPercent ] = await contracts.base.mintTokenConfig.v2.getConfig(vaultAddress)
+  if (isV1Version) {
+    const [ thresholdPercent, ltvPercent ] = await Promise.all([
+      contracts.base.mintTokenConfig.v1.liqThresholdPercent(),
+      contracts.base.mintTokenConfig.v1.ltvPercent(),
+    ])
 
     return {
       ltvPercent,
@@ -27,10 +30,7 @@ const getOsTokenData = async (input: GetOsTokenConfigInput) => {
     }
   }
   else {
-    const [ thresholdPercent, ltvPercent ] = await Promise.all([
-      contracts.base.mintTokenConfig.v1.liqThresholdPercent(),
-      contracts.base.mintTokenConfig.v1.ltvPercent(),
-    ])
+    const [ _, thresholdPercent, ltvPercent ] = await contracts.base.mintTokenConfig.v2.getConfig(vaultAddress)
 
     return {
       ltvPercent,

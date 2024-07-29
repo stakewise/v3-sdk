@@ -6,9 +6,9 @@ const checkDepositDataManagerAccess = async ({ userAddress, vaultAddress, contra
     const vaultContract = await contracts.helpers.createVault(vaultAddress)
     const version = await vaultContract.version()
 
-    const depositDataManager = version > 1n
-      ? await contracts.base.depositDataRegistry.getDepositDataManager(vaultAddress)
-      : await vaultContract.keysManager()
+    const depositDataManager = version === 1n
+      ? await vaultContract.keysManager()
+      : await contracts.base.depositDataRegistry.getDepositDataManager(vaultAddress)
 
     const hasAccess = depositDataManager.toLowerCase() === userAddress.toLowerCase()
 
