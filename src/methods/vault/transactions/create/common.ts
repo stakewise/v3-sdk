@@ -1,13 +1,14 @@
 import { AbiCoder, MaxUint256 } from 'ethers'
 import type { CreateVaultTransactionInput } from './types'
-import { validateArgs, VaultType } from '../../../../utils'
+import { PayableOverrides } from '../../../../contracts/types/common'
+import { constants, Network, validateArgs, VaultType } from '../../../../utils'
 import validateCreateVaultArgs from './validateCreateVaultArgs'
 
 
 export const commonLogic = async (values: CreateVaultTransactionInput) => {
   const {
     type = VaultType.Default, vaultToken, capacity, keysManagerFee, isOwnMevEscrow = false, metadataIpfsHash,
-    contracts, userAddress,
+    contracts, userAddress, options,
   } = values
 
   validateArgs.address({ userAddress })
@@ -57,7 +58,10 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
       [ [ formattedParams.capacity, formattedParams.feePercent, metadataIpfsHash ] ]
     )
 
-  const params: [ string, boolean ] = [ encodedParams, isOwnMevEscrow ]
+  const isStakeNativeToken = [ Network.Mainnet, Network.Holesky ].includes(options.network)
+  const params: [ string, boolean, PayableOverrides ] = isStakeNativeToken
+    ? [ encodedParams, isOwnMevEscrow, { value: constants.blockchain.gwei } ]
+    : [ encodedParams, isOwnMevEscrow, {} ]
 
   return {
     vaultFactory,

@@ -3,7 +3,7 @@ import type { CreateVaultInput } from './types'
 import { getMetadataHashMock } from '../util'
 
 
-const depositEncode = async (values: CreateVaultInput) => {
+const createVaultEncode = async (values: CreateVaultInput) => {
   const { image, displayName, description, ...rest } = values
 
   const metadataIpfsHash = getMetadataHashMock({ image, displayName, description })
@@ -18,4 +18,4 @@ const depositEncode = async (values: CreateVaultInput) => {
 }
 
 
-export default depositEncode
+export default createVaultEncode

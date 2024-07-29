@@ -1,11 +1,12 @@
 import { commonLogic } from './common'
 import createVaultGas from './createVaultGas'
 import createVaultEncode from './createVaultEncode'
+import createVaultStaticCall from './createVaultStaticCall'
 import { uploadMetadata } from '../util'
 import type { CreateVault } from './types'
 
 
-const createVault: CreateVault = async (values) => {
+const create: CreateVault = async (values) => {
   const { image, displayName, description, ...rest } = values
   const { provider, options, userAddress } = rest
 
@@ -20,8 +21,9 @@ const createVault: CreateVault = async (values) => {
   return response.hash
 }
 
-createVault.encode = createVaultEncode
-createVault.estimateGas = createVaultGas
+create.encode = createVaultEncode
+create.estimateGas = createVaultGas
+create.staticCall = createVaultStaticCall
 
 
-export default createVault
+export default create

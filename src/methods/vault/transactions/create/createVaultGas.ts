@@ -4,7 +4,7 @@ import type { CreateVaultInput } from './types'
 import { getMetadataHashMock } from '../util'
 
 
-const depositGas = async (values: CreateVaultInput) => {
+const createVaultGas = async (values: CreateVaultInput) => {
   const { image, displayName, description, ...rest } = values
   const { provider, userAddress } = rest
 
@@ -20,4 +20,4 @@ const depositGas = async (values: CreateVaultInput) => {
 }
 
 
-export default depositGas
+export default createVaultGas
