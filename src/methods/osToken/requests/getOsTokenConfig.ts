@@ -16,9 +16,9 @@ const getOsTokenData = async (input: GetOsTokenConfigInput) => {
 
   const vaultContract = contracts.helpers.createVault(vaultAddress)
   const version = await vaultContract.version()
-  const isSecondVersion = version === 2n
+  const isNewVersion = version > 1n
 
-  if (isSecondVersion) {
+  if (isNewVersion) {
     const [ _, thresholdPercent, ltvPercent ] = await contracts.base.mintTokenConfig.v2.getConfig(vaultAddress)
 
     return {
