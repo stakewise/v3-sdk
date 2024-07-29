@@ -52,16 +52,16 @@ const vaultToken = (vaultToken: { name: string, symbol: string }) => {
 
 const keysManagerFee = (value: number) => {
   if (value < 0) {
-    throw new Error(`The "capacity" argument must be at least 0`)
+    throw new Error(`The "keysManagerFee" argument must be at least 0`)
   }
   if (value > 100) {
-    throw new Error(`The "capacity" argument must be at most 100`)
+    throw new Error(`The "keysManagerFee" argument must be at most 100`)
   }
 
   const decimals = value.toString().split('.')[1]?.length
 
   if (decimals > 2) {
-    throw new Error(`The "capacity" argument must have at most two decimal places`)
+    throw new Error(`The "keysManagerFee" argument must have at most two decimal places`)
   }
 }
 
