@@ -15,10 +15,6 @@ type Input = UploadMetadataInput & {
 const uploadMetadata = async (input: Input) => {
   const { image = '', displayName = '', description = '', options } = input
 
-  if (!image && !displayName && !description) {
-    return ''
-  }
-
   if (image) {
     validateArgs.image(image)
   }
