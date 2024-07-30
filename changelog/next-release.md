@@ -33,17 +33,17 @@ You can retrieve the vault factory contract using the helper function: `sdk.getV
 
 #### Arguments:
 
-| Name           | Type                               | Required | Description                                                                                                                                                |
-|----------------|------------------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress    | `string`                           | **Yes**  | The address of the user initiating the action. This address will become the vault admin                                                                    |
-| type           | `VaultType`                        | **No**   | Allowed vault types: Default, Private, or Blocklist. Available vault types can be found in the `enum VaultType` which you can be imported from the library |
-| vaultToken     | `{ name: string, symbol: string }` | **No**   | If provided, the vault will be created with its own ERC20 token                                                                                            |
-| capacity       | `bigint`                           | **No**   | If provided, should be defined in gwei. By default, capacity is `MaxUint256`; the minimum allowed capacity is `parseEther('32')`                           |
-| keysManagerFee | `number`                           | **No**   | If provided, should be between `0` and `100`, inclusive with a maximum of two decimal digits allowed (e.g., `15.35`). By default, the fee is `0`           |
-| isOwnMevEscrow | `boolean`                          | **No**   | Defines whether to send block rewards to the Smoothing Pool (`false`) or keep them only to your Vault (`true`). By default, this value is `false`          |
-| image          | `string`                           | **No**   | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                                   |  
-| displayName    | `string`                           | **No**   | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                           |  
-| description    | `string`                           | **No**   | The vault description (will be uploaded to IPFS; maximum size is 1000 characters)                                                                          |  
+| Name           | Type                               | Required | Description                                                                                                                                       |
+|----------------|------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress    | `string`                           | **Yes**  | The address of the user initiating the action. This address will become the vault admin                                                           |
+| type           | `VaultType`                        | **No**   | Allowed vault types: Default, Private. Available vault types can be found in the `enum VaultType` which you can be imported from the library      |
+| vaultToken     | `{ name: string, symbol: string }` | **No**   | If provided, the vault will be created with its own ERC20 token                                                                                   |
+| capacity       | `bigint`                           | **No**   | If provided, should be defined in gwei. By default, capacity is `MaxUint256`; the minimum allowed capacity is `parseEther('32')`                  |
+| keysManagerFee | `number`                           | **No**   | If provided, should be between `0` and `100`, inclusive with a maximum of two decimal digits allowed (e.g., `15.35`). By default, the fee is `0`  |
+| isOwnMevEscrow | `boolean`                          | **No**   | Defines whether to send block rewards to the Smoothing Pool (`false`) or keep them only to your Vault (`true`). By default, this value is `false` |
+| image          | `string`                           | **No**   | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                          |  
+| displayName    | `string`                           | **No**   | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                  |  
+| description    | `string`                           | **No**   | The vault description (will be uploaded to IPFS; maximum size is 1000 characters)                                                                 |  
 
 #### Example:
 

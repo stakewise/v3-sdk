@@ -9,7 +9,7 @@ export enum Network {
 export enum VaultType {
   Default = 'Default',
   Private = 'Private',
-  Blocklist = 'Blocklist',
+  // Blocklist = 'Blocklist',
 }
 
 export enum AllocatorActionType {
