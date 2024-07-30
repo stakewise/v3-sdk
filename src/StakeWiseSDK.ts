@@ -1,8 +1,9 @@
 import methods from './methods'
-import { configs, getGas, createProvider } from './utils'
+import { configs, getGas, createProvider, getVaultFactory, VaultType } from './utils'
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 
+type GetVaultFactoryInput = { vaultType: VaultType, isErc20?: boolean }
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
 type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
   rewardSplitterAddress: string
@@ -36,6 +37,14 @@ class StakeWiseSDK {
     this.vault = methods.createVaultMethods(argsForMethods)
     this.osToken = methods.createOsTokenMethods(argsForMethods)
     this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
+  }
+
+  getVaultFactory({ vaultType, isErc20 }: GetVaultFactoryInput) {
+    return getVaultFactory({
+      vaultType,
+      isErc20,
+      contracts: this.contracts,
+    })
   }
 
   vaultMulticall<T extends unknown>({ userAddress, vaultAddress, request }: VaultMulticallInput) {

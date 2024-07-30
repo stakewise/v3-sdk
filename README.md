@@ -1140,7 +1140,10 @@ Transactions work through the provider you sent when creating an instance of our
 
 Create a vault. When the transaction is executed, one gwei of the deposit token must be stored in the vault to avoid [inflation attack](https://blog.openzeppelin.com/a-novel-defense-against-erc4626-inflation-attacks).
 Pay attention to chains where the deposit token is not a native token (such as Gnosis or Chiado).
-Before creating the vault, we should approve this amount to the `vaultFactory`.
+On these chains before creating the vault, ensure that you call the `approve` function on the deposit token contract,
+allowing the vault factory address to spend one gwei.
+You can retrieve the vault factory contract using the helper function: `sdk.getVaultFactory({ vaultType: params.type, isErc20: params.isErc20 })`.
+
 
 #### Arguments:
 
@@ -1174,24 +1177,6 @@ const params = {
   description: 'Example description',
 }
 
-// Approve example (only for chains where the deposit token is not a native token)
-import { getVaultFactory } from 'sdk'
-
-if (sdk.config.tokens.depositToken !== sdk.config.tokens.nativeToken) {
-  const signer = await sdk.provider.getSigner()
-  const tokenContract = sdk.contracts.helpers.createErc20(tokenAddress).connect(signer)
-  const vaultFactory = getVaultFactory({
-    vaultType: params.type,
-    isErc20: Boolean(params.vaultToken),
-    contracts: sdk.contracts,
-  })
-  const vaultFactoryAddress = await vaultFactory.getAddress()
-  const gwei = 1000000000n
-
-  // Send approve transactions for the vault factory  
-  const { hash: approvalHash } = await signedContract.approve(vaultFactoryAddress, gwei)
-}
-
 // Transaction example
 // Send transaction to create a vault
 const hash = await sdk.vault.create(params)
@@ -1202,7 +1187,6 @@ const gas = await sdk.vault.deposit.estimateGas(params)
 // Get vault address before the transaction is sent  
 // Note: To make this call on chains where the deposit token is not a native token (e.g., Gnosis, Chiado),  
 // please ensure you use an address that has already approved the token.  
-// For example, this address can be used for this call: `0xb5afcEbCA5C1A55E149b4DDF02B9681541Dd29D6`  
 const vaultAddress = await sdk.vault.create.staticCall(params)
 ```
 ---
