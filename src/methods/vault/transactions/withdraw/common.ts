@@ -17,7 +17,7 @@ export const commonLogic = async (values: WithdrawInput) => {
 
   // In the second version of the vault we do not use the redeem method,
   // the funds are always withdrawn via a queue
-  const isSecondVersion = version === 2
+  const isV1Version = version === 1
 
   const baseMulticallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
     keeperContract: contracts.base.keeper,
@@ -29,7 +29,7 @@ export const commonLogic = async (values: WithdrawInput) => {
 
   const isCollateralized = await contracts.base.keeper.isCollateralized(vaultAddress)
 
-  if (isCollateralized || isSecondVersion) {
+  if (isCollateralized || !isV1Version) {
     const result = await vaultMulticall<[ { shares: bigint } ]>({
       ...baseMulticallArgs,
       request: {
