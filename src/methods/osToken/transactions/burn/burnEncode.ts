@@ -7,12 +7,7 @@ const burnEncode = async (values: BurnInput): Promise<StakeWise.TransactionData>
 
   const vaultContract = commonLogic(values)
 
-  const rx = await vaultContract.burnOsToken.populateTransaction(shares)
-
-  return {
-    data: rx.data,
-    to: rx.to,
-  }
+  return vaultContract.burnOsToken.populateTransaction(shares)
 }
 
 

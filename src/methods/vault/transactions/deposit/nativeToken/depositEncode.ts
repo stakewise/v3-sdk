@@ -18,8 +18,7 @@ const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> =
     const rx = await vaultContract.updateStateAndDeposit.populateTransaction(userAddress, referrer, harvestParams, overrides)
 
     return {
-      to: rx.to,
-      data: rx.data,
+      ...rx,
       value: overrides.value,
     }
   }
@@ -27,8 +26,7 @@ const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> =
     const rx = await vaultContract.deposit.populateTransaction(userAddress, referrer, overrides)
 
     return {
-      to: rx.to,
-      data: rx.data,
+      ...rx,
       value: overrides.value,
     }
   }

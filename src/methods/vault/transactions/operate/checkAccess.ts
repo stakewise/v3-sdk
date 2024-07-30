@@ -1,4 +1,4 @@
-import type { MulticallInput as Input } from './types'
+import type { MulticallTransactionInput as Input } from './types'
 
 import {
   checkAdminAccess,

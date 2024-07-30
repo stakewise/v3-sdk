@@ -1,4 +1,4 @@
-import type { MulticallInput } from './types'
+import type { MulticallTransactionInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
@@ -17,7 +17,7 @@ import {
 } from '../util'
 
 
-export const commonLogic = async (values: MulticallInput) => {
+export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
     validatorsRoot, blocklistManager, metadataIpfsHash,
     blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
@@ -116,7 +116,7 @@ export const commonLogic = async (values: MulticallInput) => {
     params.push(...validatorsRootParams)
   }
 
-  if (metadataIpfsHash) {
+  if (typeof metadataIpfsHash !== 'undefined') {
     const metadataParams = getMetadataParams({ ...baseInput, metadataIpfsHash })
 
     params.push(...metadataParams)

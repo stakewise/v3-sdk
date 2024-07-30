@@ -1,6 +1,7 @@
 import multicallGas from './multicallGas'
 import multicallEncode from './multicallEncode'
 
+import type { UploadMetadataInput } from '../util/metadata/uploadMetadata'
 import type { SetMetadataParams } from '../util/params/getMetadataParams'
 import type { UpdateBlocklistParams } from '../util/params/getBlocklistParams'
 import type { UpdateWhitelistParams } from '../util/params/getWhitelistParams'
@@ -21,9 +22,8 @@ type BaseInput = {
   provider: StakeWise.Provider
 }
 
-type MulticallParams = Partial<
-  SetMetadataParams
-  & SetWhitelisterParams
+type MulticallCommonParams =
+  SetWhitelisterParams
   & SetFeeRecipientParams
   & UpdateBlocklistParams
   & UpdateWhitelistParams
@@ -33,7 +33,18 @@ type MulticallParams = Partial<
   & SetDepositDataManagerParams
   & SetRestakeOperatorsManagerParams
   & SetRestakeWithdrawalsManagerParams
+
+type MulticallParams = Partial<
+  UploadMetadataInput
+  & MulticallCommonParams
 >
+
+type MulticallTransactionParams = Partial<
+  SetMetadataParams
+  & MulticallCommonParams
+>
+
+export type MulticallTransactionInput = BaseInput & MulticallTransactionParams
 
 export type MulticallInput = BaseInput & MulticallParams
 

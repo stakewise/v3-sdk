@@ -15,6 +15,7 @@ import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
+import { default as create } from './transactions/create'
 import { default as deposit } from './transactions/deposit'
 import { default as operate } from './transactions/operate'
 import { default as withdraw } from './transactions/withdraw'
@@ -131,6 +132,11 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultoperate
      */
     operate,
+    /**
+     * @description Create vault
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultcreate
+     */
+    create,
     /**
      * @description Adding root validators to vault
      * @throws Supports only the second version of vault
