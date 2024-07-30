@@ -70,8 +70,4 @@ const hash = await sdk.vault.create(params)
 const { data, to, value } = await sdk.vault.deposit.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.vault.deposit.estimateGas(params)
-// Get vault address before the transaction is sent  
-// Note: To make this call on chains where the deposit token is not a native token (e.g., Gnosis, Chiado),  
-// please ensure you use an address that has already approved the token.  
-const vaultAddress = await sdk.vault.create.staticCall(params)
 ```

@@ -10,12 +10,7 @@ const createVaultEncode = async (values: CreateVaultInput) => {
   const metadataIpfsHash = await uploadMetadata({ image, displayName, description, options })
   const { vaultFactory, params } = await commonLogic({ metadataIpfsHash, ...rest })
 
-  const rx = await vaultFactory.createVault.populateTransaction(...params)
-
-  return {
-    to: rx.to,
-    data: rx.data,
-  }
+  return vaultFactory.createVault.populateTransaction(...params)
 }
 
 

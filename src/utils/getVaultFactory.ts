@@ -2,8 +2,8 @@ import { VaultType } from './enums'
 
 
 type Input = {
-  vaultType: VaultType
   contracts: StakeWise.Contracts
+  vaultType?: VaultType
   isErc20?: boolean
 }
 
@@ -18,7 +18,7 @@ const getVaultFactory = ({ vaultType, contracts, isErc20 }: Input) => {
     [VaultType.Blocklist]: contracts.factories.blocklistVault,
   }
 
-  return vaultFactories[vaultType]
+  return vaultFactories[vaultType || VaultType.Default]
 }
 
 

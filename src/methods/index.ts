@@ -21,7 +21,6 @@ interface UnknownMethod {
   (values: unknown): unknown
   encode?: (values: unknown) => unknown
   estimateGas?: (values: unknown) => unknown
-  staticCall?: (values: unknown) => unknown
 }
 
 type CheckArgs<Obj extends Record<PropertyKey, unknown>> = [keyof Obj] extends [never] ? [] : [Obj]
@@ -42,15 +41,9 @@ type WithEstimateGas<M extends UnknownMethod> = WithEncode<M> & {
   )
 }
 
-type WithStaticCall<M extends UnknownMethod> = WithEstimateGas<M> & {
-  staticCall: (...values: CheckArgs<Omit<Parameters<NonNullable<M['staticCall']>>[0], 'options' | 'contracts' | 'provider'>>) => (
-    ReturnType<NonNullable<M['staticCall']>>
-  )
-}
-
 type ModifiedMethod<M extends UnknownMethod> = 'encode' extends keyof M
   ? 'estimateGas' extends keyof M
-    ? 'staticCall' extends keyof M ? WithStaticCall<M> : WithEstimateGas<M>
+    ? WithEstimateGas<M>
     : WithEncode<M>
   : WithoutEncode<M>
 
@@ -67,7 +60,7 @@ type ModifyMethods<T extends Record<string, any>> = {
 type CreateMethodsOutput<T extends Methods> = ModifyMethods<T>
 
 const generateSubMethods = (fn: UnknownMethod, wrapper: UnknownMethod, params: CommonParams) => {
-  const submethods = [ 'encode', 'estimateGas', 'staticCall' ] as const
+  const submethods = [ 'encode', 'estimateGas' ] as const
 
   submethods.forEach((submethod) => {
     if (typeof fn[submethod] === 'function') {

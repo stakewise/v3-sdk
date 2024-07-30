@@ -1,6 +1,5 @@
 import createVaultGas from './createVaultGas'
 import createVaultEncode from './createVaultEncode'
-import createVaultStaticCall from './createVaultStaticCall'
 import type { BaseInput } from '../../../utils'
 import type { VaultType } from '../../../../utils'
 import type { UploadMetadataInput } from '../util/metadata/uploadMetadata'
@@ -27,5 +26,4 @@ export interface CreateVault {
   (values: CreateVaultInput): Promise<StakeWise.TransactionHash>
   estimateGas: typeof createVaultGas
   encode: typeof createVaultEncode
-  staticCall: typeof createVaultStaticCall
 }

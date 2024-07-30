@@ -3,7 +3,7 @@ import { configs, getGas, createProvider, getVaultFactory, VaultType } from './u
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 
-type GetVaultFactoryInput = { vaultType: VaultType, isErc20?: boolean }
+type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
 type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
   rewardSplitterAddress: string
