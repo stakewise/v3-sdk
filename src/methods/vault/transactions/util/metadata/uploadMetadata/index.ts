@@ -26,29 +26,25 @@ const uploadMetadata = async (input: Input) => {
 
   validateArgs.string({ image, displayName, description })
 
-  if (image || displayName || description) {
-    try {
-      const data = await graphql.backend.vault.submitUploadMetadataMutation({
-        url: apiUrls.getBackendUrl(options),
-        variables: {
-          payload: {
-            image,
-            displayName,
-            description,
-          },
+  try {
+    const data = await graphql.backend.vault.submitUploadMetadataMutation({
+      url: apiUrls.getBackendUrl(options),
+      variables: {
+        payload: {
+          image,
+          displayName,
+          description,
         },
-      })
+      },
+    })
 
-      return data?.uploadMetadata?.ipfsHash
-    }
-    catch (error) {
-      const errorCode = Array.isArray(error) ? error[0]?.extensions?.code : null
-
-      return Promise.reject(errorCode || error)
-    }
+    return data?.uploadMetadata?.ipfsHash
   }
+  catch (error) {
+    const errorCode = Array.isArray(error) ? error[0]?.extensions?.code : null
 
-  return ''
+    return Promise.reject(errorCode || error)
+  }
 }
 
 
