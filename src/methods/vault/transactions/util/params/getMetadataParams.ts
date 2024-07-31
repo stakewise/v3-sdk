@@ -2,7 +2,7 @@ import { vaultMulticall } from '../../../../../contracts'
 
 
 type SetMetadataParams = {
-  metadataIpfsHash: string | null
+  metadataIpfsHash: string
 }
 
 const getMetadataParams = (values: SetMetadataParams) => {

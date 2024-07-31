@@ -7,7 +7,7 @@ import validateCreateVaultArgs from './validateCreateVaultArgs'
 
 export const commonLogic = async (values: CreateVaultTransactionInput) => {
   const {
-    type = VaultType.Default, vaultToken, capacity, keysManagerFee, isOwnMevEscrow = false, metadataIpfsHash,
+    type = VaultType.Default, vaultToken, capacity, keysManagerFee, isOwnMevEscrow = false, metadataIpfsHash = '',
     contracts, userAddress, options,
   } = values
 
