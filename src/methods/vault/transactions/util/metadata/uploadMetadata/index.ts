@@ -13,18 +13,31 @@ type Input = UploadMetadataInput & {
 }
 
 const uploadMetadata = async (input: Input) => {
+  const skip = [
+    input.image,
+    input.displayName,
+    input.description,
+  ]
+    .every((value) => typeof value === 'undefined')
+
+  if (skip) {
+    return
+  }
+
   const { image = '', displayName = '', description = '', options } = input
 
-  if (image) {
-    validateArgs.image(image)
-  }
+  validateArgs.string({ image, displayName, description })
+
+  validateArgs.image(image)
 
   validateArgs.maxLength({
     displayName: { value: displayName, length: 30 },
     description: { value: description, length: 1000 },
   })
 
-  validateArgs.string({ image, displayName, description })
+  if (!image && !displayName && !description) {
+    return ''
+  }
 
   try {
     const data = await graphql.backend.vault.submitUploadMetadataMutation({

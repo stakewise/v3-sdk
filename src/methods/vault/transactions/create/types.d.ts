@@ -19,7 +19,7 @@ export type CreateVaultCommonInput = Omit<BaseInput, 'vaultAddress'> & {
 export type CreateVaultInput = CreateVaultCommonInput & UploadMetadataInput
 
 export type CreateVaultTransactionInput = CreateVaultCommonInput & {
-  metadataIpfsHash: string | null
+  metadataIpfsHash?: string
 }
 
 export interface CreateVault {
