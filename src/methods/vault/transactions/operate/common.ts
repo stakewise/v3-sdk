@@ -1,4 +1,4 @@
-import type { MulticallInput } from './types'
+import type { MulticallTransactionInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
@@ -17,7 +17,7 @@ import {
 } from '../util'
 
 
-export const commonLogic = async (values: MulticallInput) => {
+export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
     validatorsRoot, blocklistManager, metadataIpfsHash,
     blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
@@ -50,9 +50,9 @@ export const commonLogic = async (values: MulticallInput) => {
 
   // Temporal logic while different types of vaults exist
   const version = Number(await vaultContract.version())
-  const isSecondVersion = version === 2
+  const isV1Version = version === 1
 
-  if (isSecondVersion) {
+  if (!isV1Version) {
     if (validatorsRoot) {
       throw new Error('To set validatorsRoot in version 2 of vault, use the vault.setDepositDataRoot() method')
     }
@@ -116,7 +116,7 @@ export const commonLogic = async (values: MulticallInput) => {
     params.push(...validatorsRootParams)
   }
 
-  if (metadataIpfsHash) {
+  if (typeof metadataIpfsHash !== 'undefined') {
     const metadataParams = getMetadataParams({ ...baseInput, metadataIpfsHash })
 
     params.push(...metadataParams)

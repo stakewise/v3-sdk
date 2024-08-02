@@ -6,6 +6,12 @@ export enum Network {
   Chiado = 10200,
 }
 
+export enum VaultType {
+  Default = 'Default',
+  Private = 'Private',
+  Blocklist = 'Blocklist',
+}
+
 export enum AllocatorActionType {
   Redeemed = 'Redeemed',
   Migrated = 'Migrated',

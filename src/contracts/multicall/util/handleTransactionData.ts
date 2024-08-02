@@ -10,12 +10,7 @@ type Input = {
 const handleTransactionData = async ({ contract, multicallParams }: Input) => {
   const calls = getMulticallCalls({ multicallParams, contract })
 
-  const rx = await contract.multicall.populateTransaction(calls)
-
-  return {
-    to: rx.to,
-    data: rx.data,
-  }
+  return contract.multicall.populateTransaction(calls)
 }
 
 

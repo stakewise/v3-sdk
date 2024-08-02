@@ -16,12 +16,12 @@ const getValidLtvPercent = async (values: Input) => {
   const vaultContract = contracts.helpers.createVault(vaultAddress)
 
   const version = await vaultContract.version()
-  const isSecondVersion = version === 2n
+  const isV1Version = version === 1n
 
-  // in second version 100% ltv percent = 1 ether in wei
-  const percent = isSecondVersion
-    ? ltvPercent / 100000000000000n
-    : ltvPercent
+  // in second+ version 100% ltv percent = 1 ether in wei
+  const percent = isV1Version
+    ? ltvPercent
+    : ltvPercent / 100000000000000n
 
   return percent
 }

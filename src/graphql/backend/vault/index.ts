@@ -9,3 +9,6 @@ export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userR
 
 export { fetchScorePercentilesQuery } from './scorePercentilesQuery.graphql'
 export type { ScorePercentilesQueryPayload, ScorePercentilesQueryVariables } from './scorePercentilesQuery.graphql'
+
+export { submitUploadMetadataMutation } from './uploadMetadataMutation.graphql'
+export type { UploadMetadataMutationPayload, UploadMetadataMutationVariables } from './uploadMetadataMutation.graphql'

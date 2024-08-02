@@ -5,12 +5,7 @@ import { SetEigenPodOperatorInput } from './types'
 const setEigenPodOperatorEncode = async (values: SetEigenPodOperatorInput) => {
   const { eigenPodOwnerContract } = await commonLogic(values)
 
-  const rx = await eigenPodOwnerContract.eigenPod.populateTransaction()
-
-  return {
-    to: rx.to,
-    data: rx.data,
-  }
+  return eigenPodOwnerContract.eigenPod.populateTransaction()
 }
 
 

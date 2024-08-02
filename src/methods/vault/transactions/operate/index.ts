@@ -4,10 +4,15 @@ import type { Multicall } from './types'
 import multicallGas from './multicallGas'
 import multicallEncode from './multicallEncode'
 import { vaultMulticall } from '../../../../contracts'
+import { uploadMetadata } from '../util'
 
 
 const operate: Multicall = async (values) => {
-  const multicallCommonArgs = await commonLogic(values)
+  const { image, displayName, description, ...rest } = values
+  const { options } = rest
+
+  const metadataIpfsHash = await uploadMetadata({ image, displayName, description, options })
+  const multicallCommonArgs = await commonLogic({ metadataIpfsHash, ...rest })
 
   const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)
 

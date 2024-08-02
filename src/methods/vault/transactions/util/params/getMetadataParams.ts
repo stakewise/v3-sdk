@@ -1,16 +1,14 @@
-import { validateArgs } from '../../../../../utils'
 import { vaultMulticall } from '../../../../../contracts'
 
 
-export type SetMetadataParams = {
+type SetMetadataParams = {
   metadataIpfsHash: string
 }
 
 const getMetadataParams = (values: SetMetadataParams) => {
   const { metadataIpfsHash } = values
 
-  validateArgs.string({ metadataIpfsHash })
-
+  // ATTN we don't validate `metadataIpfsHash` because it is not provided by user
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
     {
       method: 'setMetadata', args: [ metadataIpfsHash ],
