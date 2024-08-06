@@ -51,7 +51,7 @@ export default {
       positionManager: ZeroAddress,
     },
     special: {
-      stakeCalculator: ZeroAddress,
+      stakeCalculator: '0x3c5634a5437A394353F49fe04FE5db11961c5c2D',
     },
   },
   tokens: {
