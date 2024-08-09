@@ -1,7 +1,7 @@
 import { vaultMulticall } from '../../../../../contracts'
 
 
-type SetMetadataParams = {
+export type SetMetadataParams = {
   metadataIpfsHash: string
 }
 
