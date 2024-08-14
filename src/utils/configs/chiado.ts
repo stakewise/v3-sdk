@@ -44,12 +44,6 @@ export default {
       blocklistVault: '0x2bC7968461c51525433b9DcE504a543b26a2f31B',
       erc20BlocklistVault: '0x35482A11E21157E0C706d1A562483902421dB341',
     },
-    balancer: {
-      vault: ZeroAddress,
-    },
-    uniswap: {
-      positionManager: ZeroAddress,
-    },
   },
   tokens: {
     mintToken: constants.tokens.osGNO,
