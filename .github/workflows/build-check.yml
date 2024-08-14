@@ -20,5 +20,5 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Run Types check
-        run: 'npx tsc'
+      - name: Run Build check
+        run: 'npm run build'
