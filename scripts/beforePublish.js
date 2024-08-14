@@ -9,7 +9,7 @@ const check = async () => {
     .trim()
 
   if (npmVersion !== releaseVersion || !releaseVersion) {
-    console.error(`Error: release version is ${releaseVersion}, but should be ${npmVersion}`)
+    console.error(`Please add ${npmVersion} release to Github https://github.com/stakewise/v3-sdk/releases/new`)
     process.exit(1)
   }
   else {
