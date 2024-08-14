@@ -1,4 +1,4 @@
-name: Check SDK types
+name: Check build and types
 
 on:
   pull_request:
