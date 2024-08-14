@@ -2,7 +2,7 @@ import graphql from '../../../../../../graphql'
 import { apiUrls, validateArgs } from '../../../../../../utils'
 
 
-export type UploadMetadataInput = {
+type UploadMetadataInput = {
   image?: string
   displayName?: string
   description?: string
