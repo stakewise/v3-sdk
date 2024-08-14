@@ -25,4 +25,4 @@ jobs:
         shell: bash
 
       - name: Run Build check
-        run: 'npm run rollup'
+        run: 'npm run prepare && npm run rollup'
