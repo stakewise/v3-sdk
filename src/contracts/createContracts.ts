@@ -8,7 +8,6 @@ import {
   OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
-  UniswapPoolAbi,
   PriceOracleAbi,
   PrivateVaultAbi,
   VaultFactoryAbi,
@@ -27,7 +26,6 @@ import {
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
-  UniswapPositionManagerAbi,
 } from './abis'
 
 import commonMulticall from './multicall/commonMulticall'
@@ -106,12 +104,6 @@ const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => creat
   provider
 )
 
-const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.UniswapPositionManager>(
-  config.addresses.uniswap.positionManager,
-  UniswapPositionManagerAbi,
-  provider
-)
-
 const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.DepositDataRegistry>(
   config.addresses.base.depositDataRegistry,
   DepositDataRegistryAbi,
@@ -146,7 +138,6 @@ export const createContracts = (input: CreateContractsInput) => {
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createVault: (address: string) => createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
-      createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),
       createPrivateVault: (address: string) => createContract<StakeWise.ABI.PrivateVault>(address, PrivateVaultAbi, provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRestakingVault: (address: string) => createContract<StakeWise.ABI.RestakingVault>(address, RestakingVaultAbi, provider),
@@ -185,9 +176,6 @@ export const createContracts = (input: CreateContractsInput) => {
 
       blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20BlocklistVault: getVaultFactory(provider, config.addresses.factories.erc20BlocklistVault),
-    },
-    uniswap: {
-      positionManager: getUniswapPositionManager(provider, config),
     },
   }
 }

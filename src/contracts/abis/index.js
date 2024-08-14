@@ -1,4 +1,3 @@
-import UniswapPositionManagerAbi from './UniswapPositionManagerAbi.json'
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
@@ -18,7 +17,6 @@ import EigenPodOwnerAbi from './EigenPodOwnerAbi.json'
 import VestingEscrowAbi from './VestingEscrowAbi.json'
 import VaultFactoryAbi from './VaultFactoryAbi.json'
 import PriceOracleAbi from './PriceOracleAbi.json'
-import UniswapPoolAbi from './UniswapPoolAbi.json'
 import MulticallAbi from './MulticallAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
 import OraclesAbi from './OraclesAbi.json'
@@ -35,7 +33,6 @@ const BlocklistVaultAbi = VaultAbi.concat(BlocklistVaultDiffAbi)
 const RestakingVaultAbi = VaultAbi.concat(RestakingVaultDiffAbi)
 
 export {
-  UniswapPositionManagerAbi,
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
   MintTokenControllerAbi,
@@ -54,7 +51,6 @@ export {
   PrivateVaultAbi,
   VaultFactoryAbi,
   PriceOracleAbi,
-  UniswapPoolAbi,
   MulticallAbi,
   OraclesAbi,
   UsdRateAbi,
