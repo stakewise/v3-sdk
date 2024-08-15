@@ -1,4 +1,5 @@
 import { wrapAbortPromise } from '../../../modules/gql-module'
+import { getVaultVersion } from '../../../utils'
 
 
 export type GetOsTokenConfigInput = {
@@ -14,9 +15,7 @@ type Output = {
 const getOsTokenData = async (input: GetOsTokenConfigInput) => {
   const { vaultAddress, contracts } = input
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
-  const version = await vaultContract.version()
-  const isV1Version = version === 1n
+  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
   if (isV1Version) {
     const [ thresholdPercent, ltvPercent ] = await Promise.all([

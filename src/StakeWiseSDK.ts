@@ -1,7 +1,16 @@
 import methods from './methods'
 
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
-import { configs, getGas, createProvider, getVaultFactory, getVaultContract, VaultType } from './utils'
+
+import {
+  getGas,
+  configs,
+  VaultType,
+  createProvider,
+  getVaultFactory,
+  getVaultVersion,
+  getVaultContract,
+} from './utils'
 
 
 type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
@@ -85,6 +94,13 @@ class StakeWiseSDK {
     return getGas({
       provider: this.provider,
       estimatedGas,
+    })
+  }
+
+  getVaultVersion(vaultAddress: string) {
+    return getVaultVersion({
+      contracts: this.contracts,
+      vaultAddress,
     })
   }
 

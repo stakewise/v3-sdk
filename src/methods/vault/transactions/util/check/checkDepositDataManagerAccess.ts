@@ -1,12 +1,13 @@
+import { getVaultVersion } from '../../../../../utils'
 import type { CheckInput } from './types'
 
 
 const checkDepositDataManagerAccess = async ({ userAddress, vaultAddress, contracts }: CheckInput) => {
   try {
-    const vaultContract = await contracts.helpers.createVault(vaultAddress)
-    const version = await vaultContract.version()
+    const vaultContract = contracts.helpers.createVault(vaultAddress)
+    const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
-    const depositDataManager = version === 1n
+    const depositDataManager = isV1Version
       ? await vaultContract.keysManager()
       : await contracts.base.depositDataRegistry.getDepositDataManager(vaultAddress)
 

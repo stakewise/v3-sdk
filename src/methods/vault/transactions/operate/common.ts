@@ -1,5 +1,5 @@
+import { validateArgs, getVaultVersion } from '../../../../utils'
 import type { MulticallTransactionInput } from './types'
-import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
 
 import {
@@ -48,9 +48,7 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     vaultContract = contracts.helpers.createRestakingVault(vaultAddress)
   }
 
-  // Temporal logic while different types of vaults exist
-  const version = Number(await vaultContract.version())
-  const isV1Version = version === 1
+  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
   if (!isV1Version) {
     if (validatorsRoot) {
