@@ -12,7 +12,6 @@ import type {
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
-  UniswapPoolAbi,
   VaultFactoryAbi,
   V2RewardTokenAbi,
   EigenPodOwnerAbi,
@@ -33,7 +32,6 @@ import type {
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
-  UniswapPositionManagerAbi,
 } from '../contracts/types'
 
 type VaultAbi = InitialVaultAbi & GnosisVaultDiffAbi
@@ -88,7 +86,6 @@ declare global {
       type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
       type Multicall = MulticallAbi
-      type UniswapPool = UniswapPoolAbi
       type PriceOracle = PriceOracleAbi
       type VaultFactory = VaultFactoryAbi
       type EigenPodOwner = EigenPodOwnerAbi
@@ -109,7 +106,6 @@ declare global {
       type RewardSplitterFactory = RewardSplitterFactoryAbi
       type RestakingVault = RestakingVaultDiffAbi & VaultAbi
       type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
-      type UniswapPositionManager = UniswapPositionManagerAbi
     }
   }
 }

@@ -44,12 +44,6 @@ export default {
       blocklistVault: '0x90a9428b8c58cA80B28aAF46B936D42e87797449',
       erc20BlocklistVault: '0x82FE8C78CaE0013471179e76224ef89941bAaa75',
     },
-    balancer: {
-      vault: ZeroAddress,
-    },
-    uniswap: {
-      positionManager: ZeroAddress,
-    },
     special: {
       stakeCalculator: '0x63De511Ff504E70109Bb8312d1329f2C88c14f77',
     },

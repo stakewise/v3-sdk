@@ -8,7 +8,6 @@ import {
   OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
-  UniswapPoolAbi,
   PriceOracleAbi,
   GenesisVaultAbi,
   PrivateVaultAbi,
@@ -29,7 +28,6 @@ import {
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
-  UniswapPositionManagerAbi,
 } from './abis'
 
 import commonMulticall from './multicall/commonMulticall'
@@ -108,12 +106,6 @@ const getV2RewardToken = (provider: Provider, config: StakeWise.Config) => creat
   provider
 )
 
-const getUniswapPositionManager = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.UniswapPositionManager>(
-  config.addresses.uniswap.positionManager,
-  UniswapPositionManagerAbi,
-  provider
-)
-
 const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.DepositDataRegistry>(
   config.addresses.base.depositDataRegistry,
   DepositDataRegistryAbi,
@@ -153,7 +145,6 @@ export const createContracts = (input: CreateContractsInput) => {
       multicallContract,
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
-      createUniswapPool: (address: string) => createContract<StakeWise.ABI.UniswapPool>(address, UniswapPoolAbi, provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
@@ -196,9 +187,6 @@ export const createContracts = (input: CreateContractsInput) => {
 
       blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20BlocklistVault: getVaultFactory(provider, config.addresses.factories.erc20BlocklistVault),
-    },
-    uniswap: {
-      positionManager: getUniswapPositionManager(provider, config),
     },
     special: {
       stakeCalculator: getStakeCalculator(provider, config),
