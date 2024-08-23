@@ -6,28 +6,35 @@ import modifyRewardSplitters from './modifyRewardSplitters'
 
 
 type GetRewardSplittersInput = {
-  owner: string
+  id?: string
+  owner?: string
   vaultAddress: string
-  rewardSplitterAddress?: string
   options: StakeWise.Options
 }
 
 const getRewardSplitters = (input: GetRewardSplittersInput) => {
-  const { owner, vaultAddress, rewardSplitterAddress, options } = input
+  const { id, owner, vaultAddress, options } = input
 
-  validateArgs.address({ owner, vaultAddress })
-
-  if (typeof rewardSplitterAddress !== 'undefined') {
-    validateArgs.address({ rewardSplitterAddress })
+  if (!id && !owner) {
+    throw new Error('You must pass either ID or OWNER to get a response')
   }
+
+  validateArgs.address({ vaultAddress })
 
   const where = {
     vault: vaultAddress.toLowerCase(),
-    owner: owner.toLowerCase(),
   } as RewardSplittersQueryVariables['where']
 
-  if (rewardSplitterAddress) {
-    where.id = rewardSplitterAddress.toLowerCase()
+  if (typeof owner !== 'undefined') {
+    validateArgs.address({ owner })
+
+    where.owner = owner.toLowerCase()
+  }
+
+  if (typeof id !== 'undefined') {
+    validateArgs.address({ id })
+
+    where.id = id.toLowerCase()
   }
 
   return fetchRewardSplittersQuery({
