@@ -417,9 +417,9 @@ To use a reward splitter, its address should be added to the vault as a fee reci
 
 | Name | Type     | Type    | Description                                                                                                                                |
 |------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| vaultAddress | `string` | **Yes** | The address of the vault                                                                                                                                          |
-| owner | `string` | **Yes** | The owner of the reward splitter |
-| rewardSplitterAddress | `string` | **No**  | The address of the reward splitter (optional)                                                                                                 |
+| vaultAddress | `string` | **Yes** | The address of the vault |
+| id | `string` | **No** | Reward splitter address |
+| owner | `string` | **No** | The owner of the reward splitter |
 
 #### Returns:
 
@@ -450,7 +450,7 @@ type Output = {
 
 ```ts
 await sdk.vault.getRewardSplitters({
-  owner: '0x...',
+  owner: '0x...', // OR id: '0x...'
   vaultAddress: '0x...',
 })
 ```

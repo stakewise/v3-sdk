@@ -51,10 +51,9 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
 
   if (!oldFeeRecipients) {
     const { rewardSplitters } = await vault.requests.getRewardSplitters({
-      owner: userAddress,
-      options,
+      id: rewardSplitterAddress,
       vaultAddress,
-      rewardSplitterAddress,
+      options,
     })
 
     if (rewardSplitters) {
