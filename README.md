@@ -78,7 +78,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | network            | `Network`                            | **Yes**  | Chain id |
 | provider           | `BrowserProvider or JsonRpcProvider` | **No**   | You can provide your implementation of the provender for ethers |
 | endpoints.web3     | `string OR string[]`                 | **No**   | Your urls for connect to blockchain |
-| endpoints.subgraph | `string`                             | **No**   | stakewise sbugraph url |
+| endpoints.subgraph | `string`                             | **No**   | stakewise subgraph url |
 | endpoints.api      | `string`                             | **No**   | stakewise backend url |
 
 ## Quick Links
@@ -1055,6 +1055,37 @@ await sdk.osToken.getConfig({ vaultAddress: '0x...' })
 ---
 ## RewardSplitter
 
+### `sdk.rewardSplitter.create`
+
+#### Description:
+
+Creates a reward splitter contract to distribute vault rewards among multiple fee recipients in predefined proportions.
+Subsequently, the address of the created reward splitter must be added to the vault as a fee recipient in order to
+utilize it. Please note that only vault admin is permitted to perform this action.
+
+
+#### Arguments:
+| Name         | Type     | Required | Description                                                                                                                          |
+|--------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress  | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
+| vaultAddress | `string` | **Yes**  | The address of the vault                                                                                                             |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.create(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.create.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.create.estimateGas(params)
+```
+---
 ### `sdk.rewardSplitter.getClaimAmount`
 
 #### Description:
@@ -1082,6 +1113,97 @@ const claimAmount = await sdk.rewardSplitter.getClaimAmount({
   userAddress: '0x...',
   rewardSplitterAddress: '0x...',
 })
+```
+---
+### `sdk.rewardSplitter.claimRewards`
+
+#### Description:
+
+Claims rewards from the reward splitter contract
+
+#### Arguments:
+| Name                  | Type     | Required | Description                                                                                                                          |
+|-----------------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress           | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
+| vaultAddress          | `string` | **Yes**  | The address of the vault                                                                                                             |
+| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter                                                                                                   |
+| assets                | `bigint` | **Yes**  | The amount of assets to claim                                                                                                        |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  rewardSplitterAddress: '0x...',
+  assets: parseEther('100'),
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.claimRewards(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.claimRewards.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.claimRewards.estimateGas(params)
+```
+---
+### `sdk.rewardSplitter.updateFeeRecipients`
+
+#### Description:
+
+Updates the reward splitter fee recipients and predefined fee splitting proportions.
+Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
+
+
+#### Arguments:
+
+| Name                  | Type                                         | Required | Description                                                                                                                                                                                                                                                                                         |
+|-----------------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress           | `string`                                     | **Yes**  | The address of the user initiating the action. It should be the vault admin, who is also the owner of the reward splitter.                                                                                                                                                                          |
+| vaultAddress          | `string`                                     | **Yes**  | The address of the vault                                                                                                                                                                                                                                                                            |
+| rewardSplitterAddress | `string`                                     | **Yes**  | The address of the reward splitter                                                                                                                                                                                                                                                                  |
+| feeRecipients         | `Array<{ address: string, shares: bigint }>` | **Yes**  | The list of the vault fee recipients with their addresses and shares amount. For simplicity, we suggest setting the amount as a percentage converted to a BigInt value. For example, for 100% shares: `parseEther('100')`                                                                           |
+| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters) action |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  rewardSplitterAddress: '0x...',
+  feeRecipients: [
+    {
+      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
+      shares: parseEther('50'),
+    },
+    {
+      address: '0x...4', // This address will be added as a fee recipient with 50% fee distribution.
+      shares: parseEther('50'),
+    },
+  ],
+  oldFeeRecipients: [
+    {
+      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
+      shares: parseEther('20'),
+    },
+    {
+      address: '0x...2', // This address will be removed from the fee recipients since it is not in the `feeRecipients` list.
+      shares: parseEther('40'),
+    },
+    {
+      address: '0x...3', // This address will also be removed from the fee recipients.
+      shares: parseEther('40'),
+    },
+  ],
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.updateFeeRecipients(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.updateFeeRecipients.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.updateFeeRecipients.estimateGas(params)
 ```
 ---
 ## API-utils
@@ -1687,128 +1809,6 @@ const hash = await sdk.osToken.burn(params)
 const { data, to, value } = await sdk.osToken.burn.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.osToken.burn.estimateGas(params)
-```
----
-### `sdk.rewardSplitter.create`
-
-#### Description:
-
-Creates a reward splitter contract to distribute vault rewards among multiple fee recipients in predefined proportions.
-Subsequently, the address of the created reward splitter must be added to the vault as a fee recipient in order to
-utilize it. Please note that only vault admin is permitted to perform this action.
-
-
-#### Arguments:
-| Name         | Type     | Required | Description                                                                                                                          |
-|--------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress  | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
-| vaultAddress | `string` | **Yes**  | The address of the vault                                                                                                             |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.rewardSplitter.create(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.rewardSplitter.create.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.rewardSplitter.create.estimateGas(params)
-```
----
-### `sdk.rewardSplitter.claimRewards`
-
-#### Description:
-
-Claims rewards from the reward splitter contract
-
-#### Arguments:
-| Name                  | Type     | Required | Description                                                                                                                          |
-|-----------------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress           | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
-| vaultAddress          | `string` | **Yes**  | The address of the vault                                                                                                             |
-| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter                                                                                                   |
-| assets                | `bigint` | **Yes**  | The amount of assets to claim                                                                                                        |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-  rewardSplitterAddress: '0x...',
-  assets: parseEther('100'),
-}
-
-// Send transaction
-const hash = await sdk.rewardSplitter.claimRewards(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.rewardSplitter.claimRewards.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.rewardSplitter.claimRewards.estimateGas(params)
-```
----
-### `sdk.rewardSplitter.updateFeeRecipients`
-
-#### Description:
-
-Updates the reward splitter fee recipients and predefined fee splitting proportions.
-Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
-
-
-#### Arguments:
-
-| Name                  | Type                                         | Required | Description                                                                                                                                                                                                                                                                                         |
-|-----------------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress           | `string`                                     | **Yes**  | The address of the user initiating the action. It should be the vault admin, who is also the owner of the reward splitter.                                                                                                                                                                          |
-| vaultAddress          | `string`                                     | **Yes**  | The address of the vault                                                                                                                                                                                                                                                                            |
-| rewardSplitterAddress | `string`                                     | **Yes**  | The address of the reward splitter                                                                                                                                                                                                                                                                  |
-| feeRecipients         | `Array<{ address: string, shares: bigint }>` | **Yes**  | The list of the vault fee recipients with their addresses and shares amount. For simplicity, we suggest setting the amount as a percentage converted to a BigInt value. For example, for 100% shares: `parseEther('100')`                                                                           |
-| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters) action |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-  rewardSplitterAddress: '0x...',
-  feeRecipients: [
-    {
-      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
-      shares: parseEther('50'),
-    },
-    {
-      address: '0x...4', // This address will be added as a fee recipient with 50% fee distribution.
-      shares: parseEther('50'),
-    },
-  ],
-  oldFeeRecipients: [
-    {
-      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
-      shares: parseEther('20'),
-    },
-    {
-      address: '0x...2', // This address will be removed from the fee recipients since it is not in the `feeRecipients` list.
-      shares: parseEther('40'),
-    },
-    {
-      address: '0x...3', // This address will also be removed from the fee recipients.
-      shares: parseEther('40'),
-    },
-  ],
-}
-
-// Send transaction
-const hash = await sdk.rewardSplitter.updateFeeRecipients(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.rewardSplitter.updateFeeRecipients.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.rewardSplitter.updateFeeRecipients.estimateGas(params)
 ```
 ---
 
