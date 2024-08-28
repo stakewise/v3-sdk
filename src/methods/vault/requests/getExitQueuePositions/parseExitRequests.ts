@@ -78,6 +78,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     }
   }
 
+  const duration = _getDuration(exitRequests)
   const keeperContract = contracts.base.keeper
   const vaultContract = contracts.helpers.createVault(vaultAddress)
 
@@ -145,7 +146,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     // If there are no positions with an index greater than 0 or their timestamp has failed the 24-hour check.
     // Then we can use totalShares from the subgraph to show total
     return {
-      duration: 0,
+      duration,
       positions: [],
       withdrawable: 0n,
       total: totalV1QueuedAssets + queuedAssets,
@@ -194,8 +195,6 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   }
 
   const total = withdrawableAssets + queuedAssets
-
-  const duration = _getDuration(exitRequests)
 
   return {
     total,

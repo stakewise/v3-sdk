@@ -136,7 +136,7 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       total: 100n,
-      duration: 0,
+      duration: 1718536919,
       positions: [],
       withdrawable: 0n,
     })
@@ -155,7 +155,7 @@ describe('parseExitRequests function', () => {
     expect(result).toEqual({
       positions: [],
       total: 50n,
-      duration: 0,
+      duration: 1718536919,
       withdrawable: 0n,
     })
   })
