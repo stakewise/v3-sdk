@@ -68,18 +68,23 @@ Create SDK instance
 ```typescript
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
-const sdk = new StakeWiseSDK({ network: Network.Mainnet })
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: {
+    web3: 'https://mainnet.infura.io/v3/...',
+  },
+})
 
 ```
 #### SDK Constructor Arguments:
 
-| Name               | Type                                 | Required | Description |
-|--------------------|--------------------------------------|----------|----------------|
-| network            | `Network`                            | **Yes**  | Chain id |
-| provider           | `BrowserProvider or JsonRpcProvider` | **No**   | You can provide your implementation of the provender for ethers |
-| endpoints.web3     | `string OR string[]`                 | **No**   | Your urls for connect to blockchain |
-| endpoints.subgraph | `string`                             | **No**   | stakewise subgraph url |
-| endpoints.api      | `string`                             | **No**   | stakewise backend url |
+| Name               | Type                                                             | Required | Description                                                                                                                                                         |
+|--------------------|------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| network            | `Network`                                                        | **Yes**  | Chain id                                                                                                                                                            |
+| provider           | `BrowserProvider or JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers                                                                                                     |
+| endpoints.web3     | `string OR Array<(string \| { url: string, headers: Headers })>` | **No**   | Your urls for connecting to blockchain. This parameter is required if `provider` is not provided. If more than one URL is provided, they will be used as fallbacks. |
+| endpoints.subgraph | `string`                                                         | **No**   | stakewise subgraph url                                                                                                                                              |
+| endpoints.api      | `string`                                                         | **No**   | stakewise backend url                                                                                                                                               |
 
 ## Quick Links
 

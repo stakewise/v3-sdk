@@ -22,6 +22,10 @@ class StakeWiseSDK {
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
 
+    if (!options.provider && !options.endpoints?.web3) {
+      throw new Error('Provider or endpoints.web3 should be provided')
+    }
+
     const provider = options.provider || createProvider(options)
 
     const contracts = createContracts({ provider, config })
