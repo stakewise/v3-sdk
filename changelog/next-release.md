@@ -1,1 +1,0 @@
-- Breaking change: Removed default rpc urls from the SDK. You must now provide the rpc urls or provider when creating a new SDK instance.
