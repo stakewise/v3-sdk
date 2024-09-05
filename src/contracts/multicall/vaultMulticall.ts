@@ -9,19 +9,21 @@ import {
 } from './util'
 
 import type { MulticallRequestInput } from './types'
-import type { KeeperAbi, OtherTokenVaultAbi, VaultAbi } from '../types'
+import type { OtherTokenVaultAbi, VaultAbi } from '../types'
 import { Network } from '../../utils'
 
 
 type VaultContractAbi = VaultAbi | OtherTokenVaultAbi
 
-type VaultMulticallInput = {
+export type VaultMulticallBaseInput = {
   userAddress: string
   vaultAddress: string
-  keeperContract: KeeperAbi
   options: StakeWise.Options
-  request: MulticallRequestInput
   vaultContract: VaultContractAbi
+}
+
+type VaultMulticallInput = VaultMulticallBaseInput & {
+  request: MulticallRequestInput
 }
 
 // Methods with _checkHarvested() call
@@ -43,7 +45,7 @@ const harvestCheckMethods = [
  * This method will also add swapXdaiToGno execution if needed.
 */
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
-  const { options, vaultAddress, userAddress, request, vaultContract, keeperContract } = values
+  const { options, vaultAddress, userAddress, request, vaultContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
   const contract = await getSignedContract({
@@ -61,7 +63,6 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     const harvestArgs = await getHarvestArgs<VaultContractAbi>({
       options,
       vaultAddress,
-      keeperContract,
     })
 
     if (harvestArgs) {

@@ -1,5 +1,6 @@
 import { validateArgs } from '../../../../utils'
 import { rewardSplitterMulticall } from '../../../../contracts'
+import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
 import type { ClaimRewardsInput } from './types'
 
 import getSharesFromAssets from './getSharesFromAssets'
@@ -14,9 +15,8 @@ export const commonLogic = async (values: ClaimRewardsInput) => {
   validateArgs.address({ vaultAddress, userAddress, rewardSplitterAddress })
   validateArgs.bigint({ assets })
 
-  const baseMulticall = {
+  const baseMulticall: RewardSplitterMulticallBaseInput = {
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-    keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,
     options,

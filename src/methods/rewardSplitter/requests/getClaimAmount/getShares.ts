@@ -25,7 +25,6 @@ const getShares = async (input: GetSharesInput) => {
     options,
     userAddress,
     vaultAddress,
-    keeperContract: contracts.base.keeper,
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),
   })
 

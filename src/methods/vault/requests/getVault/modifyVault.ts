@@ -30,6 +30,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     performance,
     totalAssets,
     feeRecipient,
+    osTokenConfig,
     blocklistCount,
     whitelistCount,
     validatorsManager,
@@ -69,6 +70,10 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     capacity: vault.capacity !== MaxUint256.toString()
       ? formatEther(vault.capacity)
       : '∞',
+    osTokenConfig: {
+      ltvPercent: BigInt(osTokenConfig.ltvPercent),
+      thresholdPercent: BigInt(osTokenConfig.liqThresholdPercent),
+    },
   }
 }
 

@@ -2,6 +2,10 @@ query Vault($address: ID!) {
   vault(id: $address) {
     address: id
     performance: score
+    osTokenConfig {
+      ltvPercent
+      liqThresholdPercent
+    }
     apy
     admin
     version
@@ -26,6 +30,7 @@ query Vault($address: ID!) {
     validatorsRoot
     blocklistCount
     whitelistCount
+    isCollateralized
     blocklistManager
     validatorsManager
     depositDataManager

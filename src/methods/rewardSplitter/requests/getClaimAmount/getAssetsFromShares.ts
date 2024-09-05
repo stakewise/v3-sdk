@@ -24,7 +24,6 @@ const getAssetsFromShares = async (input: GetAssetsFromSharesInput) => {
     options,
     userAddress,
     vaultAddress,
-    keeperContract: contracts.base.keeper,
     vaultContract: contracts.helpers.createVault(vaultAddress),
   })
 

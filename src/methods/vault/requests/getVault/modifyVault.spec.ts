@@ -29,6 +29,7 @@ describe('modifyVault', () => {
       capacity: '1000000000000000',
       validatorsRoot: 'mockValidators',
       description: 'This is a mock vault',
+      isCollateralized: true,
       admin: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       address: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       mevEscrow: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
@@ -40,6 +41,10 @@ describe('modifyVault', () => {
       depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       restakeOperatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       restakeWithdrawalsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      osTokenConfig: {
+        ltvPercent: '0',
+        liqThresholdPercent: '0',
+      },
     },
   }
 

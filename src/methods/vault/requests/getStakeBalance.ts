@@ -29,7 +29,6 @@ const getStakeBalance = async (values: GetStakeBalanceInput) => {
     userAddress,
     vaultAddress,
     vaultContract,
-    keeperContract: contracts.base.keeper,
     request: {
       callStatic: true,
       params: [
