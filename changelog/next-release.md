@@ -1,0 +1,1 @@
+- Breaking change: Removed `sdk.osToken.getConfig`. Use `sdk.vault.getVault` instead to get osToken config data `{ osTokenConfig: { ltvPercent, thresholdPercent } }`.
