@@ -1,6 +1,6 @@
 import type { WithdrawInput } from './types'
 import { validateArgs } from '../../../../utils'
-import { vaultMulticall } from '../../../../contracts'
+import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
 
 
 export const commonLogic = async (values: WithdrawInput) => {
@@ -19,8 +19,7 @@ export const commonLogic = async (values: WithdrawInput) => {
   // the funds are always withdrawn via a queue
   const isV1Version = version === 1
 
-  const baseMulticallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
-    keeperContract: contracts.base.keeper,
+  const baseMulticallArgs: VaultMulticallBaseInput = {
     vaultContract,
     vaultAddress,
     userAddress,

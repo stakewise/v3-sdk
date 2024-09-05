@@ -20,7 +20,7 @@ describe('parseExitRequests function', () => {
   const network = Network.Holesky
   const config = configs[network]
 
-  const provider = new JsonRpcProvider(config.network.url)
+  const provider = new JsonRpcProvider('')
   const contracts = createContracts({ provider, config })
 
   const input: ParseExitRequestsInput = {

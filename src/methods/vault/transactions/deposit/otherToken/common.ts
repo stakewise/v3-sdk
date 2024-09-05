@@ -3,6 +3,7 @@ import { ZeroAddress } from 'ethers'
 import type { DepositInput } from '../types'
 import { validateArgs } from '../../../../../utils'
 import { vaultMulticall } from '../../../../../contracts'
+import type { VaultMulticallBaseInput } from '../../../../../contracts'
 
 
 export const commonLogic = (values: DepositInput) => {
@@ -18,12 +19,15 @@ export const commonLogic = (values: DepositInput) => {
     },
   ]
 
-  return {
+  const baseInput: VaultMulticallBaseInput = {
     vaultContract: contracts.helpers.createOtherTokenVault(vaultAddress),
-    keeperContract: contracts.base.keeper,
-    request: { params },
     vaultAddress,
     userAddress,
     options,
+  }
+
+  return {
+    ...baseInput,
+    request: { params },
   }
 }

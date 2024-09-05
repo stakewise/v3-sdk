@@ -3,6 +3,7 @@ import { isAddress } from 'ethers'
 import vault from '../../../vault'
 import { validateArgs } from '../../../../utils'
 import { rewardSplitterMulticall } from '../../../../contracts'
+import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
 import { checkAdminAccess } from '../../../vault/transactions/util'
 import type { FeeRecipient, UpdateFeeRecipientsInput } from './types'
 
@@ -41,9 +42,8 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
 
   await checkAdminAccess(values)
 
-  const baseMulticall = {
+  const baseMulticall: RewardSplitterMulticallBaseInput = {
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-    keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,
     options,

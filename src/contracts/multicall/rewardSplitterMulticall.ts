@@ -7,21 +7,23 @@ import {
   handleTransactionData,
 } from './util'
 
-import type { KeeperAbi, RewardSplitterAbi } from '../types'
+import type { RewardSplitterAbi } from '../types'
 import type { MulticallRequestInput } from './types'
 
 
-type RewardSplittersMulticallInput = {
+export type RewardSplitterMulticallBaseInput = {
   userAddress: string
   vaultAddress: string
   options: StakeWise.Options
-  request: MulticallRequestInput
-  keeperContract: KeeperAbi
   rewardSplitterContract: RewardSplitterAbi
 }
 
-const rewardSplittersMulticall = async <T extends unknown>(values: RewardSplittersMulticallInput): Promise<T> => {
-  const { request, options, userAddress, vaultAddress, keeperContract, rewardSplitterContract } = values
+type RewardSplitterMulticallInput = RewardSplitterMulticallBaseInput & {
+  request: MulticallRequestInput
+}
+
+const rewardSplitterMulticall = async <T extends unknown>(values: RewardSplitterMulticallInput): Promise<T> => {
+  const { request, options, userAddress, vaultAddress, rewardSplitterContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
   let multicallParams = [ ...params ]
@@ -36,7 +38,6 @@ const rewardSplittersMulticall = async <T extends unknown>(values: RewardSplitte
   const harvestArgs = await getHarvestArgs<RewardSplitterAbi>({
     options,
     vaultAddress,
-    keeperContract,
   })
 
   if (harvestArgs) {
@@ -70,4 +71,4 @@ const rewardSplittersMulticall = async <T extends unknown>(values: RewardSplitte
 }
 
 
-export default rewardSplittersMulticall
+export default rewardSplitterMulticall
