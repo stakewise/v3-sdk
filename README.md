@@ -605,9 +605,9 @@ Returns the master data of the vault
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|-------------|
-| vaultAddress | `string` | **Yes** | 
+| Name         | Type     | Required |
+|--------------|----------|----------|
+| vaultAddress | `string` | **Yes**  | 
 
 #### Returns:
 
@@ -641,8 +641,8 @@ type Output = {
   restakeOperatorsManager: string
   restakeWithdrawalsManager: string
   osTokenConfig: {
-    ltvPercent: bigint
-    thresholdPercent: bigint
+    ltvPercent: string
+    thresholdPercent: string
   }
 }
 ```
