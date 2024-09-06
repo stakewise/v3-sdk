@@ -71,8 +71,8 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
       ? formatEther(vault.capacity)
       : '∞',
     osTokenConfig: {
-      ltvPercent: BigInt(osTokenConfig.ltvPercent),
-      thresholdPercent: BigInt(osTokenConfig.liqThresholdPercent),
+      ltvPercent: osTokenConfig.ltvPercent,
+      thresholdPercent: osTokenConfig.liqThresholdPercent,
     },
   }
 }

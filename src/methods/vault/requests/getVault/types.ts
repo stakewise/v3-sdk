@@ -28,8 +28,8 @@ export type ModifiedVault = Omit<
   isSmoothingPool: boolean
   whitelistManager: string
   osTokenConfig: {
-    ltvPercent: bigint // The percent used to calculate how much user can mint OsToken shares
-    thresholdPercent: bigint // The liquidation threshold percent used to calculate health factor for OsToken position
+    ltvPercent: string // The percent used to calculate how much user can mint OsToken shares
+    thresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position
   }
 
   /**
