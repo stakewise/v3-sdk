@@ -20,7 +20,7 @@ describe('parseExitRequests function', () => {
   const network = Network.Holesky
   const config = configs[network]
 
-  const provider = new JsonRpcProvider(config.network.url)
+  const provider = new JsonRpcProvider('')
   const contracts = createContracts({ provider, config })
 
   const input: ParseExitRequestsInput = {
@@ -137,7 +137,7 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       total: 100n,
-      duration: 0,
+      duration: 1718536919,
       positions: [],
       withdrawable: 0n,
       pending: [
@@ -171,9 +171,9 @@ describe('parseExitRequests function', () => {
 
     expect(result).toEqual({
       total: 50n,
-      duration: 0,
       positions: [],
       withdrawable: 0n,
+      duration: 1718536919,
       pending: [
         {
           positionTicket: 'positionTicket-1',

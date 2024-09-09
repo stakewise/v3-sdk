@@ -1,5 +1,6 @@
 import { validateArgs } from '../../../../utils'
 import { vaultMulticall } from '../../../../contracts'
+import type { VaultMulticallBaseInput } from '../../../../contracts'
 import type { ClaimExitQueueInput } from './types'
 
 
@@ -17,9 +18,8 @@ export const commonLogic = (values: ClaimExitQueueInput) => {
 
   validatePositions(positions)
 
-  const baseMulticallArgs = {
+  const baseMulticallArgs: VaultMulticallBaseInput = {
     vaultContract: contracts.helpers.createVault(vaultAddress),
-    keeperContract: contracts.base.keeper,
     vaultAddress,
     userAddress,
     options,

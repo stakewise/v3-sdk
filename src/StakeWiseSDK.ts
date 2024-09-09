@@ -32,6 +32,10 @@ class StakeWiseSDK {
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
 
+    if (!options.provider && !options.endpoints?.web3) {
+      throw new Error('Provider or endpoints.web3 should be provided')
+    }
+
     const provider = options.provider || createProvider(options)
 
     const contracts = createContracts({ provider, config })
@@ -59,7 +63,6 @@ class StakeWiseSDK {
     })
 
     return vaultMulticall<T>({
-      keeperContract: this.contracts.base.keeper,
       options: this.options,
       vaultContract,
       vaultAddress,
@@ -82,7 +85,6 @@ class StakeWiseSDK {
 
     return rewardSplitterMulticall<T>({
       rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-      keeperContract: this.contracts.base.keeper,
       options: this.options,
       vaultAddress,
       userAddress,

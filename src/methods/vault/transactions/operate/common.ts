@@ -1,6 +1,7 @@
 import { validateArgs, getVaultVersion } from '../../../../utils'
 import type { MulticallTransactionInput } from './types'
 import { vaultMulticall } from '../../../../contracts'
+import type { VaultMulticallBaseInput } from '../../../../contracts'
 
 import {
   getMetadataParams,
@@ -60,8 +61,7 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     }
   }
 
-  const baseMulticall = {
-    keeperContract: contracts.base.keeper,
+  const baseMulticall: VaultMulticallBaseInput = {
     vaultContract,
     vaultAddress,
     userAddress,

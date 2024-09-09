@@ -44,7 +44,7 @@ const getFetchRequest = (_url: string | StakeWise.UrlWithHeaders) => {
 const createProvider = (options: StakeWise.Options) => {
   const { network } = options
 
-  const urls = apiUrls.getWeb3Url(options)
+  const urls = options.endpoints?.web3 as string | string[]
   const arrayUrls = typeof urls === 'string' ? [ urls ] : urls
 
   if (arrayUrls.length === 1) {

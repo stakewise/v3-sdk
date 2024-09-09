@@ -1,6 +1,7 @@
 query HarvestParams($address: ID!) {
   harvestParams: vault(id: $address) {
     proof
+    canHarvest
     rewardsRoot
     reward: proofReward
     unlockedMevReward: proofUnlockedMevReward

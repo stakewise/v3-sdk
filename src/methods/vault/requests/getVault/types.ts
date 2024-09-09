@@ -12,6 +12,7 @@ export type ModifiedVault = Omit<
   | 'keysManager'
   | 'performance'
   | 'whitelister'
+  | 'osTokenConfig'
   | 'blocklistCount'
   | 'whitelistCount'
 > & {
@@ -26,6 +27,10 @@ export type ModifiedVault = Omit<
   whitelistCount: number
   isSmoothingPool: boolean
   whitelistManager: string
+  osTokenConfig: {
+    ltvPercent: string // The percent used to calculate how much user can mint OsToken shares
+    thresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position
+  }
 
   /**
    * @deprecated use depositDataManager

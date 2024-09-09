@@ -68,18 +68,23 @@ Create SDK instance
 ```typescript
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
-const sdk = new StakeWiseSDK({ network: Network.Mainnet })
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: {
+    web3: 'https://mainnet.infura.io/v3/...',
+  },
+})
 
 ```
 #### SDK Constructor Arguments:
 
-| Name               | Type                                 | Required | Description |
-|--------------------|--------------------------------------|----------|----------------|
-| network            | `Network`                            | **Yes**  | Chain id |
-| provider           | `BrowserProvider or JsonRpcProvider` | **No**   | You can provide your implementation of the provender for ethers |
-| endpoints.web3     | `string OR string[]`                 | **No**   | Your urls for connect to blockchain |
-| endpoints.subgraph | `string`                             | **No**   | stakewise sbugraph url |
-| endpoints.api      | `string`                             | **No**   | stakewise backend url |
+| Name               | Type                                                             | Required | Description                                                                                                                                                         |
+|--------------------|------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| network            | `Network`                                                        | **Yes**  | Chain id                                                                                                                                                            |
+| provider           | `BrowserProvider or JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers                                                                                                     |
+| endpoints.web3     | `string OR Array<(string \| { url: string, headers: Headers })>` | **No**   | Your urls for connecting to blockchain. This parameter is required if `provider` is not provided. If more than one URL is provided, they will be used as fallbacks. |
+| endpoints.subgraph | `string`                                                         | **No**   | stakewise subgraph url                                                                                                                                              |
+| endpoints.api      | `string`                                                         | **No**   | stakewise backend url                                                                                                                                               |
 
 ## Quick Links
 
@@ -94,7 +99,7 @@ const sdk = new StakeWiseSDK({ network: Network.Mainnet })
 | [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
 | [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
 | [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     | [osToken.getConfig](#sdkostokengetconfig)                     |                                                                   |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                                   |
 | [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
@@ -610,9 +615,9 @@ Returns the master data of the vault
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|-------------|
-| vaultAddress | `string` | **Yes** | 
+| Name         | Type     | Required |
+|--------------|----------|----------|
+| vaultAddress | `string` | **Yes**  | 
 
 #### Returns:
 
@@ -645,41 +650,46 @@ type Output = {
   description: string | null
   restakeOperatorsManager: string
   restakeWithdrawalsManager: string
+  osTokenConfig: {
+    ltvPercent: string
+    thresholdPercent: string
+  }
 }
 ```
 
-| Name               | Description                                                   |
-|--------------------|---------------------------------------------------------------|
-| `apy`              | Current vault apy                                             |
-| `isErc20`          | Does the vault have its own ERC20 token                       |
-| `capacity`         | Maximum TVL of Vault                                          |
-| `createdAt`        | Date of Creation                                              |
-| `feePercent`       | Commission rate                                               |
-| `isPrivate`        | Whether the storage is private                                |
-| `isRestake`        | Indicates whether the Vault is a restaking vault                                |
-| `isBlocklist`      | Whether the storage has blocklist                             |
-| `vaultAdmin`       | Vault administrator address                                   |
-| `totalAssets`      | TVL of Vault                                                  |
-| `feeRecipient`     | Vault fee address                                             |
-| `whitelistManager` | Whitelist manager                                             |
-| `vaultAddress`     | Address of vault                                              |
-| `mevRecipient`     | Validator fee recipient                                       |
-| `whitelistCount`   | Number of addresses in the [whitelist](#sdkvaultgetwhitelist) |
-| `blocklistCount`   | Number of addresses in the [blocklist](#sdkvaultgetblocklist) |
-| `imageUrl`         | Link for vault logo                                           |
-| `blocklistManager` | Blocklist manager                                             |
-| `depositDataManager` | Keys manager address                                        |
-| `isSmoothingPool`  | Smoothing poll or Vault escrow                                |
-| `tokenName`        | ERC20 token name                                              |
-| `tokenSymbol`      | ERC20 token symbol                                            |
-| `displayName`      | Name of vault                                                 |
-| `description`      | Description of vault                                          |
-| `whitelist`        | List of authorized users for deposits                         |
-| `blocklist`        | List of blocked users for deposits                            |
-| `performance`      | Vault performance indicator (percent)                         |
-| `version`          | Vault version                                                 |
-| `restakeOperatorsManager`          | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                 |
-| `restakeWithdrawalsManager`          | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                 |
+| Name                        | Description                                                                                                                                                                                                                                     |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `apy`                       | Current vault apy                                                                                                                                                                                                                               |
+| `isErc20`                   | Does the vault have its own ERC20 token                                                                                                                                                                                                         |
+| `capacity`                  | Maximum TVL of Vault                                                                                                                                                                                                                            |
+| `createdAt`                 | Date of Creation                                                                                                                                                                                                                                |
+| `feePercent`                | Commission rate                                                                                                                                                                                                                                 |
+| `isPrivate`                 | Whether the storage is private                                                                                                                                                                                                                  |
+| `isRestake`                 | Indicates whether the Vault is a restaking vault                                                                                                                                                                                                |
+| `isBlocklist`               | Whether the storage has blocklist                                                                                                                                                                                                               |
+| `vaultAdmin`                | Vault administrator address                                                                                                                                                                                                                     |
+| `totalAssets`               | TVL of Vault                                                                                                                                                                                                                                    |
+| `feeRecipient`              | Vault fee address                                                                                                                                                                                                                               |
+| `whitelistManager`          | Whitelist manager                                                                                                                                                                                                                               |
+| `vaultAddress`              | Address of vault                                                                                                                                                                                                                                |
+| `mevRecipient`              | Validator fee recipient                                                                                                                                                                                                                         |
+| `whitelistCount`            | Number of addresses in the [whitelist](#sdkvaultgetwhitelist)                                                                                                                                                                                   |
+| `blocklistCount`            | Number of addresses in the [blocklist](#sdkvaultgetblocklist)                                                                                                                                                                                   |
+| `imageUrl`                  | Link for vault logo                                                                                                                                                                                                                             |
+| `blocklistManager`          | Blocklist manager                                                                                                                                                                                                                               |
+| `depositDataManager`        | Keys manager address                                                                                                                                                                                                                            |
+| `isSmoothingPool`           | Smoothing poll or Vault escrow                                                                                                                                                                                                                  |
+| `tokenName`                 | ERC20 token name                                                                                                                                                                                                                                |
+| `tokenSymbol`               | ERC20 token symbol                                                                                                                                                                                                                              |
+| `displayName`               | Name of vault                                                                                                                                                                                                                                   |
+| `description`               | Description of vault                                                                                                                                                                                                                            |
+| `whitelist`                 | List of authorized users for deposits                                                                                                                                                                                                           |
+| `blocklist`                 | List of blocked users for deposits                                                                                                                                                                                                              |
+| `performance`               | Vault performance indicator (percent)                                                                                                                                                                                                           |
+| `version`                   | Vault version                                                                                                                                                                                                                                   |
+| `restakeOperatorsManager`   | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                                                                                                                   |
+| `restakeWithdrawalsManager` | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                                                                                                                |
+| `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 
 #### Example:
 
@@ -695,12 +705,12 @@ How much a user can withdraw. Use this method if the user has mintedAssets, if m
 
 #### Arguments:
 
-| Name | Type | Required | Info |
-|------|------|-------------|-------|
-| vaultAddress | `string` | **Yes** | Address of vault |
-| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
-| mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| Name         | Type     | Required | Info                                                  |
+|--------------|----------|----------|-------------------------------------------------------|
+| vaultAddress | `string` | **Yes**  | Address of vault                                      |
+| ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](#sdkvaultgetvault)               |
+| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](#sdkostokengetposition)     |
+| stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -731,6 +741,7 @@ Necessary to update the vault state
 type Output = {
   reward: string
   proof: Array<string>
+  canHarvest: boolean
   rewardsRoot: string
   unlockedMevReward: string 
 }
@@ -750,10 +761,10 @@ Getting user's balance in the vault
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|-------------|
-| userAddress | `string` | **Yes** |
-| vaultAddress | `string` | **Yes** |
+| Name         | Type     | Required |
+|--------------|----------|----------|
+| userAddress  | `string` | **Yes**  |
+| vaultAddress | `string` | **Yes**  |
 
 #### Returns:
 
@@ -787,13 +798,13 @@ await sdk.vault.getStakeBalance({
 How many osToken burn do you need to make to withdraw all deposit.
 
 #### Arguments:
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| vaultAddress | `string` | **Yes** | Address of vault |
-| ltvPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
-| mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-| newStakedAssets | `bigint` | **Yes** | The future amount of stake after the deposit |
+| Name            | Type     | Required | Description                                           |
+|-----------------|----------|----------|-------------------------------------------------------|
+| vaultAddress    | `string` | **Yes**  | Address of vault                                      |
+| ltvPercent      | `bigint` | **Yes**  | [sdk.vault.getVault](#sdkvaultgetvault)               |
+| mintedAssets    | `bigint` | **Yes**  | [sdk.osToken.getPosition](#sdkostokengetposition)     |
+| stakedAssets    | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| newStakedAssets | `bigint` | **Yes**  | The future amount of stake after the deposit          |
 
 #### Returns:
 
@@ -820,11 +831,11 @@ sdk.osToken.getBurnAmount({
 Get the health of the position
 
 #### Arguments:
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
-| mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
-| stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| Name             | Type     | Required | Description                                           |
+|------------------|----------|----------|-------------------------------------------------------|
+| thresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](#sdkvaultgetvault)               |
+| mintedAssets     | `bigint` | **Yes**  | [sdk.osToken.getPosition](#sdkostokengetposition)     |
+| stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
 
 #### Returns:
 
@@ -893,12 +904,12 @@ const averageRewardsPerSecond = await sdk.osToken.getAvgRewardsPerSecond()
 User position data
 
 #### Arguments:
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| thresholdPercent | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
-| stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-| userAddress | `string` | **Yes** | - |
-| vaultAddress | `string` | **Yes** | - |
+| Name             | Type     | Required | Description                                           |
+|------------------|----------|----------|-------------------------------------------------------|
+| thresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](#sdkvaultgetvault)               |
+| stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| userAddress      | `string` | **Yes**  | -                                                     |
+| vaultAddress     | `string` | **Yes**  | -                                                     |
 
 #### Returns:
 
@@ -943,12 +954,12 @@ await sdk.osToken.getPosition({
 Maximum number of **shares** for minting
 
 #### Arguments:
-| Name | Type | Required | Description |
-|------|------|-------------|---------|
-| vaultAddress | `string` | **Yes** | Address of vault |
-| ltvPercent   | `bigint` | **Yes** | [sdk.osToken.getConfig](#sdkostokengetconfig) |
-| stakedAssets | `bigint` | **Yes** | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
-| mintedAssets | `bigint` | **Yes** | [sdk.osToken.getPosition](#sdkostokengetposition) |
+| Name         | Type     | Required | Description                                           |
+|--------------|----------|----------|-------------------------------------------------------|
+| vaultAddress | `string` | **Yes**  | Address of vault                                      |
+| ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](#sdkvaultgetvault)               |
+| stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](#sdkvaultgetstakebalance) |
+| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](#sdkostokengetposition)     |
 
 #### Returns:
 
@@ -1032,39 +1043,39 @@ type Output = string
 await sdk.utils.getRate()
 ```
 ---
-### `sdk.osToken.getConfig`
+## RewardSplitter
+
+### `sdk.rewardSplitter.create`
 
 #### Description:
 
-Basic information on the token
+Creates a reward splitter contract to distribute vault rewards among multiple fee recipients in predefined proportions.
+Subsequently, the address of the created reward splitter must be added to the vault as a fee recipient in order to
+utilize it. Please note that only vault admin is permitted to perform this action.
+
 
 #### Arguments:
-
-| Name         | Type     | Required | Description   |
-|--------------|----------|----------|---------------|
-| vaultAddress | `string` | **Yes**  | Vault address |
-
-#### Returns:
-
-```ts
-type Output = {
-  ltvPercent: bigint
-  thresholdPercent: bigint
-}
-```
-| Name | Description |
-|------|-------------|
-| `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
-| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
+| Name         | Type     | Required | Description                                                                                                                          |
+|--------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress  | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
+| vaultAddress | `string` | **Yes**  | The address of the vault                                                                                                             |
 
 #### Example:
 
 ```ts
-await sdk.osToken.getConfig({ vaultAddress: '0x...' })
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.create(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.create.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.create.estimateGas(params)
 ```
 ---
-## RewardSplitter
-
 ### `sdk.rewardSplitter.getClaimAmount`
 
 #### Description:
@@ -1092,6 +1103,97 @@ const claimAmount = await sdk.rewardSplitter.getClaimAmount({
   userAddress: '0x...',
   rewardSplitterAddress: '0x...',
 })
+```
+---
+### `sdk.rewardSplitter.claimRewards`
+
+#### Description:
+
+Claims rewards from the reward splitter contract
+
+#### Arguments:
+| Name                  | Type     | Required | Description                                                                                                                          |
+|-----------------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress           | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
+| vaultAddress          | `string` | **Yes**  | The address of the vault                                                                                                             |
+| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter                                                                                                   |
+| assets                | `bigint` | **Yes**  | The amount of assets to claim                                                                                                        |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  rewardSplitterAddress: '0x...',
+  assets: parseEther('100'),
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.claimRewards(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.claimRewards.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.claimRewards.estimateGas(params)
+```
+---
+### `sdk.rewardSplitter.updateFeeRecipients`
+
+#### Description:
+
+Updates the reward splitter fee recipients and predefined fee splitting proportions.
+Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
+
+
+#### Arguments:
+
+| Name                  | Type                                         | Required | Description                                                                                                                                                                                                                                                                                         |
+|-----------------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| userAddress           | `string`                                     | **Yes**  | The address of the user initiating the action. It should be the vault admin, who is also the owner of the reward splitter.                                                                                                                                                                          |
+| vaultAddress          | `string`                                     | **Yes**  | The address of the vault                                                                                                                                                                                                                                                                            |
+| rewardSplitterAddress | `string`                                     | **Yes**  | The address of the reward splitter                                                                                                                                                                                                                                                                  |
+| feeRecipients         | `Array<{ address: string, shares: bigint }>` | **Yes**  | The list of the vault fee recipients with their addresses and shares amount. For simplicity, we suggest setting the amount as a percentage converted to a BigInt value. For example, for 100% shares: `parseEther('100')`                                                                           |
+| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters) action |
+
+#### Example:
+
+```ts
+const params = {
+  vaultAddress: '0x...',
+  userAddress: '0x...',
+  rewardSplitterAddress: '0x...',
+  feeRecipients: [
+    {
+      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
+      shares: parseEther('50'),
+    },
+    {
+      address: '0x...4', // This address will be added as a fee recipient with 50% fee distribution.
+      shares: parseEther('50'),
+    },
+  ],
+  oldFeeRecipients: [
+    {
+      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
+      shares: parseEther('20'),
+    },
+    {
+      address: '0x...2', // This address will be removed from the fee recipients since it is not in the `feeRecipients` list.
+      shares: parseEther('40'),
+    },
+    {
+      address: '0x...3', // This address will also be removed from the fee recipients.
+      shares: parseEther('40'),
+    },
+  ],
+}
+
+// Send transaction
+const hash = await sdk.rewardSplitter.updateFeeRecipients(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to } = await sdk.rewardSplitter.updateFeeRecipients.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.rewardSplitter.updateFeeRecipients.estimateGas(params)
 ```
 ---
 ## API-utils
@@ -1247,10 +1349,12 @@ Withdrawal of funds from a vault
 const amountAssets = 200n // from input mb
 
 const [
-  { ltvPercent, thresholdPercent },
+  { osTokenConfig: { ltvPercent, thresholdPercent } },
   stake,
 ] = await Promise.all([
-  sdk.osToken.getConfig(),
+  sdk.vault.getVault({
+    vaultAddress: '0x...',
+  }),
   sdk.vault.getStakeBalance({
     vaultAddress: '0x...',
     userAddress: '0x...',
@@ -1609,10 +1713,12 @@ import { OsTokenPositionHealth } from '@stakewise/v3-sdk'
 const amountShares = 200n // from input mb
 
 const [
-  { ltvPercent, thresholdPercent },
+  { osTokenConfig: { ltvPercent, thresholdPercent } },
   stake,
 ] = await Promise.all([
-  sdk.osToken.getConfig(),
+  sdk.vault.getVault({
+    vaultAddress: '0x...',
+  }),
   sdk.vault.getStakeBalance({
     vaultAddress: '0x...',
     userAddress: '0x...',
@@ -1697,128 +1803,6 @@ const hash = await sdk.osToken.burn(params)
 const { data, to, value } = await sdk.osToken.burn.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.osToken.burn.estimateGas(params)
-```
----
-### `sdk.rewardSplitter.create`
-
-#### Description:
-
-Creates a reward splitter contract to distribute vault rewards among multiple fee recipients in predefined proportions.
-Subsequently, the address of the created reward splitter must be added to the vault as a fee recipient in order to
-utilize it. Please note that only vault admin is permitted to perform this action.
-
-
-#### Arguments:
-| Name         | Type     | Required | Description                                                                                                                          |
-|--------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress  | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
-| vaultAddress | `string` | **Yes**  | The address of the vault                                                                                                             |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.rewardSplitter.create(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.rewardSplitter.create.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.rewardSplitter.create.estimateGas(params)
-```
----
-### `sdk.rewardSplitter.claimRewards`
-
-#### Description:
-
-Claims rewards from the reward splitter contract
-
-#### Arguments:
-| Name                  | Type     | Required | Description                                                                                                                          |
-|-----------------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress           | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
-| vaultAddress          | `string` | **Yes**  | The address of the vault                                                                                                             |
-| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter                                                                                                   |
-| assets                | `bigint` | **Yes**  | The amount of assets to claim                                                                                                        |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-  rewardSplitterAddress: '0x...',
-  assets: parseEther('100'),
-}
-
-// Send transaction
-const hash = await sdk.rewardSplitter.claimRewards(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.rewardSplitter.claimRewards.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.rewardSplitter.claimRewards.estimateGas(params)
-```
----
-### `sdk.rewardSplitter.updateFeeRecipients`
-
-#### Description:
-
-Updates the reward splitter fee recipients and predefined fee splitting proportions.
-Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
-
-
-#### Arguments:
-
-| Name                  | Type                                         | Required | Description                                                                                                                                                                                                                                                                                         |
-|-----------------------|----------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress           | `string`                                     | **Yes**  | The address of the user initiating the action. It should be the vault admin, who is also the owner of the reward splitter.                                                                                                                                                                          |
-| vaultAddress          | `string`                                     | **Yes**  | The address of the vault                                                                                                                                                                                                                                                                            |
-| rewardSplitterAddress | `string`                                     | **Yes**  | The address of the reward splitter                                                                                                                                                                                                                                                                  |
-| feeRecipients         | `Array<{ address: string, shares: bigint }>` | **Yes**  | The list of the vault fee recipients with their addresses and shares amount. For simplicity, we suggest setting the amount as a percentage converted to a BigInt value. For example, for 100% shares: `parseEther('100')`                                                                           |
-| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](#sdkvaultgetrewardsplitters) action |
-
-#### Example:
-
-```ts
-const params = {
-  vaultAddress: '0x...',
-  userAddress: '0x...',
-  rewardSplitterAddress: '0x...',
-  feeRecipients: [
-    {
-      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
-      shares: parseEther('50'),
-    },
-    {
-      address: '0x...4', // This address will be added as a fee recipient with 50% fee distribution.
-      shares: parseEther('50'),
-    },
-  ],
-  oldFeeRecipients: [
-    {
-      address: '0x...1', // The fee for this address will be increased from 20% to 50%.
-      shares: parseEther('20'),
-    },
-    {
-      address: '0x...2', // This address will be removed from the fee recipients since it is not in the `feeRecipients` list.
-      shares: parseEther('40'),
-    },
-    {
-      address: '0x...3', // This address will also be removed from the fee recipients.
-      shares: parseEther('40'),
-    },
-  ],
-}
-
-// Send transaction
-const hash = await sdk.rewardSplitter.updateFeeRecipients(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to } = await sdk.rewardSplitter.updateFeeRecipients.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.rewardSplitter.updateFeeRecipients.estimateGas(params)
 ```
 ---
 
