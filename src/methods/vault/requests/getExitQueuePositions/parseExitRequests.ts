@@ -4,6 +4,7 @@ import vaultMulticall from '../../../../contracts/multicall/vaultMulticall'
 type ExitRequest = {
   withdrawalTimestamp: string | null
   positionTicket: string
+  isV2Position: boolean
   totalShares: string
   totalAssets: string
   timestamp: string
@@ -21,7 +22,7 @@ export type ParseExitRequestsInput = {
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
-  isV1Position: boolean
+  isV2Position: boolean
   timestamp: string
 }
 
@@ -115,7 +116,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       queuedAssets = 0n
 
   for (let i = 0; i < indexes.length; i++) {
-    const { positionTicket, timestamp, totalShares, totalAssets } = exitRequests[i]
+    const { positionTicket, timestamp, totalShares, totalAssets, isV2Position } = exitRequests[i]
 
     queuedShares += BigInt(totalShares || 0)
     queuedAssets += BigInt(totalAssets || 0)
@@ -133,8 +134,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
     const is24HoursPassed = await _checkTimestamp(timestamp, provider)
 
     if (is24HoursPassed) {
-      const isV1Position = BigInt(totalShares) > 0
-      const item = { exitQueueIndex, positionTicket, timestamp, isV1Position }
+      const item = { exitQueueIndex, positionTicket, timestamp, isV2Position }
 
       claims.push(item)
     }
@@ -180,14 +180,14 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
   let withdrawableAssets = 0n
 
   exitedAssetsResponse.forEach(({ exitedTickets, exitedAssets }, i) => {
-    const { isV1Position } = claims[i]
+    const { isV2Position } = claims[i]
 
-    if (isV1Position) {
-      // in V1 exit queue exit tickets are shares
-      queuedShares -= BigInt(exitedTickets || 0)
+    if (isV2Position) {
+      // in V2 vaults exit queue exit tickets are assets, for v1 and v3+ will be shares
+      queuedAssets -= BigInt(exitedAssets || 0)
     }
     else {
-      queuedAssets -= BigInt(exitedAssets || 0)
+      queuedShares -= BigInt(exitedTickets || 0)
     }
 
     withdrawableAssets += BigInt(exitedAssets || 0)
