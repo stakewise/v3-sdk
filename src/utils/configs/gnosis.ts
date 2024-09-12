@@ -45,7 +45,7 @@ export default {
       erc20BlocklistVault: '0x99E4300326867FE3f97864a74e500d19654c19e9',
     },
     special: {
-      stakeCalculator: '0x3c5634a5437A394353F49fe04FE5db11961c5c2D',
+      stakeCalculator: '0x9747e1fF73f1759217AFD212Dd36d21360D0880A',
     },
   },
   tokens: {
