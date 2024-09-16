@@ -30,6 +30,7 @@ query Vault($address: ID!) {
     validatorsRoot
     blocklistCount
     whitelistCount
+    depositDataRoot
     isCollateralized
     blocklistManager
     validatorsManager

@@ -632,6 +632,7 @@ type Output = {
   imageUrl: string | null
   isSmoothingPool: boolean
   tokenName: string | null
+  depositDataRoot: string
   whitelistManager: string
   blocklistManager: string
   depositDataManager: string
@@ -668,6 +669,7 @@ type Output = {
 | `imageUrl`                  | Link for vault logo                                                                                                                                                                                                                             |
 | `blocklistManager`          | Blocklist manager                                                                                                                                                                                                                               |
 | `depositDataManager`        | Keys manager address                                                                                                                                                                                                                            |
+| `depositDataRoot`           | Deposit data merkle tree root                                                                                                                                                                                                                            |
 | `isSmoothingPool`           | Smoothing poll or Vault escrow                                                                                                                                                                                                                  |
 | `tokenName`                 | ERC20 token name                                                                                                                                                                                                                                |
 | `tokenSymbol`               | ERC20 token symbol                                                                                                                                                                                                                              |
