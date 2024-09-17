@@ -8,7 +8,7 @@ type GetOsTokenPositionSharesInput = {
   options: StakeWise.Options
 }
 
-const getOsTokenPositionShares = (values: GetOsTokenPositionSharesInput) => {
+const getShares = (values: GetOsTokenPositionSharesInput) => {
   const { options, vaultAddress, userAddress } = values
 
   return graphql.subgraph.osToken.fetchOsTokenPositionsQuery({
@@ -22,4 +22,4 @@ const getOsTokenPositionShares = (values: GetOsTokenPositionSharesInput) => {
 }
 
 
-export default getOsTokenPositionShares
+export default getShares

@@ -1,5 +1,5 @@
+import getShares from './getShares'
 import getHealthFactor from '../../helpers/getHealthFactor'
-import getOsTokenPositionShares from './getOsTokenPositionShares'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import { validateArgs, OsTokenPositionHealth } from '../../../../utils'
 
@@ -32,7 +32,7 @@ const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
 
-  const gqlMintedShares = await getOsTokenPositionShares({ options, vaultAddress, userAddress })
+  const gqlMintedShares = await getShares({ options, vaultAddress, userAddress })
 
   const vaultContract = contracts.helpers.createVault(vaultAddress)
   const mintedShares = await vaultContract.osTokenPositions(userAddress)

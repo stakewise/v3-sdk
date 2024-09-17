@@ -1,10 +1,10 @@
 // Requests
 import getAPY from './requests/getOsTokenAPY'
-import getRate from './requests/getOsTokenRate'
 import getMaxMint from './requests/getMaxMint'
+import getRate from './requests/getOsTokenRate'
+import getPosition from './requests/getPosition'
 import getConfig from './requests/getOsTokenConfig'
 import getBurnAmount from './helpers/getBurnAmount'
-import getPosition from './requests/getOsTokenPosition'
 import getHealthFactor from './helpers/getHealthFactor'
 import getSharesFromAssets from './requests/getSharesFromAssets'
 import getAssetsFromShares from './requests/getAssetsFromShares'
