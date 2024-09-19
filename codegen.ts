@@ -4,8 +4,28 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-// For every network we have same gql shema, so we can use just Mainnet here
-const urls = configs[Network.Holesky].api
+let network: Network = Network.Holesky
+
+if (process.env.NETWORK === 'mainnet') {
+  network = Network.Mainnet
+}
+if (process.env.NETWORK === 'gnosis') {
+  network = Network.Gnosis
+}
+
+const config = configs[network]
+const subgraphIndex = Number(process.env.SUBGRAPH_INDEX || 0)
+
+const subgraphUrl = Array.isArray(config.api.subgraph)
+  ? config.api.subgraph[subgraphIndex]
+  : config.api.subgraph
+
+const urls: Record<string, string> = {
+  backend: config.api.backend,
+  subgraph: subgraphUrl,
+}
+
+console.log(`Generating types for network: ${config.network.id}`, urls)
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {
