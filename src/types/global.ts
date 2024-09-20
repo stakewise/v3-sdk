@@ -5,7 +5,6 @@ import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
 import type {
-  VaultAbi as InitialVaultAbi,
   Erc20Abi,
   KeeperAbi,
   OraclesAbi,
@@ -18,23 +17,16 @@ import type {
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  GnosisVaultDiffAbi,
-  OtherTokenVaultAbi,
   StakeCalculatorAbi,
-  GenesisVaultDiffAbi,
-  PrivateVaultDiffAbi,
   MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
-  RestakingVaultDiffAbi,
-  BlocklistVaultDiffAbi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
 } from '../contracts/types'
 
-type VaultAbi = InitialVaultAbi & GnosisVaultDiffAbi
 
 declare global {
 
@@ -79,7 +71,6 @@ declare global {
     type TransactionHash = string
 
     namespace ABI {
-      type Vault = VaultAbi
       type Keeper = KeeperAbi
       type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
@@ -91,21 +82,16 @@ declare global {
       type EigenPodOwner = EigenPodOwnerAbi
       type V2RewardToken = V2RewardTokenAbi
       type VestingEscrow = VestingEscrowAbi
-      type GenesisVault = GenesisVaultDiffAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type StakeCalculator = StakeCalculatorAbi
-      type OtherTokenVault = OtherTokenVaultAbi
       type MerkleDistributor = MerkleDistributorAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
-      type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
-      type RestakingVault = RestakingVaultDiffAbi & VaultAbi
-      type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
     }
   }
 }

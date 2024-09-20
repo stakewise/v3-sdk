@@ -4,8 +4,8 @@ import { MulticallRequestInput, ContractAbi } from '../types'
 
 
 type Input = {
-  contract: ContractAbi
   userAddress: string
+  contract: ContractAbi
   options: StakeWise.Options
   request: MulticallRequestInput
 }

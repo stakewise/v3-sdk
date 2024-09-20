@@ -4,6 +4,7 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
+// TODO change to Holesky
 // For every network we have same gql shema, so we can use just Mainnet here
 const urls = configs[Network.Gnosis].api
 

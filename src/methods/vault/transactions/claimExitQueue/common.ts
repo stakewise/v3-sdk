@@ -19,7 +19,7 @@ export const commonLogic = (values: ClaimExitQueueInput) => {
   validatePositions(positions)
 
   const baseMulticallArgs: VaultMulticallBaseInput = {
-    vaultContract: contracts.helpers.createVault(vaultAddress),
+    vaultContract: contracts.helpers.createVault({ vaultAddress }),
     vaultAddress,
     userAddress,
     options,

@@ -12,7 +12,7 @@ export const commonLogic = (values: MintInput) => {
   validateArgs.address({ vaultAddress, userAddress })
 
   const multicallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
-    vaultContract: contracts.helpers.createVault(vaultAddress),
+    vaultContract: contracts.helpers.createVault({ vaultAddress }),
     vaultAddress,
     userAddress,
     options,

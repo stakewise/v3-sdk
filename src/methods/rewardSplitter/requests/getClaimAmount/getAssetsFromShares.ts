@@ -24,7 +24,7 @@ const getAssetsFromShares = async (input: GetAssetsFromSharesInput) => {
     options,
     userAddress,
     vaultAddress,
-    vaultContract: contracts.helpers.createVault(vaultAddress),
+    vaultContract: contracts.helpers.createVault({ vaultAddress }),
   })
 
   return result?.[0]?.assets | 0n

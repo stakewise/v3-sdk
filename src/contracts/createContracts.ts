@@ -3,24 +3,18 @@ import type { Provider } from 'ethers'
 
 import {
   Erc20Abi,
-  VaultAbi,
   KeeperAbi,
   OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
-  GenesisVaultAbi,
-  PrivateVaultAbi,
   VaultFactoryAbi,
   VestingEscrowAbi,
   EigenPodOwnerAbi,
   V2RewardTokenAbi,
-  BlocklistVaultAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  RestakingVaultAbi,
   StakeCalculatorAbi,
-  OtherTokenVaultAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   MerkleDistributorAbi,
@@ -32,6 +26,7 @@ import {
 
 import commonMulticall from './multicall/commonMulticall'
 import createContract from './createContract'
+import { createVaultContract } from './vault'
 
 
 const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Erc20Token>(
@@ -138,10 +133,12 @@ type CreateContractsInput = {
 export const createContracts = (input: CreateContractsInput) => {
   const { provider, config } = input
 
+  const createVault = createVaultContract(provider)
   const multicallContract = getMulticall(provider, config)
 
   return {
     helpers: {
+      createVault,
       multicallContract,
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
@@ -150,14 +147,6 @@ export const createContracts = (input: CreateContractsInput) => {
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),
-
-      // Vaults
-      createVault: (address: string) => createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider),
-      createPrivateVault: (address: string) => createContract<StakeWise.ABI.PrivateVault>(address, PrivateVaultAbi, provider),
-      createRestakingVault: (address: string) => createContract<StakeWise.ABI.RestakingVault>(address, RestakingVaultAbi, provider),
-      createBlocklistedVault: (address: string) => createContract<StakeWise.ABI.BlocklistVault>(address, BlocklistVaultAbi, provider),
-      createOtherTokenVault: (address: string) => createContract<StakeWise.ABI.OtherTokenVault>(address, OtherTokenVaultAbi, provider),
-      createGenesisVault: (address: string) => createContract<StakeWise.ABI.GenesisVault & StakeWise.ABI.Vault>(address, GenesisVaultAbi, provider),
     },
     base: {
       keeper: getKeeper(provider, config),
