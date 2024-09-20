@@ -6,7 +6,7 @@ type Input = {
 const getVaultVersion = async (values: Input) => {
   const { contracts, vaultAddress } = values
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
   const version = await vaultContract.version()
   const isV1Version = version === 1n

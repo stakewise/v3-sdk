@@ -10,7 +10,7 @@ export const commonLogic = async (values: DepositInput) => {
   validateArgs.bigint({ assets })
   validateArgs.address({ vaultAddress, userAddress })
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const canHarvest = await contracts.base.keeper.canHarvest(vaultAddress)
 
   const overrides = {

@@ -9,11 +9,10 @@ import {
 } from './util'
 
 import type { MulticallRequestInput } from './types'
-import type { OtherTokenVaultAbi, VaultAbi } from '../types'
 import { Network } from '../../utils'
 
 
-type VaultContractAbi = VaultAbi | OtherTokenVaultAbi
+type VaultContractAbi = ReturnType<StakeWise.Contracts['helpers']['createVault']>
 
 export type VaultMulticallBaseInput = {
   userAddress: string

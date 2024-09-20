@@ -27,26 +27,36 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  let vaultContract = contracts.helpers.createVault(vaultAddress)
+  const chainId = options.network
+  const isPrivate = Boolean(whitelist?.length || whitelistManager)
+  const isBlocklist = Boolean(blocklist?.length || blocklistManager)
+  const isRestake = Boolean(restakeOperatorsManager || restakeWithdrawalsManager)
 
-  if (whitelist?.length || whitelistManager) {
+  const vaultContract = contracts.helpers.createVault({
+    vaultAddress,
+    options: {
+      chainId,
+      isRestake,
+      isPrivate,
+      isBlocklist,
+    },
+  })
+
+  // @ts-ignore: boolean + boolean
+  if (isRestake + isPrivate + isBlocklist >= 2) {
+    throw new Error('You are trying to change the data for different vaults types')
+  }
+
+  if (isPrivate) {
     if (whitelist && whitelist.length > 700) {
       throw new Error('Your transaction is likely to fail, we do not recommend passing more than 700 addresses to the whitelist at a time')
     }
-
-    vaultContract = contracts.helpers.createPrivateVault(vaultAddress)
   }
 
-  if (blocklist?.length || blocklistManager) {
+  if (isBlocklist) {
     if (blocklist && blocklist.length > 700) {
       throw new Error('Your transaction is likely to fail, we do not recommend passing more than 700 addresses to the block list at a time')
     }
-
-    vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
-  }
-
-  if (restakeOperatorsManager || restakeWithdrawalsManager) {
-    vaultContract = contracts.helpers.createRestakingVault(vaultAddress)
   }
 
   const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })

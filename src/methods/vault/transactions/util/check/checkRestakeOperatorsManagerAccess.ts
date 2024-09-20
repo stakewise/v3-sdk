@@ -3,7 +3,11 @@ import type { CheckInput } from './types'
 
 const checkRestakeOperatorsManagerAccess = async ({ userAddress, vaultAddress, contracts }: CheckInput) => {
   try {
-    const restakingVaultContract = contracts.helpers.createRestakingVault(vaultAddress)
+    const restakingVaultContract = contracts.helpers.createVault({
+      options: { isRestake: true },
+      vaultAddress,
+    })
+
     const restakeOperatorsManager = await restakingVaultContract.restakeOperatorsManager()
     const hasAccess = restakeOperatorsManager.toLowerCase() === userAddress.toLowerCase()
 

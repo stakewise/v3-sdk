@@ -34,7 +34,7 @@ const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
 
   const gqlMintedShares = await getShares({ options, vaultAddress, userAddress })
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
 
   const [ mintedAssets, feePercent ] = await Promise.all([

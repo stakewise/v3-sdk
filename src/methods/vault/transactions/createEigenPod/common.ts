@@ -7,5 +7,10 @@ export const commonLogic = async (values: CreateEigenPodInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  return contracts.helpers.createRestakingVault(vaultAddress)
+  const contract = contracts.helpers.createVault({
+    options: { isRestake: true },
+    vaultAddress,
+  })
+
+  return contract
 }

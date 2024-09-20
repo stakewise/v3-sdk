@@ -9,7 +9,6 @@ import {
   createProvider,
   getVaultFactory,
   getVaultVersion,
-  getVaultContract,
 } from './utils'
 
 
@@ -53,12 +52,18 @@ class StakeWiseSDK {
     this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
   }
 
-  vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
+  async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
     const { userAddress, vaultAddress, request } = values
 
-    const vaultContract = getVaultContract({
-      contracts: this.contracts,
-      network: this.network,
+    const { isBlocklist, isPrivate, isRestake } = await this.vault.getVault({ vaultAddress })
+
+    const vaultContract = this.contracts.helpers.createVault({
+      options: {
+        chainId: this.config.network.chainId,
+        isBlocklist,
+        isPrivate,
+        isRestake,
+      },
       vaultAddress,
     })
 
@@ -78,7 +83,6 @@ class StakeWiseSDK {
       contracts: this.contracts,
     })
   }
-
 
   rewardSplitterMulticall<T extends unknown>(values: RewardSplitterMulticallInput) {
     const { userAddress, vaultAddress, rewardSplitterAddress, request } = values

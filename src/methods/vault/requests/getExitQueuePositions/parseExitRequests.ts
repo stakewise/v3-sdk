@@ -85,7 +85,7 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
 
   const duration = _getDuration(exitRequests)
   const keeperContract = contracts.base.keeper
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
   const commonMulticallParams = {
     options,
