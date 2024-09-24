@@ -879,24 +879,6 @@ type Output = string
 const apy = await sdk.osToken.getAPY()
 ```
 ---
-### `sdk.osToken.getAvgRewardsPerSecond`
-
-#### Description:
-
-osETH average rewards per second
-
-#### Returns:
-
-```ts
-type Output = bigint
-```
-
-#### Example:
-
-```ts
-const averageRewardsPerSecond = await sdk.osToken.getAvgRewardsPerSecond()
-```
----
 ### `sdk.osToken.getPosition`
 
 #### Description:
@@ -916,7 +898,6 @@ User position data
 ```ts
 type Output = {
   minted: {
-    fee: bigint
     assets: bigint
     shares: bigint
   }
@@ -928,13 +909,12 @@ type Output = {
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `minted.fee` | Usage fee amount |
-| `minted.shares` | Balance |
-| `minted.assets` | Balance in ETH |
-| `healthFactor` | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)  |
-| `protocolFeePercent` | Usage fee percent |
+| Name                 | Description                                               |
+|----------------------|-----------------------------------------------------------|
+| `minted.shares`      | Balance                                                   |
+| `minted.assets`      | Balance in ETH                                            |
+| `healthFactor`       | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
+| `protocolFeePercent` | Usage fee percent                                         |
 
 #### Example:
 

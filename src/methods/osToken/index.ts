@@ -8,7 +8,6 @@ import getBurnAmount from './helpers/getBurnAmount'
 import getHealthFactor from './helpers/getHealthFactor'
 import getSharesFromAssets from './requests/getSharesFromAssets'
 import getAssetsFromShares from './requests/getAssetsFromShares'
-import getAvgRewardsPerSecond from './requests/getAvgRewardsPerSecond'
 
 // Transactions
 import { default as mint } from './transactions/mint'
@@ -62,11 +61,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetassetsfromshares
     */
     getAssetsFromShares,
-    /**
-     * @description osETH average rewards per second
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetavgrewardspersecond
-    */
-    getAvgRewardsPerSecond,
   },
   transactions: {
     /**
