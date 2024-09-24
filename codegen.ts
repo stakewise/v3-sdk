@@ -4,9 +4,8 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-// TODO change to Holesky
-// For every network we have same gql shema, so we can use just Mainnet here
-const urls = configs[Network.Gnosis].api
+// For every network we have same gql schema, so we can use just Mainnet here
+const urls = configs[Network.Holesky].api
 
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {

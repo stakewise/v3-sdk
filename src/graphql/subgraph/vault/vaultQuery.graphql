@@ -25,9 +25,9 @@ query Vault($address: ID!) {
     description
     whitelister
     tokenSymbol
-    keysManager
+    keysManager: depositDataManager
     feeRecipient
-    validatorsRoot
+    validatorsRoot: depositDataRoot
     blocklistCount
     whitelistCount
     isCollateralized
