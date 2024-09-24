@@ -978,7 +978,7 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.utils.getAssetsFromShares({ amount: 0n })
+await sdk.osToken.getAssetsFromShares({ amount: 0n })
 ```
 ---
 ### `sdk.osToken.getSharesFromAssets`
@@ -1002,7 +1002,7 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.utils.getSharesFromAssets({ amount: 0n })
+await sdk.osToken.getSharesFromAssets({ amount: 0n })
 ```
 ---
 ### `sdk.osToken.getRate`
@@ -1194,6 +1194,28 @@ type Output = string
 
 ```ts
 await sdk.utils.getSwiseUsdPrice()
+```
+---
+### `sdk.utils.getStakewiseStats`
+
+#### Description:
+
+TVL statistics, number of users, rewards earned
+
+#### Returns:
+
+```ts
+type Output = {
+  usersCount: number
+  totalAssets: string
+  totalEarnedAssets: string
+}
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getStakewiseStats()
 ```
 ---
 ### `sdk.utils.getTransactions`
@@ -1431,7 +1453,7 @@ Adding root validators to vaults **version 2** or higher
 
 | Name           | Type     | Required | Description |
 |----------------|----------|----------|-------------|
-| validatorsRoot | `string` | **Yes**  | The vault validators merkle tree  |
+| depositDataRoot | `string` | **Yes**  | The vault validators merkle tree  |
 | userAddress    | `string` | **Yes**  | - |
 | vaultAddress   | `string` | **Yes**  | - |
 
@@ -1439,7 +1461,7 @@ Adding root validators to vaults **version 2** or higher
 
 ```ts
 const params = {
-  validatorsRoot: 'hash',
+  depositDataRoot: 'hash',
   vaultAddress: '0x...',
   userAddress: '0x...',
 }
@@ -1591,7 +1613,7 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | restakeOperatorsManager   | `string`                                     | **No**   | Admin                | The restake operators manager can add EigenPods and update EigenLayer operators.                                                                                            |  
 | whitelistManager          | `string`                                     | **No**   | Admin                | Address of the vault whitelistManager                                                                                                                                       |  
 | feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient                                                                                                                                          |  
-| validatorsRoot            | `string`                                     | **No**   | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot`                                          |  
+| depositDataRoot            | `string`                                     | **No**   | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot`                                          |  
 | blocklistManager          | `string`                                     | **No**   | Admin                | The blocklisted vault blocklist manager                                                                                                                                     |  
 | image                     | `string`                                     | **No**   | Admin                | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                                                    |  
 | displayName               | `string`                                     | **No**   | Admin                | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                                            |  
@@ -1610,7 +1632,7 @@ const params = {
   displayName: '...',
   description: '...',
   feeRecipient: '0x...',
-  validatorsRoot: '0x...',
+  depositDataRoot: '0x...',
   blocklistManager: '0x...',
   whitelistManager: '0x...',
   validatorsManager: '0x...',
@@ -1621,7 +1643,7 @@ const params = {
 
 // Data to update the vault by vault keys manager.
 const params = {
-  validatorsRoot: '...',
+  depositDataRoot: '...',
   vaultAddress: '0x...',
   userAddress: '0x...',
 }

@@ -7,7 +7,7 @@ export default {
   network: constants.chains.gnosis,
   api: {
     backend: 'https://gnosis-api.stakewise.io/graphql',
-    subgraph: 'https://gnosis-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod',
   },
   pages: {
     beaconchain: 'https://gnosis.beaconcha.in',
