@@ -39,3 +39,17 @@ type AddedOutput = {
 
 ### 3. Removed method
 ### `sdk.osToken.getAvgRewardsPerSecond`
+
+---
+
+### 4. Removed output field
+### `sdk.osToken.getPosition`
+#### New output field:
+
+```ts
+type RemovedOutput = {
+  minted: {
+    fee: bigint
+  }
+}
+```
