@@ -3,9 +3,9 @@ import { validateArgs } from '../../../../utils'
 
 
 export const commonLogic = (values: SetDepositDataRootInput) => {
-  const { vaultAddress, validatorsRoot, userAddress } = values
+  const { vaultAddress, depositDataRoot, userAddress } = values
 
-  validateArgs.string({ validatorsRoot })
+  validateArgs.string({ depositDataRoot })
   validateArgs.address({ vaultAddress, userAddress })
 
   return values.contracts.base.depositDataRegistry

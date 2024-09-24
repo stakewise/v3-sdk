@@ -9,7 +9,7 @@ import {
   getWhitelistParams,
   getWhitelisterParams,
   getFeeRecipientParams,
-  getValidatorsRootParams,
+  getDepositDataRootParams,
   getBlocklistManagerParams,
   getValidatorsManagerParams,
   getDepositDataManagerParams,
@@ -20,7 +20,7 @@ import {
 
 export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
-    validatorsRoot, blocklistManager, metadataIpfsHash,
+    depositDataRoot, blocklistManager, metadataIpfsHash,
     blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
     options, contracts, userAddress, vaultAddress, provider, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
   } = values
@@ -62,8 +62,8 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
   const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
   if (!isV1Version) {
-    if (validatorsRoot) {
-      throw new Error('To set validatorsRoot in version 2 of vault, use the vault.setDepositDataRoot() method')
+    if (depositDataRoot) {
+      throw new Error('To set depositDataRoot in version 2 of vault, use the vault.setDepositDataRoot() method')
     }
 
     if (depositDataManager) {
@@ -118,8 +118,8 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     params.push(...feeRecipientParams)
   }
 
-  if (validatorsRoot) {
-    const validatorsRootParams = getValidatorsRootParams({ ...baseInput, validatorsRoot })
+  if (depositDataRoot) {
+    const validatorsRootParams = getDepositDataRootParams({ ...baseInput, depositDataRoot })
 
     params.push(...validatorsRootParams)
   }

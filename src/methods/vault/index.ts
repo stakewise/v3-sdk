@@ -128,7 +128,7 @@ export default {
     /**
      * @description Updates the vault by authorized personnel such as the vault admin, whitelist manager,
      * blocklist manager, validators manager, or deposit-data manager.
-     * @throws Fields validatorsRoot and depositDataManager supported only first version of vaults
+     * @throws Fields depositDataRoot and depositDataManager supported only first version of vaults
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultoperate
      */
     operate,

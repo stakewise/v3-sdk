@@ -26,7 +26,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     mevEscrow,
     createdAt,
     feePercent,
-    keysManager,
     performance,
     totalAssets,
     feeRecipient,
@@ -34,13 +33,11 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     blocklistCount,
     whitelistCount,
     validatorsManager,
+    depositDataManager,
     restakeOperatorsManager,
     restakeWithdrawalsManager,
-    depositDataManager: initialDepositDataManager,
     ...rest
   } = vault
-
-  const depositDataManager = Number(version) > 1 ? initialDepositDataManager : keysManager
 
   return {
     ...rest,
@@ -56,7 +53,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
-    keysManager: keysManager ? getAddress(keysManager) : '',
     whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
     whitelistManager: vault.whitelister ? getAddress(vault.whitelister) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
