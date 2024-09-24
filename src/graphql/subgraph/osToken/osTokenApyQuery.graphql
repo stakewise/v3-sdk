@@ -1,4 +1,4 @@
-query osTokenApy($first: Int, $orderBy: OsTokenSnapshot_orderBy, $orderDirection: OrderDirection) {
+query osTokenApy {
   osTokens {
     apy
   }
