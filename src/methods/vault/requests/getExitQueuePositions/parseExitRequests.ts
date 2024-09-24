@@ -5,7 +5,7 @@ type ExitRequest = {
   withdrawalTimestamp: string | null
   positionTicket: string
   isV2Position: boolean
-  totalShares: string
+  // totalShares: string
   totalAssets: string
   timestamp: string
 }
@@ -116,9 +116,10 @@ const parseExitRequests = async (values: ParseExitRequestsInput): Promise<ParseE
       queuedAssets = 0n
 
   for (let i = 0; i < indexes.length; i++) {
-    const { positionTicket, timestamp, totalShares, totalAssets, isV2Position } = exitRequests[i]
+    const { positionTicket, timestamp, totalAssets, isV2Position } = exitRequests[i]
+    // const { positionTicket, timestamp, totalShares, totalAssets, isV2Position } = exitRequests[i]
 
-    queuedShares += BigInt(totalShares || 0)
+    // queuedShares += BigInt(totalShares || 0)
     queuedAssets += BigInt(totalAssets || 0)
 
     // If the index is -1 then we cannot claim anything. Otherwise, the value is >= 0.

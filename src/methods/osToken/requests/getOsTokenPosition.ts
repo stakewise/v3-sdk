@@ -26,7 +26,7 @@ const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
 
   const [ mintedAssets, feePercent ] = await Promise.all([
