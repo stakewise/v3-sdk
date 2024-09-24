@@ -1,38 +1,30 @@
-import getShares from './getShares'
-import getHealthFactor from '../../helpers/getHealthFactor'
-import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { validateArgs, OsTokenPositionHealth } from '../../../../utils'
+import { validateArgs } from '../../../utils'
+import getHealthFactor from '../helpers/getHealthFactor'
+import { wrapAbortPromise } from '../../../modules/gql-module'
 
+
+type Output = {
+  minted: {
+    assets: bigint
+    shares: bigint
+  },
+  healthFactor: ReturnType<typeof getHealthFactor>
+  protocolFeePercent: bigint
+}
 
 type GetOsTokenPositionInput = {
   userAddress: string
   vaultAddress: string
   stakedAssets: bigint
   thresholdPercent: bigint
-  options: StakeWise.Options
   contracts: StakeWise.Contracts
 }
 
-type Output = {
-  minted: {
-    assets: bigint
-    shares: bigint
-    fee: bigint
-  }
-  healthFactor: {
-    value: number
-    health: OsTokenPositionHealth
-  }
-  protocolFeePercent: bigint
-}
-
 const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
-  const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
+  const { contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
-
-  const gqlMintedShares = await getShares({ options, vaultAddress, userAddress })
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
@@ -45,17 +37,14 @@ const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
   const protocolFeePercent = feePercent / 100n
   const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
 
-  const result: Output = {
+  return {
     minted: {
       assets: mintedAssets,
       shares: mintedShares,
-      fee: mintedShares - gqlMintedShares,
     },
     healthFactor,
     protocolFeePercent,
   }
-
-  return result
 }
 
 
