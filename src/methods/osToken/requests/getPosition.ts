@@ -1,7 +1,6 @@
-import getShares from './getShares'
-import getHealthFactor from '../../helpers/getHealthFactor'
-import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { validateArgs, OsTokenPositionHealth } from '../../../../utils'
+import getHealthFactor from '../helpers/getHealthFactor'
+import { wrapAbortPromise } from '../../../modules/gql-module'
+import { validateArgs, OsTokenPositionHealth } from '../../../utils'
 
 
 type GetOsTokenPositionInput = {
@@ -9,7 +8,6 @@ type GetOsTokenPositionInput = {
   vaultAddress: string
   stakedAssets: bigint
   thresholdPercent: bigint
-  options: StakeWise.Options
   contracts: StakeWise.Contracts
 }
 
@@ -17,7 +15,6 @@ type Output = {
   minted: {
     assets: bigint
     shares: bigint
-    fee: bigint
   }
   healthFactor: {
     value: number
@@ -27,12 +24,10 @@ type Output = {
 }
 
 const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
-  const { options, contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
+  const { contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
-
-  const gqlMintedShares = await getShares({ options, vaultAddress, userAddress })
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
@@ -49,7 +44,6 @@ const getOsTokenPosition = async (values: GetOsTokenPositionInput) => {
     minted: {
       assets: mintedAssets,
       shares: mintedShares,
-      fee: mintedShares - gqlMintedShares,
     },
     healthFactor,
     protocolFeePercent,
