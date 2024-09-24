@@ -11,6 +11,11 @@ const getStakewiseStats = (values: GetStakewiseStatsInput) => {
 
   return graphql.subgraph.stats.fetchStatsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
+    modifyResult: (data) => ({
+      usersCount: data.networks[0].usersCount,
+      totalAssets: data.networks[0].totalAssets,
+      totalEarnedAssets: data.networks[0].totalEarnedAssets,
+    }),
   })
 }
 

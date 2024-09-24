@@ -978,7 +978,7 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.utils.getAssetsFromShares({ amount: 0n })
+await sdk.osToken.getAssetsFromShares({ amount: 0n })
 ```
 ---
 ### `sdk.osToken.getSharesFromAssets`
@@ -1002,7 +1002,7 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.utils.getSharesFromAssets({ amount: 0n })
+await sdk.osToken.getSharesFromAssets({ amount: 0n })
 ```
 ---
 ### `sdk.osToken.getRate`
@@ -1194,6 +1194,28 @@ type Output = string
 
 ```ts
 await sdk.utils.getSwiseUsdPrice()
+```
+---
+### `sdk.utils.getStakewiseStats`
+
+#### Description:
+
+TVL statistics, number of users, rewards earned
+
+#### Returns:
+
+```ts
+type Output = {
+  usersCount: number
+  totalAssets: string
+  totalEarnedAssets: string
+}
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getStakewiseStats()
 ```
 ---
 ### `sdk.utils.getTransactions`

@@ -53,3 +53,6 @@ type RemovedOutput = {
   }
 }
 ```
+
+### 5. Added method getStakewiseStats
+### `sdk.utils.getStakewiseStats`
