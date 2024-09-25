@@ -1,8 +1,8 @@
-query exitQueue($receiver: Bytes, $vault: String!) {
+query exitQueue($receiver: Bytes, $vault: String!, $isClaimed: Boolean!) {
   exitRequests(where: {
     receiver: $receiver,
     vault: $vault,
-    isClaimed: false
+    isClaimed: $isClaimed
   }) {
     timestamp
     totalAssets

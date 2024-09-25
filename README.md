@@ -468,10 +468,11 @@ Returns the withdrawal queue for a specific user.
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|----------|
-| userAddress | `string` | **Yes**  |
-| vaultAddress | `string` | **Yes**  | 
+| Name         | Type      | Required |
+|--------------|-----------|----------|
+| userAddress  | `string`  | **Yes**  |
+| vaultAddress | `string`  | **Yes**  | 
+| isClaimed    | `boolean` | **No**   | 
 
 #### Returns:
 
@@ -499,14 +500,14 @@ type Output = {
 }
 ```
 
-| Name | Description                                                                                                                                                                 |
-|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `pending` |  Positions not yet available for claim  |
-| `positions` | Positions in a special format that are required for claiming |
-| `total` | Total queued assets (e.g. ETH) |
-| `duration` | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
-| | |- 
-| `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                  |
+| Name           | Description                                                                                                                                                                                                                                                                |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `pending`      | Positions not yet available for claim                                                                                                                                                                                                                                      |
+| `positions`    | Positions in a special format that are required for claiming                                                                                                                                                                                                               |
+| `total`        | Total queued assets (e.g. ETH)                                                                                                                                                                                                                                             |
+| `duration`     | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
+|                |                                                                                                                                                                                                                                                                            |- 
+| `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                                                                                                                 |
 
 #### Example:
 
