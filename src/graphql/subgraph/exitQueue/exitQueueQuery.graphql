@@ -3,7 +3,6 @@ query exitQueue($where: ExitRequest_filter) {
     timestamp
     totalAssets
     isClaimable
-    isV2Position
     exitedAssets
     positionTicket
     exitQueueIndex

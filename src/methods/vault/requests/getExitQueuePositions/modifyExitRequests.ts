@@ -12,7 +12,6 @@ export type ParseExitRequestsInput = {
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
-  isV2Position: boolean
   timestamp: string
 }
 
@@ -37,11 +36,9 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
     }
   }
 
-  const isCalculating = exitRequests.some((item) => item.withdrawalTimestamp === null)
-
   let total = 0n
   let withdrawable = 0n
-  let duration: null | number = isCalculating ? null : 0
+  let duration: null | number = 0
 
   const positions: Position[] = []
   const pending: ExitRequest[] = []
@@ -51,21 +48,18 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
       timestamp,
       totalAssets,
       isClaimable,
-      isV2Position,
+      exitedAssets,
       exitQueueIndex,
       positionTicket,
     } = exitRequest
 
-    const totalAssetsBI = BigInt(totalAssets || 0)
-
-    total += totalAssetsBI
+    total += BigInt(totalAssets || 0)
 
     if (isClaimable) {
-      withdrawable += totalAssetsBI
+      withdrawable += BigInt(exitedAssets || 0)
 
       positions.push({
         timestamp,
-        isV2Position,
         positionTicket,
         exitQueueIndex: BigInt(exitQueueIndex),
       })
@@ -74,16 +68,14 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
       pending.push(exitRequest)
     }
 
-    if (duration !== null) {
-      if (exitRequest.withdrawalTimestamp === null) {
-        duration = null
-      }
-      else {
-        const withdrawalTimestamp = Number(exitRequest.withdrawalTimestamp)
+    if (exitRequest.withdrawalTimestamp === null) {
+      duration = null
+    }
+    else if (duration !== null) {
+      const withdrawalTimestamp = Number(exitRequest.withdrawalTimestamp)
 
-        if (withdrawalTimestamp > duration) {
-          duration = withdrawalTimestamp
-        }
+      if (withdrawalTimestamp > duration) {
+        duration = withdrawalTimestamp
       }
     }
   })
