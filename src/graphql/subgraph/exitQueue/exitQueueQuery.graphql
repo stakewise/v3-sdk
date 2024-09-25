@@ -1,13 +1,8 @@
-query exitQueue($receiver: Bytes, $vault: String!, $isClaimed: Boolean!) {
-  exitRequests(where: {
-    receiver: $receiver,
-    vault: $vault,
-    isClaimed: $isClaimed
-  }) {
+query exitQueue($where: ExitRequest_filter) {
+  exitRequests(where: $where) {
     timestamp
     totalAssets
     isClaimable
-    isV2Position
     exitedAssets
     positionTicket
     exitQueueIndex
