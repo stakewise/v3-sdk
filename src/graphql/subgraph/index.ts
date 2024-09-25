@@ -1,6 +1,7 @@
 export * as stats from './stats'
 export * as vault from './vault'
 export * as osToken from './osToken'
+export * as allocator from './allocator'
 export * as eigenPods from './eigenPods'
 export * as exitQueue from './exitQueue'
 export * as transactions from './transactions'
