@@ -7,7 +7,7 @@ export default {
   network: constants.chains.chiado,
   api: {
     backend: 'https://chiado-api.stakewise.io/graphql',
-    subgraph: 'https://chiado-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://graphs.stakewise.io/chiado/subgraphs/name/stakewise/prod',
   },
   pages: {
     beaconchain: 'https://beacon.chiadochain.net',

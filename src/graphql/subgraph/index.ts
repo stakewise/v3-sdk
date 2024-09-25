@@ -1,3 +1,4 @@
+export * as stats from './stats'
 export * as vault from './vault'
 export * as osToken from './osToken'
 export * as eigenPods from './eigenPods'
