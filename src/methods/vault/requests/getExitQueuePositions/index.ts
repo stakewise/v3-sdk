@@ -1,48 +1,31 @@
-import { validateArgs } from '../../../../utils'
-import parseExitRequests from './parseExitRequests'
-import fetchExitQueuePositions from './fetchExitQueuePositions'
-import type { ParseExitRequestsOutput } from './parseExitRequests'
-import type { FetchExitQueuePositionsInput } from './fetchExitQueuePositions'
+import graphql from '../../../../graphql'
+import { apiUrls, validateArgs } from '../../../../utils'
+import modifyExitRequests from './modifyExitRequests'
+import type { ParseExitRequestsOutput } from './modifyExitRequests'
 
 
-type GetExitQueuePositionsInput = FetchExitQueuePositionsInput & {
-  contracts: StakeWise.Contracts
-  provider: StakeWise.Provider
+type GetExitQueuePositionsInput = {
   options: StakeWise.Options
-}
-
-const mock: ParseExitRequestsOutput = {
-  total: 0n,
-  pending: [],
-  duration: 0,
-  positions: [],
-  withdrawable: 0n,
+  vaultAddress: string
+  userAddress: string
+  isClaimed?: boolean
 }
 
 const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, contracts, provider, vaultAddress, userAddress, isClaimed } = input
+  const { options, vaultAddress, userAddress, isClaimed = false } = input
 
   validateArgs.address({ vaultAddress, userAddress })
+  validateArgs.boolean({ isClaimed })
 
-  if (typeof isClaimed !== 'undefined') {
-    validateArgs.boolean({ isClaimed })
-  }
-
-  return fetchExitQueuePositions({ options, vaultAddress, userAddress, isClaimed })
-    .then((data) => {
-      if (!data) {
-        return mock
-      }
-
-      return parseExitRequests({
-        options,
-        provider,
-        contracts,
-        userAddress,
-        vaultAddress,
-        exitRequests: data,
-      })
-    })
+  return graphql.subgraph.exitQueue.fetchExitQueueQuery({
+    url: apiUrls.getSubgraphqlUrl(options),
+    variables: {
+      vault: vaultAddress.toLowerCase(),
+      receiver: userAddress.toLowerCase(),
+      isClaimed,
+    },
+    modifyResult: modifyExitRequests,
+  })
 }
 
 
