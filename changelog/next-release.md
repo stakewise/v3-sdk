@@ -56,3 +56,13 @@ type RemovedOutput = {
 
 ### 5. Added method getStakewiseStats
 ### `sdk.utils.getStakewiseStats`
+
+---
+
+### 6. Added optional input field
+### `sdk.vault.getExitQueuePositions`
+#### Added Argument:
+
+| Name         | Type      | Required |
+|--------------|-----------|----------|
+| isClaimed    | `boolean` | **No**   | 

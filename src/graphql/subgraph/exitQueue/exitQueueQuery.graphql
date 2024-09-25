@@ -1,15 +1,16 @@
-query exitQueue($receiver: Bytes, $vault: String!) {
+query exitQueue($receiver: Bytes, $vault: String!, $isClaimed: Boolean!) {
   exitRequests(where: {
     receiver: $receiver,
     vault: $vault,
+    isClaimed: $isClaimed
   }) {
-    withdrawalTimestamp
-    positionTicket
-    isV2Position
-    totalAssets
     timestamp
-    exitQueueIndex
-    exitedAssets
+    totalAssets
     isClaimable
+    isV2Position
+    exitedAssets
+    positionTicket
+    exitQueueIndex
+    withdrawalTimestamp
   }
 }

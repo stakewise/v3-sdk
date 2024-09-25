@@ -20,11 +20,15 @@ const mock: ParseExitRequestsOutput = {
 }
 
 const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, contracts, provider, vaultAddress, userAddress } = input
+  const { options, contracts, provider, vaultAddress, userAddress, isClaimed } = input
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  return fetchExitQueuePositions({ options, vaultAddress, userAddress })
+  if (typeof isClaimed !== 'undefined') {
+    validateArgs.boolean({ isClaimed })
+  }
+
+  return fetchExitQueuePositions({ options, vaultAddress, userAddress, isClaimed })
     .then((data) => {
       if (!data) {
         return mock
