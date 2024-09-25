@@ -24,6 +24,10 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise
 
   validateArgs.address({ vaultAddress, userAddress })
 
+  if (typeof isClaimed !== 'undefined') {
+    validateArgs.boolean({ isClaimed })
+  }
+
   return fetchExitQueuePositions({ options, vaultAddress, userAddress, isClaimed })
     .then((data) => {
       if (!data) {
