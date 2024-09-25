@@ -2,6 +2,7 @@ import graphql from '../../../../graphql'
 import { apiUrls, validateArgs } from '../../../../utils'
 import modifyExitRequests from './modifyExitRequests'
 import type { ParseExitRequestsOutput } from './modifyExitRequests'
+import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
 
 
 type GetExitQueuePositionsInput = {
@@ -12,17 +13,22 @@ type GetExitQueuePositionsInput = {
 }
 
 const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise<ParseExitRequestsOutput> => {
-  const { options, vaultAddress, userAddress, isClaimed = false } = input
+  const { options, vaultAddress, userAddress, isClaimed } = input
 
   validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.boolean({ isClaimed })
+
+  if (typeof isClaimed !== 'undefined') {
+    validateArgs.boolean({ isClaimed })
+  }
 
   return graphql.subgraph.exitQueue.fetchExitQueueQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      vault: vaultAddress.toLowerCase(),
-      receiver: userAddress.toLowerCase(),
-      isClaimed,
+      where: {
+        vault: vaultAddress.toLowerCase(),
+        receiver: userAddress.toLowerCase(),
+        isClaimed,
+      } as StakeWiseSubgraphGraph.ExitRequest_Filter,
     },
     modifyResult: modifyExitRequests,
   })
