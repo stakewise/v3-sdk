@@ -8,7 +8,6 @@ query RewardSplitterShareHolders($address: Bytes!, $vaultAddress: String!, $rewa
       }
     }
   ) {
-    earnedVaultShares
     earnedVaultAssets
   }
 }
