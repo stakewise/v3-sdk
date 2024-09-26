@@ -22,10 +22,14 @@ const getStakeBalance = (values: GetStakeBalanceInput) => {
     },
     modifyResult: (data) => {
       const allocator = data?.allocators?.[0]
+      const ltvStatus = allocator?.ltvStatus
       const assets = BigInt(allocator?.assets || 0)
+      const mintedOsTokenShares = BigInt(allocator?.mintedOsTokenShares || 0)
 
       return {
         assets,
+        ltvStatus,
+        mintedOsTokenShares,
       }
     },
   })
