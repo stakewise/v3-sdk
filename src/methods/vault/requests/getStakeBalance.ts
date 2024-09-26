@@ -1,6 +1,5 @@
-import { validateArgs } from '../../../utils'
-import { vaultMulticall } from '../../../contracts'
-import { wrapAbortPromise } from '../../../modules/gql-module'
+import { apiUrls, validateArgs } from '../../../utils'
+import graphql from '../../../graphql'
 
 
 type GetStakeBalanceInput = {
@@ -10,41 +9,27 @@ type GetStakeBalanceInput = {
   contracts: StakeWise.Contracts
 }
 
-type Output = {
-  shares: bigint
-  assets: bigint
-}
-
-const getStakeBalance = async (values: GetStakeBalanceInput) => {
-  const { contracts, options, vaultAddress, userAddress } = values
+const getStakeBalance = (values: GetStakeBalanceInput) => {
+  const { options, vaultAddress, userAddress } = values
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const vaultContract = contracts.helpers.createVault({ vaultAddress })
+  return graphql.subgraph.allocator.fetchAllocatorsQuery({
+    url: apiUrls.getSubgraphqlUrl(options),
+    variables: {
+      address: userAddress.toLowerCase(),
+      vaultAddress: vaultAddress.toLowerCase(),
+    },
+    modifyResult: (data) => {
+      const allocator = data?.allocators?.[0]
+      const assets = BigInt(allocator?.assets || 0)
 
-  const balanceShares = await vaultContract.getShares(userAddress)
-
-  const result = await vaultMulticall<[ [ bigint ] ]>({
-    options,
-    userAddress,
-    vaultAddress,
-    vaultContract,
-    request: {
-      callStatic: true,
-      params: [
-        {
-          method: 'convertToAssets',
-          args: [ balanceShares ],
-        },
-      ],
+      return {
+        assets,
+      }
     },
   })
-
-  return {
-    shares: balanceShares || 0n,
-    assets: result?.[0]?.[0] || 0n,
-  }
 }
 
 
-export default wrapAbortPromise<GetStakeBalanceInput, Output>(getStakeBalance)
+export default getStakeBalance
