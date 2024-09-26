@@ -776,10 +776,9 @@ type Output = {
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `shares` | Balance in vault tokens  |
-| `assets` | Balance in ETH |
+| Name     | Description             |
+|----------|-------------------------|
+| `assets` | Balance in ETH          |
 
 #### Example:
 

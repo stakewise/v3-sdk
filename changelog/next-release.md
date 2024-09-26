@@ -44,7 +44,6 @@ type AddedOutput = {
 
 ### 4. Removed output field
 ### `sdk.osToken.getPosition`
-#### New output field:
 
 ```ts
 type RemovedOutput = {
@@ -66,3 +65,14 @@ type RemovedOutput = {
 | Name         | Type      | Required |
 |--------------|-----------|----------|
 | isClaimed    | `boolean` | **No**   | 
+
+---
+
+### 7. Removed output field
+### `sdk.vault.getStakeBalance`
+
+```ts
+type RemovedOutput = {
+  shares: bigint
+}
+```

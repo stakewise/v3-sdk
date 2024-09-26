@@ -20,18 +20,9 @@ const getStakeBalance = (values: GetStakeBalanceInput) => {
       address: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),
     },
-    modifyResult: (data) => {
-      const allocator = data?.allocators?.[0]
-      const ltvStatus = allocator?.ltvStatus
-      const assets = BigInt(allocator?.assets || 0)
-      const mintedOsTokenShares = BigInt(allocator?.mintedOsTokenShares || 0)
-
-      return {
-        assets,
-        ltvStatus,
-        mintedOsTokenShares,
-      }
-    },
+    modifyResult: (data) => ({
+      assets: BigInt(data?.allocators?.[0]?.assets || 0),
+    }),
   })
 }
 
