@@ -52,7 +52,7 @@ export default {
       leverageStrategy: '0x48cD14FDB8e72A03C8D952af081DBB127D6281fc',
     },
     special: {
-      stakeCalculator: ZeroAddress,
+      stakeCalculator: '0x29c708d94521af2c88402858049bd33e4606a3a2',
     },
   },
   tokens: {
