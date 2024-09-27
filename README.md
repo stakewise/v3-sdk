@@ -805,7 +805,7 @@ Getting the vault stats collection. With the help of this data it is possible to
 
 | Name   | Type     | Required | Description              |
 |--------|----------|----------|--------------------------|
-| first  | `number` | **Yes**  | The limit in days        |
+| daysCount  | `number` | **Yes**  | The limit in days        |
 | vaultAddress | `string` | **Yes**  | The address of the vault | 
 
 #### Returns:
@@ -830,7 +830,7 @@ type Output = {
 
 ```ts
 await sdk.vault.getVaultStats({
-  first: 30,
+  daysCount: 30,
   vaultAddress: '0x...',
 })
 ```
@@ -846,7 +846,7 @@ With the help of this data it is possible to build a chart.
 
 | Name         | Type     | Required | Description                  |
 |--------------|----------|----------|------------------------------|
-| first        | `number` | **Yes**  | The limit in days            |
+| daysCount        | `number` | **Yes**  | The limit in days            |
 | userAddress  | `string` | **Yes**  | The user address | 
 | vaultAddress | `string` | **Yes**  | The address of the vault     | 
 
@@ -876,7 +876,7 @@ type Output = {
 
 ```ts
 await sdk.vault.getUserStats({
-  first: 30,
+  daysCount: 30,
   userAddress: '0x...',
   vaultAddress: '0x...',
 })

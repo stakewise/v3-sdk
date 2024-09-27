@@ -4,23 +4,23 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-type GetStatsCollectionInput = {
-  first: number
+type GetUserStatsInput = {
+  daysCount: number
   options: StakeWise.Options
   userAddress: UserStatsQueryVariables['user']
   vaultAddress: UserStatsQueryVariables['vaultAddress']
 }
 
-const getUserStats = (input: GetStatsCollectionInput) => {
-  const { options, userAddress, vaultAddress, first } = input
+const getUserStats = (input: GetUserStatsInput) => {
+  const { options, userAddress, vaultAddress, daysCount } = input
 
   validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.number({ first })
+  validateArgs.number({ daysCount })
 
   return graphql.subgraph.vault.fetchUserStatsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      first,
+      daysCount,
       user: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),
     } as UserStatsQueryVariables,

@@ -4,9 +4,9 @@ type ChartStat = {
 }
 
 export type UserStatsMap = {
-  apy: { [timestamp: string]: ChartStat }
-  balance: { [timestamp: string]: ChartStat }
-  rewards: { [timestamp: string]: ChartStat }
+  apy: Record<string, ChartStat>
+  balance: Record<string, ChartStat>
+  rewards: Record<string, ChartStat>
 }
 
 export type ModifiedUserStats = {

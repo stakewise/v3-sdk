@@ -8,7 +8,7 @@ import type { VaultStatsQueryPayload } from '../../../../graphql/subgraph/vault'
 describe('modifyVaultStats function', () => {
   it('should correctly modify Vault Stats collection', () => {
     const sampleInput: VaultStatsQueryPayload = {
-      vaultStats_collection: [
+      vaultStats: [
         {
           timestamp: '1727049600000000',
           earnedAssets: '337535438824070468',
@@ -24,7 +24,7 @@ describe('modifyVaultStats function', () => {
       {
         rewards,
         balance,
-        time: 1727049600000,
+        time: 1727049600,
         apy: (rewards * 365 * 100) / (balance - rewards),
       },
     ]

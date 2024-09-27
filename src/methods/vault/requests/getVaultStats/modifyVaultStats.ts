@@ -5,7 +5,7 @@ import type { VaultStatsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 const modifyVaultStats = (data: VaultStatsQueryPayload): ModifiedVaultStats[] => {
-  const vaultStats = data?.vaultStats_collection || []
+  const vaultStats = data?.vaultStats || []
 
   return vaultStats.map((stat) => {
     const timeInSeconds = Number(stat.timestamp) / 1000000

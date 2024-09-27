@@ -8,7 +8,7 @@ import type { UserStatsQueryPayload } from '../../../../graphql/subgraph/vault'
 describe('modifyUserStats function', () => {
   it('should correctly modify User Stats collection', () => {
     const sampleInput: UserStatsQueryPayload = {
-      allocatorStats_collection: [
+      allocator: [
         {
           timestamp: '1727136000000000',
           earnedAssets: '27734011365427',
@@ -25,7 +25,7 @@ describe('modifyUserStats function', () => {
           totalAssets: '715688831266981809',
         },
       ],
-      exitRequestStats_collection: [
+      exitRequest: [
         {
           timestamp: '1727136000000000',
           earnedAssets: '27734011365427',
@@ -37,7 +37,7 @@ describe('modifyUserStats function', () => {
           totalAssets: '715660567531313050',
         },
       ],
-      rewardSplitterShareHolderStats_collection: [
+      rewardSplitter: [
         {
           timestamp: '1727049600000000',
           earnedAssets: '31538735933515',

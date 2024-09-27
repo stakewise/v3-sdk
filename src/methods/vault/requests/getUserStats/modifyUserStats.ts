@@ -35,9 +35,9 @@ const updateUserStatsMap = (
 }
 
 const modifyUserStats = (data: UserStatsQueryPayload): ModifiedUserStats => {
-  const allocatorStats = data?.allocatorStats_collection || []
-  const exitRequestStats = data?.exitRequestStats_collection || []
-  const rewardSplitterStats = data?.rewardSplitterShareHolderStats_collection || []
+  const allocatorStats = data?.allocator || []
+  const exitRequestStats = data?.exitRequest || []
+  const rewardSplitterStats = data?.rewardSplitter || []
 
   const userStatsMap: UserStatsMap = {
     apy: {},

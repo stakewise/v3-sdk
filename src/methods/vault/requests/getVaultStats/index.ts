@@ -7,19 +7,19 @@ import graphql from '../../../../graphql'
 type GetVaultStatsInput = {
   options: StakeWise.Options
   vaultAddress: VaultStatsQueryVariables['vaultAddress']
-  first: number
+  daysCount: number
 }
 
 const getVaultStats = (input: GetVaultStatsInput) => {
-  const { options, vaultAddress, first } = input
+  const { options, vaultAddress, daysCount } = input
 
   validateArgs.address({ vaultAddress })
-  validateArgs.number({ first })
+  validateArgs.number({ daysCount })
 
   return graphql.subgraph.vault.fetchVaultStatsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      first,
+      daysCount,
       vaultAddress: vaultAddress.toLowerCase(),
     } as VaultStatsQueryVariables,
     modifyResult: modifyVaultStats,
