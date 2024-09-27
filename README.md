@@ -799,7 +799,7 @@ await sdk.vault.getStakeBalance({
 
 #### Description:
 
-Getting the vault stats collection
+Getting the vault stats collection. With the help of this data it is possible to build a chart.
 
 #### Arguments:
 
@@ -840,6 +840,7 @@ await sdk.vault.getVaultStats({
 #### Description:
 
 Getting the user stats collection for current vault.
+With the help of this data it is possible to build a chart.
 
 #### Arguments:
 

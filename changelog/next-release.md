@@ -77,3 +77,24 @@ type RemovedOutput = {
 
 ### 8. Deprecated method `sdk.osToken.getConfig`
 ### Use `sdk.vault.getVault` instead to get the result in `osTokenConfig` field.
+
+---
+
+### 9. Add methods
+### `sdk.vault.getVaultStats` & `sdk.vault.getUserStats`
+#### With the help of this data it is possible to build a chart.
+
+---
+
+---
+
+### 10. Deprecated method `sdk.vault.getSnapshots`
+### Use `sdk.vault.getVaultStats` instead 
+
+---
+---
+
+### 11. Deprecated method `sdk.vault.getUserRewards`
+### Use `sdk.vault.getUserStats` instead
+
+---
