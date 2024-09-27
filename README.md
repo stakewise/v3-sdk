@@ -211,6 +211,8 @@ await sdk.vault.getStakerActions({
 
 #### Description:
 
+Deprecated, use `sdk.vault.getVaultStats` instead.
+
 TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
 
 #### Arguments:
@@ -282,6 +284,8 @@ await sdk.vault.getScorePercentiles()
 ### `sdk.vault.getUserRewards`
 
 #### Description:
+
+Deprecated, use `sdk.vault.getUserStats` instead.
 
 Daily rewards for the user who has made a deposit in the vault. With the help of this data it is possible to build a chart.
 
