@@ -27,6 +27,7 @@ export default {
     */
     getRate,
     /**
+     * @deprecated use sdk.vault.getConfig instead to get data from osTokenConfig
      * @description os token ltvPercent and thresholdPercent for provided vault
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetconfig
     */
