@@ -4,6 +4,8 @@ import getEigenPods from './requests/getEigenPods'
 import getSnapshots from './requests/getSnapshots'
 import getWhitelist from './requests/getWhitelist'
 import getBlocklist from './requests/getBlocklist'
+import getUserStats from './requests/getUserStats'
+import getVaultStats from './requests/getVaultStats'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
 import getMaxWithdraw from './requests/getMaxWithdraw'
@@ -66,6 +68,7 @@ export default {
      * @description Daily rewards for the user who has made a deposit in the vault.
      * With the help of this data it is possible to build a chart.
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserrewards
+     * @deprecated use https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
     */
     getUserRewards,
     /**
@@ -87,6 +90,7 @@ export default {
     /**
      * @description TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetsnapshots
+     * @deprecated use https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvaultstats
     */
     getSnapshots,
     /**
@@ -108,6 +112,17 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvault
     */
     getVault,
+    /**
+     * @description Returns the vault stats collection. With the help of this data it is possible to build a chart.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvaultstats
+     */
+    getVaultStats,
+    /**
+     * @description Returns the user stats collection for current vault.
+     * With the help of this data it is possible to build a chart.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
+     */
+    getUserStats,
   },
   transactions: {
     /**

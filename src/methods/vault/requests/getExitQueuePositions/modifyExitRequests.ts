@@ -1,4 +1,4 @@
-import { ExitQueueQueryPayload } from 'graphql/subgraph/exitQueue'
+import { ExitQueueQueryPayload } from '../../../../graphql/subgraph/exitQueue'
 
 
 type ExitRequest = Omit<ExitQueueQueryPayload['exitRequests'][number], 'withdrawalTimestamp'> & {
