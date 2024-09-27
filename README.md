@@ -99,7 +99,7 @@ const sdk = new StakeWiseSDK({
 | [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
 | [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
 | [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                                   |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     | [osToken.getConfig](#sdkostokengetconfig)                     |                                                                   |
 | [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
@@ -1021,6 +1021,38 @@ type Output = string
 
 ```ts
 await sdk.utils.getRate()
+```
+---
+### `sdk.osToken.getConfig`
+
+#### Description:
+
+Deprecated, use `const { osTokenConfig } = await sdk.vault.getVault()` instead.
+Returns basic information on the token
+
+#### Arguments:
+
+| Name         | Type     | Required | Description   |
+|--------------|----------|----------|---------------|
+| vaultAddress | `string` | **Yes**  | Vault address |
+
+#### Returns:
+
+```ts
+type Output = {
+  ltvPercent: bigint
+  thresholdPercent: bigint
+}
+```
+| Name | Description |
+|------|-------------|
+| `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
+| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
+
+#### Example:
+
+```ts
+await sdk.osToken.getConfig({ vaultAddress: '0x...' })
 ```
 ---
 ## RewardSplitter

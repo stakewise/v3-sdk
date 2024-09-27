@@ -1,6 +1,3 @@
-- Breaking change: Removed `sdk.osToken.getConfig`. Use `sdk.vault.getVault` instead to get osToken config data `{ osTokenConfig: { ltvPercent, thresholdPercent } }`.
-- Added canHarvest: boolean to `sdk.vault.getHarvestParams` response.
-
 # Updates
 ### 1. `sdk.vault.getVault`
 
@@ -76,3 +73,7 @@ type RemovedOutput = {
   shares: bigint
 }
 ```
+---
+
+### 8. Deprecated method `sdk.osToken.getConfig`
+### Use `sdk.vault.getVault` instead to get the result in `osTokenConfig` field.
