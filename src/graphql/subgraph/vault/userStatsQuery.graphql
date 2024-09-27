@@ -1,0 +1,29 @@
+query UserStats($user: Bytes! $vaultAddress: String! $first: Int!) {
+  allocatorStats_collection(
+    interval: day
+    where: { allocator_: { address: $user, vault: $vaultAddress } }
+    first: $first
+  ) {
+    timestamp
+    earnedAssets
+    totalAssets
+  }
+  exitRequestStats_collection(
+    interval: day
+    where: { exitRequest_: { receiver: $user, vault: $vaultAddress } }
+    first: $first
+  ) {
+    timestamp
+    earnedAssets
+    totalAssets
+  }
+  rewardSplitterShareHolderStats_collection(
+    interval: day
+    where: { rewardSpliterShareHolder_: { vault: $vaultAddress }}
+    first: $first
+  ) {
+    timestamp
+    earnedAssets
+    totalAssets
+  }
+}

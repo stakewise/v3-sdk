@@ -1,0 +1,11 @@
+query VaultStats($vaultAddress: String!  $first: Int!) {
+  vaultStats_collection(
+    interval: day
+    where: { vault: $vaultAddress }
+    first: $first
+  ) {
+    timestamp
+    earnedAssets
+    totalAssets
+  }
+}
