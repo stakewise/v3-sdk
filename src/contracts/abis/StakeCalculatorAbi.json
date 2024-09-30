@@ -18,6 +18,11 @@
       },
       {
         "internalType": "address",
+        "name": "osToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "osTokenController",
         "type": "address"
       }
@@ -77,7 +82,7 @@
             "type": "tuple"
           }
         ],
-        "internalType": "struct Helpers.StakeInput",
+        "internalType": "struct StakeHelpers.StakeInput",
         "name": "inputData",
         "type": "tuple"
       }
@@ -97,7 +102,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct Helpers.StakeOutput",
+        "internalType": "struct StakeHelpers.StakeOutput",
         "name": "outputData",
         "type": "tuple"
       }
@@ -152,7 +157,7 @@
             "type": "tuple"
           }
         ],
-        "internalType": "struct Helpers.UnstakeInput",
+        "internalType": "struct StakeHelpers.UnstakeInput",
         "name": "inputData",
         "type": "tuple"
       }
@@ -177,9 +182,86 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct Helpers.UnstakeOutput",
+        "internalType": "struct StakeHelpers.UnstakeOutput",
         "name": "outputData",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "vault",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "rewardsRoot",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "int160",
+                "name": "reward",
+                "type": "int160"
+              },
+              {
+                "internalType": "uint160",
+                "name": "unlockedMevReward",
+                "type": "uint160"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+              }
+            ],
+            "internalType": "struct IKeeperRewards.HarvestParams",
+            "name": "harvestParams",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct StakeHelpers.BalanceInput",
+        "name": "inputData",
+        "type": "tuple"
+      }
+    ],
+    "name": "getBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "receivedAssets",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "multicall",
+    "outputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
       }
     ],
     "stateMutability": "nonpayable",
