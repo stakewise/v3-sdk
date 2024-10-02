@@ -1,4 +1,4 @@
-import type { UserExchangeRewardsQueryVariables, UserExchangeRewardsQueryPayload } from '../../../../graphql/subgraph/vault'
+import type { UserExchangeRewardsQueryVariables } from '../../../../graphql/subgraph/vault'
 import { apiUrls, Network, validateArgs, configs } from '../../../../utils'
 import modifyUserExchangeRewards from './modifyUserExchangeRewards'
 import graphql from '../../../../graphql'
