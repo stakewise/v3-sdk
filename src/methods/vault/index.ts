@@ -125,9 +125,8 @@ export default {
      */
     getUserStats,
     /**
-     * @description Returns the user stats collection for current vault.
-     * With the help of this data it is possible to build a chart.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
+     * @description Returns the user rewards collection for current vault, taking into account exchange rates by a specified date.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserexchangerewards
      */
     getUserExchangeRewards,
   },
