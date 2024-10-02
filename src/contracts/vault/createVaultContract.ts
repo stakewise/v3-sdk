@@ -26,9 +26,8 @@ import createContract from '../createContract'
 import { ModifiedVault } from '../../methods/vault/requests/getVault/types'
 
 
-type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate' | 'isRestake'>> & {
+type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate' | 'isRestake' | 'isGenesis'>> & {
   chainId?: Network
-  isGenesis?: boolean
 }
 
 type CreateContractsInput<T> = {
