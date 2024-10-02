@@ -98,3 +98,13 @@ type RemovedOutput = {
 ### Use `sdk.vault.getUserStats` instead
 
 ---
+
+### 12. Added method getFiatRates
+### `sdk.utils.getFiatRates`
+
+---
+
+### 13. Added method getUserExchangeRewards
+### `sdk.vault.getUserExchangeRewards`
+
+---

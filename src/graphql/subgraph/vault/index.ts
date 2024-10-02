@@ -15,3 +15,6 @@ export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } f
 
 export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql'
 export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql'
+
+export { fetchUserExchangeRewardsQuery } from './userExchangeRewardsQuery.graphql'
+export type { UserExchangeRewardsQueryPayload, UserExchangeRewardsQueryVariables } from './userExchangeRewardsQuery.graphql'

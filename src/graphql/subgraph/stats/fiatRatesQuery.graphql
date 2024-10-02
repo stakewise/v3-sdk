@@ -1,0 +1,8 @@
+query FiatRates {
+  networks {
+    assetsUsdRate
+    usdToEurRate
+    usdToGbpRate
+    usdToDaiRate
+  }
+}

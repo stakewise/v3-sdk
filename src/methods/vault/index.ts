@@ -15,6 +15,7 @@ import getStakerActions from './requests/getStakerActions'
 import getRewardSplitters from './requests/getRewardSplitters'
 import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
+import getUserExchangeRewards from './requests/getUserExchangeRewards'
 
 // Transactions
 import { default as create } from './transactions/create'
@@ -123,6 +124,12 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
      */
     getUserStats,
+    /**
+     * @description Returns the user stats collection for current vault.
+     * With the help of this data it is possible to build a chart.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
+     */
+    getUserExchangeRewards,
   },
   transactions: {
     /**
