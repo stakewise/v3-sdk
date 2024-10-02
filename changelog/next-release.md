@@ -86,16 +86,13 @@ type RemovedOutput = {
 
 ---
 
----
 
-### 10. Deprecated method `sdk.vault.getSnapshots`
+### 10. Removed method `sdk.vault.getSnapshots`
 ### Use `sdk.vault.getVaultStats` instead 
 
 ---
----
 
-### 11. Deprecated method `sdk.vault.getUserRewards`
-### Use `sdk.vault.getUserStats` instead
+### 11. Update method `sdk.vault.getUserRewards`
 
 ---
 
@@ -104,7 +101,3 @@ type RemovedOutput = {
 
 ---
 
-### 13. Added method getUserExchangeRewards
-### `sdk.vault.getUserExchangeRewards`
-
----

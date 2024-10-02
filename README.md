@@ -92,7 +92,6 @@ const sdk = new StakeWiseSDK({
 | **Vault**                                                       | **osToken**                                                  | **RewardSplitter**                                                |
 |-----------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------|
 | [vault.getStakerActions](#sdkvaultgetstakeractions)             | [osToken.getBurnAmount](#sdkostokengetburnamount)            | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
-| [vault.getSnapshots](#sdkvaultgetsnapshots)                     | [osToken.getHealthFactor](#sdkostokengethealthfactor)        |                                                                   |
 | [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions)   | [osToken.getAPY](#sdkostokengetapy)                          |                                                                   |
 | [vault.getValidators](#sdkvaultgetvalidators)                   | [osToken.getPosition](#sdkostokengetposition)                |                                                                   |
 | [vault.getVault](#sdkvaultgetvault)                             | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
@@ -100,13 +99,12 @@ const sdk = new StakeWiseSDK({
 | [vault.getHarvestParams](#sdkvaultgetharvestparams)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
 | [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
 | [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)       | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)                 |                                                              |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)                 |   [osToken.getHealthFactor](#sdkostokengethealthfactor)                                                            |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                     |                                                              |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                     |                                                              |                                                                   |
 | [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)         |                                                              |                                                                   |
 | [vault.getVaultStats](#sdkvaultgetvaultstats)                   |                                                               |                                                                   |
 | [vault.getUserStats](#sdkvaultgetuserstats)                     |                                                              |                                                                   |
-| [vault.getUserExchangeRewards](#sdkvaultgetuserexchangerewards) |                                                              |                                                                   |
 
 | **Utils**                                           |
 |-----------------------------------------------------|
@@ -209,49 +207,6 @@ await sdk.vault.getStakerActions({
 })
 ```
 ---
-### `sdk.vault.getSnapshots`
-
-#### Description:
-
-Deprecated, use `sdk.vault.getVaultStats` instead.
-
-TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
-
-#### Arguments:
-
-| Name         | Type     | Type            | Description |
-|--------------|----------|-----------------|---------|
-| vaultAddress | `string` | **Yes**     | - |
-| dateFrom     | `number` | **Yes**     | Time to start |
-
-#### Returns:
-
-```ts
-type Snapshot = {
-  APY: number
-  TVL: string
-}
-
-type Output = {
-  days: Record<number, Snapshot>
-  first: Snapshot
-}
-```
-
-| Name | Description |
-|------|-------------|
-| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
-| `first` | We always send the very first saved snapshot regardless of the request parameters, this helps for rendering the chart |
-
-#### Example:
-
-```ts
-await sdk.vault.getSnapshots({
-  vaultAddress: '0x...',
-  dateFrom: 1695730032793,
-})
-```
----
 ### `sdk.vault.getScorePercentiles`
 
 #### Description:
@@ -287,47 +242,45 @@ await sdk.vault.getScorePercentiles()
 
 #### Description:
 
-Deprecated, use `sdk.vault.getUserStats` instead.
 
-Daily rewards for the user who has made a deposit in the vault. With the help of this data it is possible to build a chart.
+Daily rewards for the user who has made a deposit in the vault.
 
 #### Arguments:
 
 | Name | Type     | Type        | Description |
 |------|----------|-------------|---|
-| vaultAddress | `string` | **Yes** | - |
-| userAddress | `string` | **Yes** | - |
-| dateFrom | `number` | **Yes** | Time to start |
-| dateTo | `number` | **No** | Time to end |
-| fillGaps | `boolean` | **No** | Fill in the empty days with zeros |
+| dateFrom | `number` | **Yes** | Time to start in microseconds |
+| dateTo | `number` | **No** | Time to end  in microseconds              |
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
 
 #### Returns:
 
 ```ts
-type UserReward = {
-  date: number
-  sumRewards: string
-  dailyRewards: string
-  dailyRewardsEur: string
-  dailyRewardsGbp: string
-  dailyRewardsUsd: string
-}
-
 type Output = {
-  days: Record<number, UserReward>
+  date: number
+  dailyRewards: number
+  dailyRewardsEur: number
+  dailyRewardsGbp: number
+  dailyRewardsUsd: number
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
+| Name | Description               |
+|------|---------------------------|
+| `date` | Сurrent rate date         |
+| `dailyRewards` | Daily reward asset in ETH |
+| `dailyRewardsEur` | Daily reward asset in EUR |
+| `dailyRewardsGbp` | Daily reward asset in GBP |
+| `dailyRewardsUsd` | Daily reward asset in USD |
 
 #### Example:
 
 ```ts
-await sdk.vault.getUserRewards({
+await sdk.vault.getUserExchangeRewards({
   userAddress: '0x...',
   vaultAddress: '0x...',
+  dateTo: 1695730032793,
   dateFrom: 1695730032793,
 })
 ```
@@ -882,52 +835,6 @@ await sdk.vault.getUserStats({
   daysCount: 30,
   userAddress: '0x...',
   vaultAddress: '0x...',
-})
-```
----
-### `sdk.vault.getUserExchangeRewards`
-
-#### Description:
-
-Getting the user rewards collection for current vault, taking into account exchange rates by a specified date.
-
-#### Arguments:
-
-| Name         | Type     | Required | Description                   |
-|--------------|----------|----------|-------------------------------|
-| dateFrom | `number` | **Yes** | Time to start in microseconds |
-| dateTo | `number` | **No** | Time to end  in microseconds              |
-| userAddress  | `string` | **Yes**  | The user address              | 
-| vaultAddress | `string` | **Yes**  | The address of the vault      | 
-
-#### Returns:
-
-```ts
-type Output = {
-  date: number
-  dailyRewards: number
-  dailyRewardsEur: number
-  dailyRewardsGbp: number
-  dailyRewardsUsd: number
-}
-```
-
-| Name | Description               |
-|------|---------------------------|
-| `date` | Сurrent rate date         |
-| `dailyRewards` | Daily reward asset in ETH |
-| `dailyRewardsEur` | Daily reward asset in EUR |
-| `dailyRewardsGbp` | Daily reward asset in GBP |
-| `dailyRewardsUsd` | Daily reward asset in USD |
-
-#### Example:
-
-```ts
-await sdk.vault.getUserExchangeRewards({
-  userAddress: '0x...',
-  vaultAddress: '0x...',
-  dateTo: 1695730032793,
-  dateFrom: 1695730032793,
 })
 ```
 ---
