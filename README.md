@@ -277,7 +277,7 @@ type Output = {
 #### Example:
 
 ```ts
-await sdk.vault.getUserExchangeRewards({
+await sdk.vault.getUserRewards({
   userAddress: '0x...',
   vaultAddress: '0x...',
   dateTo: 1695730032793,
