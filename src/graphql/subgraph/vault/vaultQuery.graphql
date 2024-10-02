@@ -18,6 +18,7 @@ query Vault($address: ID!) {
     createdAt
     mevEscrow
     tokenName
+    isGenesis
     feePercent
     totalAssets
     isBlocklist
