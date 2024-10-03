@@ -89,28 +89,28 @@ const sdk = new StakeWiseSDK({
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                     | **osToken**                                                  | **RewardSplitter**                                                |
-|---------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------|
-| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)            | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
-| [vault.getSnapshots](#sdkvaultgetsnapshots)                   | [osToken.getHealthFactor](#sdkostokengethealthfactor)        |                                                                   |
-| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                          |                                                                   |
-| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                |                                                                   |
-| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                              |                                                                   |
-| [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                              |                                                                   |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                              |                                                                   |
-| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                              |                                                                   |
-| [vault.getVaultStats](#sdkvaultgetvaultstats)                 |                                                               |                                                                   |
-| [vault.getUserStats](#sdkvaultgetuserstats)                   |                                                              |                                                                   |
+| **Vault**                                                       | **osToken**                                                  | **RewardSplitter**                                                |
+|-----------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)             | [osToken.getBurnAmount](#sdkostokengetburnamount)            | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions)   | [osToken.getAPY](#sdkostokengetapy)                          |                                                                   |
+| [vault.getValidators](#sdkvaultgetvalidators)                   | [osToken.getPosition](#sdkostokengetposition)                |                                                                   |
+| [vault.getVault](#sdkvaultgetvault)                             | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)                 | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
+| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)       | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)                 |   [osToken.getHealthFactor](#sdkostokengethealthfactor)                                                            |                                                                   |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                     |                                                              |                                                                   |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                     |                                                              |                                                                   |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)         |                                                              |                                                                   |
+| [vault.getVaultStats](#sdkvaultgetvaultstats)                   |                                                               |                                                                   |
+| [vault.getUserStats](#sdkvaultgetuserstats)                     |                                                              |                                                                   |
 
 | **Utils**                                           |
 |-----------------------------------------------------|
 | [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
 | [utils.getTransactions](#sdkutilsgettransactions)   |
+| [utils.getFiatRates](#sdkutilsgetfiatrates)         |
 
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
@@ -207,49 +207,6 @@ await sdk.vault.getStakerActions({
 })
 ```
 ---
-### `sdk.vault.getSnapshots`
-
-#### Description:
-
-Deprecated, use `sdk.vault.getVaultStats` instead.
-
-TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
-
-#### Arguments:
-
-| Name         | Type     | Type            | Description |
-|--------------|----------|-----------------|---------|
-| vaultAddress | `string` | **Yes**     | - |
-| dateFrom     | `number` | **Yes**     | Time to start |
-
-#### Returns:
-
-```ts
-type Snapshot = {
-  APY: number
-  TVL: string
-}
-
-type Output = {
-  days: Record<number, Snapshot>
-  first: Snapshot
-}
-```
-
-| Name | Description |
-|------|-------------|
-| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
-| `first` | We always send the very first saved snapshot regardless of the request parameters, this helps for rendering the chart |
-
-#### Example:
-
-```ts
-await sdk.vault.getSnapshots({
-  vaultAddress: '0x...',
-  dateFrom: 1695730032793,
-})
-```
----
 ### `sdk.vault.getScorePercentiles`
 
 #### Description:
@@ -285,40 +242,37 @@ await sdk.vault.getScorePercentiles()
 
 #### Description:
 
-Deprecated, use `sdk.vault.getUserStats` instead.
 
-Daily rewards for the user who has made a deposit in the vault. With the help of this data it is possible to build a chart.
+Daily rewards for the user who has made a deposit in the vault.
 
 #### Arguments:
 
-| Name | Type     | Type        | Description |
-|------|----------|-------------|---|
-| vaultAddress | `string` | **Yes** | - |
-| userAddress | `string` | **Yes** | - |
-| dateFrom | `number` | **Yes** | Time to start |
-| dateTo | `number` | **No** | Time to end |
-| fillGaps | `boolean` | **No** | Fill in the empty days with zeros |
+| Name | Type     | Required | Description |
+|------|----------|----------|---|
+| dateFrom | `number` | **Yes**  | Time to start in milliseconds |
+| dateTo | `number` | **Yes**  | Time to end  in milliseconds              |
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
 
 #### Returns:
 
 ```ts
-type UserReward = {
-  date: number
-  sumRewards: string
-  dailyRewards: string
-  dailyRewardsEur: string
-  dailyRewardsGbp: string
-  dailyRewardsUsd: string
-}
-
 type Output = {
-  days: Record<number, UserReward>
+  date: number
+  dailyRewards: number
+  dailyRewardsEur: number
+  dailyRewardsGbp: number
+  dailyRewardsUsd: number
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
+| Name | Description               |
+|------|---------------------------|
+| `date` | Сurrent rate date         |
+| `dailyRewards` | Daily reward asset in ETH |
+| `dailyRewardsEur` | Daily reward asset in EUR |
+| `dailyRewardsGbp` | Daily reward asset in GBP |
+| `dailyRewardsUsd` | Daily reward asset in USD |
 
 #### Example:
 
@@ -326,7 +280,8 @@ type Output = {
 await sdk.vault.getUserRewards({
   userAddress: '0x...',
   vaultAddress: '0x...',
-  dateFrom: 1695730032793,
+  dateTo: 1727827200000,
+  dateFrom: 1721606400000,
 })
 ```
 ---
@@ -866,12 +821,12 @@ type Output = {
 }
 ```
 
-| Name | Description                                                                                             |
-|------|---------------------------------------------------------------------------------------------------------|
-| `time` | Date and time for each data point                                                                       |
-| `apy` | Current APY based on time, rewards and balance. The information is taken from allocatorStats_collection |
-| `rewards` | Number of assets earned by the user in current vault during the interval in ETH                         |
-| `balance` | Total assets by the user in current vault at the moment of time in ETH                                                 |
+| Name | Description                                                                                            |
+|------|--------------------------------------------------------------------------------------------------------|
+| `time` | Date and time for each data point                                                                      |
+| `apy` | Current APY based on time, rewards and balance. |
+| `rewards` | Number of assets earned by the user in current vault during the interval in ETH                        |
+| `balance` | Total assets by the user in current vault at the moment of time in ETH                                                |
 
 #### Example:
 
@@ -883,6 +838,7 @@ await sdk.vault.getUserStats({
 })
 ```
 ---
+
 ## API-osToken
 
 ### `sdk.osToken.getBurnAmount`
@@ -1368,6 +1324,28 @@ type Output = Array<{
 
 ```ts
 await sdk.utils.getTransactions({ hash: '0x...' })
+```
+---
+### `sdk.utils.getFiatRates`
+
+#### Description:
+
+Returns the USD, EUR, GBP exchange rates for the current asset
+
+#### Returns:
+
+```ts
+type Output = {
+  assetsUsdRate: number
+  usdToEurRate: number
+  usdToGbpRate: number
+}
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getFiatRates()
 ```
 ---
 ## Transactions

@@ -86,15 +86,38 @@ type RemovedOutput = {
 
 ---
 
----
 
-### 10. Deprecated method `sdk.vault.getSnapshots`
+### 10. Removed method `sdk.vault.getSnapshots`
 ### Use `sdk.vault.getVaultStats` instead 
 
 ---
+
+### 11. Update method `sdk.vault.getUserRewards`
+#### Update output format:
+
+```ts
+type Output = {
+  date: number
+  dailyRewards: number
+  dailyRewardsEur: number
+  dailyRewardsGbp: number
+  dailyRewardsUsd: number
+}[]
+```
+
+#### New arguments:
+
+| Name | Type     | Type        | Description |
+|------|----------|-------------|---|
+| dateFrom | `number` | **Yes** | Time to start in milliseconds |
+| dateTo | `number` | **Yes** | Time to end  in milliseconds              |
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
+
 ---
 
-### 11. Deprecated method `sdk.vault.getUserRewards`
-### Use `sdk.vault.getUserStats` instead
+### 12. Added method getFiatRates
+### `sdk.utils.getFiatRates`
 
 ---
+

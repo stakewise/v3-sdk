@@ -4,9 +4,6 @@ export type { SnapshotsQueryPayload, SnapshotsQueryVariables } from './snapshots
 export { fetchValidatorsQuery } from './validatorsQuery.graphql'
 export type { ValidatorsQueryPayload, ValidatorsQueryVariables } from './validatorsQuery.graphql'
 
-export { fetchUserRewardsQuery } from './userRewardsQuery.graphql'
-export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql'
-
 export { fetchScorePercentilesQuery } from './scorePercentilesQuery.graphql'
 export type { ScorePercentilesQueryPayload, ScorePercentilesQueryVariables } from './scorePercentilesQuery.graphql'
 

@@ -7,6 +7,9 @@ export type { UserStatsQueryPayload, UserStatsQueryVariables } from './userStats
 export { fetchVaultStatsQuery } from './vaultStatsQuery.graphql'
 export type { VaultStatsQueryPayload, VaultStatsQueryVariables } from './vaultStatsQuery.graphql'
 
+export { fetchUserRewardsQuery } from './userRewardsQuery.graphql'
+export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql'
+
 export { fetchHarvestParamsQuery } from './harvestParamsQuery.graphql'
 export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './harvestParamsQuery.graphql'
 

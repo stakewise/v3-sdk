@@ -1,7 +1,6 @@
 // Requests
 import getVault from './requests/getVault'
 import getEigenPods from './requests/getEigenPods'
-import getSnapshots from './requests/getSnapshots'
 import getWhitelist from './requests/getWhitelist'
 import getBlocklist from './requests/getBlocklist'
 import getUserStats from './requests/getUserStats'
@@ -66,9 +65,7 @@ export default {
     getStakeBalance,
     /**
      * @description Daily rewards for the user who has made a deposit in the vault.
-     * With the help of this data it is possible to build a chart.
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserrewards
-     * @deprecated use https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
     */
     getUserRewards,
     /**
@@ -87,12 +84,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgeteigenpods
      */
     getEigenPods,
-    /**
-     * @description TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetsnapshots
-     * @deprecated use https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvaultstats
-    */
-    getSnapshots,
     /**
      * @description Fetch the whitelist for private vaults. Only addresses included in
      * this list are eligible to stake in the private vault. The number of addresses in
