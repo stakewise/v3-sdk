@@ -14,12 +14,12 @@ type Input = {
 export const modifyReward = (input: Input) => {
   const { reward, assetsUsdRate, usdToGbpRate, usdToEurRate } = input
 
-  const timeInSeconds = Number(reward.timestamp) / 1000000
+  const timeInMilliSeconds = Number(reward.timestamp) / 1_000
   const earnedAssetsInEther = Number(formatEther(reward.earnedAssets))
   const earnedAssetsInUsd = earnedAssetsInEther * assetsUsdRate
 
   return {
-    date: timeInSeconds,
+    date: timeInMilliSeconds,
     dailyRewards: earnedAssetsInEther,
     dailyRewardsUsd: earnedAssetsInUsd || 0,
     dailyRewardsEur: earnedAssetsInUsd * Number(usdToEurRate) || 0,
@@ -37,8 +37,8 @@ const modifyUserRewards = (mainnetGbpRates: GbpRate[]) => (data: UserRewardsQuer
     return modifyReward({
       reward: stat,
       usdToGbpRate: Number(gbpRate),
-      assetsUsdRate: Number(exchangeRateStats[index]?.assetsUsdRate),
       usdToEurRate: Number(exchangeRateStats[index]?.usdToEurRate),
+      assetsUsdRate: Number(exchangeRateStats[index]?.assetsUsdRate),
     })
   })
 

@@ -34,14 +34,14 @@ describe('modifyUserRewards and modifyUserRewards functions', () => {
   it('should correctly modify multiple rewards', () => {
     const expectedResult = [
       {
-        date: 1727049600,
+        date: 1727049600000,
         dailyRewards: Number(formatEther('31538735933515')),
         dailyRewardsUsd: 0.08351510250904134,
         dailyRewardsEur: 0.075110263970718,
         dailyRewardsGbp: 0.06252300393714494,
       },
       {
-        date: 1727136000,
+        date: 1727136000000,
         dailyRewards: Number(formatEther('27734011365427')),
         dailyRewardsUsd: 0.07400892282546662,
         dailyRewardsEur: 0.0661514532128449,

@@ -6,7 +6,7 @@ import type { ModifyUserRewards, GbpRate } from './types'
 
 
 type GetUserRewardsInput = {
-  dateTo?: number
+  dateTo: number
   dateFrom: number
   options: StakeWise.Options
   userAddress: UserRewardsQueryVariables['user']
@@ -19,9 +19,9 @@ const getMainnetGbpRate = (input: GetUserRewardsInput) => {
   return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: configs[Network.Mainnet].api.subgraph,
     variables: {
-      dateTo: String(dateTo),
-      dateFrom: String(dateFrom),
+      dateTo: String(dateTo * 1_000),
       user: userAddress.toLowerCase(),
+      dateFrom: String(dateFrom * 1_000),
       vaultAddress: vaultAddress.toLowerCase(),
     } as UserRewardsQueryVariables,
     modifyResult: (data) : GbpRate[] => {
@@ -34,11 +34,7 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
   const { options, vaultAddress, userAddress, dateFrom, dateTo } = input
 
   validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.number({ dateFrom })
-
-  if (dateTo) {
-    validateArgs.number({ dateTo })
-  }
+  validateArgs.number({ dateFrom, dateTo })
 
   const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
   const mainnetGbpRates = isGnosis ? await getMainnetGbpRate(input) : []
@@ -46,9 +42,9 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
   return graphql.subgraph.vault.fetchUserRewardsQuery<ModifyUserRewards[]>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      dateTo: String(dateTo),
-      dateFrom: String(dateFrom),
+      dateTo: String(dateTo * 1_000),
       user: userAddress.toLowerCase(),
+      dateFrom: String(dateFrom * 1_000),
       vaultAddress: vaultAddress.toLowerCase(),
     } as UserRewardsQueryVariables,
     modifyResult: modifyUserRewards(mainnetGbpRates),

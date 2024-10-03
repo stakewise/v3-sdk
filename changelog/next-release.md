@@ -93,6 +93,26 @@ type RemovedOutput = {
 ---
 
 ### 11. Update method `sdk.vault.getUserRewards`
+#### Update output format:
+
+```ts
+type Output = {
+  date: number
+  dailyRewards: number
+  dailyRewardsEur: number
+  dailyRewardsGbp: number
+  dailyRewardsUsd: number
+}[]
+```
+
+#### New arguments:
+
+| Name | Type     | Type        | Description |
+|------|----------|-------------|---|
+| dateFrom | `number` | **Yes** | Time to start in milliseconds |
+| dateTo | `number` | **Yes** | Time to end  in milliseconds              |
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
 
 ---
 
