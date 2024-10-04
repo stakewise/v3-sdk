@@ -53,7 +53,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
-    whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
     whitelistManager: vault.whitelister ? getAddress(vault.whitelister) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',

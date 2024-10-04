@@ -9,28 +9,31 @@ type AddedOutput = {
     ltvPercent: string
     thresholdPercent: string
   }
+  isGenesis: boolean
 }
 ```
 
-| Name            | Description                                                                                                                                                                                                                                         |
-|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name | Description |
+|------|-------------|
 | `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
+| `isGenesis` | This vault is owned by stakewise |
 
 ---
 ### 2. `sdk.vault.getHarvestParams`
 
-#### New output field:
+#### New output format:
 
 ```ts
-type AddedOutput = {
-  canHarvest: boolean
+type Output = {
+  canHarvest: boolean // NEW
+  params: {
+    reward: string
+    proof: Array<string>
+    rewardsRoot: string
+    unlockedMevReward: string 
+  }
 }
 ```
-
----
-
-### 3. Removed method
-### `sdk.vault.getVault`
 
 ---
 
@@ -52,6 +55,7 @@ type RemovedOutput = {
 
 ### 5. Added method getStakewiseStats
 ### `sdk.utils.getStakewiseStats`
+#### Getting common stakewise data for the network
 
 ---
 
@@ -86,7 +90,6 @@ type RemovedOutput = {
 
 ---
 
-
 ### 10. Removed method `sdk.vault.getSnapshots`
 ### Use `sdk.vault.getVaultStats` instead 
 
@@ -96,13 +99,13 @@ type RemovedOutput = {
 #### Update output format:
 
 ```ts
-type Output = {
+type Output = Array<{
   date: number
   dailyRewards: number
   dailyRewardsEur: number
   dailyRewardsGbp: number
   dailyRewardsUsd: number
-}[]
+}>
 ```
 
 #### New arguments:
@@ -118,6 +121,7 @@ type Output = {
 
 ### 12. Added method getFiatRates
 ### `sdk.utils.getFiatRates`
+#### Getting fiat values for the network
 
 ---
 
