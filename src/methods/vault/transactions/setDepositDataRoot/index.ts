@@ -4,12 +4,31 @@ import type { SetDepositDataRoot } from './types'
 import setDepositDataRootGas from './setDepositDataRootGas'
 import setDepositDataRootEncode from './setDepositDataRootEncode'
 
+import { getVaultVersion } from '../../../../utils'
+
 
 const setDepositDataRoot: SetDepositDataRoot = async (values) => {
-  const { provider, userAddress, vaultAddress, depositDataRoot } = values
+  const { provider, userAddress, vaultAddress, depositDataRoot, contracts, options } = values
+
+  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
+
+  if (isV1Version) {
+    const vaultContract = contracts.helpers.createVault({
+      vaultAddress,
+      options: {
+        chainId: options.network,
+      },
+    })
+
+    const signer = await provider.getSigner(userAddress)
+    const signedVaultContract = vaultContract.connect(signer)
+
+    const result = await signedVaultContract.setValidatorsRoot(depositDataRoot)
+
+    return result.hash
+  }
 
   const contract = commonLogic(values)
-
   const signer = await provider.getSigner(userAddress)
   const signedDepositDataRegistryContract = contract.connect(signer)
 

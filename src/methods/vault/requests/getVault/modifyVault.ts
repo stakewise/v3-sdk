@@ -22,7 +22,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     apy,
     admin,
     address,
-    version,
     mevEscrow,
     createdAt,
     feePercent,
@@ -42,7 +41,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
   return {
     ...rest,
     apy: Number(apy),
-    version: Number(version),
     isSmoothingPool: !mevEscrow,
     feePercent: feePercent / 100,
     vaultAdmin: getAddress(admin),

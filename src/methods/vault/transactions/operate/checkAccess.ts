@@ -4,7 +4,6 @@ import {
   checkAdminAccess,
   checkWhitelisterAccess,
   checkBlocklistManagerAccess,
-  checkDepositDataManagerAccess,
 } from '../util'
 
 
@@ -13,8 +12,8 @@ type Action<Input, Output> = (props: Input) => Promise<Output>
 const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
-      blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
-      depositDataRoot, blocklistManager, metadataIpfsHash, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
+      blocklist, whitelist, whitelistManager, feeRecipient,
+      blocklistManager, metadataIpfsHash, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
     } = values
 
     try {
@@ -29,12 +28,9 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
         || blocklistManager
         || metadataIpfsHash
         || validatorsManager
-        || depositDataManager
         || restakeOperatorsManager
         || restakeWithdrawalsManager
       )
-
-      const isDepositData = Boolean(depositDataRoot)
       const isWhitelistManager = Boolean(whitelist)
       const isBlocklistManager = Boolean(blocklist)
 
@@ -43,11 +39,6 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
       if (isAdmin) {
         checkPromises.push(
           checkAdminAccess(values)
-        )
-      }
-      if (isDepositData) {
-        checkPromises.push(
-          checkDepositDataManagerAccess(values)
         )
       }
       if (isWhitelistManager) {

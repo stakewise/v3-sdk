@@ -586,7 +586,6 @@ Returns the master data of the vault
 ```ts
 type Output = {
   apy: number
-  version: number
   isErc20: boolean
   capacity: string
   createdAt: number
@@ -649,7 +648,6 @@ type Output = {
 | `whitelist`                 | List of authorized users for deposits |
 | `blocklist`                 | List of blocked users for deposits |
 | `performance`               | Vault performance indicator (percent) |
-| `version`                   | Vault version |
 | `restakeOperatorsManager`   | If the Vault is a restaking vault, restake operators manager can add/remove restake operators |
 | `restakeWithdrawalsManager` | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals |
 | `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
@@ -1704,7 +1702,7 @@ const gas = await sdk.vault.updateEigenPodOperator.estimateGas(params)
 
 #### Description:
 
-Updates the vault by authorized personnel such as the vault admin, whitelistManager, blocklist manager, validators manager, or deposit-data manager.
+Updates the vault by authorized personnel such as the vault admin, whitelistManager, blocklist manager, validators manager.
 
 
 #### Arguments:
@@ -1712,14 +1710,12 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | Name                      | Type                                         | Required | Access               | Description                                                                                                                                                                 |  
 |---------------------------|----------------------------------------------|----------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|  
 | whitelistManager          | `Array<{ address: string, isNew: boolean }>` | **No**   | whitelistManager     | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses.             |  
-| blocklist                 | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager    | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses.            |  
-| depositDataManager        | `string`                                     | **No**   | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager`                                           |  
+| blocklist                 | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager    | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses.            |
 | validatorsManager         | `string`                                     | **No**   | Admin                | Address of the vault deposit data manager. Support only **second version** on valults.                                                                                      |  
 | restakeWithdrawalsManager | `string`                                     | **No**   | Admin                | The restake withdrawals manager must be assigned to the wallet connected to the operator service. It is responsible for withdrawing exiting validators from the EigenLayer. |  
 | restakeOperatorsManager   | `string`                                     | **No**   | Admin                | The restake operators manager can add EigenPods and update EigenLayer operators.                                                                                            |  
 | whitelistManager          | `string`                                     | **No**   | Admin                | Address of the vault whitelistManager                                                                                                                                       |  
-| feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient                                                                                                                                          |  
-| depositDataRoot            | `string`                                     | **No**   | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot`                                          |  
+| feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient                                                                                                                                          |
 | blocklistManager          | `string`                                     | **No**   | Admin                | The blocklisted vault blocklist manager                                                                                                                                     |  
 | image                     | `string`                                     | **No**   | Admin                | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                                                    |  
 | displayName               | `string`                                     | **No**   | Admin                | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                                            |  
@@ -1738,18 +1734,15 @@ const params = {
   displayName: '...',
   description: '...',
   feeRecipient: '0x...',
-  depositDataRoot: '0x...',
   blocklistManager: '0x...',
   whitelistManager: '0x...',
   validatorsManager: '0x...',
-  depositDataManager: '0x...',
   restakeOperatorsManager: '0x...',
   restakeWithdrawalsManager: '0x...',
 }
 
 // Data to update the vault by vault keys manager.
 const params = {
-  depositDataRoot: '...',
   vaultAddress: '0x...',
   userAddress: '0x...',
 }
