@@ -702,11 +702,13 @@ Necessary to update the vault state
 
 ```ts
 type Output = {
-  reward: string
-  proof: Array<string>
   canHarvest: boolean
-  rewardsRoot: string
-  unlockedMevReward: string 
+  params: {
+    reward: string
+    proof: Array<string>
+    rewardsRoot: string
+    unlockedMevReward: string 
+  }
 }
 ```
 
