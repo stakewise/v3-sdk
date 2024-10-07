@@ -7,7 +7,7 @@ export type SetDepositDataManagerInput = {
   contracts: StakeWise.Contracts
 }
 
-export type SetDepositDataManagerRoot = {
+export interface SetDepositDataManagerRoot {
   (values: SetDepositDataManagerInput): Promise<StakeWise.TransactionHash>
   estimateGas: (values: SetDepositDataManagerInput) => Promise<bigint>
   encode: (values: SetDepositDataManagerInput) => Promise<StakeWise.TransactionData>

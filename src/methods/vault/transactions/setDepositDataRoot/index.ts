@@ -10,6 +10,8 @@ import { getVaultVersion } from '../../../../utils'
 const setDepositDataRoot: SetDepositDataRoot = async (values) => {
   const { provider, userAddress, vaultAddress, depositDataRoot, contracts, options } = values
 
+  const signer = await provider.getSigner(userAddress)
+
   const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
   if (isV1Version) {
@@ -20,16 +22,13 @@ const setDepositDataRoot: SetDepositDataRoot = async (values) => {
       },
     })
 
-    const signer = await provider.getSigner(userAddress)
     const signedVaultContract = vaultContract.connect(signer)
-
     const result = await signedVaultContract.setValidatorsRoot(depositDataRoot)
 
     return result.hash
   }
 
   const contract = commonLogic(values)
-  const signer = await provider.getSigner(userAddress)
   const signedDepositDataRegistryContract = contract.connect(signer)
 
   const result = await signedDepositDataRegistryContract.setDepositDataRoot(vaultAddress, depositDataRoot)
