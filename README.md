@@ -586,6 +586,7 @@ Returns the master data of the vault
 ```ts
 type Output = {
   apy: number
+  version: number
   isErc20: boolean
   capacity: string
   createdAt: number
@@ -620,6 +621,7 @@ type Output = {
 
 | Name                        | Description                                                                                                                                                                                                                                     |
 |-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `version` | Vault version |
 | `apy`                       | Current vault apy |
 | `isErc20`                   | Does the vault have its own ERC20 token |
 | `capacity`                  | Maximum TVL of Vault |

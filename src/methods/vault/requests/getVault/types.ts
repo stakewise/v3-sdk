@@ -16,6 +16,7 @@ export type ModifiedVault = Omit<
   | 'whitelistCount'
 > & {
   apy: number
+  version: number
   createdAt: number
   vaultAdmin: string
   performance: number

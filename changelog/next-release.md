@@ -136,13 +136,3 @@ type RemovedOutput = {
   depositDataRoot: string
 }
 ```
----
-### 14. Removed output field
-### `sdk.vault.getVault`
-
-```ts
-type RemovedOutput = {
-  version: number
-}
-```
----
