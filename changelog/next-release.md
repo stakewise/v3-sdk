@@ -125,3 +125,14 @@ type Output = Array<{
 
 ---
 
+### 13. Removed input field
+### `sdk.vault.operate`
+#### Removed depositDataRoot use `vault.setDepositDataRoot` instead
+#### Removed depositDataManager use `vault.setDepositDataManager` instead
+
+```ts
+type RemovedInput = {
+  depositDataManager: string
+  depositDataRoot: string
+}
+```

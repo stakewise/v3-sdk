@@ -1,4 +1,4 @@
-import { validateArgs, getVaultVersion } from '../../../../utils'
+import { validateArgs } from '../../../../utils'
 import type { MulticallTransactionInput } from './types'
 import { vaultMulticall } from '../../../../contracts'
 import type { VaultMulticallBaseInput } from '../../../../contracts'
@@ -9,10 +9,8 @@ import {
   getWhitelistParams,
   getWhitelisterParams,
   getFeeRecipientParams,
-  getDepositDataRootParams,
   getBlocklistManagerParams,
   getValidatorsManagerParams,
-  getDepositDataManagerParams,
   getRestakeOperatorsManagerParams,
   getRestakeWithdrawalsManagerParams,
 } from '../util'
@@ -20,8 +18,8 @@ import {
 
 export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
-    depositDataRoot, blocklistManager, metadataIpfsHash,
-    blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
+    blocklistManager, metadataIpfsHash,
+    blocklist, whitelist, whitelistManager, feeRecipient,
     options, contracts, userAddress, vaultAddress, provider, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
   } = values
 
@@ -59,18 +57,6 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     }
   }
 
-  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
-
-  if (!isV1Version) {
-    if (depositDataRoot) {
-      throw new Error('To set depositDataRoot in version 2 of vault, use the vault.setDepositDataRoot() method')
-    }
-
-    if (depositDataManager) {
-      throw new Error('To set depositDataManager in version 2 of vault, use the vault.setDepositDataManager() method')
-    }
-  }
-
   const baseMulticall: VaultMulticallBaseInput = {
     vaultContract,
     vaultAddress,
@@ -100,12 +86,6 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     params.push(...whitelistParams)
   }
 
-  if (depositDataManager) {
-    const depositDataManagerParams = getDepositDataManagerParams({ ...baseInput, depositDataManager })
-
-    params.push(...depositDataManagerParams)
-  }
-
   if (whitelistManager) {
     const whitelisterParams = getWhitelisterParams({ ...baseInput, whitelistManager })
 
@@ -116,12 +96,6 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     const feeRecipientParams = getFeeRecipientParams({ ...baseInput, feeRecipient })
 
     params.push(...feeRecipientParams)
-  }
-
-  if (depositDataRoot) {
-    const validatorsRootParams = getDepositDataRootParams({ ...baseInput, depositDataRoot })
-
-    params.push(...validatorsRootParams)
   }
 
   if (typeof metadataIpfsHash !== 'undefined') {
