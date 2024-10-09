@@ -3,7 +3,7 @@ query RewardSplitters($where: RewardSplitter_filter) {
     id
     owner
     totalShares
-    shareHolders(orderBy: shares, orderDirection: desc) {
+    shareHolders(orderBy: shares, orderDirection: desc, where: { shares_gt: 0 }) {
       id
       shares
       address
