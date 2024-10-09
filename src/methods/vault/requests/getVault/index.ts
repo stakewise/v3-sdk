@@ -10,7 +10,7 @@ type GetVaultInput = {
   vaultAddress: VaultQueryVariables['address']
 }
 
-const getVault = async (input: GetVaultInput) => {
+const getVault = (input: GetVaultInput) => {
   const { options, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })

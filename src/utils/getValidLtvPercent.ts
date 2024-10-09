@@ -1,4 +1,5 @@
 import validateArgs from './validateArgs'
+import getVaultVersion from './getVaultVersion'
 
 
 type Input = {
@@ -13,10 +14,7 @@ const getValidLtvPercent = async (values: Input) => {
   validateArgs.address({ vaultAddress })
   validateArgs.bigint({ ltvPercent })
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
-
-  const version = await vaultContract.version()
-  const isV1Version = version === 1n
+  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
   // in second+ version 100% ltv percent = 1 ether in wei
   const percent = isV1Version

@@ -6,7 +6,6 @@ export type BurnInput = {
   shares: bigint
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts
 }

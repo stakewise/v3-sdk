@@ -7,7 +7,7 @@ export default {
   network: constants.chains.gnosis,
   api: {
     backend: 'https://gnosis-api.stakewise.io/graphql',
-    subgraph: 'https://gnosis-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod',
   },
   pages: {
     beaconchain: 'https://gnosis.beaconcha.in',
@@ -43,6 +43,9 @@ export default {
 
       blocklistVault: '0x78FbfBd1DD38892476Ac469325df36604A27F5B7',
       erc20BlocklistVault: '0x99E4300326867FE3f97864a74e500d19654c19e9',
+    },
+    special: {
+      stakeCalculator: '0xfc8e3e7c919b4392d9f5b27015688e49c80015f0',
     },
   },
   tokens: {

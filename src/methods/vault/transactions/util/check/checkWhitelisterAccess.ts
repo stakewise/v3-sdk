@@ -3,7 +3,11 @@ import type { CheckInput } from './types'
 
 const checkWhitelisterAccess = async ({ userAddress, vaultAddress, contracts }: CheckInput) => {
   try {
-    const vaultContract = contracts.helpers.createPrivateVault(vaultAddress)
+    const vaultContract = contracts.helpers.createVault({
+      vaultAddress,
+      options: { isPrivate: true },
+    })
+
     const whitelistManager = await vaultContract.whitelister()
     const hasAccess = whitelistManager.toLowerCase() === userAddress.toLowerCase()
 

@@ -1,0 +1,13 @@
+query RewardSplitterShareHolders($address: Bytes!, $vaultAddress: String!, $rewardSplitterAddress: ID!) {
+  rewardSplitterShareHolders(
+    where: {
+      address: $address,
+      vault: $vaultAddress
+      rewardSplitter_: {
+        id: $rewardSplitterAddress
+      }
+    }
+  ) {
+    earnedVaultAssets
+  }
+}

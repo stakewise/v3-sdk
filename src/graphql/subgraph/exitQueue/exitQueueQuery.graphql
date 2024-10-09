@@ -1,12 +1,11 @@
-query exitQueue($receiver: Bytes, $vault: String!) {
-  exitRequests(where: {
-    receiver: $receiver,
-    vault: $vault,
-  }) {
-    withdrawalTimestamp
-    positionTicket
-    totalShares
-    totalAssets
+query exitQueue($where: ExitRequest_filter) {
+  exitRequests(where: $where) {
     timestamp
+    totalAssets
+    isClaimable
+    exitedAssets
+    positionTicket
+    exitQueueIndex
+    withdrawalTimestamp
   }
 }

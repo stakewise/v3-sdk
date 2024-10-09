@@ -1,5 +1,5 @@
-import type { MulticallTransactionInput } from './types'
 import { validateArgs } from '../../../../utils'
+import type { MulticallTransactionInput } from './types'
 import { vaultMulticall } from '../../../../contracts'
 import type { VaultMulticallBaseInput } from '../../../../contracts'
 
@@ -9,10 +9,8 @@ import {
   getWhitelistParams,
   getWhitelisterParams,
   getFeeRecipientParams,
-  getValidatorsRootParams,
   getBlocklistManagerParams,
   getValidatorsManagerParams,
-  getDepositDataManagerParams,
   getRestakeOperatorsManagerParams,
   getRestakeWithdrawalsManagerParams,
 } from '../util'
@@ -20,46 +18,42 @@ import {
 
 export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
-    validatorsRoot, blocklistManager, metadataIpfsHash,
-    blocklist, whitelist, depositDataManager, whitelistManager, feeRecipient,
+    blocklistManager, metadataIpfsHash,
+    blocklist, whitelist, whitelistManager, feeRecipient,
     options, contracts, userAddress, vaultAddress, provider, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
   } = values
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  let vaultContract = contracts.helpers.createVault(vaultAddress)
+  const chainId = options.network
+  const isPrivate = Boolean(whitelist?.length || whitelistManager)
+  const isBlocklist = Boolean(blocklist?.length || blocklistManager)
+  const isRestake = Boolean(restakeOperatorsManager || restakeWithdrawalsManager)
 
-  if (whitelist?.length || whitelistManager) {
+  const vaultContract = contracts.helpers.createVault({
+    vaultAddress,
+    options: {
+      chainId,
+      isRestake,
+      isPrivate,
+      isBlocklist,
+    },
+  })
+
+  // @ts-ignore: boolean + boolean
+  if (isRestake + isPrivate + isBlocklist >= 2) {
+    throw new Error('You are trying to change the data for different vaults types')
+  }
+
+  if (isPrivate) {
     if (whitelist && whitelist.length > 700) {
       throw new Error('Your transaction is likely to fail, we do not recommend passing more than 700 addresses to the whitelist at a time')
     }
-
-    vaultContract = contracts.helpers.createPrivateVault(vaultAddress)
   }
 
-  if (blocklist?.length || blocklistManager) {
+  if (isBlocklist) {
     if (blocklist && blocklist.length > 700) {
       throw new Error('Your transaction is likely to fail, we do not recommend passing more than 700 addresses to the block list at a time')
-    }
-
-    vaultContract = contracts.helpers.createBlocklistedVault(vaultAddress)
-  }
-
-  if (restakeOperatorsManager || restakeWithdrawalsManager) {
-    vaultContract = contracts.helpers.createRestakingVault(vaultAddress)
-  }
-
-  // Temporal logic while different types of vaults exist
-  const version = Number(await vaultContract.version())
-  const isV1Version = version === 1
-
-  if (!isV1Version) {
-    if (validatorsRoot) {
-      throw new Error('To set validatorsRoot in version 2 of vault, use the vault.setDepositDataRoot() method')
-    }
-
-    if (depositDataManager) {
-      throw new Error('To set depositDataManager in version 2 of vault, use the vault.setDepositDataManager() method')
     }
   }
 
@@ -92,12 +86,6 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     params.push(...whitelistParams)
   }
 
-  if (depositDataManager) {
-    const depositDataManagerParams = getDepositDataManagerParams({ ...baseInput, depositDataManager })
-
-    params.push(...depositDataManagerParams)
-  }
-
   if (whitelistManager) {
     const whitelisterParams = getWhitelisterParams({ ...baseInput, whitelistManager })
 
@@ -108,12 +96,6 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     const feeRecipientParams = getFeeRecipientParams({ ...baseInput, feeRecipient })
 
     params.push(...feeRecipientParams)
-  }
-
-  if (validatorsRoot) {
-    const validatorsRootParams = getValidatorsRootParams({ ...baseInput, validatorsRoot })
-
-    params.push(...validatorsRootParams)
   }
 
   if (typeof metadataIpfsHash !== 'undefined') {

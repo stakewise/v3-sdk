@@ -18,6 +18,7 @@ query Vault($address: ID!) {
     createdAt
     mevEscrow
     tokenName
+    isGenesis
     feePercent
     totalAssets
     isBlocklist
@@ -25,11 +26,10 @@ query Vault($address: ID!) {
     description
     whitelister
     tokenSymbol
-    keysManager
     feeRecipient
-    validatorsRoot
     blocklistCount
     whitelistCount
+    depositDataRoot
     isCollateralized
     blocklistManager
     validatorsManager
