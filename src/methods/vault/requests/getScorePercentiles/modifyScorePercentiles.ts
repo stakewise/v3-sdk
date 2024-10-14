@@ -1,8 +1,10 @@
-import type { ScorePercentilesQueryPayload } from '../../../../graphql/backend/vault'
+// import type { ScorePercentilesQueryPayload } from '../../../../graphql/backend/vault'
 import { ModifiedScorePercentiles } from './types'
 
 
-const modifyScorePercentiles = (input: ScorePercentilesQueryPayload): ModifiedScorePercentiles => {
+type Input = any // ScorePercentilesQueryPayload
+
+const modifyScorePercentiles = (input: Input): ModifiedScorePercentiles => {
   const { scorePercentiles } = input
 
   return ({

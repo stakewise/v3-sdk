@@ -1,4 +1,4 @@
-import type { ScorePercentilesQueryPayload } from '../../../../graphql/backend/vault'
+// import type { ScorePercentilesQueryPayload } from '../../../../graphql/backend/vault'
 import { apiUrls } from '../../../../utils'
 import graphql from '../../../../graphql'
 
