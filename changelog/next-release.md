@@ -136,3 +136,9 @@ type RemovedInput = {
   depositDataRoot: string
 }
 ```
+
+---
+
+### 14. Removed method `sdk.vault.getScorePercentiles`
+
+---
