@@ -97,13 +97,13 @@ const sdk = new StakeWiseSDK({
 | [vault.getVault](#sdkvaultgetvault)                             | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
 | [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)                 | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
 | [vault.getHarvestParams](#sdkvaultgetharvestparams)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   | | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
+| [vault.getUserStats](#sdkvaultgetuserstats)        | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
 | [vault.getUserRewards](#sdkvaultgetuserrewards)                 |   [osToken.getHealthFactor](#sdkostokengethealthfactor)                                                            |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                     |                                                              |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                     |                                                              |                                                                   |
 | [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)         |                                                              |                                                                   |
 | [vault.getVaultStats](#sdkvaultgetvaultstats)                   |                                                               |                                                                   |
-| [vault.getUserStats](#sdkvaultgetuserstats)                     |                                                              |                                                                   |
 
 | **Utils**                                           |
 |-----------------------------------------------------|
