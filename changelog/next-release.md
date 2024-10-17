@@ -67,7 +67,7 @@ type AddedOutput = {
 | Name | Description |
 |------|-------------|
 | `boost.shares` | Count of osToken tokens with boost |
-| `percent.percent` | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
+| `boost.percent` | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
 
 ### 5. Added method getStakewiseStats
 ### `sdk.utils.getStakewiseStats`

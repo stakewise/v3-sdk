@@ -941,7 +941,7 @@ type Output = {
 | `healthFactor`       | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
 | `protocolFeePercent` | Usage fee percent |
 | `boost.shares`       | Count of osToken tokens with boost |
-| `percent.percent`    | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
+| `boost.percent`    | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
 
 #### Example:
 
