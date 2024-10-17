@@ -9,6 +9,7 @@ export type ModifiedVault = Omit<
   | 'version'
   | 'createdAt'
   | 'mevEscrow'
+  | 'maxBoostApy'
   | 'performance'
   | 'whitelister'
   | 'osTokenConfig'
@@ -19,6 +20,7 @@ export type ModifiedVault = Omit<
   version: number
   createdAt: number
   vaultAdmin: string
+  maxBoostApy: number
   performance: number
   vaultAddress: string
   mevRecipient: string
