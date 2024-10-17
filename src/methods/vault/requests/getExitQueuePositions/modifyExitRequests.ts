@@ -1,4 +1,3 @@
-import { formatEther } from 'ethers'
 import { ExitQueueQueryPayload } from '../../../../graphql/subgraph/exitQueue'
 
 
