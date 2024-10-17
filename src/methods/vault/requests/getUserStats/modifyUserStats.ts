@@ -6,7 +6,11 @@ import type { UserStatsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 const updateUserStatsMap = (
   userStatsMap: UserStatsMap,
-  stat: { totalAssets: string, earnedAssets: string, timestamp: string },
+  stat: {
+    earnedAssets: string
+    totalAssets: string
+    timestamp: string
+  },
   includeApy = false
 ) => {
   const timeInSeconds = Number(stat.timestamp) / 1_000_000
@@ -49,20 +53,20 @@ const modifyUserStats = (data: UserStatsQueryPayload): ModifiedUserStats => {
     rewards: {},
   }
 
-  boostStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat, true)
+  boostStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats, true)
   })
 
-  allocatorStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat, true)
+  allocatorStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats, true)
   })
 
-  exitRequestStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat)
+  rewardSplitterStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats, true)
   })
 
-  rewardSplitterStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat)
+  exitRequestStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats)
   })
 
   const result = {

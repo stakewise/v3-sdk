@@ -32,7 +32,7 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
     first: $daysCount
   ) {
     timestamp
-    totalAssets
     earnedAssets: earnedBoostAssets
+    totalAssets: totalEarnedBoostAssets
   }
 }
