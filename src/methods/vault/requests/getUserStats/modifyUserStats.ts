@@ -6,13 +6,20 @@ import type { UserStatsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 const updateUserStatsMap = (
   userStatsMap: UserStatsMap,
-  stat: { totalAssets: string, earnedAssets: string, timestamp: string },
+  stat: {
+    earnedAssets: string
+    totalAssets: string
+    timestamp: string
+  },
   includeApy = false
 ) => {
-  const timeInSeconds = Number(stat.timestamp) / 1000000
-  const balance = Number(formatEther(stat.totalAssets || '0'))
-  const rewards = Number(formatEther(stat.earnedAssets || '0'))
-  const totalApy = includeApy ? (rewards * 365 * 100) / (balance - rewards) : 0
+  const timeInSeconds = Number(stat.timestamp) / 1_000_000
+  const balance = Number(formatEther(stat.totalAssets || 0n))
+  const rewards = Number(formatEther(stat.earnedAssets || 0n))
+
+  const totalApy = includeApy
+    ? (rewards * 365 * 100) / (balance - rewards)
+    : 0
 
   if (!userStatsMap.balance[stat.timestamp]) {
     userStatsMap.balance[stat.timestamp] = { value: 0, time: timeInSeconds }
@@ -35,6 +42,7 @@ const updateUserStatsMap = (
 }
 
 const modifyUserStats = (data: UserStatsQueryPayload): ModifiedUserStats => {
+  const boostStats = data?.boost || []
   const allocatorStats = data?.allocator || []
   const exitRequestStats = data?.exitRequest || []
   const rewardSplitterStats = data?.rewardSplitter || []
@@ -45,16 +53,20 @@ const modifyUserStats = (data: UserStatsQueryPayload): ModifiedUserStats => {
     rewards: {},
   }
 
-  allocatorStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat, true)
+  boostStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats, true)
   })
 
-  exitRequestStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat)
+  allocatorStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats, true)
   })
 
-  rewardSplitterStats.forEach((stat) => {
-    updateUserStatsMap(userStatsMap, stat)
+  rewardSplitterStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats, true)
+  })
+
+  exitRequestStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats)
   })
 
   const result = {

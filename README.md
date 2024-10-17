@@ -589,9 +589,9 @@ type Output = {
 }
 ```
 
-| Name                        | Description                                                                                                                                                                                                                                     |
-|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `version` | Vault version |
+| Name                        | Description                              |
+|-----------------------------|------------------------------------------|
+| `version`                   | Vault version |
 | `apy`                       | Current vault apy |
 | `isErc20`                   | Does the vault have its own ERC20 token |
 | `capacity`                  | Maximum TVL of Vault |
@@ -617,6 +617,7 @@ type Output = {
 | `tokenName`                 | ERC20 token name |
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
+| `maxBoostApy`               | The vault average max boost APY |
 | `description`               | Description of vault |
 | `whitelist`                 | List of authorized users for deposits |
 | `blocklist`                 | List of blocked users for deposits |
@@ -928,16 +929,22 @@ type Output = {
     value: number
     health: OsTokenPositionHealth
   }
+  boost: {
+    shares: bigint
+    percent: number
+  }
   protocolFeePercent: bigint
 }
 ```
 
 | Name                 | Description                                               |
 |----------------------|-----------------------------------------------------------|
-| `minted.shares`      | Balance                                                   |
-| `minted.assets`      | Balance in ETH                                            |
+| `minted.shares`      | Balance |
+| `minted.assets`      | Balance in ETH |
 | `healthFactor`       | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
-| `protocolFeePercent` | Usage fee percent                                         |
+| `protocolFeePercent` | Usage fee percent |
+| `boost.shares`       | Count of osToken tokens with boost |
+| `boost.percent`    | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
 
 #### Example:
 
