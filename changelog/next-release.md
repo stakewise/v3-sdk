@@ -9,6 +9,7 @@ type AddedOutput = {
     ltvPercent: string
     thresholdPercent: string
   }
+  maxBoostApy: number
   isGenesis: boolean
 }
 ```
@@ -17,6 +18,7 @@ type AddedOutput = {
 |------|-------------|
 | `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 | `isGenesis` | This vault is owned by stakewise |
+| `maxBoostApy` | The vault average max boost APY |
 
 ---
 ### 2. `sdk.vault.getHarvestParams`
@@ -45,13 +47,27 @@ type Output = {
 ### 4. Removed output field
 ### `sdk.osToken.getPosition`
 
+Removed fee and added boost params (mainnet only)
+
 ```ts
 type RemovedOutput = {
   minted: {
     fee: bigint
   }
 }
+
+type AddedOutput = {
+  boost: {
+    shares: bigint
+    percent: number
+  }
+}
 ```
+
+| Name | Description |
+|------|-------------|
+| `boost.shares` | Count of osToken tokens with boost |
+| `boost.percent` | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
 
 ### 5. Added method getStakewiseStats
 ### `sdk.utils.getStakewiseStats`

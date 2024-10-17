@@ -1,4 +1,4 @@
-import { constants, validateArgs, getValidLtvPercent } from '../../../utils'
+import { constants, validateArgs } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
@@ -20,12 +20,10 @@ const getMaxMint = async (values: GetMaxMintInput) => {
     return 0n
   }
 
-  const [ avgRewardPerSecond, percent ] = await Promise.all([
-    contracts.base.mintTokenController.avgRewardPerSecond(),
-    getValidLtvPercent({ vaultAddress, ltvPercent, contracts }),
-  ])
+  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
-  const maxMintedAssets = stakedAssets * percent / 10_000n
+
+  const maxMintedAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
   const maxMintedAssetsHourReward = (maxMintedAssets * avgRewardPerSecond * 3600n) / constants.blockchain.amount1
   const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
 

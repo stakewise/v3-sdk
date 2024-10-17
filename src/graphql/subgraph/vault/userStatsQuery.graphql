@@ -26,4 +26,13 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
     earnedAssets
     totalAssets
   }
+  boost: leverageStrategyPositionStats_collection(
+    interval: day
+    where: {position_: {user: $user, vault: $vaultAddress}}
+    first: $daysCount
+  ) {
+    timestamp
+    earnedAssets: earnedBoostAssets
+    totalAssets: totalEarnedBoostAssets
+  }
 }
