@@ -7,7 +7,7 @@ export default {
   network: constants.chains.holesky,
   api: {
     backend: 'https://holesky-api.stakewise.io/graphql',
-    subgraph: 'https://holesky-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/prod',
   },
   pages: {
     beaconchain: 'https://holesky.beaconcha.in',
@@ -43,6 +43,9 @@ export default {
 
       blocklistVault: '0x90a9428b8c58cA80B28aAF46B936D42e87797449',
       erc20BlocklistVault: '0x82FE8C78CaE0013471179e76224ef89941bAaa75',
+    },
+    special: {
+      stakeCalculator: '0x90b82e4b3aa385b4a02b7ebc1892a4bed6b5c465',
     },
   },
   tokens: {

@@ -17,7 +17,14 @@ const getHarvestParams = (values: GetHarvestParamsInput) => {
     variables: {
       address: vaultAddress.toLowerCase(),
     },
-    modifyResult: (data) => data.harvestParams,
+    modifyResult: (data) => {
+      const { canHarvest, ...params } = data.harvestParams
+
+      return {
+        canHarvest,
+        params,
+      }
+    },
   })
 }
 

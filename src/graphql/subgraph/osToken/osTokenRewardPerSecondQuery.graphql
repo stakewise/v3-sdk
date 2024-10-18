@@ -1,5 +1,0 @@
-query osTokenRewardPerSecond($first: Int, $orderBy: OsTokenSnapshot_orderBy, $orderDirection: OrderDirection) {
-  osTokenSnapshots(first: $first, orderBy: $orderBy, orderDirection: $orderDirection) {
-    avgRewardPerSecond
-  }
-}

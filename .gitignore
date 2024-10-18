@@ -16,3 +16,4 @@ node_modules
 schema.graphql
 src/types/graphql
 src/contracts/types
+src/contracts/vault/types

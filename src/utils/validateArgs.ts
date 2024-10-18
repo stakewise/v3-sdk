@@ -44,6 +44,14 @@ const number = (values: Record<string, number>) => {
   })
 }
 
+const boolean = (values: Record<string, boolean>) => {
+  Object.keys(values).forEach((key) => {
+    if (typeof values[key] !== 'boolean') {
+      throw new Error(`The "${key}" argument must be a boolean`)
+    }
+  })
+}
+
 const array = (values: Record<string, any[]>, withEmptyCheck: boolean = true) => {
   Object.keys(values).forEach((key) => {
     if (!Array.isArray(values[key])) {
@@ -71,6 +79,7 @@ export default {
   bigint,
   string,
   number,
+  boolean,
   address,
   maxLength,
 }

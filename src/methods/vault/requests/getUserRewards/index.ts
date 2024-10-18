@@ -1,39 +1,53 @@
-import type { UserRewardsQueryVariables } from '../../../../graphql/backend/vault'
-import { apiUrls, validateArgs } from '../../../../utils'
+import type { UserRewardsQueryVariables } from '../../../../graphql/subgraph/vault'
+import { apiUrls, Network, validateArgs, configs } from '../../../../utils'
 import modifyUserRewards from './modifyUserRewards'
 import graphql from '../../../../graphql'
-import { ModifyUserReward } from './types'
+import type { ModifyUserRewards, GbpRate } from './types'
 
 
 type GetUserRewardsInput = {
+  dateTo: number
+  dateFrom: number
   options: StakeWise.Options
   userAddress: UserRewardsQueryVariables['user']
   vaultAddress: UserRewardsQueryVariables['vaultAddress']
-  dateFrom: number
-  dateTo?: number
-  fillGaps?: boolean
 }
 
-const getUserRewards = (input: GetUserRewardsInput) => {
-  const { options, vaultAddress, userAddress, dateFrom, dateTo, fillGaps } = input
+const getMainnetGbpRate = (input: GetUserRewardsInput) => {
+  const { dateFrom, dateTo, userAddress, vaultAddress } = input
 
-  validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.number({ dateFrom })
-
-  if (dateTo) {
-    validateArgs.number({ dateTo })
-  }
-
-  return graphql.backend.vault.fetchUserRewardsQuery<ModifyUserReward>({
-    url: apiUrls.getBackendUrl(options),
+  return graphql.subgraph.vault.fetchUserRewardsQuery({
+    url: configs[Network.Mainnet].api.subgraph,
     variables: {
-      fillGaps,
-      dateFrom: String(dateFrom),
+      dateTo: String(dateTo * 1_000),
       user: userAddress.toLowerCase(),
-      dateTo: dateTo ? String(dateTo) : undefined,
+      dateFrom: String(dateFrom * 1_000),
       vaultAddress: vaultAddress.toLowerCase(),
     } as UserRewardsQueryVariables,
-    modifyResult: modifyUserRewards,
+    modifyResult: (data) : GbpRate[] => {
+      return data.exchangeRate.map(({ usdToGbpRate }) => ({ usdToGbpRate }))
+    },
+  })
+}
+
+const getUserRewards = async (input: GetUserRewardsInput) => {
+  const { options, vaultAddress, userAddress, dateFrom, dateTo } = input
+
+  validateArgs.address({ vaultAddress, userAddress })
+  validateArgs.number({ dateFrom, dateTo })
+
+  const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
+  const mainnetGbpRates = isGnosis ? await getMainnetGbpRate(input) : []
+
+  return graphql.subgraph.vault.fetchUserRewardsQuery<ModifyUserRewards[]>({
+    url: apiUrls.getSubgraphqlUrl(options),
+    variables: {
+      dateTo: String(dateTo * 1_000),
+      user: userAddress.toLowerCase(),
+      dateFrom: String(dateFrom * 1_000),
+      vaultAddress: vaultAddress.toLowerCase(),
+    } as UserRewardsQueryVariables,
+    modifyResult: modifyUserRewards(mainnetGbpRates),
   })
 }
 

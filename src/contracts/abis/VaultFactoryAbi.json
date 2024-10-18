@@ -1,1 +1,26 @@
-[ { "inputs": [ { "internalType": "bytes", "name": "params", "type": "bytes" }, { "internalType": "bool", "name": "isOwnMevEscrow", "type": "bool" } ], "name": "createVault", "outputs": [ { "internalType": "address", "name": "vault", "type": "address" } ], "stateMutability": "payable", "type": "function" } ]
+[
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "params",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bool",
+        "name": "isOwnMevEscrow",
+        "type": "bool"
+      }
+    ],
+    "name": "createVault",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]

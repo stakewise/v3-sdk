@@ -89,26 +89,27 @@ const sdk = new StakeWiseSDK({
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                     | **osToken**                                                   | **RewardSplitter**                                                |
-|---------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------|
-| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)             | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
-| [vault.getSnapshots](#sdkvaultgetsnapshots)                   | [osToken.getHealthFactor](#sdkostokengethealthfactor)         |                                                                   |
-| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                           |                                                                   |
-| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                 |                                                                   |
-| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                   |                                                                   |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
-| [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
-| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                               |                                                                   |
+| **Vault**                                                       | **osToken**                                                  | **RewardSplitter**                                                |
+|-----------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)             | [osToken.getBurnAmount](#sdkostokengetburnamount)            | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions)   | [osToken.getAPY](#sdkostokengetapy)                          |                                                                   |
+| [vault.getValidators](#sdkvaultgetvalidators)                   | [osToken.getPosition](#sdkostokengetposition)                |                                                                   |
+| [vault.getVault](#sdkvaultgetvault)                             | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)                 | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
+| [vault.getUserStats](#sdkvaultgetuserstats)        | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)                 |   [osToken.getHealthFactor](#sdkostokengethealthfactor)                                                            |                                                                   |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                     |                                                              |                                                                   |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                     |                                                              |                                                                   |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)         |                                                              |                                                                   |
+| [vault.getVaultStats](#sdkvaultgetvaultstats)                   |                                                               |                                                                   |
 
 | **Utils**                                           |
 |-----------------------------------------------------|
 | [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
 | [utils.getTransactions](#sdkutilsgettransactions)   |
+| [utils.getFiatRates](#sdkutilsgetfiatrates)         |
 
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
@@ -205,114 +206,41 @@ await sdk.vault.getStakerActions({
 })
 ```
 ---
-### `sdk.vault.getSnapshots`
-
-#### Description:
-
-TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
-
-#### Arguments:
-
-| Name         | Type     | Type            | Description |
-|--------------|----------|-----------------|---------|
-| vaultAddress | `string` | **Yes**     | - |
-| dateFrom     | `number` | **Yes**     | Time to start |
-
-#### Returns:
-
-```ts
-type Snapshot = {
-  APY: number
-  TVL: string
-}
-
-type Output = {
-  days: Record<number, Snapshot>
-  first: Snapshot
-}
-```
-
-| Name | Description |
-|------|-------------|
-| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
-| `first` | We always send the very first saved snapshot regardless of the request parameters, this helps for rendering the chart |
-
-#### Example:
-
-```ts
-await sdk.vault.getSnapshots({
-  vaultAddress: '0x...',
-  dateFrom: 1695730032793,
-})
-```
----
-### `sdk.vault.getScorePercentiles`
-
-#### Description:
-
-This method is used to fetch information indicating the effectiveness or performance level of the vault. 
-The retrieved data includes percentiles corresponding to various statuses.
-
-#### Returns:
-
-```ts
-type Output = {
-  percentile25: number
-  percentile50: number
-  percentile75: number
-}
-```
-
-| Name | Description                                                                                             |
-|------|---------------------------------------------------------------------------------------------------------|
-| `percentile25` | Represents the value corresponding to the **lowest** status. It is associated with the color (red)      |
-| `percentile50` | Represents the value corresponding to the **moderate** status. It is associated with the color (orange) |
-| `percentile75` | Represents the value corresponding to the **good** status. It is associated with the color (light green)      |
-
-_For values greater than percentile75 the status corresponds to **excellent** with color (green)_
-
-#### Example:
-
-```ts
-await sdk.vault.getScorePercentiles()
-```
----
 ### `sdk.vault.getUserRewards`
 
 #### Description:
 
-Daily rewards for the user who has made a deposit in the vault. With the help of this data it is possible to build a chart.
+
+Daily rewards for the user who has made a deposit in the vault.
 
 #### Arguments:
 
-| Name | Type     | Type        | Description |
-|------|----------|-------------|---|
-| vaultAddress | `string` | **Yes** | - |
-| userAddress | `string` | **Yes** | - |
-| dateFrom | `number` | **Yes** | Time to start |
-| dateTo | `number` | **No** | Time to end |
-| fillGaps | `boolean` | **No** | Fill in the empty days with zeros |
+| Name | Type     | Required | Description |
+|------|----------|----------|---|
+| dateFrom | `number` | **Yes**  | Time to start in milliseconds |
+| dateTo | `number` | **Yes**  | Time to end  in milliseconds              |
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
 
 #### Returns:
 
 ```ts
-type UserReward = {
-  date: number
-  sumRewards: string
-  dailyRewards: string
-  dailyRewardsEur: string
-  dailyRewardsGbp: string
-  dailyRewardsUsd: string
-}
-
 type Output = {
-  days: Record<number, UserReward>
+  date: number
+  dailyRewards: number
+  dailyRewardsEur: number
+  dailyRewardsGbp: number
+  dailyRewardsUsd: number
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `days` | The result of the query on your parameters, is returned as an object where the keys are timestamps |
+| Name | Description               |
+|------|---------------------------|
+| `date` | Сurrent rate date         |
+| `dailyRewards` | Daily reward asset in ETH |
+| `dailyRewardsEur` | Daily reward asset in EUR |
+| `dailyRewardsGbp` | Daily reward asset in GBP |
+| `dailyRewardsUsd` | Daily reward asset in USD |
 
 #### Example:
 
@@ -320,7 +248,8 @@ type Output = {
 await sdk.vault.getUserRewards({
   userAddress: '0x...',
   vaultAddress: '0x...',
-  dateFrom: 1695730032793,
+  dateTo: 1727827200000,
+  dateFrom: 1721606400000,
 })
 ```
 ---
@@ -468,14 +397,23 @@ Returns the withdrawal queue for a specific user.
 
 #### Arguments:
 
-| Name | Type | Required |
-|------|------|----------|
-| userAddress | `string` | **Yes**  |
-| vaultAddress | `string` | **Yes**  | 
+| Name         | Type      | Required |
+|--------------|-----------|----------|
+| userAddress  | `string`  | **Yes**  |
+| vaultAddress | `string`  | **Yes**  | 
+| isClaimed    | `boolean` | **No**   | 
 
 #### Returns:
 
 ```ts
+type ExitRequest = {
+  withdrawalTimestamp: string | null
+  positionTicket: string
+  totalShares: string
+  totalAssets: string
+  timestamp: string
+}
+
 type Position = {
   exitQueueIndex: bigint
   positionTicket: string
@@ -487,16 +425,18 @@ type Output = {
   duration: number | null
   withdrawable: bigint
   positions: Position[]
+  pending: ExitRequest[]
 }
 ```
 
-| Name | Description                                                                                                                                                                 |
-|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `positions` | Queue positions                                                                                                                                                             |
-| `total` | Total queued assets (e.g. ETH)                                                                                                                                              |
-| `duration` | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
-|      |                                                                                                                                                                             |- 
-| `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                  |
+| Name           | Description                                                                                                                                                                                                                                                                |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `pending`      | Positions not yet available for claim                                                                                                                                                                                                                                      |
+| `positions`    | Positions in a special format that are required for claiming                                                                                                                                                                                                               |
+| `total`        | Total queued assets (e.g. ETH)                                                                                                                                                                                                                                             |
+| `duration`     | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
+|                |                                                                                                                                                                                                                                                                            |- 
+| `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                                                                                                                 |
 
 #### Example:
 
@@ -649,36 +589,37 @@ type Output = {
 
 | Name                        | Description                                                                                                                                                                                                                                     |
 |-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `apy`                       | Current vault apy                                                                                                                                                                                                                               |
-| `isErc20`                   | Does the vault have its own ERC20 token                                                                                                                                                                                                         |
-| `capacity`                  | Maximum TVL of Vault                                                                                                                                                                                                                            |
-| `createdAt`                 | Date of Creation                                                                                                                                                                                                                                |
-| `feePercent`                | Commission rate                                                                                                                                                                                                                                 |
-| `isPrivate`                 | Whether the storage is private                                                                                                                                                                                                                  |
-| `isRestake`                 | Indicates whether the Vault is a restaking vault                                                                                                                                                                                                |
-| `isBlocklist`               | Whether the storage has blocklist                                                                                                                                                                                                               |
-| `vaultAdmin`                | Vault administrator address                                                                                                                                                                                                                     |
-| `totalAssets`               | TVL of Vault                                                                                                                                                                                                                                    |
-| `feeRecipient`              | Vault fee address                                                                                                                                                                                                                               |
-| `whitelistManager`          | Whitelist manager                                                                                                                                                                                                                               |
-| `vaultAddress`              | Address of vault                                                                                                                                                                                                                                |
-| `mevRecipient`              | Validator fee recipient                                                                                                                                                                                                                         |
-| `whitelistCount`            | Number of addresses in the [whitelist](#sdkvaultgetwhitelist)                                                                                                                                                                                   |
-| `blocklistCount`            | Number of addresses in the [blocklist](#sdkvaultgetblocklist)                                                                                                                                                                                   |
-| `imageUrl`                  | Link for vault logo                                                                                                                                                                                                                             |
-| `blocklistManager`          | Blocklist manager                                                                                                                                                                                                                               |
-| `depositDataManager`        | Keys manager address                                                                                                                                                                                                                            |
-| `isSmoothingPool`           | Smoothing poll or Vault escrow                                                                                                                                                                                                                  |
-| `tokenName`                 | ERC20 token name                                                                                                                                                                                                                                |
-| `tokenSymbol`               | ERC20 token symbol                                                                                                                                                                                                                              |
-| `displayName`               | Name of vault                                                                                                                                                                                                                                   |
-| `description`               | Description of vault                                                                                                                                                                                                                            |
-| `whitelist`                 | List of authorized users for deposits                                                                                                                                                                                                           |
-| `blocklist`                 | List of blocked users for deposits                                                                                                                                                                                                              |
-| `performance`               | Vault performance indicator (percent)                                                                                                                                                                                                           |
-| `version`                   | Vault version                                                                                                                                                                                                                                   |
-| `restakeOperatorsManager`   | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                                                                                                                   |
-| `restakeWithdrawalsManager` | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                                                                                                                |
+| `version` | Vault version |
+| `apy`                       | Current vault apy |
+| `isErc20`                   | Does the vault have its own ERC20 token |
+| `capacity`                  | Maximum TVL of Vault |
+| `createdAt`                 | Date of Creation |
+| `feePercent`                | Commission rate |
+| `isPrivate`                 | Whether the vault is private |
+| `isGenesis`                 | Is a stakewise vault |
+| `isRestake`                 | Indicates whether the Vault is a restaking vault |
+| `isBlocklist`               | Whether the vault has blocklist |
+| `vaultAdmin`                | Vault administrator address |
+| `totalAssets`               | TVL of Vault |
+| `feeRecipient`              | Vault fee address |
+| `whitelistManager`          | Whitelist manager |
+| `vaultAddress`              | Address of vault |
+| `mevRecipient`              | Validator fee recipient |
+| `whitelistCount`            | Number of addresses in the [whitelist](#sdkvaultgetwhitelist) |
+| `blocklistCount`            | Number of addresses in the [blocklist](#sdkvaultgetblocklist) |
+| `imageUrl`                  | Link for vault logo |
+| `blocklistManager`          | Blocklist manager |
+| `depositDataManager`        | Keys manager address |
+| `isSmoothingPool`           | Smoothing poll or Vault escrow |
+| `tokenName`                 | ERC20 token name |
+| `tokenSymbol`               | ERC20 token symbol |
+| `displayName`               | Name of vault |
+| `description`               | Description of vault |
+| `whitelist`                 | List of authorized users for deposits |
+| `blocklist`                 | List of blocked users for deposits |
+| `performance`               | Vault performance indicator (percent) |
+| `restakeOperatorsManager`   | If the Vault is a restaking vault, restake operators manager can add/remove restake operators |
+| `restakeWithdrawalsManager` | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals |
 | `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 
 #### Example:
@@ -729,11 +670,13 @@ Necessary to update the vault state
 
 ```ts
 type Output = {
-  reward: string
-  proof: Array<string>
   canHarvest: boolean
-  rewardsRoot: string
-  unlockedMevReward: string 
+  params: {
+    reward: string
+    proof: Array<string>
+    rewardsRoot: string
+    unlockedMevReward: string 
+  }
 }
 ```
 
@@ -765,10 +708,9 @@ type Output = {
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `shares` | Balance in vault tokens  |
-| `assets` | Balance in ETH |
+| Name     | Description             |
+|----------|-------------------------|
+| `assets` | Balance in ETH          |
 
 #### Example:
 
@@ -779,6 +721,94 @@ await sdk.vault.getStakeBalance({
 })
 ```
 ---
+### `sdk.vault.getVaultStats`
+
+#### Description:
+
+Getting the vault stats collection. With the help of this data it is possible to build a chart.
+
+#### Arguments:
+
+| Name   | Type     | Required | Description              |
+|--------|----------|----------|--------------------------|
+| daysCount  | `number` | **Yes**  | The limit in days        |
+| vaultAddress | `string` | **Yes**  | The address of the vault | 
+
+#### Returns:
+
+```ts
+type Output = {
+  apy: number
+  time: number
+  balance: number
+  rewards: number
+}
+```
+
+| Name | Description                                                     |
+|------|-----------------------------------------------------------------|
+| `time` | Date and time for each data point                               |
+| `apy` | Current APY based on time, rewards and balance.                 |
+| `rewards` | Number of assets earned by the vault during the interval in ETH |
+| `balance` | Total assets in the vault at the moment of time in ETH          |
+
+#### Example:
+
+```ts
+await sdk.vault.getVaultStats({
+  daysCount: 30,
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.vault.getUsertStats`
+
+#### Description:
+
+Getting the user stats collection for current vault.
+With the help of this data it is possible to build a chart.
+
+#### Arguments:
+
+| Name         | Type     | Required | Description                  |
+|--------------|----------|----------|------------------------------|
+| daysCount        | `number` | **Yes**  | The limit in days            |
+| userAddress  | `string` | **Yes**  | The user address | 
+| vaultAddress | `string` | **Yes**  | The address of the vault     | 
+
+#### Returns:
+
+```ts
+type Stat = {
+  time: number
+  value: number
+}
+
+type Output = {
+  apy: Stat[]
+  balance: Stat[]
+  rewards: Stat[]
+}
+```
+
+| Name | Description                                                                                            |
+|------|--------------------------------------------------------------------------------------------------------|
+| `time` | Date and time for each data point                                                                      |
+| `apy` | Current APY based on time, rewards and balance. |
+| `rewards` | Number of assets earned by the user in current vault during the interval in ETH                        |
+| `balance` | Total assets by the user in current vault at the moment of time in ETH                                                |
+
+#### Example:
+
+```ts
+await sdk.vault.getUserStats({
+  daysCount: 30,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+
 ## API-osToken
 
 ### `sdk.osToken.getBurnAmount`
@@ -869,24 +899,6 @@ type Output = string
 const apy = await sdk.osToken.getAPY()
 ```
 ---
-### `sdk.osToken.getAvgRewardsPerSecond`
-
-#### Description:
-
-osETH average rewards per second
-
-#### Returns:
-
-```ts
-type Output = bigint
-```
-
-#### Example:
-
-```ts
-const averageRewardsPerSecond = await sdk.osToken.getAvgRewardsPerSecond()
-```
----
 ### `sdk.osToken.getPosition`
 
 #### Description:
@@ -906,7 +918,6 @@ User position data
 ```ts
 type Output = {
   minted: {
-    fee: bigint
     assets: bigint
     shares: bigint
   }
@@ -918,13 +929,12 @@ type Output = {
 }
 ```
 
-| Name | Description |
-|------|-------------|
-| `minted.fee` | Usage fee amount |
-| `minted.shares` | Balance |
-| `minted.assets` | Balance in ETH |
-| `healthFactor` | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor)  |
-| `protocolFeePercent` | Usage fee percent |
+| Name                 | Description                                               |
+|----------------------|-----------------------------------------------------------|
+| `minted.shares`      | Balance                                                   |
+| `minted.assets`      | Balance in ETH                                            |
+| `healthFactor`       | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
+| `protocolFeePercent` | Usage fee percent                                         |
 
 #### Example:
 
@@ -988,7 +998,7 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.utils.getAssetsFromShares({ amount: 0n })
+await sdk.osToken.getAssetsFromShares({ amount: 0n })
 ```
 ---
 ### `sdk.osToken.getSharesFromAssets`
@@ -1012,7 +1022,7 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.utils.getSharesFromAssets({ amount: 0n })
+await sdk.osToken.getSharesFromAssets({ amount: 0n })
 ```
 ---
 ### `sdk.osToken.getRate`
@@ -1031,6 +1041,38 @@ type Output = string
 
 ```ts
 await sdk.utils.getRate()
+```
+---
+### `sdk.osToken.getConfig`
+
+#### Description:
+
+Deprecated, use `const { osTokenConfig } = await sdk.vault.getVault()` instead.
+Returns basic information on the token
+
+#### Arguments:
+
+| Name         | Type     | Required | Description   |
+|--------------|----------|----------|---------------|
+| vaultAddress | `string` | **Yes**  | Vault address |
+
+#### Returns:
+
+```ts
+type Output = {
+  ltvPercent: bigint
+  thresholdPercent: bigint
+}
+```
+| Name | Description |
+|------|-------------|
+| `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
+| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
+
+#### Example:
+
+```ts
+await sdk.osToken.getConfig({ vaultAddress: '0x...' })
 ```
 ---
 ## RewardSplitter
@@ -1206,6 +1248,28 @@ type Output = string
 await sdk.utils.getSwiseUsdPrice()
 ```
 ---
+### `sdk.utils.getStakewiseStats`
+
+#### Description:
+
+TVL statistics, number of users, rewards earned
+
+#### Returns:
+
+```ts
+type Output = {
+  usersCount: number
+  totalAssets: string
+  totalEarnedAssets: string
+}
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getStakewiseStats()
+```
+---
 ### `sdk.utils.getTransactions`
 
 #### Description:
@@ -1230,6 +1294,28 @@ type Output = Array<{
 
 ```ts
 await sdk.utils.getTransactions({ hash: '0x...' })
+```
+---
+### `sdk.utils.getFiatRates`
+
+#### Description:
+
+Returns the USD, EUR, GBP exchange rates for the current asset
+
+#### Returns:
+
+```ts
+type Output = {
+  assetsUsdRate: number
+  usdToEurRate: number
+  usdToGbpRate: number
+}
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getFiatRates()
 ```
 ---
 ## Transactions
@@ -1441,7 +1527,7 @@ Adding root validators to vaults **version 2** or higher
 
 | Name           | Type     | Required | Description |
 |----------------|----------|----------|-------------|
-| validatorsRoot | `string` | **Yes**  | The vault validators merkle tree  |
+| depositDataRoot | `string` | **Yes**  | The vault validators merkle tree  |
 | userAddress    | `string` | **Yes**  | - |
 | vaultAddress   | `string` | **Yes**  | - |
 
@@ -1449,7 +1535,7 @@ Adding root validators to vaults **version 2** or higher
 
 ```ts
 const params = {
-  validatorsRoot: 'hash',
+  depositDataRoot: 'hash',
   vaultAddress: '0x...',
   userAddress: '0x...',
 }
@@ -1586,7 +1672,7 @@ const gas = await sdk.vault.updateEigenPodOperator.estimateGas(params)
 
 #### Description:
 
-Updates the vault by authorized personnel such as the vault admin, whitelistManager, blocklist manager, validators manager, or deposit-data manager.
+Updates the vault by authorized personnel such as the vault admin, whitelistManager, blocklist manager, validators manager.
 
 
 #### Arguments:
@@ -1594,14 +1680,12 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | Name                      | Type                                         | Required | Access               | Description                                                                                                                                                                 |  
 |---------------------------|----------------------------------------------|----------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|  
 | whitelistManager          | `Array<{ address: string, isNew: boolean }>` | **No**   | whitelistManager     | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses.             |  
-| blocklist                 | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager    | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses.            |  
-| depositDataManager        | `string`                                     | **No**   | Deposit-data manager | Address of the vault keys manager. Support only **first version** on valults. For second verion use `vault.setDepositDataManager`                                           |  
+| blocklist                 | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager    | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses.            |
 | validatorsManager         | `string`                                     | **No**   | Admin                | Address of the vault deposit data manager. Support only **second version** on valults.                                                                                      |  
 | restakeWithdrawalsManager | `string`                                     | **No**   | Admin                | The restake withdrawals manager must be assigned to the wallet connected to the operator service. It is responsible for withdrawing exiting validators from the EigenLayer. |  
 | restakeOperatorsManager   | `string`                                     | **No**   | Admin                | The restake operators manager can add EigenPods and update EigenLayer operators.                                                                                            |  
 | whitelistManager          | `string`                                     | **No**   | Admin                | Address of the vault whitelistManager                                                                                                                                       |  
-| feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient                                                                                                                                          |  
-| validatorsRoot            | `string`                                     | **No**   | Keys manager         | The vault validators merkle tree root. Support only **first version** on valults. For second verion use `vault.setDepositDataRoot`                                          |  
+| feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient                                                                                                                                          |
 | blocklistManager          | `string`                                     | **No**   | Admin                | The blocklisted vault blocklist manager                                                                                                                                     |  
 | image                     | `string`                                     | **No**   | Admin                | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                                                    |  
 | displayName               | `string`                                     | **No**   | Admin                | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                                            |  
@@ -1620,18 +1704,15 @@ const params = {
   displayName: '...',
   description: '...',
   feeRecipient: '0x...',
-  validatorsRoot: '0x...',
   blocklistManager: '0x...',
   whitelistManager: '0x...',
   validatorsManager: '0x...',
-  depositDataManager: '0x...',
   restakeOperatorsManager: '0x...',
   restakeWithdrawalsManager: '0x...',
 }
 
 // Data to update the vault by vault keys manager.
 const params = {
-  validatorsRoot: '...',
   vaultAddress: '0x...',
   userAddress: '0x...',
 }

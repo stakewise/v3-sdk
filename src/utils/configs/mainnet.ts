@@ -8,8 +8,8 @@ export default {
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
     subgraph: [
-      'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
-      'https://mainnet-graph-b.stakewise.io/subgraphs/name/stakewise/stakewise',
+      'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
+      'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
     ],
   },
   pages: {
@@ -46,6 +46,9 @@ export default {
 
       blocklistVault: '0x4E3D8197c2cb9bCd29e3DCeAE3670d3d5e774017',
       erc20BlocklistVault: '0x1bE3Ad178d85CE1b6a7fCF5baEFe68F26541b07C',
+    },
+    special: {
+      stakeCalculator: '0x29c708d94521af2c88402858049bd33e4606a3a2',
     },
   },
   tokens: {

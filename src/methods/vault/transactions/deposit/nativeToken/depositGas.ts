@@ -7,7 +7,8 @@ import getHarvestParams from '../../../requests/getHarvestParams'
 const depositGas = async (values: DepositInput) => {
   const { options, provider, vaultAddress, userAddress } = values
 
-  const { vaultContract, canHarvest, overrides } = await commonLogic(values)
+  const { vaultContract, overrides } = await commonLogic(values)
+  const { params, canHarvest } = await getHarvestParams({ options, vaultAddress })
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
@@ -15,9 +16,7 @@ const depositGas = async (values: DepositInput) => {
   let estimatedGas = 0n
 
   if (canHarvest) {
-    const harvestParams = await getHarvestParams({ options, vaultAddress })
-
-    estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(userAddress, referrer, harvestParams, overrides)
+    estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(userAddress, referrer, params, overrides)
   }
   else {
     estimatedGas = await signedContract.deposit.estimateGas(userAddress, referrer, overrides)

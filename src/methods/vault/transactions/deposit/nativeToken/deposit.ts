@@ -8,15 +8,14 @@ import getHarvestParams from '../../../requests/getHarvestParams'
 const deposit: Deposit = async (values) => {
   const { options, provider, vaultAddress, userAddress } = values
 
-  const { vaultContract, canHarvest, overrides } = await commonLogic(values)
+  const { params, canHarvest } = await getHarvestParams({ options, vaultAddress })
+  const { vaultContract, overrides } = await commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
 
   if (canHarvest) {
-    const harvestParams = await getHarvestParams({ options, vaultAddress })
-
-    const response = await signedContract.updateStateAndDeposit(userAddress, referrer, harvestParams, overrides)
+    const response = await signedContract.updateStateAndDeposit(userAddress, referrer, params, overrides)
 
     return response.hash
   }
