@@ -22,7 +22,6 @@ const getMaxMint = async (values: GetMaxMintInput) => {
 
   const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
-
   const maxMintedAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
   const maxMintedAssetsHourReward = (maxMintedAssets * avgRewardPerSecond * 3600n) / constants.blockchain.amount1
   const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
