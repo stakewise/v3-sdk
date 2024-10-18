@@ -1,7 +1,7 @@
 import graphql from '../../../graphql'
 import getHealthFactor from '../helpers/getHealthFactor'
 import { wrapAbortPromise } from '../../../modules/gql-module'
-import { validateArgs, apiUrls, OsTokenPositionHealth, Network, BigDecimal } from '../../../utils'
+import { validateArgs, apiUrls, OsTokenPositionHealth, Network } from '../../../utils'
 
 
 type GetOsTokenPositionInput = {
@@ -24,7 +24,6 @@ type Output = {
   }
   boost: {
     shares: bigint
-    percent: number
   }
   protocolFeePercent: bigint
 }
@@ -37,7 +36,6 @@ const getPosition = async (values: GetOsTokenPositionInput) => {
 
   const boost = {
     shares: 0n,
-    percent: 0,
   }
 
   const isMainnet = options.network === Network.Mainnet
@@ -62,13 +60,6 @@ const getPosition = async (values: GetOsTokenPositionInput) => {
       modifyResult: (data) => BigInt(data.leverageStrategyPositions[0]?.osTokenShares || '0'),
     })
 
-    const percent = new BigDecimal(boostedShares)
-      .multiply(100)
-      .divide(mintedShares)
-      .decimals(2)
-      .toString()
-
-    boost.percent = Number(percent)
     boost.shares = boostedShares
   }
 

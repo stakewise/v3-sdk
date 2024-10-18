@@ -59,7 +59,6 @@ type RemovedOutput = {
 type AddedOutput = {
   boost: {
     shares: bigint
-    percent: number
   }
 }
 ```
@@ -67,7 +66,6 @@ type AddedOutput = {
 | Name | Description |
 |------|-------------|
 | `boost.shares` | Count of osToken tokens with boost |
-| `boost.percent` | Proportion of tokens with and without boost, if 100 percent, then all tokens have a boost |
 
 ### 5. Added method getStakewiseStats
 ### `sdk.utils.getStakewiseStats`
