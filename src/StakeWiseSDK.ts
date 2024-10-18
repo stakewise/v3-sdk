@@ -44,6 +44,16 @@ class StakeWiseSDK {
     this.provider = provider
     this.contracts = contracts
 
+    if (options.endpoints?.subgraph) {
+      // @ts-ignore: It's better to just overwrite
+      this.config.api.subgraph = options.endpoints.subgraph
+    }
+
+    if (options.endpoints?.api) {
+      // @ts-ignore: It's better to just overwrite
+      this.config.api.backend = options.endpoints.api
+    }
+
     const argsForMethods = { options, contracts, provider }
 
     this.utils = methods.createUtils(argsForMethods)
