@@ -11,6 +11,7 @@ import getAssetsFromShares from './requests/getAssetsFromShares'
 // Transactions
 import { default as mint } from './transactions/mint'
 import { default as burn } from './transactions/burn'
+import { default as boost } from './transactions/boost'
 
 
 export default {
@@ -70,5 +71,10 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenburn
     */
     burn,
+    /**
+     * @description Boost your osToken apy using looped staking
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenboost
+    */
+    boost,
   },
 } as const
