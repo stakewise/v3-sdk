@@ -19,6 +19,7 @@ import MulticallAbi from './MulticallAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
 import OraclesAbi from './OraclesAbi.json'
 import KeeperAbi from './KeeperAbi.json'
+import BoostAbi from './BoostAbi.json'
 import Erc20Abi from './Erc20Abi.json'
 
 
@@ -42,5 +43,6 @@ export {
   OraclesAbi,
   UsdRateAbi,
   KeeperAbi,
+  BoostAbi,
   Erc20Abi,
 }

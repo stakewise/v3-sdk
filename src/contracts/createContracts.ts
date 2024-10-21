@@ -2,6 +2,7 @@
 import type { Provider } from 'ethers'
 
 import {
+  BoostAbi,
   Erc20Abi,
   KeeperAbi,
   OraclesAbi,
@@ -141,6 +142,7 @@ export const createContracts = (input: CreateContractsInput) => {
       createVault,
       multicallContract,
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
+      createBoost: (address: string) => createContract<StakeWise.ABI.Boost>(address, BoostAbi, provider),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),

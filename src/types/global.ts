@@ -5,6 +5,7 @@ import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
 import type {
+  BoostAbi,
   Erc20Abi,
   KeeperAbi,
   OraclesAbi,
@@ -71,6 +72,7 @@ declare global {
     type TransactionHash = string
 
     namespace ABI {
+      type Boost = BoostAbi
       type Keeper = KeeperAbi
       type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
