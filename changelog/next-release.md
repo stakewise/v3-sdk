@@ -10,6 +10,7 @@ type AddedOutput = {
     thresholdPercent: string
   }
   isGenesis: boolean
+  queuedShares: string
 }
 ```
 
@@ -17,6 +18,7 @@ type AddedOutput = {
 |------|-------------|
 | `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 | `isGenesis` | This vault is owned by stakewise |
+| `queuedShares` | The total number of queued shares |
 
 ---
 ### 2. `sdk.vault.getHarvestParams`
