@@ -1,6 +1,6 @@
-import { parseEther } from 'ethers'
+import { parseEther, formatEther } from 'ethers'
 
-import { constants, validateArgs, getValidLtvPercent } from '../../../utils'
+import { constants, validateArgs } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
@@ -28,14 +28,11 @@ const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
     return 0n
   }
 
-  const [ avgRewardPerSecond, percent ] = await Promise.all([
-    contracts.base.mintTokenController.avgRewardPerSecond(),
-    getValidLtvPercent({ vaultAddress, ltvPercent, contracts }),
-  ])
+  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
   const secondsInHour = 60n * 60n
   const gap = avgRewardPerSecond * secondsInHour * mintedAssets / constants.blockchain.amount1
-  const lockedAssets = (mintedAssets + gap) * 10_000n / percent
+  const lockedAssets = (mintedAssets + gap) * constants.blockchain.amount1 / ltvPercent
   const maxWithdrawAssets = stakedAssets - lockedAssets
 
   return maxWithdrawAssets > min ? maxWithdrawAssets : 0n
