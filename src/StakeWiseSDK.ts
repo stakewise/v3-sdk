@@ -1,5 +1,5 @@
 import methods from './methods'
-import { createContracts, vaultMulticall, boostMulticall, rewardSplitterMulticall } from './contracts'
+import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 import {
   getGas,
@@ -13,9 +13,6 @@ import {
 
 type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
 type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
-type BoostMulticallInput = Pick<Parameters<typeof boostMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
-  boostAddress: string
-}
 type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
   rewardSplitterAddress: string
 }
@@ -102,16 +99,6 @@ class StakeWiseSDK {
 
     return rewardSplitterMulticall<T>({
       rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-      options: this.options,
-      vaultAddress,
-      userAddress,
-      request,
-    })
-  }
-
-  boostMulticall<T extends unknown>({ userAddress, boostAddress, vaultAddress, request }: BoostMulticallInput) {
-    return boostMulticall<T>({
-      boostContract: this.contracts.helpers.createBoost(boostAddress),
       options: this.options,
       vaultAddress,
       userAddress,
