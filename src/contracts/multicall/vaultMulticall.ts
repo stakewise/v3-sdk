@@ -59,7 +59,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
   if (needHarvest) {
-    const harvestArgs = await getHarvestArgs<VaultContractAbi>({
+    const harvestArgs = await getHarvestArgs({
       options,
       vaultAddress,
     })

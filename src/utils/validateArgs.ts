@@ -63,6 +63,14 @@ const array = (values: Record<string, any[]>, withEmptyCheck: boolean = true) =>
   })
 }
 
+const object = (values: Record<string, any>) => {
+  Object.keys(values).forEach((key) => {
+    if (typeof values[key] !== 'object' || values[key] === null) {
+      throw new Error(`The "${key}" argument must be an object`)
+    }
+  })
+}
+
 const maxLength = (values: Record<string, { value: string, length: number }>) => {
   Object.keys(values).forEach((key) => {
     const { value, length } = values[key]
@@ -76,6 +84,7 @@ const maxLength = (values: Record<string, { value: string, length: number }>) =>
 export default {
   image,
   array,
+  object,
   bigint,
   string,
   number,

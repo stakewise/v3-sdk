@@ -15,6 +15,7 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   StakeCalculatorAbi,
+  LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   MerkleDistributorAbi,
@@ -125,6 +126,12 @@ const getStakeCalculator = (provider: Provider, config: StakeWise.Config) => cre
   provider
 )
 
+const getLeverageStrategy = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.LeverageStrategy>(
+  config.addresses.special.leverageStrategy,
+  LeverageStrategyAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -179,6 +186,7 @@ export const createContracts = (input: CreateContractsInput) => {
     },
     special: {
       stakeCalculator: getStakeCalculator(provider, config),
+      leverageStrategy: getLeverageStrategy(provider, config),
     },
   }
 }

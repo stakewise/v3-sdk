@@ -124,12 +124,12 @@ type Output = Array<{
 
 #### New arguments:
 
-| Name | Type     | Type        | Description |
-|------|----------|-------------|---|
-| dateFrom | `number` | **Yes** | Time to start in milliseconds |
-| dateTo | `number` | **Yes** | Time to end  in milliseconds              |
-| userAddress  | `string` | **Yes**  | The user address              | 
-| vaultAddress | `string` | **Yes**  | The address of the vault      | 
+| Name         | Type     | Type    | Description                   |
+|--------------|----------|---------|-------------------------------|
+| dateFrom     | `number` | **Yes** | Time to start in milliseconds |
+| dateTo       | `number` | **Yes** | Time to end  in milliseconds  |
+| userAddress  | `string` | **Yes** | The user address              | 
+| vaultAddress | `string` | **Yes** | The address of the vault      | 
 
 ---
 
@@ -156,3 +156,19 @@ type RemovedInput = {
 ### 14. Removed method `sdk.vault.getScorePercentiles`
 
 ---
+
+### 15. Added method
+### `sdk.osToken.getLeverageStrategyProxy`
+#### Get the address of the leverage strategy proxy contract
+
+---
+
+### 16. Added method
+### `sdk.utils.getPermitSignature`
+#### Get permit signature for ERC20 token
+
+---
+
+### 17. Added method
+### `sdk.osToken.boost`
+#### Boost your osToken apy using leverage staking
