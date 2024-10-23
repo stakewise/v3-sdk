@@ -1,5 +1,4 @@
 import methods from './methods'
-
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 import {
