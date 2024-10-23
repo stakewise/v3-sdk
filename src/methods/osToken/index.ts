@@ -5,8 +5,10 @@ import getRate from './requests/getOsTokenRate'
 import getPosition from './requests/getPosition'
 import getBurnAmount from './helpers/getBurnAmount'
 import getHealthFactor from './helpers/getHealthFactor'
+import getPermitSignature from './helpers/getPermitSignature'
 import getSharesFromAssets from './requests/getSharesFromAssets'
 import getAssetsFromShares from './requests/getAssetsFromShares'
+import getLeverageStrategyProxy from './requests/getLeverageStrategyProxy'
 
 // Transactions
 import { default as mint } from './transactions/mint'
@@ -56,6 +58,16 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetassetsfromshares
     */
     getAssetsFromShares,
+    /**
+     * @description Get permit signature for proxy strategy contract to spend the user's osToken in leverage staking
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetpermitsignature
+    */
+    getPermitSignature,
+    /**
+     * @description Get Aave leverage strategy proxy contract address
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetleveragestrategyproxy
+     */
+    getLeverageStrategyProxy,
   },
   transactions: {
     /**
@@ -72,7 +84,7 @@ export default {
     */
     burn,
     /**
-     * @description Boost your osToken apy using looped staking
+     * @description Boost your osToken apy using leverage staking
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenboost
     */
     boost,

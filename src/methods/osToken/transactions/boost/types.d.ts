@@ -15,7 +15,7 @@ export type BoostInput = {
   amount: bigint
   userAddress: string
   vaultAddress: string
-  boostAddress: string
+  strategyProxy: string
   permitParams?: PermitParams
   options: StakeWise.Options
   provider: StakeWise.Provider

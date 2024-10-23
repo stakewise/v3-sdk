@@ -5,7 +5,6 @@ import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
 import type {
-  BoostAbi,
   Erc20Abi,
   KeeperAbi,
   OraclesAbi,
@@ -19,6 +18,7 @@ import type {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   StakeCalculatorAbi,
+  LeverageStrategyAbi,
   MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
@@ -72,7 +72,6 @@ declare global {
     type TransactionHash = string
 
     namespace ABI {
-      type Boost = BoostAbi
       type Keeper = KeeperAbi
       type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
@@ -87,6 +86,7 @@ declare global {
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
       type StakeCalculator = StakeCalculatorAbi
+      type LeverageStrategy = LeverageStrategyAbi
       type MerkleDistributor = MerkleDistributorAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi

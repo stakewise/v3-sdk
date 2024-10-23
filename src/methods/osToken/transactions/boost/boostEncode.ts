@@ -4,7 +4,7 @@ import { boostMulticall } from '../../../../contracts'
 
 
 const boostEncode = async (values: BoostInput): Promise<StakeWise.TransactionData> => {
-  const multicallArgs = commonLogic(values)
+  const multicallArgs = await commonLogic(values)
 
   return boostMulticall<{ data: string, to: string }>({
     ...multicallArgs,

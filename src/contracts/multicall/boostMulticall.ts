@@ -7,7 +7,7 @@ import {
   handleTransactionData,
 } from './util'
 
-import type { BoostAbi } from '../types'
+import type { LeverageStrategyAbi } from '../types'
 import type { MulticallRequestInput } from './types'
 
 
@@ -15,7 +15,7 @@ export type BoostMulticallBaseInput = {
   options: StakeWise.Options
   userAddress: string
   vaultAddress: string
-  boostContract: BoostAbi
+  leverageStrategyContract: LeverageStrategyAbi
 }
 
 type BoostMulticallInput = BoostMulticallBaseInput & {
@@ -32,13 +32,13 @@ const harvestCheckMethods = [
  * __but this method must be added to the whitelist__ inside the boostMulticall method (harvestCheckMethods)
  */
 const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): Promise<T> => {
-  const { options, vaultAddress, userAddress, boostContract, request } = values
+  const { options, vaultAddress, userAddress, leverageStrategyContract, request } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
   const contract = await getSignedContract({
-    options,
-    contract: boostContract,
+    contract: leverageStrategyContract,
     userAddress,
+    options,
     request,
   })
 
@@ -47,15 +47,15 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
   if (needHarvest) {
-    const harvestArgs = await getHarvestArgs<BoostAbi>({
+    const harvestArgs = await getHarvestArgs({
       options,
       vaultAddress,
     })
 
     if (harvestArgs) {
       multicallParams.push({
-        method: 'updateState',
-        args: [ harvestArgs ],
+        method: 'updateVaultState',
+        args: [ vaultAddress, harvestArgs ],
       })
     }
   }

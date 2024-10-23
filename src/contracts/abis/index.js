@@ -5,6 +5,7 @@ import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
 import MerkleDistributorAbi from './MerkleDistributorAbi.json'
 import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
 import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
+import LeverageStrategyAbi from './LeverageStrategyAbi.json'
 
 import StakeCalculatorAbi from './StakeCalculatorAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
@@ -19,7 +20,6 @@ import MulticallAbi from './MulticallAbi.json'
 import UsdRateAbi from './UsdRateAbi.json'
 import OraclesAbi from './OraclesAbi.json'
 import KeeperAbi from './KeeperAbi.json'
-import BoostAbi from './BoostAbi.json'
 import Erc20Abi from './Erc20Abi.json'
 
 
@@ -31,6 +31,7 @@ export {
   MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  LeverageStrategyAbi,
   StakeCalculatorAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
@@ -43,6 +44,5 @@ export {
   OraclesAbi,
   UsdRateAbi,
   KeeperAbi,
-  BoostAbi,
   Erc20Abi,
 }

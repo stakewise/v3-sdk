@@ -2,7 +2,6 @@
 import type { Provider } from 'ethers'
 
 import {
-  BoostAbi,
   Erc20Abi,
   KeeperAbi,
   OraclesAbi,
@@ -16,6 +15,7 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   StakeCalculatorAbi,
+  LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   MerkleDistributorAbi,
@@ -126,6 +126,12 @@ const getStakeCalculator = (provider: Provider, config: StakeWise.Config) => cre
   provider
 )
 
+const getLeverageStrategy = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.LeverageStrategy>(
+  config.addresses.special.leverageStrategy,
+  LeverageStrategyAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -142,7 +148,6 @@ export const createContracts = (input: CreateContractsInput) => {
       createVault,
       multicallContract,
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
-      createBoost: (address: string) => createContract<StakeWise.ABI.Boost>(address, BoostAbi, provider),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
@@ -181,6 +186,7 @@ export const createContracts = (input: CreateContractsInput) => {
     },
     special: {
       stakeCalculator: getStakeCalculator(provider, config),
+      leverageStrategy: getLeverageStrategy(provider, config),
     },
   }
 }

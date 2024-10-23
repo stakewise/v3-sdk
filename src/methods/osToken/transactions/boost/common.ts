@@ -1,13 +1,22 @@
 import type { BoostInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
+import getPermitSignature from '../../helpers/getPermitSignature'
+import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 
 
-export const commonLogic = (values: BoostInput) => {
-  const { contracts, options, amount, vaultAddress, userAddress, boostAddress, permitParams } = values
+type CommonLogicInput = BoostInput & {
+  mockPermitSignature?: boolean
+}
+
+export const commonLogic = async (values: CommonLogicInput) => {
+  const {
+    contracts, options, provider, amount, vaultAddress, userAddress, strategyProxy,
+    permitParams, mockPermitSignature,
+  } = values
 
   validateArgs.bigint({ amount })
-  validateArgs.address({ vaultAddress, userAddress, boostAddress })
+  validateArgs.address({ vaultAddress, userAddress, strategyProxy })
 
   if (permitParams) {
     validateArgs.object({ permitParams })
@@ -21,7 +30,7 @@ export const commonLogic = (values: BoostInput) => {
   }
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
-    boostContract: contracts.helpers.createBoost(boostAddress),
+    leverageStrategyContract: contracts.special.leverageStrategy,
     vaultAddress,
     userAddress,
     options,
@@ -43,6 +52,49 @@ export const commonLogic = (values: BoostInput) => {
         s,
       ],
     })
+  }
+  else {
+    const strategyProxy = await getLeverageStrategyProxy({
+      contracts,
+      userAddress,
+      vaultAddress,
+    })
+
+    const allowance = await contracts.tokens.mintToken.allowance(userAddress, strategyProxy)
+    const isPermitRequired = allowance < amount
+
+    if (isPermitRequired) {
+      if (mockPermitSignature) {
+        params.push({
+          method: 'permit',
+          args: [
+            vaultAddress,
+            amount,
+          ],
+        })
+      }
+      else {
+        const permitParams = await getPermitSignature({
+          options,
+          provider,
+          contracts,
+          userAddress,
+          strategyProxy,
+        })
+
+        params.push({
+          method: 'permit',
+          args: [
+            vaultAddress,
+            permitParams.amount,
+            permitParams.deadline,
+            permitParams.v,
+            permitParams.r,
+            permitParams.s,
+          ],
+        })
+      }
+    }
   }
 
   params.push({

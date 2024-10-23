@@ -1880,7 +1880,7 @@ const gas = await sdk.osToken.burn.estimateGas(params)
 
 #### Description:
 
-Boost your osToken apy using looped staking
+Boost your osToken apy using leverage staking
 
 #### Arguments:
 
@@ -1888,7 +1888,7 @@ Boost your osToken apy using looped staking
 |--------------|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------|
 | amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                  |
 | userAddress  | `string`       | **Yes**  | The user address                                                                                                              |
-| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for looped staking                                                           |
+| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                         |
 | boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                               |
 | permitParams | `PermitParams` | **No**   | The permit signature is required only if there is not enough osToken allowance for the strategy proxy contract. (TODO method) |
 

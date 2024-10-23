@@ -35,7 +35,7 @@ const rewardSplitterMulticall = async <T extends unknown>(values: RewardSplitter
     request,
   })
 
-  const harvestArgs = await getHarvestArgs<RewardSplitterAbi>({
+  const harvestArgs = await getHarvestArgs({
     options,
     vaultAddress,
   })

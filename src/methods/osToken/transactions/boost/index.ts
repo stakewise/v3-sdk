@@ -1,12 +1,12 @@
 import boostGas from './boostGas'
-import type { Boost } from './types'
 import boostEncode from './boostEncode'
+import type { Boost } from './types'
 import { commonLogic } from './common'
 import { boostMulticall } from '../../../../contracts'
 
 
 const boost: Boost = async (values) => {
-  const multicallArgs = commonLogic(values)
+  const multicallArgs = await commonLogic(values)
 
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
 

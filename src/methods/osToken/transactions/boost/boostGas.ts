@@ -7,7 +7,7 @@ import { boostMulticall } from '../../../../contracts'
 const boostGas = async (values: BoostInput) => {
   const { provider } = values
 
-  const multicallArgs = commonLogic(values)
+  const multicallArgs = await commonLogic({ ...values, mockPermitSignature: true })
 
   const estimatedGas = await boostMulticall<bigint>({
     ...multicallArgs,
