@@ -587,9 +587,9 @@ type Output = {
 }
 ```
 
-| Name                        | Description                                                                                                                                                                                                                                     |
-|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `version` | Vault version |
+| Name                        | Description                              |
+|-----------------------------|------------------------------------------|
+| `version`                   | Vault version |
 | `apy`                       | Current vault apy |
 | `isErc20`                   | Does the vault have its own ERC20 token |
 | `capacity`                  | Maximum TVL of Vault |
@@ -614,6 +614,7 @@ type Output = {
 | `tokenName`                 | ERC20 token name |
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
+| `maxBoostApy`               | The vault average max boost APY |
 | `description`               | Description of vault |
 | `whitelist`                 | List of authorized users for deposits |
 | `blocklist`                 | List of blocked users for deposits |
@@ -925,16 +926,20 @@ type Output = {
     value: number
     health: OsTokenPositionHealth
   }
+  boost: {
+    shares: bigint
+  }
   protocolFeePercent: bigint
 }
 ```
 
 | Name                 | Description                                               |
 |----------------------|-----------------------------------------------------------|
-| `minted.shares`      | Balance                                                   |
-| `minted.assets`      | Balance in ETH                                            |
+| `minted.shares`      | Balance |
+| `minted.assets`      | Balance in ETH |
 | `healthFactor`       | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
-| `protocolFeePercent` | Usage fee percent                                         |
+| `protocolFeePercent` | Usage fee percent |
+| `boost.shares`       | Count of osToken tokens with boost |
 
 #### Example:
 

@@ -43,7 +43,7 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
   const positions: Position[] = []
   const pending: ExitRequest[] = []
 
-  exitRequests.forEach((exitRequest) => {
+  exitRequests.forEach((exitRequest, index) => {
     const {
       timestamp,
       totalAssets,

@@ -1,0 +1,10 @@
+query BoostTokenShares(
+  $vaultAddress: String!
+  $userAddress: Bytes!
+) {
+  leverageStrategyPositions(
+    where: { vault: $vaultAddress, user: $userAddress }
+  ) {
+    osTokenShares
+  }
+}
