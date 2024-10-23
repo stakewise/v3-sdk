@@ -1,4 +1,4 @@
-import { parseEther, formatEther } from 'ethers'
+import { parseEther } from 'ethers'
 
 import { constants, validateArgs } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
