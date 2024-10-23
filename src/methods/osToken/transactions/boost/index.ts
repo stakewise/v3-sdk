@@ -8,7 +8,6 @@ import { boostMulticall } from '../../../../contracts'
 const boost: Boost = async (values) => {
   const multicallArgs = await commonLogic(values)
 
-  console.log({ multicallArgs })
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
 
   return result.hash

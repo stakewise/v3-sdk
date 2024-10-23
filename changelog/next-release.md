@@ -159,13 +159,16 @@ type RemovedInput = {
 
 ### 15. Added method
 ### `sdk.osToken.getLeverageStrategyProxy`
+#### Get the address of the leverage strategy proxy contract
 
 ---
 
 ### 16. Added method
 ### `sdk.osToken.getPermitSignature`
+#### Get permit signature for boost method
 
 ---
 
 ### 17. Added method
 ### `sdk.osToken.boost`
+#### Boost your osToken apy using leverage staking
