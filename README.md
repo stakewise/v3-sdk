@@ -101,15 +101,16 @@ const sdk = new StakeWiseSDK({
 | [vault.getUserStats](#sdkvaultgetuserstats)                   | [osToken.getConfig](#sdkostokengetconfig)                               |                                                                   |
 | [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getHealthFactor](#sdkostokengethealthfactor)                   |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                   | [osToken.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) |                                                                   |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                   | [osToken.getPermitSignature](#sdkostokengetpermitsignature)             |                                                                   |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                                         |                                                                   |
 | [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                                         |                                                                   |
 | [vault.getVaultStats](#sdkvaultgetvaultstats)                 |                                                                         |                                                                   |
 
-| **Utils**                                           |
-|-----------------------------------------------------|
-| [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice) |
-| [utils.getTransactions](#sdkutilsgettransactions)   |
-| [utils.getFiatRates](#sdkutilsgetfiatrates)         |
+| **Utils**                                               |
+|---------------------------------------------------------|
+| [utils.getSwiseUsdPrice](#sdkutilsgetswiseusdprice)     |
+| [utils.getTransactions](#sdkutilsgettransactions)       |
+| [utils.getFiatRates](#sdkutilsgetfiatrates)             |
+| [utils.getPermitSignature](#sdkutilsgetpermitsignature) |
 
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
@@ -909,39 +910,6 @@ const strategyProxy = await sdk.osToken.getLeverageStrategyProxy({
 })
 ```
 ---
-### `sdk.osToken.getPermitSignature`
-
-#### Description:
-
-Get permit signature for boost method
-
-#### Arguments:
-| Name          | Type     | Required | Description                                                             |
-|---------------|----------|----------|-------------------------------------------------------------------------|
-| userAddress   | `string` | **Yes**  | The user address                                                        |
-| strategyProxy | `string` | **Yes**  | The address of the [strategyProxy](#sdkostokengetleveragestrategyproxy) |
-
-#### Returns:
-
-```ts
-type Output = {
-  amount: bigint
-  deadline: number
-  v: number
-  r: string
-  s: string
-}
-```
-
-#### Example:
-
-```ts
-const permitParams = await sdk.osToken.getPermitSignature({
-  userAddress: '0x...',
-  strategyProxy: '0x...',
-})
-```
----
 ### `sdk.osToken.getAPY`
 
 #### Description:
@@ -1381,6 +1349,41 @@ type Output = {
 
 ```ts
 await sdk.utils.getFiatRates()
+```
+---
+### `sdk.utils.getPermitSignature`
+
+#### Description:
+
+Get permit signature for ERC20 token
+
+#### Arguments:
+| Name           | Type       | Required | Description                |
+|----------------|------------|----------|----------------------------|
+| contract       | `Erc20Abi` | **Yes**  | The ERC20 token contract   |
+| ownerAddress   | `string`   | **Yes**  | The user address           |
+| spenderAddress | `string`   | **Yes**  | The address of the spender |
+
+#### Returns:
+
+```ts
+type Output = {
+  amount: bigint
+  deadline: number
+  v: number
+  r: string
+  s: string
+}
+```
+
+#### Example:
+
+```ts
+const permitParams = await sdk.utils.getPermitSignature({
+  contract: sdk.contracts.tokens.mintToken,
+  ownerAddress: '0x...',
+  spenderAddress: '0x...',
+})
 ```
 ---
 ## Transactions
@@ -1949,13 +1952,13 @@ Boost your osToken apy using leverage staking
 
 #### Arguments:
 
-| Name         | Type           | Required | Description                                                                                                                                                                                                                       |
-|--------------|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                      |
-| userAddress  | `string`       | **Yes**  | The user address                                                                                                                                                                                                                  |
-| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                             |
-| boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                                   |
-| permitParams | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [osToken.getPermitSignature](#sdkostokengetpermitsignature) method |
+| Name         | Type           | Required | Description                                                                                                                                                                                                                   |
+|--------------|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                  |
+| userAddress  | `string`       | **Yes**  | The user address                                                                                                                                                                                                              |
+| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                         |
+| boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                               |
+| permitParams | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [utils.getPermitSignature](#sdkutilsgetpermitsignature) method |
 
 ```ts
 type PermitParams = {

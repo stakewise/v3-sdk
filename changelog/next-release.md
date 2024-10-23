@@ -164,8 +164,8 @@ type RemovedInput = {
 ---
 
 ### 16. Added method
-### `sdk.osToken.getPermitSignature`
-#### Get permit signature for boost method
+### `sdk.utils.getPermitSignature`
+#### Get permit signature for ERC20 token
 
 ---
 

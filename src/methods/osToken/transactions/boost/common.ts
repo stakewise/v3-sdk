@@ -1,7 +1,7 @@
 import type { BoostInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
-import getPermitSignature from '../../helpers/getPermitSignature'
+import { getPermitSignature } from '../../../utils'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 
 
@@ -77,9 +77,9 @@ export const commonLogic = async (values: CommonLogicInput) => {
         const permitParams = await getPermitSignature({
           options,
           provider,
-          contracts,
-          userAddress,
-          strategyProxy,
+          contract: contracts.tokens.mintToken,
+          ownerAddress: userAddress,
+          spenderAddress: strategyProxy,
         })
 
         params.push({

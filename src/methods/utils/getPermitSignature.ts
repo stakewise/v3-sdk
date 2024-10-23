@@ -1,33 +1,29 @@
 import { Signature } from 'ethers'
 
-import { Network, constants } from '../../../utils'
+import { constants } from '../../utils'
 
+
+const maxUint256 = constants.blockchain.maxUint256
 
 type GetPermitSignatureInput = {
   options: StakeWise.Options
   provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
-  userAddress: string
-  strategyProxy: string
+  contract: StakeWise.ABI.Erc20Token
+  amount?: bigint
+  ownerAddress: string
+  spenderAddress: string
 }
 
 const getPermitSignature = async (values: GetPermitSignatureInput) => {
-  const { options, provider, contracts, userAddress, strategyProxy } = values
-
-  const allowedNetworks = [ Network.Mainnet, Network.Holesky ]
-
-  if (!allowedNetworks.includes(options.network)) {
-    throw new Error('Permit signature is available only on Mainnet and Holeksy networks')
-  }
+  const { options, provider, amount = maxUint256, contract, ownerAddress, spenderAddress } = values
 
   const currentTimestamp = Number((Date.now() / 1000).toFixed(0))
   const deadline = currentTimestamp + 3600 // + 1 hour
-  const amount = constants.blockchain.maxUint256
 
   const [ tokenName, mintTokenAddress, tokenNonce ] = await Promise.all([
-    contracts.tokens.mintToken.name(),
-    contracts.tokens.mintToken.getAddress(),
-    contracts.tokens.mintToken.nonces(userAddress),
+    contract.name(),
+    contract.getAddress(),
+    contract.nonces(ownerAddress),
   ])
 
   const data = JSON.stringify({
@@ -55,14 +51,14 @@ const getPermitSignature = async (values: GetPermitSignatureInput) => {
     },
     message: {
       deadline,
-      owner: userAddress,
+      owner: ownerAddress,
       nonce: tokenNonce.toString(),
-      spender: strategyProxy,
+      spender: spenderAddress,
       value: amount,
     },
   })
 
-  const signature = await provider.send('eth_signTypedData_v4', [ userAddress, data ])
+  const signature = await provider.send('eth_signTypedData_v4', [ ownerAddress, data ])
   const { v, r, s } = await Signature.from(signature)
 
   return {
