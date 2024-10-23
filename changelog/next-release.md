@@ -124,12 +124,12 @@ type Output = Array<{
 
 #### New arguments:
 
-| Name | Type     | Type        | Description |
-|------|----------|-------------|---|
-| dateFrom | `number` | **Yes** | Time to start in milliseconds |
-| dateTo | `number` | **Yes** | Time to end  in milliseconds              |
-| userAddress  | `string` | **Yes**  | The user address              | 
-| vaultAddress | `string` | **Yes**  | The address of the vault      | 
+| Name         | Type     | Type    | Description                   |
+|--------------|----------|---------|-------------------------------|
+| dateFrom     | `number` | **Yes** | Time to start in milliseconds |
+| dateTo       | `number` | **Yes** | Time to end  in milliseconds  |
+| userAddress  | `string` | **Yes** | The user address              | 
+| vaultAddress | `string` | **Yes** | The address of the vault      | 
 
 ---
 
@@ -156,3 +156,16 @@ type RemovedInput = {
 ### 14. Removed method `sdk.vault.getScorePercentiles`
 
 ---
+
+### 15. Added method
+### `sdk.osToken.getLeverageStrategyProxy`
+
+---
+
+### 16. Added method
+### `sdk.osToken.getPermitSignature`
+
+---
+
+### 17. Added method
+### `sdk.osToken.boost`
