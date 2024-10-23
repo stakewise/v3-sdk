@@ -1,4 +1,4 @@
-import { RewardSplitterAbi, EigenPodOwnerAbi, BoostAbi } from '../types'
+import { RewardSplitterAbi, EigenPodOwnerAbi, LeverageStrategyAbi } from '../types'
 
 
 export type MulticallParameter = {
@@ -13,4 +13,4 @@ export type MulticallRequestInput = {
   transactionData?: boolean
 }
 
-export type ContractAbi = ReturnType<StakeWise.Contracts['helpers']['createVault']> | RewardSplitterAbi | EigenPodOwnerAbi | BoostAbi
+export type ContractAbi = ReturnType<StakeWise.Contracts['helpers']['createVault']> | RewardSplitterAbi | EigenPodOwnerAbi | LeverageStrategyAbi

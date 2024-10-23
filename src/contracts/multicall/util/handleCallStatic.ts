@@ -32,7 +32,7 @@ const handleCallStatic = async ({ contract, multicallParams, userAddress }: Inpu
     return contract.interface.decodeFunctionResult(method, data)
   })
 
-  return formattedResult.filter((_: any, index: number) => !indexesToDeleteResult.includes(index))
+  return formattedResult.filter((_, index) => !indexesToDeleteResult.includes(index))
 }
 
 
