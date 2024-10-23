@@ -1,8 +1,9 @@
 import { commonLogic } from './common'
-import checkAccess from './checkAccess'
 import type { SetEigenPodOperator } from './types'
 import setEigenPodOperatorGas from './setEigenPodOperatorGas'
 import setEigenPodOperatorEncode from './setEigenPodOperatorEncode'
+
+import { checkRestakeOperatorsManagerAccess as checkAccess } from '../util'
 
 
 const setEigenPodOperator: SetEigenPodOperator = async (values) => {
