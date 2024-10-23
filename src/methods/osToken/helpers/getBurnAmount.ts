@@ -1,4 +1,4 @@
-import { validateArgs, getValidLtvPercent } from '../../../utils'
+import { constants, validateArgs } from '../../../utils'
 import { wrapAbortPromise } from '../../../modules/gql-module'
 
 
@@ -23,9 +23,8 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
     return 0n
   }
 
-  const percent = await getValidLtvPercent({ vaultAddress, ltvPercent, contracts })
+  const stakedWithPercent = (stakedAssets - newStakedAssets) * ltvPercent / constants.blockchain.amount1
 
-  const stakedWithPercent = (stakedAssets - newStakedAssets) * percent / 10_000n
   const assetsToBurn = mintedAssets - stakedWithPercent
 
   if (assetsToBurn > 0) {
