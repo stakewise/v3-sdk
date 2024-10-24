@@ -89,21 +89,22 @@ const sdk = new StakeWiseSDK({
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                     | **osToken**                                                             | **RewardSplitter**                                                |
-|---------------------------------------------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------|
-| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)                       | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
-| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                                     |                                                                   |
-| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                           |                                                                   |
-| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                             |                                                                   |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets)           |                                                                   |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares)           |                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                                   |                                                                   |
-| [vault.getUserStats](#sdkvaultgetuserstats)                   | [osToken.getConfig](#sdkostokengetconfig)                               |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getHealthFactor](#sdkostokengethealthfactor)                   |                                                                   |
-| [vault.getWhitelist](#sdkvaultgetwhitelist)                   | [osToken.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) |                                                                   |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                                         |                                                                   |
-| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                                         |                                                                   |
-| [vault.getVaultStats](#sdkvaultgetvaultstats)                 |                                                                         |                                                                   |
+| **Vault**                                                       | **osToken**                                                  | **RewardSplitter**                                                |
+|-----------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)             | [osToken.getBurnAmount](#sdkostokengetburnamount)            | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions)   | [osToken.getAPY](#sdkostokengetapy)                          |                                                                   |
+| [vault.getValidators](#sdkvaultgetvalidators)                   | [osToken.getPosition](#sdkostokengetposition)                |                                                                   |
+| [vault.getVault](#sdkvaultgetvault)                             | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)                 | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets)|                                                                   |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares)|                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
+| [vault.getUserStats](#sdkvaultgetuserstats)                     | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)                 | [osToken.getHealthFactor](#sdkostokengethealthfactor)        |                                                                   |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                     | [osToken.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) |                                                        |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                     |                                                              |                                                                   |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)         |                                                              |                                                                   |
+| [vault.getVaultStats](#sdkvaultgetvaultstats)                   |                                                              |                                                                   |
+| [vault.getBoost](#sdkvaultgetboost)                             |                                                              |                                                                   |
 
 | **Utils**                                               |
 |---------------------------------------------------------|
@@ -111,7 +112,6 @@ const sdk = new StakeWiseSDK({
 | [utils.getTransactions](#sdkutilsgettransactions)       |
 | [utils.getFiatRates](#sdkutilsgetfiatrates)             |
 | [utils.getPermitSignature](#sdkutilsgetpermitsignature) |
-
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -813,6 +813,46 @@ await sdk.vault.getUserStats({
 })
 ```
 ---
+### `sdk.vault.getBoost`
+
+#### Description:
+
+Get boost data for vault user
+
+#### Arguments:
+
+| Name | Type     | Required | Description |
+|------|----------|----------|---|
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
+
+#### Returns:
+
+```ts
+type Output = {
+  shares: bigint
+  percent: number
+  isProfitable: boolean
+}
+```
+
+| Name | Description               |
+|------|---------------------------|
+| `shares` | Tokens count of boost         |
+| `percent` | Percentage relative to your osToken. At maximum boost the method will return 100% |
+| `isProfitable` | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
+| `maxMintShares` | maximum possible number of osToken without deductions  |
+
+#### Example:
+
+```ts
+await sdk.vault.getBoost({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+
 
 ## API-osToken
 
@@ -957,9 +997,6 @@ type Output = {
     value: number
     health: OsTokenPositionHealth
   }
-  boost: {
-    shares: bigint
-  }
   protocolFeePercent: bigint
 }
 ```
@@ -970,7 +1007,6 @@ type Output = {
 | `minted.assets`      | Balance in ETH |
 | `healthFactor`       | [sdk.osToken.getHealthFactor](#sdkostokengethealthfactor) |
 | `protocolFeePercent` | Usage fee percent |
-| `boost.shares`       | Count of osToken tokens with boost |
 
 #### Example:
 

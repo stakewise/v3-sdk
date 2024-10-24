@@ -1,7 +1,6 @@
-import graphql from '../../../graphql'
 import getHealthFactor from '../helpers/getHealthFactor'
 import { wrapAbortPromise } from '../../../modules/gql-module'
-import { validateArgs, apiUrls, OsTokenPositionHealth, Network } from '../../../utils'
+import { validateArgs, OsTokenPositionHealth } from '../../../utils'
 
 
 type GetOsTokenPositionInput = {
@@ -9,7 +8,6 @@ type GetOsTokenPositionInput = {
   vaultAddress: string
   stakedAssets: bigint
   thresholdPercent: bigint
-  options: StakeWise.Options
   contracts: StakeWise.Contracts
 }
 
@@ -22,23 +20,15 @@ type Output = {
     value: number
     health: OsTokenPositionHealth
   }
-  boost: {
-    shares: bigint
-  }
   protocolFeePercent: bigint
 }
 
 const getPosition = async (values: GetOsTokenPositionInput) => {
-  const { contracts, options, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
+  const { contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.bigint({ stakedAssets, thresholdPercent })
 
-  const boost = {
-    shares: 0n,
-  }
-
-  const isMainnet = options.network === Network.Mainnet
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
 
@@ -50,25 +40,11 @@ const getPosition = async (values: GetOsTokenPositionInput) => {
   const protocolFeePercent = feePercent / 100n
   const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
 
-  if (isMainnet) {
-    const boostedShares = await graphql.subgraph.osToken.fetchBoostTokenSharesQuery({
-      url: apiUrls.getSubgraphqlUrl(options),
-      variables: {
-        vaultAddress,
-        userAddress,
-      },
-      modifyResult: (data) => BigInt(data.leverageStrategyPositions[0]?.osTokenShares || '0'),
-    })
-
-    boost.shares = boostedShares
-  }
-
   const result: Output = {
     minted: {
       assets: mintedAssets,
       shares: mintedShares,
     },
-    boost,
     healthFactor,
     protocolFeePercent,
   }

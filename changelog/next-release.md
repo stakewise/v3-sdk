@@ -49,18 +49,12 @@ type Output = {
 ### 4. Removed output field
 ### `sdk.osToken.getPosition`
 
-Removed fee and added boost params (mainnet only)
+Removed fee
 
 ```ts
 type RemovedOutput = {
   minted: {
     fee: bigint
-  }
-}
-
-type AddedOutput = {
-  boost: {
-    shares: bigint
   }
 }
 ```
@@ -159,18 +153,58 @@ type RemovedInput = {
 
 ---
 
-### 15. Added method
+### 15. New method `sdk.vault.getBoost`
+
+#### Description:
+
+Get boost data for vault user
+
+#### Arguments:
+
+| Name | Type     | Required | Description |
+|------|----------|----------|---|
+| userAddress  | `string` | **Yes**  | The user address              | 
+| vaultAddress | `string` | **Yes**  | The address of the vault      | 
+
+#### Returns:
+
+```ts
+type Output = {
+  shares: bigint
+  percent: number
+  isProfitable: boolean
+}
+```
+
+| Name | Description               |
+|------|---------------------------|
+| `shares` | Tokens count of boost         |
+| `percent` | Percentage relative to your osToken. At maximum boost the method will return 100% |
+| `isProfitable` | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
+| `maxMintShares` | maximum possible number of osToken without deductions  |
+
+#### Example:
+
+```ts
+await sdk.vault.getBoost({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+
+### 16. Added method
 ### `sdk.osToken.getLeverageStrategyProxy`
 #### Get the address of the leverage strategy proxy contract
 
 ---
 
-### 16. Added method
+### 17. Added method
 ### `sdk.utils.getPermitSignature`
 #### Get permit signature for ERC20 token
 
 ---
 
-### 17. Added method
+### 18. Added method
 ### `sdk.osToken.boost`
 #### Boost your osToken apy using leverage staking

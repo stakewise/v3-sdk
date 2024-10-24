@@ -1,5 +1,6 @@
 // Requests
 import getVault from './requests/getVault'
+import getBoost from './requests/getBoost'
 import getEigenPods from './requests/getEigenPods'
 import getWhitelist from './requests/getWhitelist'
 import getBlocklist from './requests/getBlocklist'
@@ -107,6 +108,11 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
      */
     getUserStats,
+    /**
+     * @description Get boost data for the user.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetboost
+     */
+    getBoost,
   },
   transactions: {
     /**
