@@ -16,6 +16,7 @@ const getVaultVersion = async (values: Input) => {
   const isMoreV2 = version > 2n
 
   return {
+    version: Number(version),
     isV1Version,
     isV2Version,
     isMoreV1,

@@ -9,6 +9,7 @@ type AddedOutput = {
     ltvPercent: string
     thresholdPercent: string
   }
+  queuedShares: string
   maxBoostApy: number
   isGenesis: boolean
 }
@@ -19,6 +20,7 @@ type AddedOutput = {
 | `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 | `isGenesis` | This vault is owned by stakewise |
 | `maxBoostApy` | The vault average max boost APY |
+| `queuedShares` | The total number of queued shares |
 
 ---
 ### 2. `sdk.vault.getHarvestParams`

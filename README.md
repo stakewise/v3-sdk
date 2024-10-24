@@ -561,6 +561,7 @@ type Output = {
   createdAt: number
   feePercent: number
   isPrivate: boolean
+  isGenesis: boolean
   isRestake: boolean
   vaultAdmin: string
   totalAssets: string
@@ -568,6 +569,7 @@ type Output = {
   feeRecipient: string
   vaultAddress: string
   mevRecipient: string
+  queuedShares: string
   whitelistCount: number
   blocklistCount: number
   imageUrl: string | null
@@ -598,6 +600,7 @@ type Output = {
 | `feePercent`                | Commission rate |
 | `isPrivate`                 | Whether the vault is private |
 | `isGenesis`                 | Is a stakewise vault |
+| `queuedShares`              | The total number of queued shares|
 | `isRestake`                 | Indicates whether the Vault is a restaking vault |
 | `isBlocklist`               | Whether the vault has blocklist |
 | `vaultAdmin`                | Vault administrator address |
