@@ -35,14 +35,14 @@ export default {
       rewardSplitterFactory: '0x2Ed24638b3aB48cF0076f19199c78A62bfEb5889',
     },
     factories: {
-      vault: '0xA1424Bd00e6940A58B1232ad4160A77dD0AC3099',
-      erc20Vault: '0xc6e7d05B3F6e73E3A86C6deAE0Da1fce993cF833',
+      vault: '0x215f4c69c3d1461c7aA38c9c73c27e10cFB0eeE4',
+      erc20Vault: '0x439b60d3C886e711Dad30CF23a2BbD5388febcd9',
 
-      privateVault: '0x8023518b2192FB5384DAdc596765B3dD1cdFe471',
-      erc20PrivateVault: '0x481f28C0D733614aF87897E43d0D52C451799592',
+      privateVault: '0xedeBE792C6190Be612Cbe97F628137fAa8C36ee5',
+      erc20PrivateVault: '0xaC9125646185Cb58e86E77d5f402eFa3fAfAFc84',
 
-      blocklistVault: '0x90a9428b8c58cA80B28aAF46B936D42e87797449',
-      erc20BlocklistVault: '0x82FE8C78CaE0013471179e76224ef89941bAaa75',
+      blocklistVault: '0x5FCd8Bb2e3DDE5809b2106039B741C041bd49E4e',
+      erc20BlocklistVault: '0xeBe12d858E55DDc5FC5A8153dC3e117824fbf5d2',
     },
     special: {
       stakeCalculator: '0x90b82e4b3aa385b4a02b7ebc1892a4bed6b5c465',

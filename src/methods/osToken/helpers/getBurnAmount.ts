@@ -24,6 +24,7 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
   }
 
   const stakedWithPercent = (stakedAssets - newStakedAssets) * ltvPercent / constants.blockchain.amount1
+
   const assetsToBurn = mintedAssets - stakedWithPercent
 
   if (assetsToBurn > 0) {
