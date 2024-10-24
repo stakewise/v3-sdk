@@ -1,6 +1,15 @@
 import methods from './methods'
-import { configs, getGas, createProvider, getVaultFactory, VaultType } from './utils'
+
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
+
+import {
+  getGas,
+  configs,
+  VaultType,
+  createProvider,
+  getVaultFactory,
+  getVaultVersion,
+} from './utils'
 
 
 type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
@@ -35,12 +44,47 @@ class StakeWiseSDK {
     this.provider = provider
     this.contracts = contracts
 
+    if (options.endpoints?.subgraph) {
+      // @ts-ignore: It's better to just overwrite
+      this.config.api.subgraph = options.endpoints.subgraph
+    }
+
+    if (options.endpoints?.api) {
+      // @ts-ignore: It's better to just overwrite
+      this.config.api.backend = options.endpoints.api
+    }
+
     const argsForMethods = { options, contracts, provider }
 
     this.utils = methods.createUtils(argsForMethods)
     this.vault = methods.createVaultMethods(argsForMethods)
     this.osToken = methods.createOsTokenMethods(argsForMethods)
     this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
+  }
+
+  async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
+    const { userAddress, vaultAddress, request } = values
+
+    const { isBlocklist, isPrivate, isRestake, isGenesis } = await this.vault.getVault({ vaultAddress })
+
+    const vaultContract = this.contracts.helpers.createVault({
+      options: {
+        chainId: this.config.network.chainId,
+        isBlocklist,
+        isPrivate,
+        isGenesis,
+        isRestake,
+      },
+      vaultAddress,
+    })
+
+    return vaultMulticall<T>({
+      options: this.options,
+      vaultContract,
+      vaultAddress,
+      userAddress,
+      request,
+    })
   }
 
   getVaultFactory({ vaultType, isErc20 }: GetVaultFactoryInput) {
@@ -51,18 +95,8 @@ class StakeWiseSDK {
     })
   }
 
-  vaultMulticall<T extends unknown>({ userAddress, vaultAddress, request }: VaultMulticallInput) {
-    return vaultMulticall<T>({
-      vaultContract: this.contracts.helpers.createVault(vaultAddress),
-      options: this.options,
-      vaultAddress,
-      userAddress,
-      request,
-    })
-  }
-
-  rewardSplitterMulticall<T extends unknown>(props: RewardSplitterMulticallInput) {
-    const { userAddress, vaultAddress, rewardSplitterAddress, request } = props
+  rewardSplitterMulticall<T extends unknown>(values: RewardSplitterMulticallInput) {
+    const { userAddress, vaultAddress, rewardSplitterAddress, request } = values
 
     return rewardSplitterMulticall<T>({
       rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
@@ -77,6 +111,13 @@ class StakeWiseSDK {
     return getGas({
       provider: this.provider,
       estimatedGas,
+    })
+  }
+
+  getVaultVersion(vaultAddress: string) {
+    return getVaultVersion({
+      contracts: this.contracts,
+      vaultAddress,
     })
   }
 

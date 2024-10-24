@@ -1,14 +1,12 @@
 // Requests
 import getAPY from './requests/getOsTokenAPY'
-import getRate from './requests/getOsTokenRate'
 import getMaxMint from './requests/getMaxMint'
-import getConfig from './requests/getOsTokenConfig'
+import getRate from './requests/getOsTokenRate'
+import getPosition from './requests/getPosition'
 import getBurnAmount from './helpers/getBurnAmount'
-import getPosition from './requests/getOsTokenPosition'
 import getHealthFactor from './helpers/getHealthFactor'
 import getSharesFromAssets from './requests/getSharesFromAssets'
 import getAssetsFromShares from './requests/getAssetsFromShares'
-import getAvgRewardsPerSecond from './requests/getAvgRewardsPerSecond'
 
 // Transactions
 import { default as mint } from './transactions/mint'
@@ -27,11 +25,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetrate
     */
     getRate,
-    /**
-     * @description os token ltvPercent and thresholdPercent for provided vault
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetconfig
-    */
-    getConfig,
     /**
      * @description Maximum number of **shares** for minting
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetmaxmint
@@ -62,11 +55,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetassetsfromshares
     */
     getAssetsFromShares,
-    /**
-     * @description osETH average rewards per second
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetavgrewardspersecond
-    */
-    getAvgRewardsPerSecond,
   },
   transactions: {
     /**

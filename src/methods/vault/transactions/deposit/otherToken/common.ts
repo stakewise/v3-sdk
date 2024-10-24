@@ -19,8 +19,13 @@ export const commonLogic = (values: DepositInput) => {
     },
   ]
 
+  const vaultContract = contracts.helpers.createVault({
+    options: { chainId: options.network },
+    vaultAddress,
+  })
+
   const baseInput: VaultMulticallBaseInput = {
-    vaultContract: contracts.helpers.createOtherTokenVault(vaultAddress),
+    vaultContract,
     vaultAddress,
     userAddress,
     options,

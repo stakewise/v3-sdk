@@ -1,8 +1,9 @@
 import { commonLogic } from './common'
-import checkAccess from './checkAccess'
 import type { CreateEigenPod } from './types'
 import createEigenPodGas from './createEigenPodGas'
 import createEigenPodEncode from './createEigenPodEncode'
+
+import { checkRestakeOperatorsManagerAccess as checkAccess } from '../util'
 
 
 const createEigenPod: CreateEigenPod = async (values) => {

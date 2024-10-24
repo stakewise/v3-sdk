@@ -1,8 +1,10 @@
 import { commonLogic } from './common'
-import checkAccess from './checkAccess'
 import updateEigenPodOperatorGas from './updateEigenPodOperatorGas'
 import updateEigenPodOperatorEncode from './updateEigenPodOperatorEncode'
 import type { UpdateEigenPodOperator } from './types'
+
+import { checkRestakeOperatorsManagerAccess as checkAccess } from '../util'
+
 import { eigenPodOwnerMulticall } from '../../../../contracts'
 
 
