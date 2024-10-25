@@ -69,7 +69,11 @@ class BigDecimal {
   }
 
   toString() {
-    return String(this.#value)
+    return this.#value.toString()
+  }
+
+  toNumber() {
+    return this.#value.toNumber()
   }
 }
 

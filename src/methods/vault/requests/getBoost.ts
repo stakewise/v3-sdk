@@ -29,7 +29,7 @@ const getBoost = async (values: GetBoostInput) => {
     isProfitable: false,
   }
 
-  if (options.network === Network.Mainnet) {
+  if ([ Network.Mainnet, Network.Holesky ].includes(options.network)) {
     const response = await graphql.subgraph.osToken.fetchBoostTokenSharesQuery({
       url: apiUrls.getSubgraphqlUrl(options),
       variables: {
@@ -53,12 +53,12 @@ const getBoost = async (values: GetBoostInput) => {
     const maxMintAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
 
-    const boostPercent = maxMintShares ? Number(
+    const boostPercent = maxMintShares ? (
       new BigDecimal(boostShares)
         .multiply(100)
         .divide(maxMintShares)
         .decimals(2)
-        .toString()
+        .toNumber()
     ) : 0
 
     boost.shares = boostShares
