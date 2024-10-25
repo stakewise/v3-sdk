@@ -3,8 +3,30 @@ query BoostTokenShares(
   $userAddress: Bytes!
 ) {
   leverageStrategyPositions(
-    where: { vault: $vaultAddress, user: $userAddress }
+    where: {
+      vault: $vaultAddress,
+      user: $userAddress
+    }
   ) {
     osTokenShares
+  }
+  vaults(
+    where: {
+      addressString: $vaultAddress,
+    }
+  ) {
+    osTokenConfig {
+      ltvPercent
+    }
+    maxBoostApy
+    apy
+  }
+  allocators(
+    where: {
+      address: $userAddress,
+      vault: $vaultAddress
+    }
+  ) {
+    assets
   }
 }
