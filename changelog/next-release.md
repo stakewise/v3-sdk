@@ -49,18 +49,12 @@ type Output = {
 ### 4. Removed output field
 ### `sdk.osToken.getPosition`
 
-Removed fee and added boost params (mainnet only)
+Removed fee
 
 ```ts
 type RemovedOutput = {
   minted: {
     fee: bigint
-  }
-}
-
-type AddedOutput = {
-  boost: {
-    shares: bigint
   }
 }
 ```
@@ -160,17 +154,22 @@ type RemovedInput = {
 ---
 
 ### 15. Added method
+### `sdk.vault.getBoost`
+#### Get the address of the leverage strategy proxy contract
+---
+
+### 16. Added method
 ### `sdk.osToken.getLeverageStrategyProxy`
 #### Get the address of the leverage strategy proxy contract
 
 ---
 
-### 16. Added method
+### 17. Added method
 ### `sdk.utils.getPermitSignature`
 #### Get permit signature for ERC20 token
 
 ---
 
-### 17. Added method
+### 18. Added method
 ### `sdk.osToken.boost`
 #### Boost your osToken apy using leverage staking
