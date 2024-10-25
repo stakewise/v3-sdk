@@ -9,6 +9,7 @@ query BoostTokenShares(
     }
   ) {
     osTokenShares
+    boostRewardAssets: assets
   }
   vaults(
     where: {

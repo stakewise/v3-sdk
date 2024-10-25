@@ -13,6 +13,7 @@ type GetBoostInput = {
 type Output = {
   shares: bigint
   percent: number
+  rewardAssets: bigint
   maxMintShares: bigint
   isProfitable: boolean
 }
@@ -25,6 +26,7 @@ const getBoost = async (values: GetBoostInput) => {
   const boost: Output = {
     shares: 0n,
     percent: 0,
+    rewardAssets: 0n,
     maxMintShares: 0n,
     isProfitable: false,
   }
@@ -49,6 +51,7 @@ const getBoost = async (values: GetBoostInput) => {
     const stakedAssets = BigInt(allocators[0]?.assets || 0)
     const ltvPercent = BigInt(osTokenConfig.ltvPercent || 0)
     const boostShares = BigInt(leverageStrategyPositions[0]?.osTokenShares || 0)
+    const boostRewardAssets = BigInt(leverageStrategyPositions[0]?.boostRewardAssets || 0)
 
     const maxMintAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
@@ -65,6 +68,7 @@ const getBoost = async (values: GetBoostInput) => {
     boost.percent = boostPercent
     boost.maxMintShares = maxMintShares
     boost.isProfitable = maxBoostApy > apy
+    boost.rewardAssets = boostRewardAssets
   }
 
   return boost

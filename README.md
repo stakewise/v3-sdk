@@ -841,7 +841,8 @@ type Output = {
 | `shares` | Tokens count of boost         |
 | `percent` | Percentage relative to your osToken. At maximum boost the method will return 100% |
 | `isProfitable` | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
-| `maxMintShares` | maximum possible number of osToken without deductions  |
+| `maxMintShares` | Maximum possible number of osToken without deductions  |
+| `boostRewardAssets` | User boost rewards |
 
 #### Example:
 
