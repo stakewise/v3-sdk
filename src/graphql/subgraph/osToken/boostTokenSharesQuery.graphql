@@ -8,7 +8,9 @@ query BoostTokenShares(
       user: $userAddress
     }
   ) {
+    assets
     osTokenShares
+    exitingPercent
   }
   vaults(
     where: {
