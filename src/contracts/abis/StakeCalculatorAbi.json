@@ -18,11 +18,6 @@
       },
       {
         "internalType": "address",
-        "name": "osToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "osTokenController",
         "type": "address"
       }
@@ -203,6 +198,11 @@
             "internalType": "address",
             "name": "user",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "osTokenShares",
+            "type": "uint256"
           },
           {
             "components": [
