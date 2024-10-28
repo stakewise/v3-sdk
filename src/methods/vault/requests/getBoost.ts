@@ -12,7 +12,9 @@ type GetBoostInput = {
 
 type Output = {
   shares: bigint
+  assets: bigint
   percent: number
+  exitingPercent: number
   maxMintShares: bigint
   isProfitable: boolean
 }
@@ -24,7 +26,9 @@ const getBoost = async (values: GetBoostInput) => {
 
   const boost: Output = {
     shares: 0n,
+    assets: 0n,
     percent: 0,
+    exitingPercent: 0,
     maxMintShares: 0n,
     isProfitable: false,
   }
@@ -33,8 +37,8 @@ const getBoost = async (values: GetBoostInput) => {
     const response = await graphql.subgraph.osToken.fetchBoostTokenSharesQuery({
       url: apiUrls.getSubgraphqlUrl(options),
       variables: {
-        vaultAddress,
-        userAddress,
+        userAddress: userAddress.toLowerCase(),
+        vaultAddress: vaultAddress.toLowerCase(),
       },
     })
 
@@ -46,9 +50,12 @@ const getBoost = async (values: GetBoostInput) => {
 
     const { apy, maxBoostApy, osTokenConfig } = vaults[0]
 
+    const leverageStrategyPosition = leverageStrategyPositions[0]
     const stakedAssets = BigInt(allocators[0]?.assets || 0)
     const ltvPercent = BigInt(osTokenConfig.ltvPercent || 0)
-    const boostShares = BigInt(leverageStrategyPositions[0]?.osTokenShares || 0)
+    const boostShares = BigInt(leverageStrategyPosition?.osTokenShares || 0)
+    const boostAssets = BigInt(leverageStrategyPosition?.assets || 0)
+    const exitingPercent = Number(leverageStrategyPosition?.exitingPercent || 0)
 
     const maxMintAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
@@ -62,7 +69,9 @@ const getBoost = async (values: GetBoostInput) => {
     ) : 0
 
     boost.shares = boostShares
+    boost.assets = boostAssets
     boost.percent = boostPercent
+    boost.exitingPercent = exitingPercent
     boost.maxMintShares = maxMintShares
     boost.isProfitable = maxBoostApy > apy
   }
