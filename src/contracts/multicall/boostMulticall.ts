@@ -42,7 +42,7 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
     request,
   })
 
-  const multicallParams = [ ...params ]
+  let multicallParams = [ ...params ]
 
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
@@ -53,10 +53,13 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
     })
 
     if (harvestArgs) {
-      multicallParams.push({
-        method: 'updateVaultState',
-        args: [ vaultAddress, harvestArgs ],
-      })
+      multicallParams = [
+        {
+          method: 'updateVaultState',
+          args: [ vaultAddress, harvestArgs ],
+        },
+        ...multicallParams,
+      ]
     }
   }
 
