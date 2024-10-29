@@ -14,6 +14,7 @@ import getLeverageStrategyProxy from './requests/getLeverageStrategyProxy'
 import { default as mint } from './transactions/mint'
 import { default as burn } from './transactions/burn'
 import { default as boost } from './transactions/boost'
+import { default as unboost } from './transactions/unboost'
 
 
 export default {
@@ -88,5 +89,10 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenboost
     */
     boost,
+    /**
+     * @description Unboost your osToken apy
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenunboost
+    */
+    unboost,
   },
 } as const
