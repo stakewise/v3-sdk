@@ -12,7 +12,6 @@ type GetBoostInput = {
 
 type Output = {
   shares: bigint
-  assets: bigint
   percent: number
   rewardAssets: bigint
   exitingPercent: number
@@ -27,7 +26,6 @@ const getBoost = async (values: GetBoostInput) => {
 
   const boost: Output = {
     shares: 0n,
-    assets: 0n,
     percent: 0,
     rewardAssets: 0n,
     exitingPercent: 0,
