@@ -33,6 +33,7 @@ const harvestCheckMethods = [
   'setFeeRecipient',
   'convertToAssets',
   'convertToShares',
+  'upgradeToAndCall',
   'getExitQueueIndex',
   'claimExitedAssets',
   'calculateExitedAssets',
