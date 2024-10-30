@@ -10,6 +10,13 @@ export const commonLogic = (values: UnboostInput) => {
   validateArgs.number({ percent })
   validateArgs.address({ vaultAddress, userAddress })
 
+  if (percent <= 0) {
+    throw new Error(`The "percent" argument must be greater than 0`)
+  }
+  if (percent > 100) {
+    throw new Error(`The "percent" argument must be less than or equal to 100`)
+  }
+
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
     leverageStrategyContract: contracts.special.leverageStrategy,
     vaultAddress,

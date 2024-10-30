@@ -135,15 +135,15 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                                     | **RewardSplitter**                                                          | **osToken**                       |
-|---------------------------------------------------------------|-----------------------------------------------------------------------------|-----------------------------------|
-| [vault.create](#sdkvaultcreate)                               | [rewardSplitter.create](#sdkrewardsplittercreate)                           | [osToken.mint](#sdkostokenmint)   |
-| [vault.deposit](#sdkvaultdeposit)                             | [rewardSplitter.claimRewards](#sdkrewardsplitterclaimrewards)               | [osToken.burn](#sdkostokenburn)   |
-| [vault.withdraw](#sdkvaultwithdraw)                           | [rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) | [osToken.boost](#sdkostokenboost) | 
-| [vault.operate](#sdkvaultoperate)                             |                                                                             |                                   |
-| [vault.setDepositDataManager](#sdkvaultsetdepositdatamanager) |                                                                             |                                   |
-| [vault.setDepositDataRoot](#sdkvaultsetdepositdataroot)       |                                                                             |                                   |
-| [claimExitQueue](#sdkvaultclaimexitqueue)                     |                                                                             |                                   |
+| **Vault**                                                     | **RewardSplitter**                                                          | **osToken**                           |
+|---------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------|
+| [vault.create](#sdkvaultcreate)                               | [rewardSplitter.create](#sdkrewardsplittercreate)                           | [osToken.mint](#sdkostokenmint)       |
+| [vault.deposit](#sdkvaultdeposit)                             | [rewardSplitter.claimRewards](#sdkrewardsplitterclaimrewards)               | [osToken.burn](#sdkostokenburn)       |
+| [vault.withdraw](#sdkvaultwithdraw)                           | [rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) | [osToken.boost](#sdkostokenboost)     | 
+| [vault.operate](#sdkvaultoperate)                             |                                                                             | [osToken.unboost](#sdkostokenunboost) |
+| [vault.setDepositDataManager](#sdkvaultsetdepositdatamanager) |                                                                             |                                       |
+| [vault.setDepositDataRoot](#sdkvaultsetdepositdataroot)       |                                                                             |                                       |
+| [claimExitQueue](#sdkvaultclaimexitqueue)                     |                                                                             |                                       |
 
 
 ## API-Vault
@@ -2058,6 +2058,37 @@ const hash = await sdk.osToken.boost(params)
 const { data, to, value } = await sdk.osToken.boost.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.osToken.boost.estimateGas(params)
+```
+---
+### `sdk.osToken.unboost`
+
+#### Description:
+
+Unboost your boosted osToken
+
+#### Arguments:
+
+| Name         | Type           | Required | Description                                         |
+|--------------|----------------|----------|-----------------------------------------------------|
+| percent      | `number`       | **Yes**  | The percent to unboost (100 at max)                 |
+| userAddress  | `string`       | **Yes**  | The user address                                    |
+| vaultAddress | `string`       | **Yes**  | The address of the vault where the osTokens boosted |
+
+#### Example:
+
+```ts
+const params = {
+  percent: 100,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.osToken.unboost(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to, value } = await sdk.osToken.unboost.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.osToken.unboost.estimateGas(params)
 ```
 ---
 
