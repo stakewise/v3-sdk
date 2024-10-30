@@ -90,7 +90,7 @@ export default {
     */
     boost,
     /**
-     * @description Unboost your osToken apy
+     * @description Unboost your boosted osToken
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenunboost
     */
     unboost,
