@@ -1435,7 +1435,7 @@ Get osToken apy boosted by leverage staking
 #### Arguments:
 | Name          | Type     | Required | Description                                            |
 |---------------|----------|----------|--------------------------------------------------------|
-| value         | `bigint` | **Yes**  | The amount of osETH to boost                           |
+| value         | `bigint` | **Yes**  | The amount of osToken to boost                         |
 | vaultAPY      | `number` | **Yes**  | The vault APY from [vault.getVault](#sdkvaultgetvault) |
 | maxBoostAPY   | `number` | **Yes**  | Value from [vault.getBoost](#sdkvaultgetboost)         |
 | maxMintShares | `bigint` | **Yes**  | Value from [vault.getBoost](#sdkvaultgetboost)         |
