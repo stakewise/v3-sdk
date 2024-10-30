@@ -89,22 +89,22 @@ const sdk = new StakeWiseSDK({
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                       | **osToken**                                                  | **RewardSplitter**                                                |
-|-----------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------|
-| [vault.getStakerActions](#sdkvaultgetstakeractions)             | [osToken.getBurnAmount](#sdkostokengetburnamount)            | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
-| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions)   | [osToken.getAPY](#sdkostokengetapy)                          |                                                                   |
-| [vault.getValidators](#sdkvaultgetvalidators)                   | [osToken.getPosition](#sdkostokengetposition)                |                                                                   |
-| [vault.getVault](#sdkvaultgetvault)                             | [osToken.getMaxMint](#sdkostokengetmaxmint)                  |                                                                   |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)                 | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets)|                                                                   |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)             | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares)|                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)               | [osToken.getRate](#sdkostokengetrate)                        |                                                                   |
-| [vault.getUserStats](#sdkvaultgetuserstats)                     | [osToken.getConfig](#sdkostokengetconfig)                    |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)                 | [osToken.getHealthFactor](#sdkostokengethealthfactor)        |                                                                   |
-| [vault.getWhitelist](#sdkvaultgetwhitelist)                     | [osToken.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) |                                                        |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                     |                                                              |                                                                   |
-| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)         |                                                              |                                                                   |
-| [vault.getVaultStats](#sdkvaultgetvaultstats)                   |                                                              |                                                                   |
-| [vault.getBoost](#sdkvaultgetboost)                             |                                                              |                                                                   |
+| **Vault**                                                     | **osToken**                                                             | **RewardSplitter**                                                |
+|---------------------------------------------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)                       | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                                     |                                                                   |
+| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                           |                                                                   |
+| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                             |                                                                   |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets)           |                                                                   |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares)           |                                                                   |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                                   |                                                                   |
+| [vault.getUserStats](#sdkvaultgetuserstats)                   | [osToken.getConfig](#sdkostokengetconfig)                               |                                                                   |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getHealthFactor](#sdkostokengethealthfactor)                   |                                                                   |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                   | [osToken.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) |                                                                   |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                                         |                                                                   |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                                         |                                                                   |
+| [vault.getVaultStats](#sdkvaultgetvaultstats)                 |                                                                         |                                                                   |
+| [vault.getBoost](#sdkvaultgetboost)                           |                                                                         |                                                                   |
 
 | **Utils**                                               |
 |---------------------------------------------------------|
@@ -775,11 +775,11 @@ With the help of this data it is possible to build a chart.
 
 #### Arguments:
 
-| Name         | Type     | Required | Description                  |
-|--------------|----------|----------|------------------------------|
-| daysCount        | `number` | **Yes**  | The limit in days            |
-| userAddress  | `string` | **Yes**  | The user address | 
-| vaultAddress | `string` | **Yes**  | The address of the vault     | 
+| Name         | Type     | Required | Description              |
+|--------------|----------|----------|--------------------------|
+| daysCount    | `number` | **Yes**  | The limit in days        |
+| userAddress  | `string` | **Yes**  | The user address         | 
+| vaultAddress | `string` | **Yes**  | The address of the vault | 
 
 #### Returns:
 
@@ -796,12 +796,12 @@ type Output = {
 }
 ```
 
-| Name | Description                                                                                            |
-|------|--------------------------------------------------------------------------------------------------------|
-| `time` | Date and time for each data point                                                                      |
-| `apy` | Current APY based on time, rewards and balance. |
-| `rewards` | Number of assets earned by the user in current vault during the interval in ETH                        |
-| `balance` | Total assets by the user in current vault at the moment of time in ETH                                                |
+| Name      | Description                                                                     |
+|-----------|---------------------------------------------------------------------------------|
+| `time`    | Date and time for each data point                                               |
+| `apy`     | Current APY based on time, rewards and balance.                                 |
+| `rewards` | Number of assets earned by the user in current vault during the interval in ETH |
+| `balance` | Total assets by the user in current vault at the moment of time in ETH          |
 
 #### Example:
 
@@ -821,10 +821,10 @@ Get boost data for vault user
 
 #### Arguments:
 
-| Name | Type     | Required | Description |
-|------|----------|----------|---|
-| userAddress  | `string` | **Yes**  | The user address              | 
-| vaultAddress | `string` | **Yes**  | The address of the vault      | 
+| Name         | Type     | Required | Description              |
+|--------------|----------|----------|--------------------------|
+| userAddress  | `string` | **Yes**  | The user address         | 
+| vaultAddress | `string` | **Yes**  | The address of the vault | 
 
 #### Returns:
 
@@ -1423,6 +1423,37 @@ const permitParams = await sdk.utils.getPermitSignature({
   contract: sdk.contracts.tokens.mintToken,
   ownerAddress: '0x...',
   spenderAddress: '0x...',
+})
+```
+---
+### `sdk.utils.getBoostApy`
+
+#### Description:
+
+Get osToken apy boosted by leverage staking
+
+#### Arguments:
+| Name          | Type     | Required | Description                                            |
+|---------------|----------|----------|--------------------------------------------------------|
+| value         | `bigint` | **Yes**  | The amount of osETH to boost                           |
+| vaultAPY      | `number` | **Yes**  | The vault APY from [vault.getVault](#sdkvaultgetvault) |
+| maxBoostAPY   | `number` | **Yes**  | Value from [vault.getBoost](#sdkvaultgetboost)         |
+| maxMintShares | `bigint` | **Yes**  | Value from [vault.getBoost](#sdkvaultgetboost)         |
+
+#### Returns:
+
+```ts
+type Output = number
+```
+
+#### Example:
+
+```ts
+const boostApy = sdk.utils.getBoostApy({
+  value: parseEther('1'),
+  vaultAPY: 0.5,
+  maxBoostAPY: 1.5,
+  maxMintShares: parseEther('1'),
 })
 ```
 ---
