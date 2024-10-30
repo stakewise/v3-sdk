@@ -836,14 +836,13 @@ type Output = {
 }
 ```
 
-| Name | Description               |
-|------|---------------------------|
-| `shares` | Tokens count of boost         |
-| `percent` | Percentage relative to your osToken. At maximum boost the method will return 100% |
-| `isProfitable` | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
-| `maxMintShares` | Maximum possible number of osToken without deductions  |
-| `exitingPercent` | The percent (in wad) of user's position that is currently exiting |
-| `rewardAssets` | User boost rewards |
+| Name             | Description                                                                                      |
+|------------------|--------------------------------------------------------------------------------------------------|
+| `shares`         | Tokens count of boost                                                                            |
+| `isProfitable`   | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
+| `maxMintShares`  | Maximum possible number of osToken without deductions                                            |
+| `exitingPercent` | The percent (in wad) of user's position that is currently exiting                                |
+| `rewardAssets`   | User boost rewards                                                                               |
 
 #### Example:
 

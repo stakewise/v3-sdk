@@ -1,6 +1,6 @@
 import graphql from '../../../graphql'
 import { wrapAbortPromise } from '../../../modules/gql-module'
-import { validateArgs, apiUrls, BigDecimal, Network, constants } from '../../../utils'
+import { validateArgs, apiUrls, Network, constants } from '../../../utils'
 
 
 type GetBoostInput = {
@@ -12,7 +12,6 @@ type GetBoostInput = {
 
 type Output = {
   shares: bigint
-  percent: number
   rewardAssets: bigint
   exitingPercent: number
   maxMintShares: bigint
@@ -26,7 +25,6 @@ const getBoost = async (values: GetBoostInput) => {
 
   const boost: Output = {
     shares: 0n,
-    percent: 0,
     rewardAssets: 0n,
     exitingPercent: 0,
     maxMintShares: 0n,
@@ -55,25 +53,14 @@ const getBoost = async (values: GetBoostInput) => {
     const stakedAssets = BigInt(allocators[0]?.assets || 0)
     const ltvPercent = BigInt(osTokenConfig.ltvPercent || 0)
     const shares = BigInt(leverageStrategyPosition?.osTokenShares || 0)
-    const assets = BigInt(leverageStrategyPosition?.assets || 0)
-    const exitingPercent = Number(leverageStrategyPosition?.exitingPercent || 0)
     const rewardAssets = BigInt(leverageStrategyPosition?.boostRewardAssets || 0)
+    const exitingPercent = Number(leverageStrategyPosition?.exitingPercent || 0)
 
     const maxMintAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
 
-    const percent = maxMintShares ? (
-      new BigDecimal(shares)
-        .multiply(100)
-        .divide(maxMintShares)
-        .decimals(2)
-        .toNumber()
-    ) : 0
-
     return {
       shares,
-      assets,
-      percent,
       rewardAssets,
       maxMintShares,
       exitingPercent,
