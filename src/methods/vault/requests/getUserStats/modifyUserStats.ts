@@ -18,13 +18,13 @@ const updateUserStatsMap = (
   const timeInSeconds = Number(timestamp) / 1_000_000
   const balance = Number(formatEther(totalAssets || 0n))
   const rewards = Number(formatEther(earnedAssets || 0n))
+  const keys = (Object.keys(userStatsMap) as Array<keyof UserStatsMap>)
 
-  ;(Object.keys(userStatsMap) as Array<keyof UserStatsMap>)
-    .forEach((key) => {
-      if (!userStatsMap[key][timestamp]) {
-        userStatsMap[key][timestamp] = { value: 0, time: timeInSeconds }
-      }
-    })
+  keys.forEach((key) => {
+    if (!userStatsMap[key][timestamp]) {
+      userStatsMap[key][timestamp] = { value: 0, time: timeInSeconds }
+    }
+  })
 
   userStatsMap.balance[timestamp].value += balance
   userStatsMap.rewards[timestamp].value += rewards
