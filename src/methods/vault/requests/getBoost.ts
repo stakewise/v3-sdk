@@ -64,7 +64,7 @@ const getBoost = async (values: GetBoostInput) => {
       rewardAssets,
       maxMintShares,
       exitingPercent,
-      isProfitable: maxBoostApy > apy,
+      isProfitable: Number(maxBoostApy) > Number(apy),
     }
   }
 
