@@ -1,5 +1,5 @@
 import boostGas from './boostGas'
-import burnEncode from './burnEncode'
+import boostEncode from './boostEncode'
 
 
 type PermitParams = {
@@ -25,5 +25,5 @@ export type BoostInput = {
 export interface Boost {
   (values: BoostInput): Promise<StakeWise.TransactionHash>
   estimateGas: typeof boostGas
-  encode: typeof burnEncode
+  encode: typeof boostEncode
 }
