@@ -6,38 +6,33 @@ import type { UserStatsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 const updateUserStatsMap = (
   userStatsMap: UserStatsMap,
-  stat: {
+  values: {
     earnedAssets: string
     totalAssets: string
     timestamp: string
   },
   includeApy = false
 ) => {
-  const timeInSeconds = Number(stat.timestamp) / 1_000_000
-  const balance = Number(formatEther(stat.totalAssets || 0n))
-  const rewards = Number(formatEther(stat.earnedAssets || 0n))
+  const { earnedAssets, totalAssets, timestamp } = values
 
-  const totalApy = includeApy
-    ? (rewards * 365 * 100) / (balance - rewards)
-    : 0
+  const timeInSeconds = Number(timestamp) / 1_000_000
+  const balance = Number(formatEther(totalAssets || 0n))
+  const rewards = Number(formatEther(earnedAssets || 0n))
+  const keys = (Object.keys(userStatsMap) as Array<keyof UserStatsMap>)
 
-  if (!userStatsMap.balance[stat.timestamp]) {
-    userStatsMap.balance[stat.timestamp] = { value: 0, time: timeInSeconds }
-  }
+  keys.forEach((key) => {
+    if (!userStatsMap[key][timestamp]) {
+      userStatsMap[key][timestamp] = { value: 0, time: timeInSeconds }
+    }
+  })
 
-  if (!userStatsMap.rewards[stat.timestamp]) {
-    userStatsMap.rewards[stat.timestamp] = { value: 0, time: timeInSeconds }
-  }
-
-  if (includeApy && !userStatsMap.apy[stat.timestamp]) {
-    userStatsMap.apy[stat.timestamp] = { value: 0, time: timeInSeconds }
-  }
-
-  userStatsMap.balance[stat.timestamp].value += balance
-  userStatsMap.rewards[stat.timestamp].value += rewards
+  userStatsMap.balance[timestamp].value += balance
+  userStatsMap.rewards[timestamp].value += rewards
 
   if (includeApy) {
-    userStatsMap.apy[stat.timestamp].value += totalApy
+    const rewardsSum = userStatsMap.rewards[timestamp].value
+
+    userStatsMap.apy[timestamp].value = (rewardsSum * 365 * 100) / (balance - rewards)
   }
 }
 
@@ -53,18 +48,21 @@ const modifyUserStats = (data: UserStatsQueryPayload): ModifiedUserStats => {
     rewards: {},
   }
 
+  // ATTN The order in which arrays are processed is important!
+
   boostStats.forEach((stats) => {
-    updateUserStatsMap(userStatsMap, stats, true)
+    updateUserStatsMap(userStatsMap, stats)
+  })
+
+  rewardSplitterStats.forEach((stats) => {
+    updateUserStatsMap(userStatsMap, stats)
   })
 
   allocatorStats.forEach((stats) => {
     updateUserStatsMap(userStatsMap, stats, true)
   })
 
-  rewardSplitterStats.forEach((stats) => {
-    updateUserStatsMap(userStatsMap, stats, true)
-  })
-
+  // Rewards of this array do not participate in the APY calculation.
   exitRequestStats.forEach((stats) => {
     updateUserStatsMap(userStatsMap, stats)
   })
