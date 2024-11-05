@@ -23,6 +23,7 @@ class StakeWiseSDK {
   readonly options: StakeWise.Options
   readonly provider: StakeWise.Provider
   readonly vault: StakeWise.VaultMethods
+  readonly boost: StakeWise.BoostMethods
   readonly contracts: StakeWise.Contracts
   readonly osToken: StakeWise.OsTokenMethods
   readonly rewardSplitter: StakeWise.RewardSplitterMethods
@@ -57,6 +58,7 @@ class StakeWiseSDK {
 
     this.utils = methods.createUtils(argsForMethods)
     this.vault = methods.createVaultMethods(argsForMethods)
+    this.boost = methods.createBoostMethods(argsForMethods)
     this.osToken = methods.createOsTokenMethods(argsForMethods)
     this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
   }

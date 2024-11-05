@@ -1,9 +1,9 @@
-import { BoostInput } from './types'
+import { LockInput } from './types'
 import { commonLogic } from './common'
 import { boostMulticall } from '../../../../contracts'
 
 
-const boostEncode = async (values: BoostInput): Promise<StakeWise.TransactionData> => {
+const lockEncode = async (values: LockInput): Promise<StakeWise.TransactionData> => {
   const multicallArgs = await commonLogic(values)
 
   return boostMulticall<{ data: string, to: string }>({
@@ -16,4 +16,4 @@ const boostEncode = async (values: BoostInput): Promise<StakeWise.TransactionDat
 }
 
 
-export default boostEncode
+export default lockEncode

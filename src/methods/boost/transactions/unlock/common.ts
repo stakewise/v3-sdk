@@ -1,10 +1,10 @@
 import { parseEther } from 'ethers'
-import type { UnboostInput } from './types'
+import type { UnlockInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
 
 
-export const commonLogic = (values: UnboostInput) => {
+export const commonLogic = (values: UnlockInput) => {
   const { contracts, options, percent, vaultAddress, userAddress } = values
 
   validateArgs.number({ percent })

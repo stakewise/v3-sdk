@@ -161,5 +161,45 @@
     ],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "positionTicket",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "exitQueueIndex",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ILeverageStrategy.ExitPosition",
+        "name": "exitPosition",
+        "type": "tuple"
+      }
+    ],
+    "name": "claimExitedAssets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]

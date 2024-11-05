@@ -1,4 +1,4 @@
-query BoostTokenShares(
+query BoostMainData(
   $vaultAddress: String!
   $userAddress: Bytes!
 ) {

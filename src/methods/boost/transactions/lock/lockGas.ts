@@ -1,10 +1,10 @@
-import type { BoostInput } from './types'
-import { getGas } from '../../../../utils'
 import { commonLogic } from './common'
+import type { LockInput } from './types'
+import { getGas } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
 
 
-const boostGas = async (values: BoostInput) => {
+const lockGas = async (values: LockInput) => {
   const { provider } = values
 
   const multicallArgs = await commonLogic({ ...values, mockPermitSignature: true })
@@ -21,4 +21,4 @@ const boostGas = async (values: BoostInput) => {
 }
 
 
-export default boostGas
+export default lockGas

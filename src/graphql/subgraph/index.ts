@@ -1,3 +1,4 @@
+export * as boost from './boost'
 export * as stats from './stats'
 export * as vault from './vault'
 export * as osToken from './osToken'

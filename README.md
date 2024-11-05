@@ -19,6 +19,7 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 - [Installation and Setup](#installation-and-setup)
 - [API - Vault](#api-vault)
 - [API - osToken](#api-ostoken)
+- [API - Boost](#api-boost)
 - [API - Utils](#api-utils)
 - [API - Transactions](#transactions)
 
@@ -78,33 +79,37 @@ const sdk = new StakeWiseSDK({
 ```
 #### SDK Constructor Arguments:
 
-| Name               | Type                                                             | Required | Description                                                                                                                                                         |
-|--------------------|------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| network            | `Network`                                                        | **Yes**  | Chain id                                                                                                                                                            |
-| provider           | `BrowserProvider or JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers                                                                                                     |
+| Name               | Type                                                             | Required | Description               |
+|--------------------|------------------------------------------------------------------|----------|---------------------------|
+| network            | `Network`                                                        | **Yes**  | Chain id |
+| provider           | `BrowserProvider or JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers |
 | endpoints.web3     | `string OR Array<(string \| { url: string, headers: Headers })>` | **No**   | Your urls for connecting to blockchain. This parameter is required if `provider` is not provided. If more than one URL is provided, they will be used as fallbacks. |
-| endpoints.subgraph | `string`                                                         | **No**   | stakewise subgraph url                                                                                                                                              |
-| endpoints.api      | `string`                                                         | **No**   | stakewise backend url                                                                                                                                               |
+| endpoints.subgraph | `string`                                                         | **No**   | stakewise subgraph url |
+| endpoints.api      | `string`                                                         | **No**   | stakewise backend url |
 
 ## Quick Links
 
 ##### Request table:
-| **Vault**                                                     | **osToken**                                                             | **RewardSplitter**                                                |
-|---------------------------------------------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------|
-| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount)                       | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
-| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy)                                     |                                                                   |
-| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition)                           |                                                                   |
-| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint)                             |                                                                   |
-| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets)           |                                                                   |
-| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares)           |                                                                   |
-| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                                   |                                                                   |
-| [vault.getUserStats](#sdkvaultgetuserstats)                   | [osToken.getConfig](#sdkostokengetconfig)                               |                                                                   |
-| [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getHealthFactor](#sdkostokengethealthfactor)                   |                                                                   |
-| [vault.getWhitelist](#sdkvaultgetwhitelist)                   | [osToken.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) |                                                                   |
-| [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                                         |                                                                   |
-| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       |                                                                         |                                                                   |
-| [vault.getVaultStats](#sdkvaultgetvaultstats)                 |                                                                         |                                                                   |
-| [vault.getBoost](#sdkvaultgetboost)                           |                                                                         |                                                                   |
+| **Vault** | **osToken** |
+|---------------------------------------------------------------|---------------------------------------------------|
+| [vault.getStakerActions](#sdkvaultgetstakeractions)           | [osToken.getBurnAmount](#sdkostokengetburnamount) |
+| [vault.getExitQueuePositions](#sdkvaultgetexitqueuepositions) | [osToken.getAPY](#sdkostokengetapy) |
+| [vault.getValidators](#sdkvaultgetvalidators)                 | [osToken.getPosition](#sdkostokengetposition) |
+| [vault.getVault](#sdkvaultgetvault)                           | [osToken.getMaxMint](#sdkostokengetmaxmint) |
+| [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |
+| [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |
+| [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate) |
+| [vault.getUserStats](#sdkvaultgetuserstats)                   | [osToken.getConfig](#sdkostokengetconfig) |
+| [vault.getUserRewards](#sdkvaultgetuserrewards)               | [osToken.getHealthFactor](#sdkostokengethealthfactor) |
+| [vault.getWhitelist](#sdkvaultgetwhitelist)                   | |
+| [vault.getBlocklist](#sdkvaultgetblocklist)                   | |
+| [vault.getRewardSplitters](#sdkvaultgetrewardsplitters)       | |
+| [vault.getVaultStats](#sdkvaultgetvaultstats)                 | |
+| [vault.getBoost](#sdkvaultgetboost)                           | |
+| **Boost**                                                     | **rewardSplitter** |
+| [boost.getData](#sdkboostgetdata)                             | [rewardSplitter.getClaimAmount](#sdkrewardsplittergetclaimamount) |
+| [boost.getQueuePosition](#sdkboostgetqueueposition)           | |
+| [boost.getLeverageStrategyProxy](#sdkostokengetleveragestrategyproxy) | |
 
 | **Utils**                                               |
 |---------------------------------------------------------|
@@ -112,6 +117,9 @@ const sdk = new StakeWiseSDK({
 | [utils.getTransactions](#sdkutilsgettransactions)       |
 | [utils.getFiatRates](#sdkutilsgetfiatrates)             |
 | [utils.getPermitSignature](#sdkutilsgetpermitsignature) |
+| [utils.getBoostApy](#sdkutilsgetboostapy)               |
+| [utils.getStakewiseStats](#sdkutilsgetstakewisestats)   |
+| [utils.getPermitSignature](#sdkutilgetpermitsignature)  |
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -135,15 +143,19 @@ promise.abort()
 ```
 
 ##### Table of transactions:
-| **Vault**                                                     | **RewardSplitter**                                                          | **osToken**                           |
-|---------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------|
-| [vault.create](#sdkvaultcreate)                               | [rewardSplitter.create](#sdkrewardsplittercreate)                           | [osToken.mint](#sdkostokenmint)       |
-| [vault.deposit](#sdkvaultdeposit)                             | [rewardSplitter.claimRewards](#sdkrewardsplitterclaimrewards)               | [osToken.burn](#sdkostokenburn)       |
-| [vault.withdraw](#sdkvaultwithdraw)                           | [rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) | [osToken.boost](#sdkostokenboost)     | 
-| [vault.operate](#sdkvaultoperate)                             |                                                                             | [osToken.unboost](#sdkostokenunboost) |
-| [vault.setDepositDataManager](#sdkvaultsetdepositdatamanager) |                                                                             |                                       |
-| [vault.setDepositDataRoot](#sdkvaultsetdepositdataroot)       |                                                                             |                                       |
-| [claimExitQueue](#sdkvaultclaimexitqueue)                     |                                                                             |                                       |
+| **Vault**                                                     | **osToken**                           |
+|---------------------------------------------------------------|---------------------------------------|
+| [vault.create](#sdkvaultcreate)                               | [osToken.mint](#sdkostokenmint)       |
+| [vault.deposit](#sdkvaultdeposit)                             | [osToken.burn](#sdkostokenburn)       |
+| [vault.withdraw](#sdkvaultwithdraw)                           |                                       | 
+| [vault.operate](#sdkvaultoperate)                             |                                       |
+| [vault.setDepositDataManager](#sdkvaultsetdepositdatamanager) |                                       |
+| [vault.setDepositDataRoot](#sdkvaultsetdepositdataroot)       |                                       |
+| [vault.claimExitQueue](#sdkvaultclaimexitqueue)               |                                       |
+| **Boost**                                                     | **RewardSplitter**                    |
+| [boost.lock](#sdkboostlock)                                   | [rewardSplitter.create](#sdkrewardsplittercreate) |
+| [boost.unlock](#sdkboostunlock)                               | [rewardSplitter.claimRewards](#sdkrewardsplitterclaimrewards) |
+| [boost.claimQueue](#sdkboostclaimqueue)                       | [rewardSplitter.updateFeeRecipients](#sdkrewardsplitterupdatefeerecipients) |
 
 
 ## API-Vault
@@ -158,11 +170,11 @@ Get a list of interactions with the vault.
 
 | Name         | Type                  | Required | Description                                                                                                |
 |--------------|-----------------------|----------|------------------------------------------------------------------------------------------------------------|
-| vaultAddress | `string`              | **Yes**  | -                                                                                                          |
+| vaultAddress | `string`              | **Yes**  | - |
 | userAddress  | `string`              | **No**   | If a user address is specified, the query will look for events for that address and the vault address only |
-| types        | `AllocatorActionType` | **Yes**  | Event types can be found in `enum AllocatorActionType` which you can import from the library               |
-| limit        | `number`              | **Yes**  | To implement pagination                                                                                    |
-| skip         | `number`              | **Yes**  | To implement pagination                                                                                    |
+| types        | `AllocatorActionType` | **Yes**  | Event types can be found in `enum AllocatorActionType` which you can import from the library |
+| limit        | `number`              | **Yes**  | To implement pagination |
+| skip         | `number`              | **Yes**  | To implement pagination |
 
 #### Returns:
 
@@ -813,47 +825,6 @@ await sdk.vault.getUserStats({
 })
 ```
 ---
-### `sdk.vault.getBoost`
-
-#### Description:
-
-Get boost data for vault user
-
-#### Arguments:
-
-| Name         | Type     | Required | Description              |
-|--------------|----------|----------|--------------------------|
-| userAddress  | `string` | **Yes**  | The user address         | 
-| vaultAddress | `string` | **Yes**  | The address of the vault | 
-
-#### Returns:
-
-```ts
-type Output = {
-  shares: bigint
-  percent: number
-  isProfitable: boolean
-}
-```
-
-| Name             | Description                                                                                      |
-|------------------|--------------------------------------------------------------------------------------------------|
-| `shares`         | Tokens count of boost                                                                            |
-| `isProfitable`   | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
-| `maxMintShares`  | Maximum possible number of osToken without deductions                                            |
-| `exitingPercent` | The percent (in wad) of user's position that is currently exiting                                |
-| `rewardAssets`   | User boost rewards                                                                               |
-
-#### Example:
-
-```ts
-await sdk.vault.getBoost({
-  userAddress: '0x...',
-  vaultAddress: '0x...',
-})
-```
----
-
 
 ## API-osToken
 
@@ -924,33 +895,6 @@ sdk.osToken.getHealthFactor({
   thresholdPercent: 0n,
   mintedAssets: 0n,
   stakedAssets: 0n,
-})
-```
----
-### `sdk.osToken.getLeverageStrategyProxy`
-
-#### Description:
-
-Get the address of the leverage strategy proxy contract
-
-#### Arguments:
-| Name         | Type     | Required | Description              |
-|--------------|----------|----------|--------------------------|
-| userAddress  | `string` | **Yes**  | The user address         |
-| vaultAddress | `string` | **Yes**  | The address of the vault |
-
-#### Returns:
-
-```ts
-type Output = string
-```
-
-#### Example:
-
-```ts
-const strategyProxy = await sdk.osToken.getLeverageStrategyProxy({
-  userAddress: '0x...',
-  vaultAddress: '0x...',
 })
 ```
 ---
@@ -1113,7 +1057,7 @@ type Output = string
 #### Example:
 
 ```ts
-await sdk.utils.getRate()
+await sdk.osToken.getRate()
 ```
 ---
 ### `sdk.osToken.getConfig`
@@ -1148,7 +1092,239 @@ type Output = {
 await sdk.osToken.getConfig({ vaultAddress: '0x...' })
 ```
 ---
-## RewardSplitter
+## API-Boost
+
+### `sdk.boost.getData`
+
+#### Description:
+
+Get boost data for vault user
+
+#### Arguments:
+
+| Name         | Type     | Required | Description              |
+|--------------|----------|----------|--------------------------|
+| userAddress  | `string` | **Yes**  | The user address         | 
+| vaultAddress | `string` | **Yes**  | The address of the vault | 
+
+#### Returns:
+
+```ts
+type Output = {
+  shares: bigint
+  rewardAssets: bigint
+  maxMintShares: bigint
+  isProfitable: boolean
+  exitingPercent: bigint
+}
+```
+
+| Name             | Description                                                                                      |
+|------------------|--------------------------------------------------------------------------------------------------|
+| `shares`         | Tokens count of boost                                                                            |
+| `isProfitable`   | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
+| `maxMintShares`  | Maximum possible number of osToken without deductions                                            |
+| `exitingPercent` | The percent (in wad) of user's position that is currently exiting                                |
+| `rewardAssets`   | User boost rewards                                                                               |
+
+#### Example:
+
+```ts
+await sdk.boost.getData({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.boost.getQueuePosition`
+
+#### Description:
+
+Get unlock position data
+
+#### Arguments:
+
+| Name         | Type     | Required | Description              |
+|--------------|----------|----------|--------------------------|
+| userAddress  | `string` | **Yes**  | The user address         | 
+| vaultAddress | `string` | **Yes**  | The address of the vault | 
+
+#### Returns:
+
+```ts
+type ClaimPosition = {
+  timestamp: string
+  positionTicket: string
+  exitQueueIndex: string
+}
+
+type Output = {
+  totalShares: bigint
+  totalAssets: bigint
+  isClaimable: boolean
+  duration: number | null
+  position: ClaimPosition | null
+}
+```
+
+| Name             | Description                                          |
+|------------------|------------------------------------------------------|
+| `totalShares`    | Unlock osToken count |
+| `totalAssets`    | Unlock rewards count |
+| `isClaimable`    | Available for claim or not |
+| `duration`       | Approximate time of position in the queue |
+| `position`       | The data that will be needed for the claim operation |
+
+#### Example:
+
+```ts
+await sdk.boost.getQueuePosition({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.boost.getLeverageStrategyProxy`
+
+#### Description:
+
+Get the address of the leverage strategy proxy contract
+
+#### Arguments:
+| Name         | Type     | Required | Description              |
+|--------------|----------|----------|--------------------------|
+| userAddress  | `string` | **Yes**  | The user address         |
+| vaultAddress | `string` | **Yes**  | The address of the vault |
+
+#### Returns:
+
+```ts
+type Output = string
+```
+
+#### Example:
+
+```ts
+const strategyProxy = await sdk.boost.getLeverageStrategyProxy({
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+})
+```
+---
+### `sdk.boost.lock`
+
+#### Description:
+
+Boost your osToken apy using leverage staking
+
+#### Arguments:
+
+| Name         | Type           | Required | Description                                                                                                                                                                                                                   |
+|--------------|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                  |
+| userAddress  | `string`       | **Yes**  | The user address                                                                                                                                                                                                              |
+| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                         |
+| boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                               |
+| permitParams | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [utils.getPermitSignature](#sdkutilsgetpermitsignature) method |
+
+```ts
+type PermitParams = {
+  vault: string
+  amount: bigint
+  deadline: number
+  v: number
+  r: string
+  s: string
+}
+```
+
+#### Example:
+
+```ts
+const params = {
+  amount: parseEther('1'),
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+  boostAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.boost.lock(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to, value } = await sdk.boost.lock.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.boost.lock.estimateGas(params)
+```
+---
+### `sdk.boost.unlock`
+
+#### Description:
+
+Unboost your boosted osToken
+
+#### Arguments:
+
+| Name         | Type           | Required | Description                                         |
+|--------------|----------------|----------|-----------------------------------------------------|
+| percent      | `number`       | **Yes**  | The percent to unboost (100 at max)                 |
+| userAddress  | `string`       | **Yes**  | The user address                                    |
+| vaultAddress | `string`       | **Yes**  | The address of the vault where the osTokens boosted |
+
+#### Example:
+
+```ts
+const params = {
+  percent: 100,
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+}
+
+// Send transaction
+const hash = await sdk.boost.unlock(params)
+// When you sign transactions on the backend (for custodians)
+const { data, to, value } = await sdk.boost.unlock.encode(params)
+// Get an approximate gas per transaction
+const gas = await sdk.boost.unlock.estimateGas(params)
+```
+---
+### `sdk.boost.claimQueue`
+
+#### Description:
+
+Claim user unboost queue
+
+#### Arguments:
+
+| Name         | Type           | Required | Description                                         |
+|--------------|----------------|----------|-----------------------------------------------------|
+| position     | `Position`     | **Yes**  | position field from boost.getQueuePosition          |
+| userAddress  | `string`       | **Yes**  | The user address                                    |
+| vaultAddress | `string`       | **Yes**  | The address of the vault where the osTokens boosted |
+
+#### Example:
+
+```ts
+const params = {
+  userAddress: '0x...',
+  vaultAddress: '0x...',
+}
+
+const { position } = await sdk.boost.getQueuePosition(params)
+
+if (!isClaimable) {
+  return
+}
+
+// Send transaction
+const hash = await sdk.boost.claimQueue({ ...params, position })
+// When you sign transactions on the backend (for custodians)
+const { data, to, value } = await sdk.boost.claimQueue.encode({ ...params, position })
+// Get an approximate gas per transaction
+const gas = await sdk.boost.claimQueue.estimateGas({ ...params, position })
+```
+---
+
+## API-RewardSplitter
 
 ### `sdk.rewardSplitter.create`
 
@@ -1983,83 +2159,6 @@ const { data, to, value } = await sdk.osToken.burn.encode(params)
 // Get an approximate gas per transaction
 const gas = await sdk.osToken.burn.estimateGas(params)
 ```
----
-### `sdk.osToken.boost`
-
-#### Description:
-
-Boost your osToken apy using leverage staking
-
-#### Arguments:
-
-| Name         | Type           | Required | Description                                                                                                                                                                                                                   |
-|--------------|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                  |
-| userAddress  | `string`       | **Yes**  | The user address                                                                                                                                                                                                              |
-| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                         |
-| boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                               |
-| permitParams | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [utils.getPermitSignature](#sdkutilsgetpermitsignature) method |
-
-```ts
-type PermitParams = {
-  vault: string
-  amount: bigint
-  deadline: number
-  v: number
-  r: string
-  s: string
-}
-```
-
-#### Example:
-
-```ts
-const params = {
-  amount: parseEther('1'),
-  userAddress: '0x...',
-  vaultAddress: '0x...',
-  boostAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.osToken.boost(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to, value } = await sdk.osToken.boost.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.osToken.boost.estimateGas(params)
-```
----
-### `sdk.osToken.unboost`
-
-#### Description:
-
-Unboost your boosted osToken
-
-#### Arguments:
-
-| Name         | Type           | Required | Description                                         |
-|--------------|----------------|----------|-----------------------------------------------------|
-| percent      | `number`       | **Yes**  | The percent to unboost (100 at max)                 |
-| userAddress  | `string`       | **Yes**  | The user address                                    |
-| vaultAddress | `string`       | **Yes**  | The address of the vault where the osTokens boosted |
-
-#### Example:
-
-```ts
-const params = {
-  percent: 100,
-  userAddress: '0x...',
-  vaultAddress: '0x...',
-}
-
-// Send transaction
-const hash = await sdk.osToken.unboost(params)
-// When you sign transactions on the backend (for custodians)
-const { data, to, value } = await sdk.osToken.unboost.encode(params)
-// Get an approximate gas per transaction
-const gas = await sdk.osToken.unboost.estimateGas(params)
-```
----
 
 ## Description of other parts of the api
 

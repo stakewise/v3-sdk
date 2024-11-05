@@ -1,11 +1,11 @@
-import type { BoostInput } from './types'
+import type { LockInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
 import { getPermitSignature } from '../../../utils'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 
 
-type CommonLogicInput = BoostInput & {
+type CommonLogicInput = LockInput & {
   mockPermitSignature?: boolean
 }
 

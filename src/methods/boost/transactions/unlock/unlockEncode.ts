@@ -1,9 +1,9 @@
-import { UnboostInput } from './types'
+import { UnlockInput } from './types'
 import { commonLogic } from './common'
 import { boostMulticall } from '../../../../contracts'
 
 
-const unboostEncode = (values: UnboostInput): Promise<StakeWise.TransactionData> => {
+const unlockEncode = (values: UnlockInput): Promise<StakeWise.TransactionData> => {
   const multicallArgs = commonLogic(values)
 
   return boostMulticall<{ data: string, to: string }>({
@@ -16,4 +16,4 @@ const unboostEncode = (values: UnboostInput): Promise<StakeWise.TransactionData>
 }
 
 
-export default unboostEncode
+export default unlockEncode
