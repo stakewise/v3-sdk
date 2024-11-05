@@ -1,10 +1,10 @@
-import type { UnboostInput } from './types'
-import { getGas } from '../../../../utils'
 import { commonLogic } from './common'
+import type { UnlockInput } from './types'
+import { getGas } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
 
 
-const unboostGas = async (values: UnboostInput) => {
+const unlocktGas = async (values: UnlockInput) => {
   const { provider } = values
 
   const multicallArgs = commonLogic(values)
@@ -21,4 +21,4 @@ const unboostGas = async (values: UnboostInput) => {
 }
 
 
-export default unboostGas
+export default unlocktGas

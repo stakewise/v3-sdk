@@ -154,12 +154,12 @@ type RemovedInput = {
 ---
 
 ### 15. Added method
-### `sdk.vault.getBoost`
+### `sdk.boost.getData`
 #### Get the address of the leverage strategy proxy contract
 ---
 
 ### 16. Added method
-### `sdk.osToken.getLeverageStrategyProxy`
+### `sdk.boost.getLeverageStrategyProxy`
 #### Get the address of the leverage strategy proxy contract
 
 ---
@@ -171,11 +171,17 @@ type RemovedInput = {
 ---
 
 ### 18. Added method
-### `sdk.osToken.boost`
+### `sdk.boost.lock`
 #### Boost your osToken apy using leverage staking
 
 ---
 
-### 18. Added method
-### `sdk.osToken.unboost`
+### 19. Added method
+### `sdk.boost.unlock`
 #### Unboost your boosted osToken
+
+---
+
+### 20. Added method
+### `sdk.boost.claimQueue`
+#### Claim user unboost queue

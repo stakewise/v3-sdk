@@ -1,11 +1,11 @@
-import boostGas from './boostGas'
-import boostEncode from './boostEncode'
-import type { Boost } from './types'
+import lockGas from './lockGas'
+import lockEncode from './lockEncode'
+import type { Lock } from './types'
 import { commonLogic } from './common'
 import { boostMulticall } from '../../../../contracts'
 
 
-const boost: Boost = async (values) => {
+const lock: Lock = async (values) => {
   const multicallArgs = await commonLogic(values)
 
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
@@ -13,8 +13,8 @@ const boost: Boost = async (values) => {
   return result.hash
 }
 
-boost.encode = boostEncode
-boost.estimateGas = boostGas
+lock.encode = lockEncode
+lock.estimateGas = lockGas
 
 
-export default boost
+export default lock

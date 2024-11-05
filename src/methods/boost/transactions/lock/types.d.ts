@@ -1,5 +1,5 @@
-import boostGas from './boostGas'
-import boostEncode from './boostEncode'
+import lockGas from './lockGas'
+import lockEncode from './lockEncode'
 
 
 type PermitParams = {
@@ -11,7 +11,7 @@ type PermitParams = {
   s: string
 }
 
-export type BoostInput = {
+export type LockInput = {
   amount: bigint
   userAddress: string
   vaultAddress: string
@@ -22,8 +22,8 @@ export type BoostInput = {
   contracts: StakeWise.Contracts
 }
 
-export interface Boost {
-  (values: BoostInput): Promise<StakeWise.TransactionHash>
-  estimateGas: typeof boostGas
-  encode: typeof boostEncode
+export interface Lock {
+  (values: LockInput): Promise<StakeWise.TransactionHash>
+  estimateGas: typeof lockGas
+  encode: typeof lockEncode
 }

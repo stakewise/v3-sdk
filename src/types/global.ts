@@ -38,6 +38,7 @@ declare global {
     type Contracts = ReturnType<typeof createContracts>
     type Utils = ReturnType<typeof methods.createUtils>
     type VaultMethods = ReturnType<typeof methods.createVaultMethods>
+    type BoostMethods = ReturnType<typeof methods.createBoostMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
     type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
 

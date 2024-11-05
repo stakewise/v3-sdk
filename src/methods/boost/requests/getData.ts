@@ -32,7 +32,7 @@ const getBoost = async (values: GetBoostInput) => {
   }
 
   if ([ Network.Mainnet, Network.Holesky ].includes(options.network)) {
-    const response = await graphql.subgraph.osToken.fetchBoostTokenSharesQuery({
+    const response = await graphql.subgraph.boost.fetchBoostMainDataQuery({
       url: apiUrls.getSubgraphqlUrl(options),
       variables: {
         userAddress: userAddress.toLowerCase(),
