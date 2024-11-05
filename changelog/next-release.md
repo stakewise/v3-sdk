@@ -177,11 +177,5 @@ type RemovedInput = {
 ---
 
 ### 18. Added method
-### `sdk.utils.getBoostApy`
-#### Get osToken apy boosted by leverage staking
-
----
-
-### 19. Added method
 ### `sdk.osToken.unboost`
 #### Unboost your boosted osToken

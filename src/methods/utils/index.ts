@@ -1,5 +1,4 @@
 export type { BaseInput } from './types'
-export { default as getBoostApy } from './getBoostApy'
 export { default as getFiatRates } from './getFiatRates'
 export { default as getTransactions } from './getTransactions'
 export { default as getSwiseUsdPrice } from './getSwiseUsdPrice'

@@ -1426,37 +1426,6 @@ const permitParams = await sdk.utils.getPermitSignature({
 })
 ```
 ---
-### `sdk.utils.getBoostApy`
-
-#### Description:
-
-Get osToken apy boosted by leverage staking
-
-#### Arguments:
-| Name          | Type     | Required | Description                                            |
-|---------------|----------|----------|--------------------------------------------------------|
-| value         | `bigint` | **Yes**  | The amount of osToken to boost                         |
-| vaultAPY      | `number` | **Yes**  | The vault APY from [vault.getVault](#sdkvaultgetvault) |
-| maxBoostAPY   | `number` | **Yes**  | Value from [vault.getBoost](#sdkvaultgetboost)         |
-| maxMintShares | `bigint` | **Yes**  | Value from [vault.getBoost](#sdkvaultgetboost)         |
-
-#### Returns:
-
-```ts
-type Output = number
-```
-
-#### Example:
-
-```ts
-const boostApy = sdk.utils.getBoostApy({
-  value: parseEther('1'),
-  vaultAPY: 0.5,
-  maxBoostAPY: 1.5,
-  maxMintShares: parseEther('1'),
-})
-```
----
 ## Transactions
 
 Transactions work through the provider you sent when creating an instance of our SDK class. Or, if you are a custodian, you can get the transaction data and sign it yourself. Each transaction also gives you the opportunity to get an approximate gas for sending it. For custodians, it is more reliable to calculate the gas yourself. Each transaction has encode and estimateGas methods for your convenience
