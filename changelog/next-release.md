@@ -185,3 +185,13 @@ type RemovedInput = {
 ### 20. Added method
 ### `sdk.boost.claimQueue`
 #### Claim user unboost queue
+
+---
+
+### 20. Changed output field
+### `sdk.vault.getExitQueuePositions`
+
+```ts
+// Output changed type from bigint to string
+positions[number]['exitQueueIndex']
+```

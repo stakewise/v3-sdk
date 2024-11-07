@@ -10,7 +10,7 @@ export type ParseExitRequestsInput = {
 }
 
 type Position = {
-  exitQueueIndex: bigint
+  exitQueueIndex: string
   positionTicket: string
   timestamp: string
 }
@@ -61,7 +61,7 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
       positions.push({
         timestamp,
         positionTicket,
-        exitQueueIndex: BigInt(exitQueueIndex),
+        exitQueueIndex,
       })
     }
     else {
