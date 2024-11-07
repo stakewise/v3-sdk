@@ -12,7 +12,10 @@ import {
 
 
 type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
-type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
+
+type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
+  isDepositWithMint?: boolean
+}
 type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
   rewardSplitterAddress: string
 }
@@ -64,17 +67,17 @@ class StakeWiseSDK {
   }
 
   async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
-    const { userAddress, vaultAddress, request } = values
+    const { userAddress, vaultAddress, request, isDepositWithMint } = values
 
-    const { isBlocklist, isPrivate, isRestake, isGenesis } = await this.vault.getVault({ vaultAddress })
+    const { isBlocklist, isPrivate, isRestake } = await this.vault.getVault({ vaultAddress })
 
     const vaultContract = this.contracts.helpers.createVault({
       options: {
-        chainId: this.config.network.chainId,
-        isBlocklist,
         isPrivate,
-        isGenesis,
         isRestake,
+        isBlocklist,
+        isDepositWithMint,
+        chainId: this.config.network.chainId,
       },
       vaultAddress,
     })

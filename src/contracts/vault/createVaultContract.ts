@@ -6,19 +6,19 @@ import {
   OtherTokenVaultAbi,
   NativeTokenVaultAbi,
   PrivateVaultDiffAbi,
-  GenesisVaultDiffAbi,
   BlocklistVaultDiffAbi,
   RestakingVaultDiffAbi,
+  DepositWithMintDiffAbi,
 } from './abis'
 
 import {
   GnosisVaultDiffAbi as GnosisVaultDiffType,
   OtherTokenVaultAbi as OtherTokenVaultType,
-  GenesisVaultDiffAbi as GenesisVaultDiffType,
   NativeTokenVaultAbi as NativeTokenVaultType,
   PrivateVaultDiffAbi as PrivateVaultDiffType,
   BlocklistVaultDiffAbi as BlocklistVaultDiffType,
   RestakingVaultDiffAbi as RestakingVaultDiffType,
+  DepositWithMintDiffAbi as DepositWithMintDiffType,
 } from './types'
 
 import { Network } from '../../utils'
@@ -26,8 +26,9 @@ import createContract from '../createContract'
 import { ModifiedVault } from '../../methods/vault/requests/getVault/types'
 
 
-type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate' | 'isRestake' | 'isGenesis'>> & {
+type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate' | 'isRestake'>> & {
   chainId?: Network
+  isDepositWithMint?: boolean
 }
 
 type CreateContractsInput<T> = {
@@ -52,8 +53,8 @@ type Output<T extends Options> = Omit<
     ? PrivateVaultDiffType
     : object
   ) &
-  (T['isGenesis'] extends true
-    ? GenesisVaultDiffType
+  (T['isDepositWithMint'] extends true
+    ? DepositWithMintDiffType
     : object
   ),
   'connect'
@@ -87,8 +88,8 @@ const createVaultContract = (provider: Provider) => (
       baseAbi = baseAbi.concat(RestakingVaultDiffAbi)
     }
 
-    if (options?.isGenesis) {
-      baseAbi = baseAbi.concat(GenesisVaultDiffAbi)
+    if (options?.isDepositWithMint) {
+      baseAbi = baseAbi.concat(DepositWithMintDiffAbi)
     }
 
     return createContract(vaultAddress, baseAbi, provider) as Output<T> & {
