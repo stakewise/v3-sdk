@@ -428,7 +428,7 @@ type ExitRequest = {
 }
 
 type Position = {
-  exitQueueIndex: bigint
+  exitQueueIndex: string
   positionTicket: string
   timestamp: string
 }

@@ -8,7 +8,7 @@ const validatePositions = (positions: ClaimExitQueueInput['positions']) => {
   validateArgs.array({ positions })
 
   positions.forEach(({ positionTicket, exitQueueIndex }) => {
-    validateArgs.bigint({ exitQueueIndex })
+    validateArgs.string({ exitQueueIndex })
     validateArgs.string({ positionTicket })
   })
 }
