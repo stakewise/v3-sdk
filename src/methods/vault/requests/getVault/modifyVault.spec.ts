@@ -1,6 +1,7 @@
 import { MaxUint256 } from 'ethers'
 
 import modifyVault from './modifyVault'
+import type { ModifiedVault } from './types'
 import { Network, configs } from '../../../../utils'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
@@ -25,6 +26,7 @@ describe('modifyVault', () => {
       displayName: 'Mock Vault',
       maxBoostApy: '123.2',
       apy: '2.80',
+      queuedShares: '0',
       blocklistCount: '0',
       whitelistCount: '0',
       totalAssets: '150000000000',
@@ -50,12 +52,13 @@ describe('modifyVault', () => {
   }
 
   it('should correctly transform the vault data', () => {
-    const expectedModifiedVault = {
+    const expectedModifiedVault: ModifiedVault = {
       apy: 2.80,
       isErc20: true,
       feePercent: 2,
       version: 1,
       performance: 10,
+      queuedShares: '0',
       isPrivate: false,
       isRestake: true,
       isGenesis: true,
@@ -66,6 +69,7 @@ describe('modifyVault', () => {
       tokenSymbol: 'mTKN',
       imageUrl: 'mockUrl',
       maxBoostApy: 123.2,
+      isCollateralized: true,
       tokenName: 'mockToken',
       isSmoothingPool: false,
       createdAt: 1693395816000,
@@ -73,6 +77,10 @@ describe('modifyVault', () => {
       totalAssets: '0.00000015',
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
+      osTokenConfig: {
+        ltvPercent: '0',
+        thresholdPercent: '0',
+      },
       vaultAdmin: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       vaultAddress: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       feeRecipient: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',

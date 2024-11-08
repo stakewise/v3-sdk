@@ -1,6 +1,6 @@
 import { formatEther, getAddress, MaxUint256 } from 'ethers'
 
-import { ModifiedVault } from './types'
+import type { ModifiedVault } from './types'
 import { Network, configs } from '../../../../utils'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
@@ -29,6 +29,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     maxBoostApy,
     performance,
     totalAssets,
+    whitelister,
     feeRecipient,
     osTokenConfig,
     blocklistCount,
@@ -55,7 +56,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
-    whitelistManager: vault.whitelister ? getAddress(vault.whitelister) : '',
+    whitelistManager: whitelister ? getAddress(whitelister) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',
     blocklistManager: vault.blocklistManager ? getAddress(vault.blocklistManager) : '',
