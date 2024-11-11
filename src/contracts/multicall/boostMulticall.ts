@@ -26,6 +26,7 @@ type BoostMulticallInput = BoostMulticallBaseInput & {
 const harvestCheckMethods = [
   'deposit',
   'enterExitQueue',
+  'claimExitedAssets',
 ]
 
 /**
