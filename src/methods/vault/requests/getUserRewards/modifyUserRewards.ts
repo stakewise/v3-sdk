@@ -1,49 +1,31 @@
-import { formatEther } from 'ethers'
-
-import type { ModifyUserRewards, GbpRate } from './types'
+import type { ModifyUserRewards } from './types'
+import { mergeRewardsFiat } from '../../../../utils'
+import type { FiatByDayQueryPayload } from '../../../../graphql/subgraph/stats'
 import type { UserRewardsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-type Input = {
-  reward: UserRewardsQueryPayload['allocator'][number]
-  assetsUsdRate: number
-  usdToEurRate: number
-  usdToGbpRate: number
-}
+const modifyUserRewards = (mainnetRates?: FiatByDayQueryPayload['exchangeRate']) => (
+  (data: UserRewardsQueryPayload): ModifyUserRewards[] => {
+    const boostStats = data?.boost || []
+    const allocatorStats = data?.allocator || []
+    const exitRequestStats = data?.exitRequest || []
+    const rewardSplitterStats = data?.rewardSplitter || []
 
-export const modifyReward = (input: Input) => {
-  const { reward, assetsUsdRate, usdToGbpRate, usdToEurRate } = input
+    const rewards = [
+      boostStats,
+      allocatorStats,
+      exitRequestStats,
+      rewardSplitterStats,
+    ].flat()
 
-  const timeInMilliSeconds = Number(reward.timestamp) / 1_000
-  const earnedAssetsInEther = Number(formatEther(reward.earnedAssets))
-  const earnedAssetsInUsd = earnedAssetsInEther * assetsUsdRate
+    const exchangeRates = data?.exchangeRates || []
 
-  return {
-    date: timeInMilliSeconds,
-    dailyRewards: earnedAssetsInEther,
-    dailyRewardsUsd: earnedAssetsInUsd || 0,
-    dailyRewardsEur: earnedAssetsInUsd * Number(usdToEurRate) || 0,
-    dailyRewardsGbp: earnedAssetsInUsd * Number(usdToGbpRate) || 0,
-  }
-}
-
-const modifyUserRewards = (mainnetGbpRates: GbpRate[]) => (data: UserRewardsQueryPayload): ModifyUserRewards[] => {
-  const allocatorStats = data?.allocator || []
-  const exchangeRateStats = data?.exchangeRate || []
-
-  const result = allocatorStats.map((stat, index) => {
-    const gbpRate = mainnetGbpRates.length ? mainnetGbpRates[index]?.usdToGbpRate : exchangeRateStats[index]?.usdToGbpRate
-
-    return modifyReward({
-      reward: stat,
-      usdToGbpRate: Number(gbpRate),
-      usdToEurRate: Number(exchangeRateStats[index]?.usdToEurRate),
-      assetsUsdRate: Number(exchangeRateStats[index]?.assetsUsdRate),
+    return mergeRewardsFiat({
+      fiatRates: mainnetRates || exchangeRates,
+      rewards,
     })
-  })
-
-  return result.sort((a, b) => a.date - b.date)
-}
+  }
+)
 
 
 export default modifyUserRewards
