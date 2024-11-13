@@ -1,5 +1,6 @@
 export type { BaseInput } from './types'
 export { default as getFiatRates } from './getFiatRates'
+export { default as getFiatByDay } from './getFiatByDay'
 export { default as getTransactions } from './getTransactions'
 export { default as getSwiseUsdPrice } from './getSwiseUsdPrice'
 export { default as getStakewiseStats } from './getStakewiseStats'

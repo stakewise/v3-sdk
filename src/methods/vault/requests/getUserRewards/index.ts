@@ -1,8 +1,9 @@
 import type { UserRewardsQueryVariables } from '../../../../graphql/subgraph/vault'
-import { apiUrls, Network, validateArgs, configs } from '../../../../utils'
+import { apiUrls, Network, validateArgs } from '../../../../utils'
 import modifyUserRewards from './modifyUserRewards'
+import type { ModifyUserRewards } from './types'
+import getMainnetRates from './getMainnetRates'
 import graphql from '../../../../graphql'
-import type { ModifyUserRewards, GbpRate } from './types'
 
 
 type GetUserRewardsInput = {
@@ -13,41 +14,34 @@ type GetUserRewardsInput = {
   vaultAddress: UserRewardsQueryVariables['vaultAddress']
 }
 
-const getMainnetGbpRate = (input: GetUserRewardsInput) => {
-  const { dateFrom, dateTo, userAddress, vaultAddress } = input
-
-  return graphql.subgraph.vault.fetchUserRewardsQuery({
-    url: configs[Network.Mainnet].api.subgraph,
-    variables: {
-      dateTo: String(dateTo * 1_000),
-      user: userAddress.toLowerCase(),
-      dateFrom: String(dateFrom * 1_000),
-      vaultAddress: vaultAddress.toLowerCase(),
-    } as UserRewardsQueryVariables,
-    modifyResult: (data) : GbpRate[] => {
-      return data.exchangeRate.map(({ usdToGbpRate }) => ({ usdToGbpRate }))
-    },
-  })
-}
-
 const getUserRewards = async (input: GetUserRewardsInput) => {
   const { options, vaultAddress, userAddress, dateFrom, dateTo } = input
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ dateFrom, dateTo })
 
-  const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
-  const mainnetGbpRates = isGnosis ? await getMainnetGbpRate(input) : []
+  const isGnosis = [
+    Network.Gnosis,
+    Network.Chiado,
+  ].includes(options.network)
+
+  let mainnetRates
+
+  if (isGnosis) {
+    // We can't fetch GPB rates from gnosis subgraph
+    mainnetRates = await getMainnetRates(input)
+  }
 
   return graphql.subgraph.vault.fetchUserRewardsQuery<ModifyUserRewards[]>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
+      includeExchangeRate: !isGnosis,
       dateTo: String(dateTo * 1_000),
       user: userAddress.toLowerCase(),
       dateFrom: String(dateFrom * 1_000),
       vaultAddress: vaultAddress.toLowerCase(),
-    } as UserRewardsQueryVariables,
-    modifyResult: modifyUserRewards(mainnetGbpRates),
+    },
+    modifyResult: modifyUserRewards(mainnetRates),
   })
 }
 
