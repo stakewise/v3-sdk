@@ -119,7 +119,7 @@ const sdk = new StakeWiseSDK({
 | [utils.getPermitSignature](#sdkutilsgetpermitsignature) |
 | [utils.getBoostApy](#sdkutilsgetboostapy)               |
 | [utils.getStakewiseStats](#sdkutilsgetstakewisestats)   |
-| [utils.getPermitSignature](#sdkutilgetpermitsignature)  |
+| [utils.getFiatByDay](#sdkutilgetfiatbyday)              |
 
 All of these methods (except synchronous getHealthFactor) return a promise that can be
 aborted by invoking the `abort()` function.
@@ -1517,6 +1517,36 @@ type Output = {
 
 ```ts
 await sdk.utils.getStakewiseStats()
+```
+---
+### `sdk.utils.getFiatByDay`
+
+#### Description:
+
+Get fiat data by day
+
+#### Arguments:
+
+| Name     | Type     | Required | Description      |
+|----------|----------|----------|------------------|
+| dateTo   | `string` | **Yes**  | Start time       |
+| dateFrom | `string` | **Yes**  | End time         |
+
+#### Returns:
+
+```ts
+type Output = Array<{
+  timestamp: string
+  usdToEurRate: string
+  usdToGbpRate: string
+  assetsUsdRate: string
+}>
+```
+
+#### Example:
+
+```ts
+await sdk.utils.getFiatByDay({ dateTo, dateFrom })
 ```
 ---
 ### `sdk.utils.getTransactions`
