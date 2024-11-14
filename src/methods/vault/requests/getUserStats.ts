@@ -24,7 +24,6 @@ const getUserStats = (input: GetUserStatsInput) => {
       vaultAddress: vaultAddress.toLowerCase(),
     } as UserStatsQueryVariables,
     modifyResult: (response) => {
-      // ATTN order is important
       const data = [
         { data: response.boost },
         { data: response.allocator },

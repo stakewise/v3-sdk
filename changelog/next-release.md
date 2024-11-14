@@ -1,5 +1,5 @@
 # Updates
-### 1. `sdk.vault.getVault`
+### 1. `sdk.vault.Get fiat data by dayk`
 
 #### New output field:
 
@@ -195,3 +195,7 @@ type RemovedInput = {
 // Output changed type from bigint to string
 positions[number]['exitQueueIndex']
 ```
+
+### 21. Added method
+### `sdk.utils.getFiatByDay`
+#### Get fiat data by day

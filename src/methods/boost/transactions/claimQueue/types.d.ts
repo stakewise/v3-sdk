@@ -1,5 +1,5 @@
-import lockGas from './lockGas'
-import lockEncode from './lockEncode'
+import claimQueueGas from './claimQueueGas'
+import claimQueueEncode from './claimQueueEncode'
 import type { Output } from '../../requests/getQueuePosition'
 
 
