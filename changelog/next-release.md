@@ -195,3 +195,7 @@ type RemovedInput = {
 // Output changed type from bigint to string
 positions[number]['exitQueueIndex']
 ```
+
+### 21. Added method
+### `sdk.utils.getFiatRatesByDay`
+#### Get fiat data by day

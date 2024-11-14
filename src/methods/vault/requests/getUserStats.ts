@@ -1,7 +1,6 @@
-import type { UserStatsQueryVariables } from '../../../../graphql/subgraph/vault'
-import modifyUserStats from './modifyUserStats'
-import { apiUrls, validateArgs } from '../../../../utils'
-import graphql from '../../../../graphql'
+import type { UserStatsQueryVariables } from '../../../graphql/subgraph/vault'
+import { apiUrls, validateArgs, calculateUserStats } from '../../../utils'
+import graphql from '../../../graphql'
 
 
 type GetUserStatsInput = {
@@ -24,7 +23,19 @@ const getUserStats = (input: GetUserStatsInput) => {
       user: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),
     } as UserStatsQueryVariables,
-    modifyResult: modifyUserStats,
+    modifyResult: (response) => {
+      const data = [
+        { data: response.boost },
+        { data: response.allocator },
+        {
+          data: response.rewardSplitter,
+          isAccumulateAPY: true,
+        },
+        { data: response.exitRequest },
+      ]
+
+      return calculateUserStats({ data })
+    },
   })
 }
 

@@ -1,7 +1,12 @@
 query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   allocator: allocatorStats_collection(
     interval: day
-    where: { allocator_: { address: $user, vault: $vaultAddress } }
+    where: {
+      allocator_: {
+        address: $user,
+        vault: $vaultAddress
+      }
+    }
     first: $daysCount
   ) {
     timestamp
@@ -10,7 +15,12 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   }
   exitRequest: exitRequestStats_collection(
     interval: day
-    where: { exitRequest_: { receiver: $user, vault: $vaultAddress } }
+    where: {
+      exitRequest_: {
+        receiver: $user,
+        vault: $vaultAddress
+      }
+    }
     first: $daysCount
   ) {
     timestamp
@@ -19,7 +29,12 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   }
   rewardSplitter: rewardSplitterShareHolderStats_collection(
     interval: day
-    where: { rewardSpliterShareHolder_: { address: $user, vault: $vaultAddress }}
+    where: {
+      rewardSpliterShareHolder_: {
+        address: $user,
+        vault: $vaultAddress
+      }
+    }
     first: $daysCount
   ) {
     timestamp
@@ -28,7 +43,12 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   }
   boost: leverageStrategyPositionStats_collection(
     interval: day
-    where: {position_: {user: $user, vault: $vaultAddress}}
+    where: {
+      position_: {
+        user: $user,
+        vault: $vaultAddress
+      }
+    }
     first: $daysCount
   ) {
     timestamp
