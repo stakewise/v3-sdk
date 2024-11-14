@@ -1,5 +1,5 @@
 # Updates
-### 1. `sdk.vault.Get fiat data by dayk`
+### 1. `sdk.vault.getVault`
 
 #### New output field:
 

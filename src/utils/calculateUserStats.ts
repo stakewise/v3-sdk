@@ -48,7 +48,7 @@ type ModifiedStats = {
  *    isAccumulateAPY: true, // Calculate APY from DATA 1, DATA 2, DATA 3 and skip DATA 4
  *  },
  *  {
- *    data: [ ... ], // DATA 2
+ *    data: [ ... ], // DATA 4
  *  },
  * ]
  *
