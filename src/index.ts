@@ -6,6 +6,7 @@ export * from './utils/enums'
 export { createContract } from './contracts'
 export { default as StakeWiseSDK } from './StakeWiseSDK'
 export { wrapAbortPromise, AbortPromise } from './modules/gql-module'
+export { BigDecimal, configs, getGas, createProvider, mergeRewardsFiat, calculateUserStats } from './utils'
 
 export {
   configs,
