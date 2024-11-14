@@ -197,5 +197,5 @@ positions[number]['exitQueueIndex']
 ```
 
 ### 21. Added method
-### `sdk.utils.getFiatByDay`
+### `sdk.utils.getFiatRatesByDay`
 #### Get fiat data by day

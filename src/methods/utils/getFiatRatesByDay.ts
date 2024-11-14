@@ -2,12 +2,12 @@ import { Network, configs } from '../../utils'
 import graphql from '../../graphql'
 
 
-type GetFiatByDayInput = {
+type GetFiatRatesByDayInput = {
   dateTo: number
   dateFrom: number
 }
 
-const getFiatByDay = (input: Pick<GetFiatByDayInput, 'dateFrom' | 'dateTo'>) => {
+const getFiatRatesByDay = (input: Pick<GetFiatRatesByDayInput, 'dateFrom' | 'dateTo'>) => {
   const { dateFrom, dateTo } = input
 
   return graphql.subgraph.stats.fetchFiatByDayQuery({
@@ -21,4 +21,4 @@ const getFiatByDay = (input: Pick<GetFiatByDayInput, 'dateFrom' | 'dateTo'>) => 
 }
 
 
-export default getFiatByDay
+export default getFiatRatesByDay
