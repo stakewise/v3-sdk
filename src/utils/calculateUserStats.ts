@@ -31,24 +31,48 @@ type ModifiedStats = {
   rewards: Data[]
 }
 
+const modifyResult = (result: StatsMap, stats: Stats['data'][number], isAccumulateAPY?: boolean) => {
+  const { earnedAssets, totalAssets, timestamp } = stats
+
+  const timeInSeconds = Number(timestamp) / 1_000_000
+  const balance = Number(formatEther(totalAssets || 0n))
+  const rewards = Number(formatEther(earnedAssets || 0n))
+  const keys = (Object.keys(result) as Array<keyof StatsMap>)
+
+  keys.forEach((key) => {
+    if (!result[key][timestamp]) {
+      result[key][timestamp] = { value: 0, time: timeInSeconds }
+    }
+  })
+
+  result.balance[timestamp].value += balance
+  result.rewards[timestamp].value += rewards
+
+  if (isAccumulateAPY) {
+    const rewardsSum = result.rewards[timestamp].value
+
+    result.apy[timestamp].value = (rewardsSum * 365 * 100) / (balance - rewards)
+  }
+}
+
 /**
- * @description This method collects data from different types of sources one at a time,
- * so the order in the arguments is important. When you send isAccumulateAPY = true,
- * then APY is calculated based on the data already calculated before.
+ * @description This method collects TVL and Rewards from all elements of the array,
+ * and also collects APY for those elements with isAccumulateAPY = true
  * @example
  * const data = [
  *  {
- *    data: [ ... ], // DATA 1
+ *    data: [ ... ],
  *  },
  *  {
- *    data: [ ... ], // DATA 2
+ *    data: [ ... ],
+ *    isAccumulateAPY: true,
  *  },
  *  {
- *    data: [ ... ], // DATA 3
- *    isAccumulateAPY: true, // Calculate APY from DATA 1, DATA 2, DATA 3 and skip DATA 4
+ *    data: [ ... ],
+ *    isAccumulateAPY: true,
  *  },
  *  {
- *    data: [ ... ], // DATA 4
+ *    data: [ ... ],
  *  },
  * ]
  *
@@ -63,30 +87,15 @@ const calculateUserStats = (values: Input): ModifiedStats => {
     rewards: {},
   }
 
-  data.forEach(({ data, isAccumulateAPY }) => {
-    data.forEach((stats) => {
-      const { earnedAssets, totalAssets, timestamp } = stats
+  const dataWithApy = data.filter(({ isAccumulateAPY }) => isAccumulateAPY)
+  const dataWithoutApy = data.filter(({ isAccumulateAPY }) => !isAccumulateAPY)
 
-      const timeInSeconds = Number(timestamp) / 1_000_000
-      const balance = Number(formatEther(totalAssets || 0n))
-      const rewards = Number(formatEther(earnedAssets || 0n))
-      const keys = (Object.keys(result) as Array<keyof StatsMap>)
+  dataWithApy.forEach(({ data }) => {
+    data.forEach((stats) => modifyResult(result, stats, true))
+  })
 
-      keys.forEach((key) => {
-        if (!result[key][timestamp]) {
-          result[key][timestamp] = { value: 0, time: timeInSeconds }
-        }
-      })
-
-      result.balance[timestamp].value += balance
-      result.rewards[timestamp].value += rewards
-
-      if (isAccumulateAPY) {
-        const rewardsSum = result.rewards[timestamp].value
-
-        result.apy[timestamp].value = (rewardsSum * 365 * 100) / (balance - rewards)
-      }
-    })
+  dataWithoutApy.forEach(({ data }) => {
+    data.forEach((stats) => modifyResult(result, stats))
   })
 
   return {
