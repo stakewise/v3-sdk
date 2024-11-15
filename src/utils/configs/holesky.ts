@@ -6,7 +6,7 @@ import constants from '../constants'
 export default {
   network: constants.chains.holesky,
   api: {
-    backend: 'https://holesky-api.stakewise.io/graphql',
+    backend: 'https://holesky-api-b.stakewise.io/graphql',
     subgraph: 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/prod',
   },
   pages: {
