@@ -15,7 +15,6 @@ export type LockInput = {
   amount: bigint
   userAddress: string
   vaultAddress: string
-  strategyProxy: string
   permitParams?: PermitParams
   options: StakeWise.Options
   provider: StakeWise.Provider
