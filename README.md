@@ -1221,10 +1221,9 @@ Boost your osToken apy using leverage staking
 
 | Name         | Type           | Required | Description                                                                                                                                                                                                                   |
 |--------------|----------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                  |
-| userAddress  | `string`       | **Yes**  | The user address                                                                                                                                                                                                              |
-| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                         |
-| boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                               |
+| amount       | `bigint`       | **Yes**  | Boost amount |
+| userAddress  | `string`       | **Yes**  | The user address |
+| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking |
 | permitParams | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [utils.getPermitSignature](#sdkutilsgetpermitsignature) method |
 
 ```ts
@@ -1245,7 +1244,6 @@ const params = {
   amount: parseEther('1'),
   userAddress: '0x...',
   vaultAddress: '0x...',
-  boostAddress: '0x...',
 }
 
 // Send transaction
