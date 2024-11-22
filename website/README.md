@@ -8,7 +8,7 @@ Install dependencies and start the development server:
 
 ```bash
 npm install
-npm run start
+npm run dev
 ```
 
-Open [http://localhost:300](http://localhost:3000) in your browser to see the project.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the project.
