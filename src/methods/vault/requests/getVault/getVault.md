@@ -1,0 +1,97 @@
+---
+id: getVault
+slug: /vault/requests/getvault
+---
+
+#### Description:
+
+Returns the master data of the vault
+
+#### Arguments:
+
+| Name         | Type     | Required |
+|--------------|----------|----------|
+| vaultAddress | `string` | **Yes**  | 
+
+#### Returns:
+
+```ts
+type Output = {
+  apy: number
+  version: number
+  isErc20: boolean
+  capacity: string
+  createdAt: number
+  feePercent: number
+  isPrivate: boolean
+  isGenesis: boolean
+  isRestake: boolean
+  vaultAdmin: string
+  totalAssets: string
+  performance: number
+  feeRecipient: string
+  vaultAddress: string
+  mevRecipient: string
+  queuedShares: string
+  whitelistCount: number
+  blocklistCount: number
+  imageUrl: string | null
+  isSmoothingPool: boolean
+  tokenName: string | null
+  whitelistManager: string
+  blocklistManager: string
+  depositDataManager: string
+  tokenSymbol: string | null
+  displayName: string | null
+  description: string | null
+  restakeOperatorsManager: string
+  restakeWithdrawalsManager: string
+  osTokenConfig: {
+    ltvPercent: string
+    thresholdPercent: string
+  }
+}
+```
+
+| Name                        | Description                                                                                                                                                                                                                                  |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `version`                   | Vault version                                                                                                                                                                                                                                |
+| `apy`                       | Current vault apy                                                                                                                                                                                                                            |
+| `isErc20`                   | Does the vault have its own ERC20 token                                                                                                                                                                                                      |
+| `capacity`                  | Maximum TVL of Vault                                                                                                                                                                                                                         |
+| `createdAt`                 | Date of Creation                                                                                                                                                                                                                             |
+| `feePercent`                | Commission rate                                                                                                                                                                                                                              |
+| `isPrivate`                 | Whether the vault is private                                                                                                                                                                                                                 |
+| `isGenesis`                 | Is a stakewise vault                                                                                                                                                                                                                         |
+| `queuedShares`              | The total number of queued shares                                                                                                                                                                                                            |
+| `isRestake`                 | Indicates whether the Vault is a restaking vault                                                                                                                                                                                             |
+| `isBlocklist`               | Whether the vault has blocklist                                                                                                                                                                                                              |
+| `vaultAdmin`                | Vault administrator address                                                                                                                                                                                                                  |
+| `totalAssets`               | TVL of Vault                                                                                                                                                                                                                                 |
+| `feeRecipient`              | Vault fee address                                                                                                                                                                                                                            |
+| `whitelistManager`          | Whitelist manager                                                                                                                                                                                                                            |
+| `vaultAddress`              | Address of vault                                                                                                                                                                                                                             |
+| `mevRecipient`              | Validator fee recipient                                                                                                                                                                                                                      |
+| `whitelistCount`            | Number of addresses in the [whitelist](/vault/requests/getwhitelist)                                                                                                                                                                                  |
+| `blocklistCount`            | Number of addresses in the [blocklist](/vault/requests/getblocklist)                                                                                                                                                                                  |
+| `imageUrl`                  | Link for vault logo                                                                                                                                                                                                                          |
+| `blocklistManager`          | Blocklist manager                                                                                                                                                                                                                            |
+| `depositDataManager`        | Keys manager address                                                                                                                                                                                                                         |
+| `isSmoothingPool`           | Smoothing poll or Vault escrow                                                                                                                                                                                                               |
+| `tokenName`                 | ERC20 token name                                                                                                                                                                                                                             |
+| `tokenSymbol`               | ERC20 token symbol                                                                                                                                                                                                                           |
+| `displayName`               | Name of vault                                                                                                                                                                                                                                |
+| `maxBoostApy`               | The vault average max boost APY                                                                                                                                                                                                              |
+| `description`               | Description of vault                                                                                                                                                                                                                         |
+| `whitelist`                 | List of authorized users for deposits                                                                                                                                                                                                        |
+| `blocklist`                 | List of blocked users for deposits                                                                                                                                                                                                           |
+| `performance`               | Vault performance indicator (percent)                                                                                                                                                                                                        |
+| `restakeOperatorsManager`   | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                                                                                                                |
+| `restakeWithdrawalsManager` | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                                                                                                             |
+| `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
+
+#### Example:
+
+```ts
+await sdk.vault.getVault({ vaultAddress: '0x...' })
+```
