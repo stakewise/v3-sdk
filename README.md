@@ -4,6 +4,7 @@
 
 # StakeWise Labs V3 SDK
 
+
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
 ![Version](https://img.shields.io/npm/v/@stakewise/v3-sdk)
