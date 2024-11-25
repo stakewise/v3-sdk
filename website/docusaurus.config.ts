@@ -9,7 +9,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
   onBrokenMarkdownLinks: 'warn',
   title: 'StakeWise Labs V3 SDK',
-  url: 'https://your-docusaurus-site.example.com',   // TODO add real link
+  url: 'https://sdk.stakewise.io/',
   tagline: `
     The official SDK designed for effortless data retrieval from the StakeWise platform. <br />
     This SDK provides a streamlined interface over GraphQL requests and contract interactions.
@@ -119,7 +119,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/stakewise/v3-sdk',
             },
           ],
         },
