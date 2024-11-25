@@ -1,0 +1,43 @@
+{
+  "name": "v-3-sdk-docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "StakeWise v3-SDK documentation",
+  "scripts": {
+    "dev": "docusaurus start",
+    "build": "docusaurus build",
+    "clear": "docusaurus clear"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.6.3",
+    "@docusaurus/preset-classic": "3.6.3",
+    "@mdx-js/react": "3.0.0",
+    "prism-react-renderer": "2.3.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.6.3",
+    "@docusaurus/tsconfig": "3.6.3",
+    "@docusaurus/types": "3.6.3"
+  },
+  "engines": {
+    "node": "=20.12.2",
+    "npm": "=10.5.0"
+  },
+  "sideEffects": [
+    "*.css",
+    "*.scss"
+  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "license": "AGPL-3.0-only"
+}

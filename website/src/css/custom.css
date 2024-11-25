@@ -1,0 +1,11 @@
+:root {
+  --ifm-color-primary: #7C6DA3;
+  --ifm-color-primary-dark: #6B5D8E;
+  --ifm-color-primary-darker: #5A4D7A;
+  --ifm-color-primary-darkest: #493D66;
+  --ifm-color-primary-light: #8C7DB4;
+  --ifm-color-primary-lighter: #9D8DC5;
+  --ifm-color-primary-lightest: #ADA0D6;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
