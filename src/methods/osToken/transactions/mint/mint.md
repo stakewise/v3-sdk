@@ -9,11 +9,11 @@ Use data from methods [sdk.osToken.getMaxMint](/osToken/requests/getmaxmint) and
 
 #### Arguments:
 
-| Name         | Type     | Required | Description |
-|--------------|----------|----------|-------------|
-| shares       | `bigint` | **Yes**  | mint amount |
-| userAddress  | `string` | **Yes**  | -           |
-| vaultAddress | `string` | **Yes**  | -           |
+| Name         | Type     | Required | Description               |
+|--------------|----------|----------|---------------------------|
+| shares       | `bigint` | **Yes**  | mint amount               |
+| userAddress  | `string` | **Yes**  | The user address          |
+| vaultAddress | `string` | **Yes**  | The address of the vault  |
 
 #### Example:
 

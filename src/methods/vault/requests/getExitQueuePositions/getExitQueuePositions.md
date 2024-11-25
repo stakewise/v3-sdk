@@ -9,11 +9,11 @@ Returns the withdrawal queue for a specific user.
 
 #### Arguments:
 
-| Name         | Type      | Required |
-|--------------|-----------|----------|
-| userAddress  | `string`  | **Yes**  |
-| vaultAddress | `string`  | **Yes**  | 
-| isClaimed    | `boolean` | **No**   | 
+| Name         | Type      | Required | Description                           |
+|--------------|-----------|----------|---------------------------------------|
+| userAddress  | `string`  | **Yes**  | The user address                      |
+| vaultAddress | `string`  | **Yes**  | The address of the vault              |
+| isClaimed    | `boolean` | **No**   | Whether the user has claimed rewards  |
 
 #### Returns:
 

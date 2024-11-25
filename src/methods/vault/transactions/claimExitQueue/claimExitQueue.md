@@ -11,8 +11,8 @@ Withdraws exited assets from the queue.
 | Name         | Type     | Required | Description                                                                              |
 |--------------|----------|----------|------------------------------------------------------------------------------------------|
 | positions    | `string` | **Yes**  | `postions` from [sdk.vault.getExitQueuePositions](/vault/requests/getexitqueuepositions) |
-| userAddress  | `string` | **Yes**  | -                                                                                        |
-| vaultAddress | `string` | **Yes**  | -                                                                                        |
+| userAddress  | `string` | **Yes**  | The user address                                                                         |
+| vaultAddress | `string` | **Yes**  | The address of the vault                                                                 |
 
 #### Example:
 

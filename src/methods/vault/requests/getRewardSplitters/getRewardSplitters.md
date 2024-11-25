@@ -10,10 +10,10 @@ To use a reward splitter, its address should be added to the vault as a fee reci
 
 #### Arguments:
 
-| Name | Type     | Type    | Description                                                                                                                                |
-|------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| vaultAddress | `string` | **Yes** | The address of the vault |
-| id | `string` | **No** | Reward splitter address |
+| Name | Type     | Type    | Description                      |
+|------|----------|---------|----------------------------------|
+| vaultAddress | `string` | **Yes** | The address of the vault         |
+| id | `string` | **No** | Reward splitter address          |
 | owner | `string` | **No** | The owner of the reward splitter |
 
 #### Returns:

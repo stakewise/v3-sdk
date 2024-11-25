@@ -8,12 +8,12 @@ slug: /osToken/requests/getmaxmint
 Maximum number of **shares** for minting
 
 #### Arguments:
-| Name         | Type     | Required | Description                                          |
-|--------------|----------|----------|------------------------------------------------------|
-| vaultAddress | `string` | **Yes**  | Address of vault                                     |
+| Name         | Type     | Required | Description                                                  |
+|--------------|----------|----------|--------------------------------------------------------------|
+| vaultAddress | `string` | **Yes**  | The address of the vault                                     |
 | ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
 | stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
-| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)              |
+| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)     |
 
 #### Returns:
 

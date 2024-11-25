@@ -10,7 +10,7 @@ How much a user can withdraw. Use this method if the user has mintedAssets, if m
 
 | Name         | Type     | Required | Info                                                         |
 |--------------|----------|----------|--------------------------------------------------------------|
-| vaultAddress | `string` | **Yes**  | Address of vault                                             |
+| vaultAddress | `string` | **Yes**  | The address of the vault                                     |
 | ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
 | mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)     |
 | stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |

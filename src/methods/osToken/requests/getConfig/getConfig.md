@@ -11,7 +11,7 @@ Returns basic information on the token
 
 | Name         | Type     | Required | Description   |
 |--------------|----------|----------|---------------|
-| vaultAddress | `string` | **Yes**  | Vault address |
+| vaultAddress | `string` | **Yes**  | The address of the vault |
 
 #### Returns:
 

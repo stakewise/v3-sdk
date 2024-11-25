@@ -9,10 +9,10 @@ Getting user's balance in the vault
 
 #### Arguments:
 
-| Name         | Type     | Required |
-|--------------|----------|----------|
-| userAddress  | `string` | **Yes**  |
-| vaultAddress | `string` | **Yes**  |
+| Name         | Type     | Required | Description               |
+|--------------|----------|----------|---------------------------|
+| userAddress  | `string` | **Yes**  | The user address          |
+| vaultAddress | `string` | **Yes**  | The address of the vault  |
 
 #### Returns:
 

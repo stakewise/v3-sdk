@@ -8,11 +8,11 @@ Adding deposit data manager to vaults **version 2** or higher
 
 #### Arguments:
 
-| Name           | Type     | Required | Description |
-|----------------|----------|----------|-------------|
+| Name           | Type     | Required | Description               |
+|----------------|----------|----------|---------------------------|
 | managerAddress | `string` | **Yes**  | New deposit-data manager  |
-| userAddress    | `string` | **Yes**  | - |
-| vaultAddress   | `string` | **Yes**  | - |
+| userAddress    | `string` | **Yes**  | The user address          |
+| vaultAddress   | `string` | **Yes**  | The address of the vault  |
 
 #### Example:
 

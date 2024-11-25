@@ -8,11 +8,11 @@ Burns your osToken
 
 #### Arguments:
 
-| Name         | Type     | Required | Description |
-|--------------|----------|----------|-------------|
-| shares       | `bigint` | **Yes**  | Burn amount |
-| userAddress  | `string` | **Yes**  | -           |
-| vaultAddress | `string` | **Yes**  | -           |
+| Name         | Type     | Required | Description               |
+|--------------|----------|----------|---------------------------|
+| shares       | `bigint` | **Yes**  | Burn amount               |
+| userAddress  | `string` | **Yes**  | The user address          |
+| vaultAddress | `string` | **Yes**  | The address of the vault  |
 
 #### Example:
 

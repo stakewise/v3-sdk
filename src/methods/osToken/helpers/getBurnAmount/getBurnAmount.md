@@ -9,7 +9,7 @@ How many osToken burn do you need to make to withdraw all deposit.
 #### Arguments:
 | Name            | Type     | Required | Description                                                  |
 |-----------------|----------|----------|--------------------------------------------------------------|
-| vaultAddress    | `string` | **Yes**  | Address of vault                                             |
+| vaultAddress    | `string` | **Yes**  | The address of the vault                                     |
 | ltvPercent      | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
 | mintedAssets    | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)     |
 | stakedAssets    | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |

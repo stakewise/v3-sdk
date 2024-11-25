@@ -8,12 +8,12 @@ slug: /osToken/requests/getposition
 User position data
 
 #### Arguments:
-| Name             | Type     | Required | Description                                          |
-|------------------|----------|----------|------------------------------------------------------|
+| Name             | Type     | Required | Description                                                  |
+|------------------|----------|----------|--------------------------------------------------------------|
 | thresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
 | stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
-| userAddress      | `string` | **Yes**  | -                                                    |
-| vaultAddress     | `string` | **Yes**  | -                                                    |
+| userAddress      | `string` | **Yes**  | The user address                                             |
+| vaultAddress     | `string` | **Yes**  | The address of the vault                                     |
 
 #### Returns:
 

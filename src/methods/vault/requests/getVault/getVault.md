@@ -9,9 +9,9 @@ Returns the master data of the vault
 
 #### Arguments:
 
-| Name         | Type     | Required |
-|--------------|----------|----------|
-| vaultAddress | `string` | **Yes**  | 
+| Name         | Type     | Required | Description               |
+|--------------|----------|----------|---------------------------|
+| vaultAddress | `string` | **Yes**  | The address of the vault  | 
 
 #### Returns:
 

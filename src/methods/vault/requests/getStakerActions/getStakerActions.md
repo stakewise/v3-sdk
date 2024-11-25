@@ -10,11 +10,11 @@ Get a list of interactions with the vault.
 
 | Name         | Type                  | Required | Description                                                                                                |
 |--------------|-----------------------|----------|------------------------------------------------------------------------------------------------------------|
-| vaultAddress | `string`              | **Yes**  | - |
+| vaultAddress | `string`              | **Yes**  | The address of the vault                                                                                   |
 | userAddress  | `string`              | **No**   | If a user address is specified, the query will look for events for that address and the vault address only |
-| types        | `AllocatorActionType` | **Yes**  | Event types can be found in `enum AllocatorActionType` which you can import from the library |
-| limit        | `number`              | **Yes**  | To implement pagination |
-| skip         | `number`              | **Yes**  | To implement pagination |
+| types        | `AllocatorActionType` | **Yes**  | Event types can be found in `enum AllocatorActionType` which you can import from the library               |
+| limit        | `number`              | **Yes**  | To implement pagination                                                                                    |
+| skip         | `number`              | **Yes**  | To implement pagination                                                                                    |
 
 #### Returns:
 

@@ -8,11 +8,11 @@ Adding root validators to vaults **version 2** or higher
 
 #### Arguments:
 
-| Name           | Type     | Required | Description |
-|----------------|----------|----------|-------------|
-| depositDataRoot | `string` | **Yes**  | The vault validators merkle tree  |
-| userAddress    | `string` | **Yes**  | - |
-| vaultAddress   | `string` | **Yes**  | - |
+| Name           | Type     | Required | Description                      |
+|----------------|----------|----------|----------------------------------|
+| depositDataRoot | `string` | **Yes**  | The vault validators merkle tree |
+| userAddress    | `string` | **Yes**  | The user address                 |
+| vaultAddress   | `string` | **Yes**  | The address of the vault         |
 
 #### Example:
 
