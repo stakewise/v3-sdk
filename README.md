@@ -1,6 +1,8 @@
-<a href="https://sdk.stakewise.io">
-  <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
-</a>
+<div align="center">
+    <a href="https://sdk.stakewise.io">
+      <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
+    </a>
+</div>
 
 # StakeWise Labs V3 SDK
 
