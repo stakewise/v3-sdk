@@ -1,5 +1,6 @@
 ---
 id: getUserStats
+slug: /vault/requests/getuserstats
 ---
 
 #### Description:

@@ -1,5 +1,6 @@
 ---
 id: getHarvestParams
+slug: /vault/requests/getharvestparams
 ---
 
 #### Description:
@@ -19,6 +20,14 @@ type Output = {
   }
 }
 ```
+
+| Name | Description |
+|------|------------|
+| `canHarvest` | Defines whether the vault can harvest new rewards |
+| `reward` | The vault reward used to submit state update proof |
+| `proof` | The vault rewards root proof used to submit state update proof |
+| `rewardsRoot` | The vault rewards root |
+| `unlockedMevReward` | The vault unlocked MEV reward used to submit state update proof |
 
 #### Example:
 

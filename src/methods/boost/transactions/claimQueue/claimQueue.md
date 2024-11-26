@@ -1,5 +1,6 @@
 ---
 id: claimQueue
+slug: /boost/transactions/claimqueue
 ---
 
 #### Description:

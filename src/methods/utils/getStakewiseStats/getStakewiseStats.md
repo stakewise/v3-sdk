@@ -1,5 +1,6 @@
 ---
 id: getStakewiseStats
+slug: /utils/getstakewisestats
 ---
 
 #### Description:
@@ -15,6 +16,12 @@ type Output = {
   totalEarnedAssets: string
 }
 ```
+
+| Name | Description |
+|------|------------|
+| `totalAssets` | The OsToken total assets |
+| `totalEarnedAssets` | The total assets earned in the network |
+| `usersCount` | The total number of non repeated vault allocators and osToken holders |
 
 #### Example:
 

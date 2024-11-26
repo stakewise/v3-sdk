@@ -8,7 +8,7 @@ const config: Config = {
   onBrokenLinks: 'warn',
   favicon: 'img/favicon.ico',
   onBrokenMarkdownLinks: 'warn',
-  title: 'StakeWise Labs V3 SDK',
+  title: 'StakeWise V3 SDK',
   url: 'https://sdk.stakewise.io/',
   tagline: `
     The official SDK designed for effortless data retrieval from the StakeWise platform. <br />

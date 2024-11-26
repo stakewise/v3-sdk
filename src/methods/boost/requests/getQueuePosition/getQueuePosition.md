@@ -1,5 +1,6 @@
 ---
 id: getQueuePosition
+slug: /boost/requests/getqueueposition
 ---
 
 #### Description:

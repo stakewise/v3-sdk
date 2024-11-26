@@ -1,10 +1,11 @@
 <div align="center">
     <a href="https://sdk.stakewise.io">
-      <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
+        <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
     </a>
+    <h1>StakeWise V3 SDK</h1>
 </div>
 
-# StakeWise Labs V3 SDK
+---
 
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
@@ -16,9 +17,5 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 ![GitHub forks](https://img.shields.io/github/forks/stakewise/v3-sdk)
 ![Ethers version](https://img.shields.io/badge/ethers-6.12.1-purple)
 
-## Installation and Setup
-```bash
-npm i @stakewise/v3-sdk
-```
 
 [Read the docs](https://sdk.stakewise.io/setup/prerequisites) for any further information.

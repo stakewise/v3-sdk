@@ -1,5 +1,6 @@
 ---
 id: unlock
+slug: /boost/transactions/unlock
 ---
 
 #### Description:

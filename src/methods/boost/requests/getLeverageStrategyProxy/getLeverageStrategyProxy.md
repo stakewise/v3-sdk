@@ -1,5 +1,6 @@
 ---
 id: getLeverageStrategyProxy
+slug: /boost/requests/getleveragestrategyproxy
 ---
 
 #### Description:
