@@ -47,6 +47,11 @@ const config: Config = {
   ],
   themeConfig: {
     image: 'img/og-image.png',
+    algolia: {
+      appId: 'FYI6QM8V89',
+      indexName: 'sdk-stakewise',
+      apiKey: 'dec9ccf3df7b0d443b5d0f5f1b1a1775',
+    },
     navbar: {
       title: 'StakeWise',
       logo: {
