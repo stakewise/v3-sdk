@@ -1,5 +1,6 @@
 ---
 id: operate
+slug: /vault/transactions/operate
 ---
 
 #### Description:

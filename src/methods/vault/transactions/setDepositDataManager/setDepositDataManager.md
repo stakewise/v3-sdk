@@ -1,5 +1,6 @@
 ---
 id: setDepositDataManager
+slug: /vault/transactions/setdepositdatamanager
 ---
 
 #### Description:

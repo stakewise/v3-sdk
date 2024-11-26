@@ -8,7 +8,7 @@ const config: Config = {
   onBrokenLinks: 'warn',
   favicon: 'img/favicon.ico',
   onBrokenMarkdownLinks: 'warn',
-  title: 'StakeWise Labs V3 SDK',
+  title: 'StakeWise V3 SDK',
   url: 'https://sdk.stakewise.io/',
   tagline: `
     The official SDK designed for effortless data retrieval from the StakeWise platform. <br />
@@ -47,6 +47,11 @@ const config: Config = {
   ],
   themeConfig: {
     image: 'img/og-image.png',
+    algolia: {
+      appId: 'FYI6QM8V89',
+      indexName: 'sdk-stakewise',
+      apiKey: 'dec9ccf3df7b0d443b5d0f5f1b1a1775',
+    },
     navbar: {
       title: 'StakeWise',
       logo: {

@@ -1,5 +1,6 @@
 ---
 id: lock
+slug: /boost/transactions/lock
 ---
 
 #### Description:

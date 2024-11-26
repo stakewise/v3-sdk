@@ -1,5 +1,6 @@
 ---
 id: getUserRewards
+slug: /vault/requests/getuserrewards
 ---
 
 #### Description:

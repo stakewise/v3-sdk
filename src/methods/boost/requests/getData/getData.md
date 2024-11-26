@@ -1,5 +1,6 @@
 ---
 id: getData
+slug: /boost/requests/getdata
 ---
 
 #### Description:

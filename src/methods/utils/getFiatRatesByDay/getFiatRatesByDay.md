@@ -1,5 +1,6 @@
 ---
 id: getFiatRatesByDay
+slug: /utils/getfiatratesbyday
 ---
 
 #### Description:

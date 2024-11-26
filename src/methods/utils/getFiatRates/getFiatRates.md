@@ -1,5 +1,6 @@
 ---
 id: getFiatRates
+slug: /utils/getfiatrates
 ---
 
 #### Description:

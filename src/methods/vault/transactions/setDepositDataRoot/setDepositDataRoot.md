@@ -1,5 +1,6 @@
 ---
 id: setDepositDataRoot
+slug: /vault/transactions/setdepositdataroot
 ---
 
 #### Description:
