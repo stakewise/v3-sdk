@@ -68,12 +68,11 @@ class StakeWiseSDK {
   async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
     const { userAddress, vaultAddress, request } = values
 
-    const { isBlocklist, isPrivate, isRestake, version } = await this.vault.getVault({ vaultAddress })
+    const { isBlocklist, isPrivate, version } = await this.vault.getVault({ vaultAddress })
 
     const vaultContract = this.contracts.helpers.createVault({
       options: {
         isPrivate,
-        isRestake,
         isBlocklist,
         isDepositWithMint: version >= 3,
         chainId: this.config.network.chainId,

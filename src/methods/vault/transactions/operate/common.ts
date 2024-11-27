@@ -11,8 +11,6 @@ import {
   getFeeRecipientParams,
   getBlocklistManagerParams,
   getValidatorsManagerParams,
-  getRestakeOperatorsManagerParams,
-  getRestakeWithdrawalsManagerParams,
 } from '../util'
 
 
@@ -20,7 +18,7 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
     blocklistManager, metadataIpfsHash,
     blocklist, whitelist, whitelistManager, feeRecipient,
-    options, contracts, userAddress, vaultAddress, provider, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
+    options, contracts, userAddress, vaultAddress, provider, validatorsManager,
   } = values
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -28,20 +26,18 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
   const chainId = options.network
   const isPrivate = Boolean(whitelist?.length || whitelistManager)
   const isBlocklist = Boolean(blocklist?.length || blocklistManager)
-  const isRestake = Boolean(restakeOperatorsManager || restakeWithdrawalsManager)
 
   const vaultContract = contracts.helpers.createVault({
     vaultAddress,
     options: {
       chainId,
-      isRestake,
       isPrivate,
       isBlocklist,
     },
   })
 
   // @ts-ignore: boolean + boolean
-  if (isRestake + isPrivate + isBlocklist >= 2) {
+  if (isPrivate + isBlocklist >= 2) {
     throw new Error('You are trying to change the data for different vaults types')
   }
 
@@ -114,18 +110,6 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     const validatorsManagerParams = getValidatorsManagerParams({ ...baseInput, validatorsManager })
 
     params.push(...validatorsManagerParams)
-  }
-
-  if (restakeOperatorsManager) {
-    const restakeOperatorsManagerParams = getRestakeOperatorsManagerParams({ ...baseInput, restakeOperatorsManager })
-
-    params.push(...restakeOperatorsManagerParams)
-  }
-
-  if (restakeWithdrawalsManager) {
-    const restakeWithdrawalsManagerParams = getRestakeWithdrawalsManagerParams({ ...baseInput, restakeWithdrawalsManager })
-
-    params.push(...restakeWithdrawalsManagerParams)
   }
 
   return {

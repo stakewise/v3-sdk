@@ -1,6 +1,5 @@
 import DepositWithMintDiffAbi from './DepositWithMintDiffAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
-import RestakingVaultDiffAbi from './RestakingVaultDiffAbi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
 import NativeTokenVaultAbi from './NativeTokenVaultAbi.json'
 import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
@@ -13,6 +12,5 @@ export {
   NativeTokenVaultAbi,
   PrivateVaultDiffAbi,
   BlocklistVaultDiffAbi,
-  RestakingVaultDiffAbi,
   DepositWithMintDiffAbi,
 }

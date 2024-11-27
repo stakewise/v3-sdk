@@ -13,7 +13,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
       blocklist, whitelist, whitelistManager, feeRecipient,
-      blocklistManager, metadataIpfsHash, validatorsManager, restakeOperatorsManager, restakeWithdrawalsManager,
+      blocklistManager, metadataIpfsHash, validatorsManager
     } = values
 
     try {
@@ -28,8 +28,6 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
         || blocklistManager
         || metadataIpfsHash
         || validatorsManager
-        || restakeOperatorsManager
-        || restakeWithdrawalsManager
       )
       const isWhitelistManager = Boolean(whitelist)
       const isBlocklistManager = Boolean(blocklist)
