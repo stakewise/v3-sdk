@@ -25,7 +25,6 @@ type Output = {
   feePercent: number
   isPrivate: boolean
   isGenesis: boolean
-  isRestake: boolean
   vaultAdmin: string
   totalAssets: string
   performance: number
@@ -44,8 +43,6 @@ type Output = {
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
-  restakeOperatorsManager: string
-  restakeWithdrawalsManager: string
   osTokenConfig: {
     ltvPercent: string
     thresholdPercent: string
@@ -64,7 +61,6 @@ type Output = {
 | `isPrivate`                 | Whether the vault is private                                                                                                                                                                                                                 |
 | `isGenesis`                 | Is a stakewise vault                                                                                                                                                                                                                         |
 | `queuedShares`              | The total number of queued shares                                                                                                                                                                                                            |
-| `isRestake`                 | Indicates whether the Vault is a restaking vault                                                                                                                                                                                             |
 | `isBlocklist`               | Whether the vault has blocklist                                                                                                                                                                                                              |
 | `vaultAdmin`                | Vault administrator address                                                                                                                                                                                                                  |
 | `totalAssets`               | TVL of Vault                                                                                                                                                                                                                                 |
@@ -86,8 +82,6 @@ type Output = {
 | `whitelist`                 | List of authorized users for deposits                                                                                                                                                                                                        |
 | `blocklist`                 | List of blocked users for deposits                                                                                                                                                                                                           |
 | `performance`               | Vault performance indicator (percent)                                                                                                                                                                                                        |
-| `restakeOperatorsManager`   | If the Vault is a restaking vault, restake operators manager can add/remove restake operators                                                                                                                                                |
-| `restakeWithdrawalsManager` | If the Vault is a restaking vault, restake withdrawals manager can manage EigenLayer withdrawals                                                                                                                                             |
 | `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 
 #### Example:

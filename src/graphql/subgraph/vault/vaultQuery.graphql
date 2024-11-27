@@ -14,7 +14,6 @@ query Vault($address: ID!) {
     capacity
     mevEscrow
     isPrivate
-    isRestake
     createdAt
     mevEscrow
     tokenName
@@ -36,7 +35,5 @@ query Vault($address: ID!) {
     blocklistManager
     validatorsManager
     depositDataManager
-    restakeOperatorsManager
-    restakeWithdrawalsManager
   }
 }

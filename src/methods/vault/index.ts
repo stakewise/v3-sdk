@@ -1,6 +1,5 @@
 // Requests
 import getVault from './requests/getVault'
-import getEigenPods from './requests/getEigenPods'
 import getWhitelist from './requests/getWhitelist'
 import getBlocklist from './requests/getBlocklist'
 import getUserStats from './requests/getUserStats'
@@ -20,11 +19,8 @@ import { default as deposit } from './transactions/deposit'
 import { default as operate } from './transactions/operate'
 import { default as withdraw } from './transactions/withdraw'
 import { default as claimExitQueue } from './transactions/claimExitQueue'
-import { default as createEigenPod } from './transactions/createEigenPod'
 import { default as setDepositDataRoot } from './transactions/setDepositDataRoot'
-import { default as setEigenPodOperator } from './transactions/setEigenPodOperator'
 import { default as setDepositDataManager } from './transactions/setDepositDataManager'
-import { default as updateEigenPodOperator } from './transactions/updateEigenPodOperator'
 
 
 export default {
@@ -72,11 +68,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvalidators
     */
     getValidators,
-    /**
-     * @description Returns eigen pods for restake vault.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgeteigenpods
-     */
-    getEigenPods,
     /**
      * @description Fetch the whitelist for private vaults. Only addresses included in
      * this list are eligible to stake in the private vault. The number of addresses in
@@ -148,23 +139,5 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultsetdepositdatamanager
      */
     setDepositDataManager,
-    /**
-     * @description Adding eigen pod to the vault
-     * @throws Supports only restake operators manager can perform this action
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultcreateeigenpod
-     */
-    createEigenPod,
-    /**
-     * @description Adding operator to the current eigen pod
-     * @throws Supports only restake operators manager can perform this action
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultseteigenpodoperator
-     */
-    setEigenPodOperator,
-    /**
-     * @description Update operator to the current eigen pod
-     * @throws Supports only restake operators manager can perform this action
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultupdateeigenpodoperator
-     */
-    updateEigenPodOperator,
   },
 } as const

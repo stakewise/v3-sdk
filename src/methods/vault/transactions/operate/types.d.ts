@@ -9,8 +9,6 @@ import type { SetWhitelisterParams } from '../util/params/getWhitelisterParams'
 import type { SetFeeRecipientParams } from '../util/params/getFeeRecipientParams'
 import type { SetBlocklistManagerParams } from '../util/params/getBlocklistManagerParams'
 import type { SetValidatorsManagerParams } from '../util/params/getValidatorsManagerParams'
-import type { SetRestakeOperatorsManagerParams } from '../util/params/getRestakeOperatorsManagerParams'
-import type { SetRestakeWithdrawalsManagerParams } from '../util/params/getRestakeWithdrawalsManagerParams'
 
 type BaseInput = {
   userAddress: string
@@ -27,8 +25,6 @@ type MulticallCommonParams =
   & UpdateWhitelistParams
   & SetBlocklistManagerParams
   & SetValidatorsManagerParams
-  & SetRestakeOperatorsManagerParams
-  & SetRestakeWithdrawalsManagerParams
 
 type MulticallParams = Partial<
   UploadMetadataInput

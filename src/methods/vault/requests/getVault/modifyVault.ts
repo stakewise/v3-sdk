@@ -36,8 +36,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     whitelistCount,
     validatorsManager,
     depositDataManager,
-    restakeOperatorsManager,
-    restakeWithdrawalsManager,
     ...rest
   } = vault
 
@@ -60,8 +58,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',
     blocklistManager: vault.blocklistManager ? getAddress(vault.blocklistManager) : '',
-    restakeOperatorsManager: restakeOperatorsManager ? getAddress(restakeOperatorsManager) : '',
-    restakeWithdrawalsManager: restakeWithdrawalsManager ? getAddress(restakeWithdrawalsManager) : '',
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)
       : configs[network].addresses.base.sharedMevEscrow,

@@ -14,7 +14,6 @@ describe('modifyVault', () => {
       isErc20: true,
       feePercent: 200,
       isPrivate: false,
-      isRestake: true,
       isGenesis: true,
       isBlocklist: false,
       version: '1',
@@ -42,8 +41,6 @@ describe('modifyVault', () => {
       blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      restakeOperatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      restakeWithdrawalsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       osTokenConfig: {
         ltvPercent: '0',
         liqThresholdPercent: '0',
@@ -60,7 +57,6 @@ describe('modifyVault', () => {
       performance: 10,
       queuedShares: '0',
       isPrivate: false,
-      isRestake: true,
       isGenesis: true,
       isBlocklist: false,
       blocklistCount: 0,
@@ -89,8 +85,6 @@ describe('modifyVault', () => {
       blocklistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       validatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      restakeOperatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      restakeWithdrawalsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
     }
 
     const result = modifyVault({

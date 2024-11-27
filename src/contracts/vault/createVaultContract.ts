@@ -7,7 +7,6 @@ import {
   NativeTokenVaultAbi,
   PrivateVaultDiffAbi,
   BlocklistVaultDiffAbi,
-  RestakingVaultDiffAbi,
   DepositWithMintDiffAbi,
 } from './abis'
 
@@ -17,7 +16,6 @@ import {
   NativeTokenVaultAbi as NativeTokenVaultType,
   PrivateVaultDiffAbi as PrivateVaultDiffType,
   BlocklistVaultDiffAbi as BlocklistVaultDiffType,
-  RestakingVaultDiffAbi as RestakingVaultDiffType,
   DepositWithMintDiffAbi as DepositWithMintDiffType,
 } from './types'
 
@@ -26,7 +24,7 @@ import createContract from '../createContract'
 import { ModifiedVault } from '../../methods/vault/requests/getVault/types'
 
 
-type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate' | 'isRestake'>> & {
+type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate'>> & {
   chainId?: Network
   isDepositWithMint?: boolean
 }
@@ -43,10 +41,6 @@ type Output<T extends Options> = Omit<
   ) &
   (T['isBlocklist'] extends true
     ? BlocklistVaultDiffType
-    : object
-  ) &
-  (T['isRestake'] extends true
-    ? RestakingVaultDiffType
     : object
   ) &
   (T['isPrivate'] extends true
@@ -82,10 +76,6 @@ const createVaultContract = (provider: Provider) => (
 
     if (options?.isPrivate) {
       baseAbi = baseAbi.concat(PrivateVaultDiffAbi)
-    }
-
-    if (options?.isRestake) {
-      baseAbi = baseAbi.concat(RestakingVaultDiffAbi)
     }
 
     if (options?.isDepositWithMint) {
