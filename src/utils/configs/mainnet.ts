@@ -48,8 +48,8 @@ export default {
       erc20BlocklistVault: '0xe487EDDB7C5802e416385544f0A6a4426AF4AE87',
     },
     special: {
-      stakeCalculator: '0x4abB9BBb82922A6893A5d6890cd2eE94610BEc48',
-      leverageStrategy: '0xc57E59764f398831C1444c14d296Af868d533196',
+      stakeCalculator: '0x75c57bd50A3EB7291Da3429956D3566E0153A38f',
+      leverageStrategy: '0x48cD14FDB8e72A03C8D952af081DBB127D6281fc',
     },
   },
   tokens: {
