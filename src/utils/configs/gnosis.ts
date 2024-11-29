@@ -45,7 +45,7 @@ export default {
       erc20BlocklistVault: '0x99E4300326867FE3f97864a74e500d19654c19e9',
     },
     special: {
-      stakeCalculator: '0xCd4f0b056F56BCc28193Ca2Ca9B98AEdd940308d',
+      stakeCalculator: '0x2A415b65207049AC7481BF69ff9fc1B3Def97c9A',
       leverageStrategy: ZeroAddress,
     },
   },
