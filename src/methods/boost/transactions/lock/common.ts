@@ -1,3 +1,5 @@
+import { ZeroAddress } from 'ethers'
+
 import type { LockInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
@@ -99,7 +101,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
   params.push({
     method: 'deposit',
-    args: [ vaultAddress, amount ],
+    args: [ vaultAddress, amount, ZeroAddress ],
   })
 
   return {

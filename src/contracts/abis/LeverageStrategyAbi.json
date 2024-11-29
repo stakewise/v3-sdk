@@ -10,6 +10,11 @@
         "internalType": "uint256",
         "name": "osTokenShares",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
       }
     ],
     "name": "deposit",
