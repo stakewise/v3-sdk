@@ -1,8 +1,10 @@
-query VaultStats($vaultAddress: String!  $daysCount: Int!) {
+query VaultStats($vaultAddress: String!  $timestamp: Timestamp!) {
   vaultStats: vaultStats_collection(
     interval: day
-    where: { vault: $vaultAddress }
-    first: $daysCount
+    where: {
+      vault: $vaultAddress
+      timestamp_gte: $timestamp,
+    }
   ) {
     timestamp
     earnedAssets

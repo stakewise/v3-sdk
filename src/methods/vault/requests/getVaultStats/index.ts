@@ -1,12 +1,11 @@
-import type { VaultStatsQueryVariables } from '../../../../graphql/subgraph/vault'
+import { apiUrls, getTimestamp, validateArgs } from '../../../../utils'
 import modifyVaultStats from './modifyVaultStats'
-import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
 type GetVaultStatsInput = {
   options: StakeWise.Options
-  vaultAddress: VaultStatsQueryVariables['vaultAddress']
+  vaultAddress: string
   daysCount: number
 }
 
@@ -16,12 +15,14 @@ const getVaultStats = (input: GetVaultStatsInput) => {
   validateArgs.address({ vaultAddress })
   validateArgs.number({ daysCount })
 
+  const timestamp = String(getTimestamp(daysCount))
+
   return graphql.subgraph.vault.fetchVaultStatsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      daysCount,
+      timestamp,
       vaultAddress: vaultAddress.toLowerCase(),
-    } as VaultStatsQueryVariables,
+    },
     modifyResult: modifyVaultStats,
   })
 }
