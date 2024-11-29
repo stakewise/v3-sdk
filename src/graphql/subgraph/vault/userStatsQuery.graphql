@@ -1,13 +1,13 @@
-query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
+query UserStats($userAddress: Bytes! $vaultAddress: String! $timestamp: Timestamp!) {
   allocator: allocatorStats_collection(
     interval: day
     where: {
+      timestamp_gte: $timestamp,
       allocator_: {
-        address: $user,
+        address: $userAddress,
         vault: $vaultAddress
       }
     }
-    first: $daysCount
   ) {
     timestamp
     earnedAssets
@@ -16,12 +16,12 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   exitRequest: exitRequestStats_collection(
     interval: day
     where: {
+      timestamp_gte: $timestamp,
       exitRequest_: {
-        receiver: $user,
+        receiver: $userAddress,
         vault: $vaultAddress
       }
     }
-    first: $daysCount
   ) {
     timestamp
     earnedAssets
@@ -30,12 +30,12 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   rewardSplitter: rewardSplitterShareHolderStats_collection(
     interval: day
     where: {
+      timestamp_gte: $timestamp,
       rewardSpliterShareHolder_: {
-        address: $user,
+        address: $userAddress,
         vault: $vaultAddress
       }
     }
-    first: $daysCount
   ) {
     timestamp
     earnedAssets
@@ -44,12 +44,12 @@ query UserStats($user: Bytes! $vaultAddress: String! $daysCount: Int!) {
   boost: leverageStrategyPositionStats_collection(
     interval: day
     where: {
+      timestamp_gte: $timestamp,
       position_: {
-        user: $user,
+        user: $userAddress,
         vault: $vaultAddress
       }
     }
-    first: $daysCount
   ) {
     timestamp
     earnedAssets: earnedBoostAssets
