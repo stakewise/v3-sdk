@@ -54,7 +54,7 @@ query UserStats($userAddress: Bytes! $vaultAddress: String! $timestamp: Timestam
     }
   ) {
     timestamp
-    apy: strategyApy
+    apy
     earnedAssets: allocatorEarnedAssets
     totalAssets: allocatorTotalEarnedAssets
   }
