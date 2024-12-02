@@ -10,7 +10,8 @@ type AddedOutput = {
     thresholdPercent: string
   }
   queuedShares: string
-  maxBoostApy: number
+  allocatorMaxBoostApy: number
+  osTokenHolderMaxBoostApy: number
   isGenesis: boolean
 }
 ```
@@ -19,7 +20,8 @@ type AddedOutput = {
 |------|------------|
 | `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 | `isGenesis` | This vault is owned by stakewise |
-| `maxBoostApy` | The vault average max boost APY |
+| `allocatorMaxBoostApy` | The average max boost APY earned in this vault by the allocator |
+| `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder |
 | `queuedShares` | The total number of queued shares |
 
 ---

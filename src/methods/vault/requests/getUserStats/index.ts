@@ -26,24 +26,13 @@ const getUserStats = (input: GetUserStatsInput) => {
     },
     modifyResult: (response) => {
       const data = [
-        {
-          data: response.boost,
-          isAccumulateAPY: true,
-        },
-        {
-          data: response.allocator,
-          isAccumulateAPY: true,
-        },
-        {
-          data: response.rewardSplitter,
-          isAccumulateAPY: true,
-        },
-        {
-          data: response.exitRequest,
-        },
-      ]
+        response.boost,
+        response.allocator,
+        response.exitRequest,
+        response.rewardSplitter,
+      ].flat()
 
-      return calculateUserStats({ data })
+      return calculateUserStats(data)
     },
   })
 }
