@@ -9,6 +9,7 @@ query UserStats($userAddress: Bytes! $vaultAddress: String! $timestamp: Timestam
       }
     }
   ) {
+    apy
     timestamp
     earnedAssets
     totalAssets
@@ -23,6 +24,7 @@ query UserStats($userAddress: Bytes! $vaultAddress: String! $timestamp: Timestam
       }
     }
   ) {
+    apy
     timestamp
     earnedAssets
     totalAssets
@@ -52,7 +54,8 @@ query UserStats($userAddress: Bytes! $vaultAddress: String! $timestamp: Timestam
     }
   ) {
     timestamp
-    earnedAssets: earnedBoostAssets
-    totalAssets: totalEarnedBoostAssets
+    apy: strategyApy
+    earnedAssets: allocatorEarnedAssets
+    totalAssets: allocatorTotalEarnedAssets
   }
 }

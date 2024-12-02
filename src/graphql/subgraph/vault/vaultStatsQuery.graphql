@@ -6,8 +6,9 @@ query VaultStats($vaultAddress: String!  $timestamp: Timestamp!) {
       timestamp_gte: $timestamp,
     }
   ) {
+    apy
     timestamp
-    earnedAssets
     totalAssets
+    earnedAssets
   }
 }

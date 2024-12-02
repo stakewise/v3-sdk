@@ -20,7 +20,8 @@ query BoostMainData(
     osTokenConfig {
       ltvPercent
     }
-    maxBoostApy
+    osTokenHolderMaxBoostApy
+    allocatorMaxBoostApy
     apy
   }
   allocators(

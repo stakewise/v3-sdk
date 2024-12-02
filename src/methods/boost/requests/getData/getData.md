@@ -19,20 +19,24 @@ Get boost data for vault user
 ```ts
 type Output = {
   shares: bigint
+  vaultApy: number
   rewardAssets: bigint
   maxMintShares: bigint
-  isProfitable: boolean
-  exitingPercent: bigint
+  exitingPercent: number
+  allocatorMaxBoostApy: number
+  osTokenHolderMaxBoostApy: number
 }
 ```
 
 | Name             | Description                                                                                      |
 |------------------|--------------------------------------------------------------------------------------------------|
-| `shares`         | Tokens count of boost                                                                            |
-| `isProfitable`   | Does the boost APY exceed the current APY of the vault, if yes, then the method will return true |
-| `maxMintShares`  | Maximum possible number of osToken without deductions                                            |
-| `exitingPercent` | The percent (in wad) of user's position that is currently exiting                                |
-| `rewardAssets`   | User boost rewards                                                                               |
+| `shares`         | Tokens count of boost |
+| `vaultApy`       | Base vault apy |
+| `maxMintShares`  | Maximum possible number of osToken without deductions |
+| `exitingPercent` | The percent (in wad) of user's position that is currently exiting |
+| `rewardAssets`   | User boost rewards |
+| `allocatorMaxBoostApy` | The average max boost APY earned in this vault by the allocator |
+| `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder |
 
 #### Example:
 
