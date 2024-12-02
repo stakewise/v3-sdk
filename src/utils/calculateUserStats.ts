@@ -1,18 +1,12 @@
 import { formatEther } from 'ethers'
 
 
-type Stats = {
-  data: Array<{
-    earnedAssets: string
-    totalAssets: string
-    timestamp: string
-  }>
-  isAccumulateAPY?: boolean
-}
-
-type Input = {
-  data: Stats[]
-}
+type Input = Array<{
+  earnedAssets: string
+  totalAssets: string
+  timestamp: string
+  apy?: string
+}>
 
 type Data = {
   value: number
@@ -31,71 +25,33 @@ type ModifiedStats = {
   rewards: Data[]
 }
 
-const modifyResult = (result: StatsMap, stats: Stats['data'][number], isAccumulateAPY?: boolean) => {
-  const { earnedAssets, totalAssets, timestamp } = stats
-
-  const timeInSeconds = Number(timestamp) / 1_000_000
-  const balance = Number(formatEther(totalAssets || 0n))
-  const rewards = Number(formatEther(earnedAssets || 0n))
-  const keys = (Object.keys(result) as Array<keyof StatsMap>)
-
-  keys.forEach((key) => {
-    if (!result[key][timestamp]) {
-      result[key][timestamp] = { value: 0, time: timeInSeconds }
-    }
-  })
-
-  result.balance[timestamp].value += balance
-  result.rewards[timestamp].value += rewards
-
-  if (isAccumulateAPY) {
-    const rewardsSum = result.rewards[timestamp].value
-
-    result.apy[timestamp].value = (rewardsSum * 365 * 100) / (balance - rewards)
-  }
-}
-
-/**
- * @description This method collects TVL and Rewards from all elements of the array,
- * and also collects APY for those elements with isAccumulateAPY = true
- * @example
- * const data = [
- *  {
- *    data: [ ... ],
- *  },
- *  {
- *    data: [ ... ],
- *    isAccumulateAPY: true,
- *  },
- *  {
- *    data: [ ... ],
- *    isAccumulateAPY: true,
- *  },
- *  {
- *    data: [ ... ],
- *  },
- * ]
- *
- * calculateUserStats({ data })
- */
-const calculateUserStats = (values: Input): ModifiedStats => {
-  const { data } = values
-
+const calculateUserStats = (data: Input): ModifiedStats => {
   const result: StatsMap = {
     apy: {},
     balance: {},
     rewards: {},
   }
 
-  const dataWithApy = data.filter(({ isAccumulateAPY }) => isAccumulateAPY)
-  const dataWithoutApy = data.filter(({ isAccumulateAPY }) => !isAccumulateAPY)
+  data.forEach((stats) => {
+    const { earnedAssets, totalAssets, timestamp, apy } = stats
 
-  dataWithApy.forEach(({ data }) => {
-    data.forEach((stats) => modifyResult(result, stats, true))
-  })
+    const timeInSeconds = Number(timestamp) / 1_000_000
+    const balance = Number(formatEther(totalAssets || 0n))
+    const rewards = Number(formatEther(earnedAssets || 0n))
+    const keys = (Object.keys(result) as Array<keyof StatsMap>)
 
-  dataWithoutApy.forEach(({ data }) => {
-    data.forEach((stats) => modifyResult(result, stats))
+    keys.forEach((key) => {
+      if (!result[key][timestamp]) {
+        result[key][timestamp] = { value: 0, time: timeInSeconds }
+      }
+    })
+
+    result.balance[timestamp].value += balance
+    result.rewards[timestamp].value += rewards
+
+    if (apy) {
+      result.apy[timestamp].value += Number(apy)
+    }
   })
 
   return {

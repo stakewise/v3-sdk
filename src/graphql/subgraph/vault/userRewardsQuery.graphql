@@ -71,6 +71,6 @@ query UserRewards(
     }
   ) {
     timestamp
-    earnedAssets: earnedBoostAssets
+    earnedAssets: allocatorEarnedAssets
   }
 }

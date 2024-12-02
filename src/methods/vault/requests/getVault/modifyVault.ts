@@ -26,7 +26,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     mevEscrow,
     createdAt,
     feePercent,
-    maxBoostApy,
     performance,
     totalAssets,
     whitelister,
@@ -36,6 +35,8 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     whitelistCount,
     validatorsManager,
     depositDataManager,
+    allocatorMaxBoostApy,
+    osTokenHolderMaxBoostApy,
     ...rest
   } = vault
 
@@ -46,7 +47,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     isSmoothingPool: !mevEscrow,
     feePercent: feePercent / 100,
     vaultAdmin: getAddress(admin),
-    maxBoostApy: Number(maxBoostApy),
     performance: Number(performance),
     vaultAddress: getAddress(address),
     createdAt: Number(createdAt) * 1000,
@@ -54,6 +54,8 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
+    allocatorMaxBoostApy: Number(allocatorMaxBoostApy),
+    osTokenHolderMaxBoostApy: Number(osTokenHolderMaxBoostApy),
     whitelistManager: whitelister ? getAddress(whitelister) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',
