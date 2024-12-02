@@ -19,9 +19,10 @@ import type {
   RewardSplitterAbi,
   StakeCalculatorAbi,
   LeverageStrategyAbi,
-  MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  MerkleDistributorAbi,
+  MerkleDistributorV2Abi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
@@ -88,9 +89,10 @@ declare global {
       type VaultsRegistry = VaultsRegistryAbi
       type StakeCalculator = StakeCalculatorAbi
       type LeverageStrategy = LeverageStrategyAbi
-      type MerkleDistributor = MerkleDistributorAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
+      type MerkleDistributor = MerkleDistributorAbi
+      type MerkleDistributorV2 = MerkleDistributorV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi

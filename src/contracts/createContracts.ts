@@ -19,6 +19,7 @@ import {
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   MerkleDistributorAbi,
+  MerkleDistributorV2Abi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
@@ -114,6 +115,12 @@ const getMerkleDistributor = (provider: Provider, config: StakeWise.Config) => c
   provider
 )
 
+const getMerkleDistributorV2 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MerkleDistributorV2>(
+  config.addresses.base.merkleDistributorV2,
+  MerkleDistributorV2Abi,
+  provider
+)
+
 const getOracles = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Oracles>(
   config.addresses.base.oracles,
   OraclesAbi,
@@ -165,6 +172,7 @@ export const createContracts = (input: CreateContractsInput) => {
         v2: getMintTokenConfigV2(provider, config),
       },
       merkleDistributor: getMerkleDistributor(provider, config),
+      merkleDistributorV2: getMerkleDistributorV2(provider, config),
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),

@@ -30,6 +30,7 @@ export default {
       mintTokenConfigV1: ZeroAddress,
       mintTokenConfigV2: '0x6D5957e075fd93b3B9F36Da93d7462F14387706d',
       merkleDistributor: ZeroAddress,
+      merkleDistributorV2: ZeroAddress,
       depositDataRegistry: '0xFAce8504462AEb9BB6ae7Ecb206BD7B1EdF7956D',
       mintTokenController: '0x5518052f2d898f062ee59964004A560F24E2eE7d',
       rewardSplitterFactory: '0x6EE912596DCC3a8b7308164A65Af529a4276737C',
