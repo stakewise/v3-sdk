@@ -50,6 +50,7 @@ export default {
     },
   },
   tokens: {
+    swise: constants.tokens.swise,
     mintToken: constants.tokens.osGNO,
     nativeToken: constants.tokens.xdai,
     depositToken: constants.tokens.gno,

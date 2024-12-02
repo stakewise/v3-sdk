@@ -53,6 +53,7 @@ export default {
     },
   },
   tokens: {
+    swise: constants.tokens.swise,
     mintToken: constants.tokens.osETH,
     nativeToken: constants.tokens.eth,
     depositToken: constants.tokens.eth,
