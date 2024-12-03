@@ -1,6 +1,9 @@
 export { fetchVaultQuery } from './vaultQuery.graphql'
 export type { VaultQueryPayload, VaultQueryVariables } from './vaultQuery.graphql'
 
+export { fetchUserApyQuery } from './userApyQuery.graphql'
+export type { UserApyQueryPayload, UserApyQueryVariables } from './userApyQuery.graphql'
+
 export { fetchUserStatsQuery } from './userStatsQuery.graphql'
 export type { UserStatsQueryPayload, UserStatsQueryVariables } from './userStatsQuery.graphql'
 

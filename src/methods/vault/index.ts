@@ -1,5 +1,6 @@
 // Requests
 import getVault from './requests/getVault'
+import getUserApy from './requests/getUserApy'
 import getWhitelist from './requests/getWhitelist'
 import getBlocklist from './requests/getBlocklist'
 import getUserStats from './requests/getUserStats'
@@ -98,6 +99,11 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
      */
     getUserStats,
+    /**
+     * @description Get the current APY of the user taking into account minting and boost.
+     * @see https://sdk.stakewise.io/vault/requests/getuserapy
+     */
+    getUserApy,
   },
   transactions: {
     /**

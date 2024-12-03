@@ -1,0 +1,10 @@
+query UserApy($userAddress: Bytes!, $vaultAddress: String!) {
+  allocators(
+    where: {
+      vault: $vaultAddress
+      address: $userAddress
+    }
+  ) {
+    apy
+  }
+}
