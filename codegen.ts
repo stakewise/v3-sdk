@@ -4,14 +4,16 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-let network: Network = Network.Holesky
+const network: Network = Network.Mainnet
+// TODO uncomment after new stake merge, we need this since `scorePercentiles` query is removed on holesky
+// let network: Network = Network.Holesky
 
-if (process.env.NETWORK === 'mainnet') {
-  network = Network.Mainnet
-}
-if (process.env.NETWORK === 'gnosis') {
-  network = Network.Gnosis
-}
+// if (process.env.NETWORK === 'mainnet') {
+//   network = Network.Mainnet
+// }
+// if (process.env.NETWORK === 'gnosis') {
+//   network = Network.Gnosis
+// }
 
 const config = configs[network]
 const subgraphIndex = Number(process.env.SUBGRAPH_INDEX || 0)
