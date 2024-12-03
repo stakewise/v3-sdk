@@ -10,8 +10,8 @@ query FiatByDay(
     }
   ) {
     timestamp
-    assetsUsdRate
     usdToEurRate
     usdToGbpRate
+    assetsUsdRate
   }
 }
