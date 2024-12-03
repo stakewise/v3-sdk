@@ -29,8 +29,6 @@ export default {
       sharedMevEscrow: '0xc98F25BcAA6B812a07460f18da77AF8385be7b56',
       mintTokenConfigV1: '0x4483965Ed85cd5e67f2a7a0EB462aCcC37b23D72',
       mintTokenConfigV2: '0x124C33d07F94B31aDF87C12F7cA3a586d3510928',
-      merkleDistributor: ZeroAddress,
-      merkleDistributorV2: ZeroAddress,
       depositDataRegistry: '0xAC0F906E433d58FA868F936E8A43230473652885',
       mintTokenController: '0x7BbC1733ee018f103A9a9052a18fA9273255Cf36',
       rewardSplitterFactory: '0x2Ed24638b3aB48cF0076f19199c78A62bfEb5889',

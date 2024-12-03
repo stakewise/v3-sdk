@@ -21,8 +21,6 @@ import type {
   LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
-  MerkleDistributorAbi,
-  MerkleDistributorV2Abi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
@@ -91,8 +89,6 @@ declare global {
       type LeverageStrategy = LeverageStrategyAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
-      type MerkleDistributor = MerkleDistributorAbi
-      type MerkleDistributorV2 = MerkleDistributorV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
