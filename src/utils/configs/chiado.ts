@@ -22,7 +22,6 @@ export default {
     },
     base: {
       keeper: '0x5f31eD13eBF81B67a9f9498F3d1D2Da553058988',
-      oracles: ZeroAddress,
       multicall: '0xcA11bde05977b3631167028862bE2a173976CA11',
       priceOracle: '0x3CC131e6f6b975423151E5aaE8C466f4f81A8A4c',
       vaultsRegistry: '0x8750594B33516232e751C8B9C350a660cD5f1BB8',

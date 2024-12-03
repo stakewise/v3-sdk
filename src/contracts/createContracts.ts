@@ -4,7 +4,6 @@ import type { Provider } from 'ethers'
 import {
   Erc20Abi,
   KeeperAbi,
-  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
@@ -107,12 +106,6 @@ const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) =>
   provider
 )
 
-const getOracles = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Oracles>(
-  config.addresses.base.oracles,
-  OraclesAbi,
-  provider
-)
-
 const getStakeCalculator = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.StakeCalculator>(
   config.addresses.special.stakeCalculator,
   StakeCalculatorAbi,
@@ -150,7 +143,6 @@ export const createContracts = (input: CreateContractsInput) => {
     },
     base: {
       keeper: getKeeper(provider, config),
-      oracles: getOracles(provider, config),
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
       mintTokenConfig: {

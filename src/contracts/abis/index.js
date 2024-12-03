@@ -17,7 +17,6 @@ import PriceOracleAbi from './PriceOracleAbi.json'
 import MulticallAbi from './MulticallAbi.json'
 
 import UsdRateAbi from './UsdRateAbi.json'
-import OraclesAbi from './OraclesAbi.json'
 import KeeperAbi from './KeeperAbi.json'
 import Erc20Abi from './Erc20Abi.json'
 
@@ -39,7 +38,6 @@ export {
   VaultFactoryAbi,
   PriceOracleAbi,
   MulticallAbi,
-  OraclesAbi,
   UsdRateAbi,
   KeeperAbi,
   Erc20Abi,

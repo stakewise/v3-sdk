@@ -7,7 +7,6 @@ import { createContracts } from '../contracts'
 import type {
   Erc20Abi,
   KeeperAbi,
-  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
@@ -73,7 +72,6 @@ declare global {
 
     namespace ABI {
       type Keeper = KeeperAbi
-      type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
       type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
