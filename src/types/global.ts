@@ -7,7 +7,6 @@ import { createContracts } from '../contracts'
 import type {
   Erc20Abi,
   KeeperAbi,
-  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
@@ -19,7 +18,6 @@ import type {
   RewardSplitterAbi,
   StakeCalculatorAbi,
   LeverageStrategyAbi,
-  MerkleDistributorAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   DepositDataRegistryAbi,
@@ -74,7 +72,6 @@ declare global {
 
     namespace ABI {
       type Keeper = KeeperAbi
-      type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
       type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
@@ -88,7 +85,6 @@ declare global {
       type VaultsRegistry = VaultsRegistryAbi
       type StakeCalculator = StakeCalculatorAbi
       type LeverageStrategy = LeverageStrategyAbi
-      type MerkleDistributor = MerkleDistributorAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
