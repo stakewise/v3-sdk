@@ -1,9 +1,10 @@
 // Requests
 import getVault from './requests/getVault'
 import getEigenPods from './requests/getEigenPods'
-import getSnapshots from './requests/getSnapshots'
 import getWhitelist from './requests/getWhitelist'
 import getBlocklist from './requests/getBlocklist'
+import getUserStats from './requests/getUserStats'
+import getVaultStats from './requests/getVaultStats'
 import getValidators from './requests/getValidators'
 import getUserRewards from './requests/getUserRewards'
 import getMaxWithdraw from './requests/getMaxWithdraw'
@@ -11,7 +12,6 @@ import getStakeBalance from './requests/getStakeBalance'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
 import getRewardSplitters from './requests/getRewardSplitters'
-import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
@@ -34,12 +34,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetexitqueuepositions
     */
     getExitQueuePositions,
-    /**
-     * @description This method is used to fetch information indicating the effectiveness
-     * or performance level of the vault. The retrieved data includes percentiles corresponding to various statuses.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetscorepercentiles
-    */
-    getScorePercentiles,
     /**
      * @description Fetch the list of created reward splitters. A reward splitter is a contract
      * designed to distribute vault rewards among multiple fee recipients in predefined proportions.
@@ -64,7 +58,6 @@ export default {
     getStakeBalance,
     /**
      * @description Daily rewards for the user who has made a deposit in the vault.
-     * With the help of this data it is possible to build a chart.
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserrewards
     */
     getUserRewards,
@@ -85,11 +78,6 @@ export default {
      */
     getEigenPods,
     /**
-     * @description TVL and APY snapshots for the vault. With the help of this data it is possible to build a chart.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetsnapshots
-    */
-    getSnapshots,
-    /**
      * @description Fetch the whitelist for private vaults. Only addresses included in
      * this list are eligible to stake in the private vault. The number of addresses in
      * this list is indicated by the vault whitelistCount field.
@@ -108,6 +96,17 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvault
     */
     getVault,
+    /**
+     * @description Returns the vault stats collection. With the help of this data it is possible to build a chart.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetvaultstats
+     */
+    getVaultStats,
+    /**
+     * @description Returns the user stats collection for current vault.
+     * With the help of this data it is possible to build a chart.
+     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetuserstats
+     */
+    getUserStats,
   },
   transactions: {
     /**
@@ -128,7 +127,7 @@ export default {
     /**
      * @description Updates the vault by authorized personnel such as the vault admin, whitelist manager,
      * blocklist manager, validators manager, or deposit-data manager.
-     * @throws Fields validatorsRoot and depositDataManager supported only first version of vaults
+     * @throws Fields depositDataRoot and depositDataManager supported only first version of vaults
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultoperate
      */
     operate,

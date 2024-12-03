@@ -1,31 +1,48 @@
 import { formatEther } from 'ethers'
 
-import { ModifyUserReward } from './types'
-import type { UserRewardsQueryPayload } from '../../../../graphql/backend/vault'
+import type { ModifyUserRewards, GbpRate } from './types'
+import type { UserRewardsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-export const modifyUserReward = (reward: UserRewardsQueryPayload['userRewards'][number]) => {
-  const sumRewards = String(reward.sumRewards) || '0'
-  const dailyRewards = String(reward.dailyRewards) || '0'
+type Input = {
+  reward: UserRewardsQueryPayload['allocator'][number]
+  assetsUsdRate: number
+  usdToEurRate: number
+  usdToGbpRate: number
+}
+
+export const modifyReward = (input: Input) => {
+  const { reward, assetsUsdRate, usdToGbpRate, usdToEurRate } = input
+
+  const timeInMilliSeconds = Number(reward.timestamp) / 1_000
+  const earnedAssetsInEther = Number(formatEther(reward.earnedAssets))
+  const earnedAssetsInUsd = earnedAssetsInEther * assetsUsdRate
 
   return {
-    date: Number(reward.date),
-    sumRewards: Number(formatEther(sumRewards)),
-    dailyRewards: Number(formatEther(dailyRewards)),
-    dailyRewardsEur: Number(reward.dailyRewardsEur) || 0,
-    dailyRewardsGbp: Number(reward.dailyRewardsGbp) || 0,
-    dailyRewardsUsd: Number(reward.dailyRewardsUsd) || 0,
+    date: timeInMilliSeconds,
+    dailyRewards: earnedAssetsInEther,
+    dailyRewardsUsd: earnedAssetsInUsd || 0,
+    dailyRewardsEur: earnedAssetsInUsd * Number(usdToEurRate) || 0,
+    dailyRewardsGbp: earnedAssetsInUsd * Number(usdToGbpRate) || 0,
   }
 }
 
-const modifyUserRewards = (input: UserRewardsQueryPayload): ModifyUserReward => {
-  const days = input.userRewards.reduce((acc, { date, ...rest }) => {
-    acc[Number(date)] = modifyUserReward({ date, ...rest })
+const modifyUserRewards = (mainnetGbpRates: GbpRate[]) => (data: UserRewardsQueryPayload): ModifyUserRewards[] => {
+  const allocatorStats = data?.allocator || []
+  const exchangeRateStats = data?.exchangeRate || []
 
-    return acc
-  }, {} as ModifyUserReward)
+  const result = allocatorStats.map((stat, index) => {
+    const gbpRate = mainnetGbpRates.length ? mainnetGbpRates[index]?.usdToGbpRate : exchangeRateStats[index]?.usdToGbpRate
 
-  return days || {}
+    return modifyReward({
+      reward: stat,
+      usdToGbpRate: Number(gbpRate),
+      usdToEurRate: Number(exchangeRateStats[index]?.usdToEurRate),
+      assetsUsdRate: Number(exchangeRateStats[index]?.assetsUsdRate),
+    })
+  })
+
+  return result.sort((a, b) => a.date - b.date)
 }
 
 
