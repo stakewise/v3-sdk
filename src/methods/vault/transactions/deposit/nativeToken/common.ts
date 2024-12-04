@@ -3,7 +3,7 @@ import { ZeroAddress } from 'ethers'
 import { validate } from '../validate'
 import type { DepositInput } from '../types'
 import getHarvestParams from '../../../requests/getHarvestParams'
-import { PayableOverrides } from 'contracts/types/common'
+import { PayableOverrides } from '../../../../../contracts/types/common'
 import { HarvestParamsQueryPayload } from '../../../../../graphql/subgraph/vault'
 
 
