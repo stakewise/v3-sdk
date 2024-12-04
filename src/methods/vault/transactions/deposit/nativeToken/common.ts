@@ -2,7 +2,7 @@ import { ZeroAddress } from 'ethers'
 
 import { validate } from '../validate'
 import type { DepositInput } from '../types'
-import getHarvestParams from 'methods/vault/requests/getHarvestParams'
+import getHarvestParams from '../../../requests/getHarvestParams'
 
 
 export const commonLogic = async (values: DepositInput) => {
