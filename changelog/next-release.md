@@ -201,3 +201,7 @@ positions[number]['exitQueueIndex']
 ### 21. Added method
 ### `sdk.utils.getFiatRatesByDay`
 #### Get fiat data by day
+
+### 22. Added input field `referrerAddress`
+### `sdk.vault.deposit`
+### `sdk.osToken.mint`
