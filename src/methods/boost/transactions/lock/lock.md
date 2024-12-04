@@ -9,13 +9,14 @@ Boost your osToken apy using leverage staking
 
 #### Arguments:
 
-| Name         | Type           | Required | Description                                                                                                                                                                                                                 |
-|--------------|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| amount       | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                |
-| userAddress  | `string`       | **Yes**  | The user address                                                                                                                                                                                                            |
-| vaultAddress | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                       |
-| boostAddress | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                             |
-| permitParams | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [utils.getPermitSignature](/utils/getpermitsignature) method |
+| Name            | Type           | Required | Description                                                                                                                                                                                                                 |
+|-----------------|----------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| amount          | `bigint`       | **Yes**  | Boost amount                                                                                                                                                                                                                |
+| userAddress     | `string`       | **Yes**  | The user address                                                                                                                                                                                                            |
+| vaultAddress    | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                       |
+| boostAddress    | `string`       | **Yes**  | The address of the strategy proxy (TODO method)                                                                                                                                                                             |
+| referrerAddress | `string`       | **No**   | The address of the referrer                                                                                                                                                                                                 |
+| permitParams    | `PermitParams` | **No**   | The permit signature it is required only if there is not enough osToken allowance for the strategy proxy contract. It will be obtained automatically using the [utils.getPermitSignature](/utils/getpermitsignature) method |
 
 ```ts
 type PermitParams = {

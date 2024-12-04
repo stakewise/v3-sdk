@@ -1,14 +1,14 @@
 import { ZeroAddress } from 'ethers'
 
+import { validate } from '../validate'
 import type { DepositInput } from '../types'
-import { validateArgs } from '../../../../../utils'
+import getHarvestParams from 'methods/vault/requests/getHarvestParams'
 
 
 export const commonLogic = async (values: DepositInput) => {
-  const { contracts, vaultAddress, assets } = values
+  const { options, contracts, userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
 
-  validateArgs.bigint({ assets })
-  validateArgs.address({ vaultAddress })
+  validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
@@ -16,8 +16,15 @@ export const commonLogic = async (values: DepositInput) => {
     value: assets,
   }
 
-  return { vaultContract, overrides }
+  const { params: harvestParams, canHarvest } = await getHarvestParams({ options, vaultAddress })
+
+  const params = canHarvest
+    ? [ userAddress, referrerAddress, harvestParams, overrides ]
+    : [ userAddress, referrerAddress, overrides ]
+
+  return {
+    vaultContract,
+    params,
+    canHarvest,
+  }
 }
-
-
-export const referrer = ZeroAddress
