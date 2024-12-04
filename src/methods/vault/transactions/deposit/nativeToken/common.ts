@@ -18,13 +18,13 @@ export const commonLogic = async (values: DepositInput) => {
 
   const { params: harvestParams, canHarvest } = await getHarvestParams({ options, vaultAddress })
 
-  const params = canHarvest
-    ? [ userAddress, referrerAddress, harvestParams, overrides ]
-    : [ userAddress, referrerAddress, overrides ]
+  const baseParams = [ userAddress, referrerAddress, overrides ]
+  const updateStateParams = [ userAddress, referrerAddress, harvestParams, overrides ]
 
   return {
     vaultContract,
-    params,
+    baseParams,
+    updateStateParams,
     canHarvest,
   }
 }

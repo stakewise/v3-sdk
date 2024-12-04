@@ -9,10 +9,10 @@ type DepositDataOutput = StakeWise.TransactionData & {
 const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> => {
   const { assets } = values
 
-  const { vaultContract, params, canHarvest } = await commonLogic(values)
+  const { vaultContract, baseParams, updateStateParams, canHarvest } = await commonLogic(values)
 
   if (canHarvest) {
-    const rx = await vaultContract.updateStateAndDeposit.populateTransaction(...params)
+    const rx = await vaultContract.updateStateAndDeposit.populateTransaction(...updateStateParams)
 
     return {
       ...rx,
@@ -20,7 +20,7 @@ const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> =
     }
   }
   else {
-    const rx = await vaultContract.deposit.populateTransaction(...params)
+    const rx = await vaultContract.deposit.populateTransaction(...baseParams)
 
     return {
       ...rx,

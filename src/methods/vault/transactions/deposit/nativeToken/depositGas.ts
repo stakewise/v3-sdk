@@ -6,7 +6,7 @@ import { commonLogic } from './common'
 const depositGas = async (values: DepositInput) => {
   const { provider, userAddress } = values
 
-  const { vaultContract, params, canHarvest } = await commonLogic(values)
+  const { vaultContract, baseParams, updateStateParams, canHarvest } = await commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
@@ -14,10 +14,10 @@ const depositGas = async (values: DepositInput) => {
   let estimatedGas = 0n
 
   if (canHarvest) {
-    estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(...params)
+    estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(...updateStateParams)
   }
   else {
-    estimatedGas = await signedContract.deposit.estimateGas(...params)
+    estimatedGas = await signedContract.deposit.estimateGas(...baseParams)
   }
 
   return getGas({ estimatedGas, provider })
