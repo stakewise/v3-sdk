@@ -1,26 +1,24 @@
 import depositGas from './depositGas'
-import type { Deposit } from '../types'
 import depositEncode from './depositEncode'
-import { commonLogic, referrer } from './common'
-import getHarvestParams from '../../../requests/getHarvestParams'
+import { commonLogic } from './common'
+import type { Deposit } from '../types'
 
 
 const deposit: Deposit = async (values) => {
-  const { options, provider, vaultAddress, userAddress } = values
+  const { provider, userAddress } = values
 
-  const { params, canHarvest } = await getHarvestParams({ options, vaultAddress })
-  const { vaultContract, overrides } = await commonLogic(values)
+  const { vaultContract, baseParams, updateStateParams, canHarvest } = await commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
 
   if (canHarvest) {
-    const response = await signedContract.updateStateAndDeposit(userAddress, referrer, params, overrides)
+    const response = await signedContract.updateStateAndDeposit(...updateStateParams)
 
     return response.hash
   }
   else {
-    const response = await signedContract.deposit(userAddress, referrer, overrides)
+    const response = await signedContract.deposit(...baseParams)
 
     return response.hash
   }

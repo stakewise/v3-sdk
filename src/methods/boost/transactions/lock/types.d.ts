@@ -15,6 +15,7 @@ export type LockInput = {
   amount: bigint
   userAddress: string
   vaultAddress: string
+  referrerAddress?: string
   permitParams?: PermitParams
   options: StakeWise.Options
   provider: StakeWise.Provider
