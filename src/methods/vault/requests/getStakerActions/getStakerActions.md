@@ -1,5 +1,6 @@
 ---
 id: getStakerActions
+slug: /vault/requests/getstakeractions
 ---
 
 #### Description:

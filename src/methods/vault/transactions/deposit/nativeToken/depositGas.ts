@@ -1,14 +1,12 @@
 import { getGas } from '../../../../../utils'
 import type { DepositInput } from '../types'
-import { commonLogic, referrer } from './common'
-import getHarvestParams from '../../../requests/getHarvestParams'
+import { commonLogic } from './common'
 
 
 const depositGas = async (values: DepositInput) => {
-  const { options, provider, vaultAddress, userAddress } = values
+  const { provider, userAddress } = values
 
-  const { vaultContract, overrides } = await commonLogic(values)
-  const { params, canHarvest } = await getHarvestParams({ options, vaultAddress })
+  const { vaultContract, baseParams, updateStateParams, canHarvest } = await commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
@@ -16,10 +14,10 @@ const depositGas = async (values: DepositInput) => {
   let estimatedGas = 0n
 
   if (canHarvest) {
-    estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(userAddress, referrer, params, overrides)
+    estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(...updateStateParams)
   }
   else {
-    estimatedGas = await signedContract.deposit.estimateGas(userAddress, referrer, overrides)
+    estimatedGas = await signedContract.deposit.estimateGas(...baseParams)
   }
 
   return getGas({ estimatedGas, provider })

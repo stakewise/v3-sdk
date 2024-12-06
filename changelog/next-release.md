@@ -7,7 +7,7 @@
 type AddedOutput = {
   osTokenConfig: {
     ltvPercent: string
-    thresholdPercent: string
+    liqThresholdPercent: string
   }
   queuedShares: string
   allocatorMaxBoostApy: number
@@ -16,13 +16,13 @@ type AddedOutput = {
 }
 ```
 
-| Name | Description |
-|------|------------|
-| `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
-| `isGenesis` | This vault is owned by stakewise |
-| `allocatorMaxBoostApy` | The average max boost APY earned in this vault by the allocator |
-| `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder |
-| `queuedShares` | The total number of queued shares |
+| Name                       | Description                                                                                                                                                                                                                                         |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `osTokenConfig`            | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `liqThresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
+| `isGenesis`                | This vault is owned by stakewise                                                                                                                                                                                                                    |
+| `allocatorMaxBoostApy`     | The average max boost APY earned in this vault by the allocator                                                                                                                                                                                     |
+| `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder                                                                                                                                                                                |
+| `queuedShares`             | The total number of queued shares                                                                                                                                                                                                                   |
 
 ---
 ### 2. `sdk.vault.getHarvestParams`
@@ -61,8 +61,8 @@ type RemovedOutput = {
 }
 ```
 
-| Name | Description |
-|------|-------------|
+| Name           | Description                        |
+|----------------|------------------------------------|
 | `boost.shares` | Count of osToken tokens with boost |
 
 ### 5. Added method getStakewiseStats
@@ -96,7 +96,7 @@ type RemovedOutput = {
 
 ---
 
-### 9. Add methods
+### 9. Added methods
 ### `sdk.vault.getVaultStats` & `sdk.vault.getUserStats`
 #### With the help of this data it is possible to build a chart.
 
@@ -107,8 +107,8 @@ type RemovedOutput = {
 
 ---
 
-### 11. Update method `sdk.vault.getUserRewards`
-#### Update output format:
+### 11. Updated method `sdk.vault.getUserRewards`
+#### Updated output format:
 
 ```ts
 type Output = Array<{
@@ -205,7 +205,8 @@ positions[number]['exitQueueIndex']
 #### Get fiat data by day
 
 ---
-### 2. `sdk.osToken.getAPY`
+
+### 22. `sdk.osToken.getAPY`
 
 #### New output field:
 
@@ -215,3 +216,9 @@ type Output = {
   feePercent: number
 }
 ```
+
+---
+
+### 23. Added input field `referrerAddress`
+### `sdk.vault.deposit`
+### `sdk.osToken.mint`

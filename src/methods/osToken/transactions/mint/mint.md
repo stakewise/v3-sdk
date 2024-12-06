@@ -1,5 +1,6 @@
 ---
 id: mint
+slug: /osToken/transactions/mint
 ---
 
 #### Description:
@@ -9,11 +10,12 @@ Use data from methods [sdk.osToken.getMaxMint](/osToken/requests/getmaxmint) and
 
 #### Arguments:
 
-| Name         | Type     | Required | Description               |
-|--------------|----------|----------|---------------------------|
-| shares       | `bigint` | **Yes**  | mint amount               |
-| userAddress  | `string` | **Yes**  | The user address          |
-| vaultAddress | `string` | **Yes**  | The address of the vault  |
+| Name            | Type     | Required | Description                 |
+|-----------------|----------|----------|-----------------------------|
+| shares          | `bigint` | **Yes**  | mint amount                 |
+| userAddress     | `string` | **Yes**  | The user address            |
+| vaultAddress    | `string` | **Yes**  | The address of the vault    |
+| referrerAddress | `string` | **No**   | The address of the referrer |
 
 #### Example:
 
@@ -23,7 +25,7 @@ import { OsTokenPositionHealth } from '@stakewise/v3-sdk'
 const amountShares = 200n // from input mb
 
 const [
-  { osTokenConfig: { ltvPercent, thresholdPercent } },
+  { osTokenConfig: { ltvPercent, liqThresholdPercent } },
   stake,
 ] = await Promise.all([
   sdk.vault.getVault({
@@ -39,7 +41,7 @@ const osToken = await sdk.osToken.getPosition({
   stakedAssets: stake.assets,
   vaultAddress: '0x...',
   userAddress: '0x...',
-  thresholdPercent,
+  liqThresholdPercent,
 })
 
 const maxMint = await sdk.osToken.getMaxMint({
@@ -60,7 +62,7 @@ const newMintAssets = await sdk.osToken.getAssetsFromShares({
 })
 
 const { health } = sdk.osToken.getHealthFactor({
-  thresholdPercent,
+  liqThresholdPercent,
   stakedAssets: stake.assets,
   mintedAssets: newMintAssets,
 })

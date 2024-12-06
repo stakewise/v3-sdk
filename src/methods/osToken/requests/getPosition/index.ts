@@ -7,7 +7,7 @@ type GetOsTokenPositionInput = {
   userAddress: string
   vaultAddress: string
   stakedAssets: bigint
-  thresholdPercent: bigint
+  liqThresholdPercent: bigint
   contracts: StakeWise.Contracts
 }
 
@@ -21,10 +21,10 @@ type Output = {
 }
 
 const getPosition = async (values: GetOsTokenPositionInput) => {
-  const { contracts, vaultAddress, userAddress, stakedAssets, thresholdPercent } = values
+  const { contracts, vaultAddress, userAddress, stakedAssets, liqThresholdPercent } = values
 
   validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.bigint({ stakedAssets, thresholdPercent })
+  validateArgs.bigint({ stakedAssets, liqThresholdPercent })
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)
@@ -35,7 +35,7 @@ const getPosition = async (values: GetOsTokenPositionInput) => {
   ])
 
   const protocolFeePercent = feePercent / 100n
-  const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, thresholdPercent })
+  const healthFactor = getHealthFactor({ mintedAssets, stakedAssets, liqThresholdPercent })
 
   const result: Output = {
     minted: {

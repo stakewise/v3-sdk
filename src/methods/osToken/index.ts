@@ -18,47 +18,47 @@ export default {
   requests: {
     /**
      * @description Current os token APY.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetapy
+     * @see https://sdk.stakewise.io/osToken/requests/getostokenapy
     */
     getAPY,
     /**
      * @description Current os token rate.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetrate
+     * @see https://sdk.stakewise.io/osToken/requests/getostokenrate
     */
     getRate,
     /**
      * @description Maximum number of **shares** for minting
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetmaxmint
+     * @see https://sdk.stakewise.io/osToken/requests/getmaxmint
     */
     getMaxMint,
     /**
      * @description User position data
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetposition
+     * @see https://sdk.stakewise.io/osToken/requests/getposition
     */
     getPosition,
     /**
      * @description How many osToken burn do you need to make to withdraw all deposit.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetburnamount
+     * @see https://sdk.stakewise.io/osToken/helpers/getburnamount
     */
     getBurnAmount,
     /**
      * @description Get the health of osETH position
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengethealthfactor
+     * @see https://sdk.stakewise.io/osToken/helpers/gethealthfactor
     */
     getHealthFactor,
     /**
      * @description Convert ETH (assets) to osToken (shares)
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetsharesfromassets
+     * @see https://sdk.stakewise.io/osToken/requests/getsharesfromassets
     */
     getSharesFromAssets,
     /**
      * @description Convert osToken (shares) to ETH (assets)
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetassetsfromshares
+     * @see https://sdk.stakewise.io/osToken/requests/getassetsfromshares
     */
     getAssetsFromShares,
     /**
      * @description Get permit signature for proxy strategy contract to spend the user's osToken in leverage staking
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokengetpermitsignature
+     * @see https://sdk.stakewise.io/utils/getpermitsignature
     */
     getPermitSignature,
   },
@@ -68,12 +68,12 @@ export default {
      * Use data from methods osToken.getMaxMint and osToken.getHealthFactor to block a call to mint()
      * if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction
      * would make the position unhealthy
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenmint
+     * @see https://sdk.stakewise.io/osToken/transactions/mint
     */
     mint,
     /**
      * @description Burns your osToken
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkostokenburn
+     * @see https://sdk.stakewise.io/osToken/transactions/burn
     */
     burn,
   },

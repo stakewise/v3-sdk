@@ -13,34 +13,34 @@ export default {
   requests: {
     /**
      * @description Get basic boost data for the user.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkboostgetdata
+     * @see https://sdk.stakewise.io/boost/requests/getdata
      */
     getData,
     /**
      * @description Get unlock position data.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkboostgetqueueposition
+     * @see https://sdk.stakewise.io/boost/requests/getqueueposition
      */
     getQueuePosition,
     /**
      * @description Get Aave leverage strategy proxy contract address
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkboostgetleveragestrategyproxy
+     * @see https://sdk.stakewise.io/boost/requests/getleveragestrategyproxy
      */
     getLeverageStrategyProxy,
   },
   transactions: {
     /**
      * @description Lock your osToken to increase apy
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkboostlock
+     * @see https://sdk.stakewise.io/boost/transactions/lock
      */
     lock,
     /**
      * @description Unlock your boosted osToken
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkboostunlock
+     * @see https://sdk.stakewise.io/boost/transactions/unlock
      */
      unlock,
     /**
      * @description Claim your boosted osTokens and accumulated rewards
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkboostclaimqueue
+     * @see https://sdk.stakewise.io/boost/transactions/claimqueue
      */
      claimQueue,
   },

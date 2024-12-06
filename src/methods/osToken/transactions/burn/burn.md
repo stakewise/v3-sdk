@@ -1,5 +1,6 @@
 ---
 id: burn
+slug: /osToken/transactions/burn
 ---
 
 #### Description:

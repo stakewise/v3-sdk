@@ -1,5 +1,6 @@
 ---
 id: getRate
+slug: /osToken/requests/getostokenrate
 ---
 
 #### Description:

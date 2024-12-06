@@ -1,5 +1,6 @@
 ---
 id: getValidators
+slug: /vault/requests/getvalidators
 ---
 
 #### Description:

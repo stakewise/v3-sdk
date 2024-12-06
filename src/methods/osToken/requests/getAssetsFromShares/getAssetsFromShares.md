@@ -1,5 +1,6 @@
 ---
 id: getAssetsFromShares
+slug: /osToken/requests/getassetsfromshares
 ---
 
 #### Description:

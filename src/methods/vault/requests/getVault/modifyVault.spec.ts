@@ -77,7 +77,7 @@ describe('modifyVault', () => {
       description: 'This is a mock vault',
       osTokenConfig: {
         ltvPercent: '0',
-        thresholdPercent: '0',
+        liqThresholdPercent: '0',
       },
       vaultAdmin: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       vaultAddress: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',

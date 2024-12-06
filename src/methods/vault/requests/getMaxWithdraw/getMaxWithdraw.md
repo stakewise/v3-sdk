@@ -1,5 +1,6 @@
 ---
 id: getMaxWithdraw
+slug: /vault/requests/getmaxwithdraw
 ---
 
 #### Description:

@@ -4,13 +4,13 @@ import { OsTokenPositionHealth, BigDecimal, validateArgs, constants } from '../.
 type GetHealthFactorInput = {
   mintedAssets: bigint
   stakedAssets: bigint
-  thresholdPercent: bigint
+  liqThresholdPercent: bigint
 }
 
 const getHealthFactor = (values: GetHealthFactorInput) => {
-  const { mintedAssets, stakedAssets, thresholdPercent } = values
+  const { mintedAssets, stakedAssets, liqThresholdPercent } = values
 
-  validateArgs.bigint({ mintedAssets, stakedAssets, thresholdPercent })
+  validateArgs.bigint({ mintedAssets, stakedAssets, liqThresholdPercent })
 
   if (mintedAssets === 0n || stakedAssets === 0n) {
     return {
@@ -21,7 +21,7 @@ const getHealthFactor = (values: GetHealthFactorInput) => {
 
   const healthFactor = Number(
     new BigDecimal(stakedAssets)
-      .multiply(thresholdPercent)
+      .multiply(liqThresholdPercent)
       .divide(constants.blockchain.amount1)
       .divide(mintedAssets)
       .decimals(4)

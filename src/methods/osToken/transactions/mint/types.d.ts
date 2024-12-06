@@ -6,6 +6,7 @@ export type MintInput = {
   shares: bigint
   userAddress: string
   vaultAddress: string
+  referrerAddress?: string
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts

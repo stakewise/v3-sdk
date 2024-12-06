@@ -13,12 +13,12 @@ type CommonLogicInput = LockInput & {
 
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
-    contracts, options, provider, amount, vaultAddress, userAddress,
+    contracts, options, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
     permitParams, mockPermitSignature,
   } = values
 
   validateArgs.bigint({ amount })
-  validateArgs.address({ vaultAddress, userAddress })
+  validateArgs.address({ vaultAddress, userAddress, referrerAddress })
 
   if (permitParams) {
     validateArgs.object({ permitParams })
@@ -101,7 +101,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
   params.push({
     method: 'deposit',
-    args: [ vaultAddress, amount, ZeroAddress ],
+    args: [ vaultAddress, amount, referrerAddress ],
   })
 
   return {

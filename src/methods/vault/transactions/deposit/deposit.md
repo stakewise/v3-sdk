@@ -1,5 +1,6 @@
 ---
 id: deposit
+slug: /vault/transactions/deposit
 ---
 
 #### Description:

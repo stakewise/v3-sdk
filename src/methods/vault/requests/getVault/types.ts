@@ -32,6 +32,6 @@ export type ModifiedVault = Omit<
   osTokenHolderMaxBoostApy: number
   osTokenConfig: {
     ltvPercent: string // The percent used to calculate how much user can mint OsToken shares
-    thresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position
+    liqThresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position
   }
 }

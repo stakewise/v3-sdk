@@ -45,7 +45,7 @@ type Output = {
   description: string | null
   osTokenConfig: {
     ltvPercent: string
-    thresholdPercent: string
+    liqThresholdPercent: string
   }
 }
 ```
