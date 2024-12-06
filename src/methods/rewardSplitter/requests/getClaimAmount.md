@@ -1,5 +1,6 @@
 ---
 id: getClaimAmount
+slug: /rewardSplitter/requests/getclaimamount
 ---
 
 #### Description:

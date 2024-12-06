@@ -1,5 +1,6 @@
 ---
 id: mint
+slug: /osToken/transactions/mint
 ---
 
 #### Description:

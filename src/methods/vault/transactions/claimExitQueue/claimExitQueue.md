@@ -1,5 +1,6 @@
 ---
 id: claimExitQueue
+slug: /vault/transactions/claimexitqueue
 ---
 
 #### Description:

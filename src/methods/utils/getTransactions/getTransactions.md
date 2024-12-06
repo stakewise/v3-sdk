@@ -1,5 +1,6 @@
 ---
 id: getTransactions
+slug: /utils/gettransactions
 ---
 
 #### Description:

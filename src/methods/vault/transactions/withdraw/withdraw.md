@@ -1,5 +1,6 @@
 ---
 id: withdraw
+slug: /vault/transactions/withdraw
 ---
 
 #### Description:
