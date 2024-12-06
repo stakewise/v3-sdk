@@ -3,5 +3,6 @@ query FiatRates {
     assetsUsdRate
     usdToEurRate
     usdToGbpRate
+    swiseUsdRate
   }
 }

@@ -5,15 +5,16 @@ slug: /utils/getfiatrates
 
 #### Description:
 
-Returns the USD, EUR, GBP exchange rates for the current asset
+Returns the USD, EUR, GBP, SWISE exchange rates for the current network asset
 
 #### Returns:
 
 ```ts
 type Output = {
-  assetsUsdRate: number
-  usdToEurRate: number
-  usdToGbpRate: number
+  'USD/EUR': number
+  'USD/GBP': number
+  'ASSET/USD': number
+  'SWISE/USD': number
 }
 ```
 

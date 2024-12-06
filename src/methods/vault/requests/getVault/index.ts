@@ -1,4 +1,3 @@
-import type { VaultQueryVariables, VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 import { ModifiedVault } from './types'
@@ -7,7 +6,7 @@ import modifyVault from './modifyVault'
 
 type GetVaultInput = {
   options: StakeWise.Options
-  vaultAddress: VaultQueryVariables['address']
+  vaultAddress: string
 }
 
 const getVault = (input: GetVaultInput) => {
@@ -20,7 +19,7 @@ const getVault = (input: GetVaultInput) => {
     variables: {
       address: vaultAddress.toLowerCase(),
     },
-    modifyResult: (data: VaultQueryPayload) => modifyVault({ data, network: options.network }),
+    modifyResult: (data) => modifyVault({ data, network: options.network }),
   })
 }
 

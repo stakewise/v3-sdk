@@ -6,16 +6,10 @@ type GetFiatRatesInput = {
   options: StakeWise.Options
 }
 
-const getMainnetGbpRate = () => {
-  return graphql.subgraph.stats.fetchFiatRatesQuery({
-    url: configs[Network.Mainnet].api.subgraph,
-    modifyResult: (data): number => {
-      const usdInGbp = Number(data.networks[0].usdToGbpRate)
-
-      return usdInGbp
-    },
-  })
-}
+const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
+  url: configs[Network.Gnosis].api.subgraph,
+  modifyResult: (data) => Number(data.networks[0].assetsUsdRate),
+})
 
 const getFiatRates = (values: GetFiatRatesInput) => {
   const { options } = values
@@ -23,16 +17,19 @@ const getFiatRates = (values: GetFiatRatesInput) => {
   return graphql.subgraph.stats.fetchFiatRatesQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     modifyResult: async (data) => {
-      const usd = Number(data.networks[0].assetsUsdRate)
-      const usdInEur = Number(data.networks[0].usdToEurRate)
-
       const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
-      const usdInGbp = isGnosis ? await getMainnetGbpRate() : Number(data.networks[0].usdToGbpRate)
+
+      let assetUsd = Number(data.networks[0].assetsUsdRate)
+
+      if (isGnosis) {
+        assetUsd = await getGnoRate()
+      }
 
       return {
-        assetsUsdRate: usd,
-        usdToEurRate: usdInEur,
-        usdToGbpRate: usdInGbp,
+        'ASSET/USD': assetUsd,
+        'USD/EUR': Number(data.networks[0].usdToEurRate),
+        'USD/GBP': Number(data.networks[0].usdToGbpRate),
+        'SWISE/USD': Number(data.networks[0].swiseUsdRate),
       }
     },
   })
