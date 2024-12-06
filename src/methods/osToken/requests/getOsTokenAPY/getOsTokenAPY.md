@@ -1,5 +1,6 @@
 ---
 id: getAPY
+slug: /osToken/requests/getostokenapy
 ---
 
 #### Description:

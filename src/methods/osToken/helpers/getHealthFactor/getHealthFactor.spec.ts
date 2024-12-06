@@ -9,7 +9,7 @@ describe('getHealthFactor function', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 1020n,
-      thresholdPercent: 10000n,
+      liqThresholdPercent: 10000n,
     }
 
     const result = await getHealthFactor(input)
@@ -24,7 +24,7 @@ describe('getHealthFactor function', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 1015n,
-      thresholdPercent: 10000n,
+      liqThresholdPercent: 10000n,
     }
 
     const result = await getHealthFactor(input)
@@ -39,7 +39,7 @@ describe('getHealthFactor function', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 1005n,
-      thresholdPercent: 10000n,
+      liqThresholdPercent: 10000n,
     }
 
     const result = await getHealthFactor(input)
@@ -54,7 +54,7 @@ describe('getHealthFactor function', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 995n,
-      thresholdPercent: 10000n,
+      liqThresholdPercent: 10000n,
     }
 
     const result = await getHealthFactor(input)
@@ -69,12 +69,12 @@ describe('getHealthFactor function', () => {
     const input1 = {
       mintedAssets: 0n,
       stakedAssets: 1000n,
-      thresholdPercent: 10000n,
+      liqThresholdPercent: 10000n,
     }
     const input2 = {
       mintedAssets: 1000n,
       stakedAssets: 0n,
-      thresholdPercent: 10000n,
+      liqThresholdPercent: 10000n,
     }
 
     const result1 = await getHealthFactor(input1)

@@ -18,13 +18,13 @@ Returns basic information on the token
 ```ts
 type Output = {
   ltvPercent: bigint
-  thresholdPercent: bigint
+  liqThresholdPercent: bigint
 }
 ```
 | Name | Description |
 |------|-------------|
 | `ltvPercent` | The percent used to calculate how much user can mint OsToken shares |
-| `thresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
+| `liqThresholdPercent` | The liquidation threshold percent used to calculate health factor for OsToken position |
 
 #### Example:
 

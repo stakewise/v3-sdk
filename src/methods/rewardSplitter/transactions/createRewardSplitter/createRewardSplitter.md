@@ -1,5 +1,6 @@
 ---
 id: create
+slug: /rewardSplitter/transactions/createrewardsplitter
 ---
 
 ### `create`

@@ -10,7 +10,7 @@ User position data
 #### Arguments:
 | Name             | Type     | Required | Description                                                  |
 |------------------|----------|----------|--------------------------------------------------------------|
-| thresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
+| liqThresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
 | stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
 | userAddress      | `string` | **Yes**  | The user address                                             |
 | vaultAddress     | `string` | **Yes**  | The address of the vault                                     |
@@ -45,6 +45,6 @@ await sdk.osToken.getPosition({
   stakedAssets: 0n,
   userAddress: '0x...',
   vaultAddress: '0x...',
-  thresholdPercent:  0n,
+  liqThresholdPercent:  0n,
 })
 ```

@@ -1,5 +1,6 @@
 ---
 id: create
+slug: /vault/transactions/create
 ---
 
 #### Description:

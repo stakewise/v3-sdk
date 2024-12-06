@@ -1,5 +1,6 @@
 ---
 id: updateFeeRecipients
+slug: /rewardSplitter/transactions/updatefeerecipients
 ---
 
 #### Description:

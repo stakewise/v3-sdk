@@ -68,7 +68,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
       : '∞',
     osTokenConfig: {
       ltvPercent: osTokenConfig.ltvPercent,
-      thresholdPercent: osTokenConfig.liqThresholdPercent,
+      liqThresholdPercent: osTokenConfig.liqThresholdPercent,
     },
   }
 }

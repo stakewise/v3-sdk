@@ -7,7 +7,7 @@
 type AddedOutput = {
   osTokenConfig: {
     ltvPercent: string
-    thresholdPercent: string
+    liqThresholdPercent: string
   }
   queuedShares: string
   allocatorMaxBoostApy: number
@@ -18,7 +18,7 @@ type AddedOutput = {
 
 | Name                       | Description                                                                                                                                                                                                                                         |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `osTokenConfig`            | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `thresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
+| `osTokenConfig`            | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `liqThresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 | `isGenesis`                | This vault is owned by stakewise                                                                                                                                                                                                                    |
 | `allocatorMaxBoostApy`     | The average max boost APY earned in this vault by the allocator                                                                                                                                                                                     |
 | `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder                                                                                                                                                                                |

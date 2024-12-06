@@ -1,5 +1,6 @@
 ---
 id: getSwiseUsdPrice
+slug: /utils/getswiseusdprice
 ---
 
 #### Description:

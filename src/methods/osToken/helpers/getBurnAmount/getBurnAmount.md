@@ -1,5 +1,6 @@
 ---
 id: getBurnAmount
+slug: /osToken/helpers/getburnamount
 ---
 
 #### Description:

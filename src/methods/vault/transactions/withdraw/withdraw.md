@@ -1,5 +1,6 @@
 ---
 id: withdraw
+slug: /vault/transactions/withdraw
 ---
 
 #### Description:
@@ -20,7 +21,7 @@ Withdrawal of funds from a vault
 const amountAssets = 200n // from input mb
 
 const [
-  { osTokenConfig: { ltvPercent, thresholdPercent } },
+  { osTokenConfig: { ltvPercent, liqThresholdPercent } },
   stake,
 ] = await Promise.all([
   sdk.vault.getVault({
@@ -36,7 +37,7 @@ const osToken = await sdk.osToken.getPosition({
   stakedAssets: stake.assets,
   vaultAddress: '0x...',
   userAddress: '0x...',
-  thresholdPercent,
+  liqThresholdPercent,
 })
 
 const maxWithdrawAssets = await sdk.vault.getMaxWithdraw({

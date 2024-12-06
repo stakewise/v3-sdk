@@ -1,5 +1,6 @@
 ---
 id: claimRewards
+slug: /rewardSplitter/transactions/claimrewards
 ---
 
 #### Description:
