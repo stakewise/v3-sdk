@@ -25,7 +25,7 @@ import { OsTokenPositionHealth } from '@stakewise/v3-sdk'
 const amountShares = 200n // from input mb
 
 const [
-  { osTokenConfig: { ltvPercent, thresholdPercent } },
+  { osTokenConfig: { ltvPercent, liqThresholdPercent } },
   stake,
 ] = await Promise.all([
   sdk.vault.getVault({
@@ -41,7 +41,7 @@ const osToken = await sdk.osToken.getPosition({
   stakedAssets: stake.assets,
   vaultAddress: '0x...',
   userAddress: '0x...',
-  thresholdPercent,
+  liqThresholdPercent,
 })
 
 const maxMint = await sdk.osToken.getMaxMint({
@@ -62,7 +62,7 @@ const newMintAssets = await sdk.osToken.getAssetsFromShares({
 })
 
 const { health } = sdk.osToken.getHealthFactor({
-  thresholdPercent,
+  liqThresholdPercent,
   stakedAssets: stake.assets,
   mintedAssets: newMintAssets,
 })

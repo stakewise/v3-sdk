@@ -10,7 +10,7 @@ Get the health of the position
 #### Arguments:
 | Name             | Type     | Required | Description                                          |
 |------------------|----------|----------|------------------------------------------------------|
-| thresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
+| liqThresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
 | mintedAssets     | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)              |
 | stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
 
@@ -32,7 +32,7 @@ type Output = {
 
 ```ts
 sdk.osToken.getHealthFactor({
-  thresholdPercent: 0n,
+  liqThresholdPercent: 0n,
   mintedAssets: 0n,
   stakedAssets: 0n,
 })
