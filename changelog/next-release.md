@@ -198,6 +198,20 @@ type RemovedInput = {
 positions[number]['exitQueueIndex']
 ```
 
+---
+
 ### 21. Added method
 ### `sdk.utils.getFiatRatesByDay`
 #### Get fiat data by day
+
+---
+### 2. `sdk.osToken.getAPY`
+
+#### New output field:
+
+```ts
+type Output = {
+  apy: string
+  feePercent: number
+}
+```

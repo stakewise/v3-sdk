@@ -9,7 +9,10 @@ Current os token APY
 #### Returns:
 
 ```ts
-type Output = string
+type Output = {
+  apy: string
+  feePercent: number
+}
 ```
 
 #### Example:
