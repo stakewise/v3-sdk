@@ -12,10 +12,10 @@ query UserRewards(
       timestamp_lte: $dateTo  
     }  
   ) @include(if: $includeExchangeRate) {  
-    timestamp  
-    assetsUsdRate  
+    timestamp
     usdToEurRate  
-    usdToGbpRate  
+    usdToGbpRate 
+    assetsUsdRate 
   }  
   allocator: allocatorStats_collection(
     interval: day

@@ -198,10 +198,27 @@ type RemovedInput = {
 positions[number]['exitQueueIndex']
 ```
 
+---
+
 ### 21. Added method
 ### `sdk.utils.getFiatRatesByDay`
 #### Get fiat data by day
 
-### 22. Added input field `referrerAddress`
+---
+
+### 22. `sdk.osToken.getAPY`
+
+#### New output field:
+
+```ts
+type Output = {
+  apy: string
+  feePercent: number
+}
+```
+
+---
+
+### 23. Added input field `referrerAddress`
 ### `sdk.vault.deposit`
 ### `sdk.osToken.mint`

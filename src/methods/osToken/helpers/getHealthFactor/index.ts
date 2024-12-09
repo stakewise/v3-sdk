@@ -1,4 +1,4 @@
-import { OsTokenPositionHealth, BigDecimal, validateArgs } from '../../../../utils'
+import { OsTokenPositionHealth, BigDecimal, validateArgs, constants } from '../../../../utils'
 
 
 type GetHealthFactorInput = {
@@ -22,7 +22,7 @@ const getHealthFactor = (values: GetHealthFactorInput) => {
   const healthFactor = Number(
     new BigDecimal(stakedAssets)
       .multiply(liqThresholdPercent)
-      .divide(10_000)
+      .divide(constants.blockchain.amount1)
       .divide(mintedAssets)
       .decimals(4)
       .toString()
