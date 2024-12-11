@@ -38,14 +38,14 @@ export default {
       rewardSplitterFactory: '0x256aF27ce81282A0491A5361172c1Db08f6cC5F8',
     },
     factories: {
-      vault: '0xfaa05900019f6E465086bcE16Bb3F06992715D53',
-      erc20Vault: '0x7a4F9912a812d932da57d73Cb5E5784B2c1cBA4A',
+      vault: '0xDF82E5D27E175618e5bC4581ee336F59AdabfBB2',
+      erc20Vault: '0x978302cAcAdEDE5d503390E176e86F3889Df6Ce6',
 
-      privateVault: '0xb7832C9e93e54661354C8B88F3Ce7c0915f4C896',
-      erc20PrivateVault: '0x58FDD303ab66722130C01533e7A1177f2b3a2949',
+      privateVault: '0x80fC05f62C35C1b1361bc8908ea0aF06C510D390',
+      erc20PrivateVault: '0x291Fa5849215847081B475450cBE5De46CfD4fAE',
 
-      blocklistVault: '0x4E3D8197c2cb9bCd29e3DCeAE3670d3d5e774017',
-      erc20BlocklistVault: '0x1bE3Ad178d85CE1b6a7fCF5baEFe68F26541b07C',
+      blocklistVault: '0x8b6c2C9E09c6022780D164F3cFd882808b8bDBF0',
+      erc20BlocklistVault: '0xe487EDDB7C5802e416385544f0A6a4426AF4AE87',
     },
   },
   tokens: {
