@@ -8,16 +8,15 @@ const modifyVaultStats = (data: VaultStatsQueryPayload): ModifiedVaultStats[] =>
   const vaultStats = data?.vaultStats || []
 
   return vaultStats.map((stat) => {
-    const timeInSeconds = Number(stat.timestamp) / 1000000
+    const timeInSeconds = Number(stat.timestamp) / 1_000_000
     const balance = Number(formatEther(stat.totalAssets || '0'))
     const rewards = Number(formatEther(stat.earnedAssets || '0'))
-    const totalApy = (rewards * 365 * 100) / (balance - rewards)
 
     return {
       balance,
       rewards,
-      apy: totalApy,
       time: timeInSeconds,
+      apy: Number(stat.apy),
     }
   })
 }
