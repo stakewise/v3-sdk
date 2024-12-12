@@ -1,4 +1,4 @@
-query RewardSplitters($where: RewardSplitter_filter) {
+query RewardSplitters($where: RewardSplitter_filter!) {
   rewardSplitters(where: $where, orderBy: id, orderDirection: desc, first: 1000) {
     id
     owner

@@ -10,6 +10,7 @@ describe('modifyVaultStats function', () => {
     const sampleInput: VaultStatsQueryPayload = {
       vaultStats: [
         {
+          apy: '1.78',
           timestamp: '1727049600000000',
           earnedAssets: '337535438824070468',
           totalAssets: '6894313501899116340545',
@@ -25,7 +26,7 @@ describe('modifyVaultStats function', () => {
         rewards,
         balance,
         time: 1727049600,
-        apy: (rewards * 365 * 100) / (balance - rewards),
+        apy: 1.78,
       },
     ]
 

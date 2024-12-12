@@ -1,7 +1,7 @@
 query AllocatorActions(
   $skip: Int!
   $first: Int!
-  $where: AllocatorAction_filter
+  $where: AllocatorAction_filter!
 ) {
   allocatorActions(
     skip: $skip,
