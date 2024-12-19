@@ -14,22 +14,26 @@ const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
 const getFiatRates = (values: GetFiatRatesInput) => {
   const { options } = values
 
+  const assetUsdPromise = options.network === Network.Chiado
+    ? getGnoRate()
+    : Promise.resolve(0)
+
   return graphql.subgraph.stats.fetchFiatRatesQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     modifyResult: async (data) => {
-      const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
+      const { assetsUsdRate, usdToGbpRate, usdToEurRate, swiseUsdRate } = data.networks[0]
 
-      let assetUsd = Number(data.networks[0].assetsUsdRate)
+      let assetUsd = Number(assetsUsdRate)
 
-      if (isGnosis) {
-        assetUsd = await getGnoRate()
+      if (options.network === Network.Chiado) {
+        assetUsd = await assetUsdPromise
       }
 
       return {
         'ASSET/USD': assetUsd,
-        'USD/EUR': Number(data.networks[0].usdToEurRate),
-        'USD/GBP': Number(data.networks[0].usdToGbpRate),
-        'SWISE/USD': Number(data.networks[0].swiseUsdRate),
+        'USD/EUR': Number(usdToEurRate),
+        'USD/GBP': Number(usdToGbpRate),
+        'SWISE/USD': Number(swiseUsdRate),
       }
     },
   })
