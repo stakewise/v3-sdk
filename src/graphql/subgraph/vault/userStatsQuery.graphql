@@ -14,46 +14,4 @@ query UserStats($userAddress: Bytes! $vaultAddress: String! $timestamp: Timestam
     earnedAssets
     totalAssets
   }
-  exitRequest: exitRequestStats_collection(
-    interval: day
-    where: {
-      timestamp_gte: $timestamp,
-      exitRequest_: {
-        receiver: $userAddress,
-        vault: $vaultAddress
-      }
-    }
-  ) {
-    timestamp
-    earnedAssets
-    totalAssets
-  }
-  rewardSplitter: rewardSplitterShareHolderStats_collection(
-    interval: day
-    where: {
-      timestamp_gte: $timestamp,
-      rewardSpliterShareHolder_: {
-        address: $userAddress,
-        vault: $vaultAddress
-      }
-    }
-  ) {
-    timestamp
-    earnedAssets
-    totalAssets
-  }
-  boost: leverageStrategyPositionStats_collection(
-    interval: day
-    where: {
-      timestamp_gte: $timestamp,
-      position_: {
-        user: $userAddress,
-        vault: $vaultAddress
-      }
-    }
-  ) {
-    timestamp
-    earnedAssets: allocatorEarnedAssets
-    totalAssets: allocatorTotalEarnedAssets
-  }
 }

@@ -24,16 +24,7 @@ const getUserStats = (input: GetUserStatsInput) => {
       userAddress: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),
     },
-    modifyResult: (response) => {
-      const data = [
-        response.boost,
-        response.allocator,
-        response.exitRequest,
-        response.rewardSplitter,
-      ].flat()
-
-      return calculateUserStats(data)
-    },
+    modifyResult: (response) => calculateUserStats(response.allocator),
   })
 }
 
