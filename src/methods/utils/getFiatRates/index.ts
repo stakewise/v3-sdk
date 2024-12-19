@@ -14,19 +14,17 @@ const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
 const getFiatRates = (values: GetFiatRatesInput) => {
   const { options } = values
 
-  const assetUsdPromise = options.network === Network.Chiado
-    ? getGnoRate()
-    : Promise.resolve(0)
-
   return graphql.subgraph.stats.fetchFiatRatesQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    url: configs[Network.Mainnet].api.subgraph,
     modifyResult: async (data) => {
       const { assetsUsdRate, usdToGbpRate, usdToEurRate, swiseUsdRate } = data.networks[0]
 
       let assetUsd = Number(assetsUsdRate)
 
-      if (options.network === Network.Chiado) {
-        assetUsd = await assetUsdPromise
+      const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
+
+      if (isGnosis) {
+        assetUsd = await getGnoRate()
       }
 
       return {
