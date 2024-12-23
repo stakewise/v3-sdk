@@ -1,5 +1,5 @@
 import graphql from '../../../graphql'
-import { apiUrls, configs, Network } from '../../../utils'
+import { configs, Network } from '../../../utils'
 
 
 type GetFiatRatesInput = {
@@ -15,9 +15,18 @@ const getFiatRates = (values: GetFiatRatesInput) => {
   const { options } = values
 
   return graphql.subgraph.stats.fetchFiatRatesQuery({
-    url: configs[Network.Mainnet].api.subgraph,
+    url: configs[Network.Holesky].api.subgraph, // TODO change network to Network.Mainnet
     modifyResult: async (data) => {
-      const { assetsUsdRate, usdToGbpRate, usdToEurRate, swiseUsdRate } = data.networks[0]
+      const {
+        assetsUsdRate,
+        usdToEurRate,
+        usdToGbpRate,
+        usdToCnyRate,
+        usdToJpyRate,
+        usdToKrwRate,
+        usdToAudRate,
+        swiseUsdRate,
+      } = data.networks[0]
 
       let assetUsd = Number(assetsUsdRate)
 
@@ -31,6 +40,10 @@ const getFiatRates = (values: GetFiatRatesInput) => {
         'ASSET/USD': assetUsd,
         'USD/EUR': Number(usdToEurRate),
         'USD/GBP': Number(usdToGbpRate),
+        'USD/CNY': Number(usdToCnyRate),
+        'USD/JPY': Number(usdToJpyRate),
+        'USD/KRW': Number(usdToKrwRate),
+        'USD/AUD': Number(usdToAudRate),
         'SWISE/USD': Number(swiseUsdRate),
       }
     },
