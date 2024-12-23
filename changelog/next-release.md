@@ -237,3 +237,33 @@ type AddedOutput = {
   'USD/AUD': number
 }
 ```
+
+---
+
+### 25. `sdk.vault.getUserRewards`
+
+#### New output fields:
+
+```ts
+type AddedOutput = {
+  dailyRewardsCny: number
+  dailyRewardsJpy: number
+  dailyRewardsKrw: number
+  dailyRewardsAud: number
+}
+```
+
+---
+
+### 26. `sdk.utils.getFiatRatesByDay`
+
+#### New output fields:
+
+```ts
+type AddedOutput = {
+  usdToCnyRate: string
+  usdToJpyRate: string
+  usdToKrwRate: string
+  usdToAudRate: string
+}
+```

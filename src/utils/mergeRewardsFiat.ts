@@ -1,16 +1,10 @@
 import { formatEther } from 'ethers'
+import { FiatByDayQueryPayload } from '../graphql/subgraph/stats'
 
 
 type Input = {
   rewards: Reward[]
-  fiatRates: FiatRate[]
-}
-
-type FiatRate = {
-  timestamp: string
-  usdToEurRate: string
-  usdToGbpRate: string
-  assetsUsdRate: string
+  fiatRates: FiatByDayQueryPayload['exchangeRate']
 }
 
 type Reward = {
@@ -18,12 +12,16 @@ type Reward = {
   earnedAssets: string
 }
 
-type MergedReward = {
+export type MergedReward = {
   date: number
   dailyRewards: number
   dailyRewardsUsd: number
   dailyRewardsEur: number
   dailyRewardsGbp: number
+  dailyRewardsCny: number
+  dailyRewardsJpy: number
+  dailyRewardsKrw: number
+  dailyRewardsAud: number
 }
 
 const mergeRewardsFiat = (values: Input): MergedReward[] => {
@@ -52,16 +50,32 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
           dailyRewardsUsd: 0,
           dailyRewardsEur: 0,
           dailyRewardsGbp: 0,
+          dailyRewardsCny: 0,
+          dailyRewardsJpy: 0,
+          dailyRewardsKrw: 0,
+          dailyRewardsAud: 0,
           dailyRewards: assets,
         }
       }
 
-      const { assetsUsdRate, usdToEurRate, usdToGbpRate } = fiatRates[index]
+      const {
+        assetsUsdRate,
+        usdToEurRate,
+        usdToGbpRate,
+        usdToCnyRate,
+        usdToJpyRate,
+        usdToKrwRate,
+        usdToAudRate,
+      } = fiatRates[index]
 
       const USD = {
         ASSETS:  Number(assetsUsdRate),
         EUR: Number(usdToEurRate),
         GBP: Number(usdToGbpRate),
+        CNY: Number(usdToCnyRate),
+        JPY: Number(usdToJpyRate),
+        KRW: Number(usdToKrwRate),
+        AUD: Number(usdToAudRate),
       }
 
       const usdResult = assets * USD.ASSETS
@@ -72,6 +86,10 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
         dailyRewardsUsd: usdResult || 0,
         dailyRewardsEur: usdResult * USD.EUR || 0,
         dailyRewardsGbp: usdResult * USD.GBP || 0,
+        dailyRewardsCny: usdResult * USD.CNY || 0,
+        dailyRewardsJpy: usdResult * USD.JPY || 0,
+        dailyRewardsKrw: usdResult * USD.KRW || 0,
+        dailyRewardsAud: usdResult * USD.AUD || 0,
       }
     })
 

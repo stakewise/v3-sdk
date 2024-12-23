@@ -1,7 +1,6 @@
 import type { UserRewardsQueryVariables } from '../../../../graphql/subgraph/vault'
-import { apiUrls, Network, validateArgs } from '../../../../utils'
+import { apiUrls, Network, validateArgs, MergedReward } from '../../../../utils'
 import modifyUserRewards from './modifyUserRewards'
-import type { ModifyUserRewards } from './types'
 import getMainnetRates from './getMainnetRates'
 import graphql from '../../../../graphql'
 
@@ -32,7 +31,7 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
     mainnetRates = await getMainnetRates(input)
   }
 
-  return graphql.subgraph.vault.fetchUserRewardsQuery<ModifyUserRewards[]>({
+  return graphql.subgraph.vault.fetchUserRewardsQuery<MergedReward[]>({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       includeExchangeRate: !isGnosis,

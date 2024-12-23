@@ -22,19 +22,27 @@ Daily rewards for the user who has made a deposit in the vault.
 type Output = {
   date: number
   dailyRewards: number
+  dailyRewardsUsd: number
   dailyRewardsEur: number
   dailyRewardsGbp: number
-  dailyRewardsUsd: number
+  dailyRewardsCny: number
+  dailyRewardsJpy: number
+  dailyRewardsKrw: number
+  dailyRewardsAud: number
 }
 ```
 
-| Name | Description               |
-|------|---------------------------|
-| `date` | Сurrent rate date         |
-| `dailyRewards` | Daily reward asset in ETH |
+| Name              | Description               |
+|-------------------|---------------------------|
+| `date`            | Сurrent rate date         |
+| `dailyRewards`    | Daily reward asset in ETH |
+| `dailyRewardsUsd` | Daily reward asset in USD |
 | `dailyRewardsEur` | Daily reward asset in EUR |
 | `dailyRewardsGbp` | Daily reward asset in GBP |
-| `dailyRewardsUsd` | Daily reward asset in USD |
+| `dailyRewardsCny` | Daily reward asset in CNY |
+| `dailyRewardsJpy` | Daily reward asset in JPY |
+| `dailyRewardsKrw` | Daily reward asset in KRW |
+| `dailyRewardsAud` | Daily reward asset in AUD |
 
 #### Example:
 
