@@ -1,11 +1,10 @@
-import type { ModifyUserRewards } from './types'
-import { mergeRewardsFiat } from '../../../../utils'
+import { mergeRewardsFiat, MergedReward } from '../../../../utils'
 import type { FiatByDayQueryPayload } from '../../../../graphql/subgraph/stats'
 import type { UserRewardsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 const modifyUserRewards = (mainnetRates?: FiatByDayQueryPayload['exchangeRate']) => (
-  (data: UserRewardsQueryPayload): ModifyUserRewards[] => {
+  (data: UserRewardsQueryPayload): MergedReward[] => {
     const exchangeRates = data?.exchangeRates || []
 
     return mergeRewardsFiat({

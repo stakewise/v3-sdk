@@ -21,6 +21,10 @@ type Output = Array<{
   timestamp: string
   usdToEurRate: string
   usdToGbpRate: string
+  usdToCnyRate: string
+  usdToJpyRate: string
+  usdToKrwRate: string
+  usdToAudRate: string
   assetsUsdRate: string
 }>
 ```
