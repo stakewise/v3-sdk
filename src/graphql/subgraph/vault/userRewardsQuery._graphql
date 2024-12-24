@@ -15,6 +15,10 @@ query UserRewards(
     timestamp
     usdToEurRate
     usdToGbpRate
+    usdToCnyRate
+    usdToJpyRate
+    usdToKrwRate
+    usdToAudRate
     assetsUsdRate
   }
   allocator: allocatorStats_collection(

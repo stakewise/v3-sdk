@@ -14,17 +14,18 @@ const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
 const getFiatRates = (values: GetFiatRatesInput) => {
   const { options } = values
 
+  // TODO uncomment when rates will be deployed to mainnet
   return graphql.subgraph.stats.fetchFiatRatesQuery({
-    url: configs[Network.Holesky].api.subgraph, // TODO change network to Network.Mainnet
+    url: configs[Network.Mainnet].api.subgraph,
     modifyResult: async (data) => {
       const {
         assetsUsdRate,
         usdToEurRate,
         usdToGbpRate,
-        usdToCnyRate,
-        usdToJpyRate,
-        usdToKrwRate,
-        usdToAudRate,
+        // usdToCnyRate,
+        // usdToJpyRate,
+        // usdToKrwRate,
+        // usdToAudRate,
         swiseUsdRate,
       } = data.networks[0]
 
@@ -40,10 +41,14 @@ const getFiatRates = (values: GetFiatRatesInput) => {
         'ASSET/USD': assetUsd,
         'USD/EUR': Number(usdToEurRate),
         'USD/GBP': Number(usdToGbpRate),
-        'USD/CNY': Number(usdToCnyRate),
-        'USD/JPY': Number(usdToJpyRate),
-        'USD/KRW': Number(usdToKrwRate),
-        'USD/AUD': Number(usdToAudRate),
+        'USD/CNY': 7.3,
+        'USD/JPY': 157.21,
+        'USD/KRW': 1453.06,
+        'USD/AUD': 1.6,
+        // 'USD/CNY': Number(usdToCnyRate),
+        // 'USD/JPY': Number(usdToJpyRate),
+        // 'USD/KRW': Number(usdToKrwRate),
+        // 'USD/AUD': Number(usdToAudRate),
         'SWISE/USD': Number(swiseUsdRate),
       }
     },

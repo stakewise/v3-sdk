@@ -58,24 +58,25 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
         }
       }
 
+      // TODO uncomment when rates will be deployed to mainnet
       const {
         assetsUsdRate,
         usdToEurRate,
         usdToGbpRate,
-        usdToCnyRate,
-        usdToJpyRate,
-        usdToKrwRate,
-        usdToAudRate,
+        // usdToCnyRate,
+        // usdToJpyRate,
+        // usdToKrwRate,
+        // usdToAudRate,
       } = fiatRates[index]
 
       const USD = {
         ASSETS:  Number(assetsUsdRate),
         EUR: Number(usdToEurRate),
         GBP: Number(usdToGbpRate),
-        CNY: Number(usdToCnyRate),
-        JPY: Number(usdToJpyRate),
-        KRW: Number(usdToKrwRate),
-        AUD: Number(usdToAudRate),
+        CNY: Number(7.3),
+        JPY: Number(157.21),
+        KRW: Number(1453.06),
+        AUD: Number(1.6),
       }
 
       const usdResult = assets * USD.ASSETS
