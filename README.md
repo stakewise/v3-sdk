@@ -99,7 +99,6 @@ const sdk = new StakeWiseSDK({
 | [vault.getMaxWithdraw](#sdkvaultgetmaxwithdraw)               | [osToken.getSharesFromAssets](#sdkostokengetsharesfromassets) |                                                                   |
 | [vault.getHarvestParams](#sdkvaultgetharvestparams)           | [osToken.getAssetsFromShares](#sdkostokengetassetsfromshares) |                                                                   |
 | [vault.getStakeBalance](#sdkvaultgetstakebalance)             | [osToken.getRate](#sdkostokengetrate)                         |                                                                   |
-| [vault.getScorePercentiles](#sdkvaultgetscorepercentiles)     |                                                               |                                                                   |
 | [vault.getUserRewards](#sdkvaultgetuserrewards)               |                                                               |                                                                   |
 | [vault.getWhitelist](#sdkvaultgetwhitelist)                   |                                                               |                                                                   |
 | [vault.getBlocklist](#sdkvaultgetblocklist)                   |                                                               |                                                                   |
@@ -244,37 +243,6 @@ await sdk.vault.getSnapshots({
   vaultAddress: '0x...',
   dateFrom: 1695730032793,
 })
-```
----
-### `sdk.vault.getScorePercentiles`
-
-#### Description:
-
-This method is used to fetch information indicating the effectiveness or performance level of the vault. 
-The retrieved data includes percentiles corresponding to various statuses.
-
-#### Returns:
-
-```ts
-type Output = {
-  percentile25: number
-  percentile50: number
-  percentile75: number
-}
-```
-
-| Name | Description                                                                                             |
-|------|---------------------------------------------------------------------------------------------------------|
-| `percentile25` | Represents the value corresponding to the **lowest** status. It is associated with the color (red)      |
-| `percentile50` | Represents the value corresponding to the **moderate** status. It is associated with the color (orange) |
-| `percentile75` | Represents the value corresponding to the **good** status. It is associated with the color (light green)      |
-
-_For values greater than percentile75 the status corresponds to **excellent** with color (green)_
-
-#### Example:
-
-```ts
-await sdk.vault.getScorePercentiles()
 ```
 ---
 ### `sdk.vault.getUserRewards`

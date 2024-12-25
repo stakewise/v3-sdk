@@ -11,7 +11,6 @@ import getStakeBalance from './requests/getStakeBalance'
 import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
 import getRewardSplitters from './requests/getRewardSplitters'
-import getScorePercentiles from './requests/getScorePercentiles'
 import getExitQueuePositions from './requests/getExitQueuePositions'
 
 // Transactions
@@ -34,12 +33,6 @@ export default {
      * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetexitqueuepositions
     */
     getExitQueuePositions,
-    /**
-     * @description This method is used to fetch information indicating the effectiveness
-     * or performance level of the vault. The retrieved data includes percentiles corresponding to various statuses.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkvaultgetscorepercentiles
-    */
-    getScorePercentiles,
     /**
      * @description Fetch the list of created reward splitters. A reward splitter is a contract
      * designed to distribute vault rewards among multiple fee recipients in predefined proportions.

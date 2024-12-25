@@ -1,7 +1,0 @@
-query ScorePercentiles {
-  scorePercentiles {
-    percentile25,
-    percentile50,
-    percentile75
-  }
-}
