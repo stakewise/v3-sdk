@@ -20,10 +20,12 @@ export enum AllocatorActionType {
   VaultCreated = 'VaultCreated',
   OsTokenMinted = 'OsTokenMinted',
   OsTokenBurned = 'OsTokenBurned',
+  BoostDeposited = 'BoostDeposited',
   OsTokenRedeemed = 'OsTokenRedeemed',
   ExitQueueEntered = 'ExitQueueEntered',
   OsTokenLiquidated = 'OsTokenLiquidated',
   ExitedAssetsClaimed = 'ExitedAssetsClaimed',
+  BoostExitedAssetsClaimed = 'BoostExitedAssetsClaimed',
 }
 
 export enum OsTokenPositionHealth {
