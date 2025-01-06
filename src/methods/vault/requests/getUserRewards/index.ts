@@ -1,7 +1,6 @@
 import { apiUrls, Network, validateArgs, MergedReward, configs, mergeRewardsFiat } from '../../../../utils'
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
 
 
 type GetUserRewardsInput = {
@@ -33,15 +32,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
   const timestampTo = String(dateTo * 1_000)
   const timestampFrom = String(dateFrom * 1_000)
 
-  const [ fiatRates, rewards ] = await Promise.all([
-    graphql.subgraph.stats.fetchFiatByDayQuery({
-      url: ratesUrl,
-      variables: {
-        dateTo: timestampTo,
-        dateFrom: timestampFrom,
-      },
-      modifyResult: (data) => data.exchangeRate || [],
-    }),
+  const [ rewards, networkFiatRates, gnosisFiatRates ] = await Promise.all([
     graphql.subgraph.vault.fetchUserRewardsQuery({
       url: subgraphUrl,
       variables: {
@@ -56,11 +47,39 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
       },
       modifyResult: (data) => data?.allocator || [],
     }),
+    graphql.subgraph.stats.fetchFiatByDayQuery({
+      url: ratesUrl,
+      variables: {
+        dateTo: timestampTo,
+        dateFrom: timestampFrom,
+      },
+      modifyResult: (data) => data.exchangeRate || [],
+    }),
+    isGnosis
+      ? graphql.subgraph.stats.fetchFiatByDayQuery({
+        url: subgraphUrl,
+        variables: {
+          dateTo: timestampTo,
+          dateFrom: timestampFrom,
+        },
+        modifyResult: (data) => (data.exchangeRate || []).reduce((acc, { timestamp, assetsUsdRate }) => ({
+          ...acc,
+          [timestamp]: assetsUsdRate,
+        }), {}),
+      })
+      : Promise.resolve([]),
   ])
 
+  const fiatRates = isGnosis
+    ? networkFiatRates.map((data) => ({
+      ...data,
+      assetsUsdRate: gnosisFiatRates[data.timestamp as keyof typeof gnosisFiatRates] || 0,
+    }))
+    : networkFiatRates
+
   return mergeRewardsFiat({
-    fiatRates,
     rewards,
+    fiatRates,
   })
 }
 
