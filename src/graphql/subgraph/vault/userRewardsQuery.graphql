@@ -1,34 +1,13 @@
 query UserRewards(
-  $user: Bytes!
-  $dateTo: Timestamp!
-  $dateFrom: Timestamp!
-  $vaultAddress: String!
-  $includeExchangeRate: Boolean!
+  $where: AllocatorStats_filter
 ) {
-  exchangeRates: exchangeRateStats_collection (
-    interval: day,
-    where: {
-      timestamp_gte: $dateFrom,
-      timestamp_lte: $dateTo
-    }
-  ) @include(if: $includeExchangeRate) {
-    timestamp
-    usdToEurRate
-    usdToGbpRate
-    assetsUsdRate
-  }
   allocator: allocatorStats_collection(
     interval: day
-    where: {
-      timestamp_gte: $dateFrom,
-      timestamp_lte: $dateTo,
-      allocator_: {
-        address: $user,
-        vault: $vaultAddress
-      }
-    }
+    where: $where
   ) {
+    apy
     timestamp
     earnedAssets
+    totalAssets
   }
 }

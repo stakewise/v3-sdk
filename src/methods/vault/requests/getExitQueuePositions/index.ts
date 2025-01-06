@@ -28,7 +28,7 @@ const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise
         vault: vaultAddress.toLowerCase(),
         receiver: userAddress.toLowerCase(),
         isClaimed,
-      } as StakeWiseSubgraphGraph.ExitRequest_Filter,
+      },
     },
     modifyResult: modifyExitRequests,
   })

@@ -1,19 +1,17 @@
-import type { UserRewardsQueryVariables } from '../../../../graphql/subgraph/vault'
-import { apiUrls, Network, validateArgs, MergedReward } from '../../../../utils'
-import modifyUserRewards from './modifyUserRewards'
-import getMainnetRates from './getMainnetRates'
+import { apiUrls, Network, validateArgs, MergedReward, configs, mergeRewardsFiat } from '../../../../utils'
 import graphql from '../../../../graphql'
+import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
 type GetUserRewardsInput = {
   dateTo: number
   dateFrom: number
   options: StakeWise.Options
-  userAddress: UserRewardsQueryVariables['user']
-  vaultAddress: UserRewardsQueryVariables['vaultAddress']
+  userAddress: string
+  vaultAddress: string
 }
 
-const getUserRewards = async (input: GetUserRewardsInput) => {
+const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[]> => {
   const { options, vaultAddress, userAddress, dateFrom, dateTo } = input
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -24,25 +22,66 @@ const getUserRewards = async (input: GetUserRewardsInput) => {
     Network.Chiado,
   ].includes(options.network)
 
-  let mainnetRates
+  const subgraphUrl = apiUrls.getSubgraphqlUrl(options)
 
-  if (isGnosis) {
-    // We can't fetch GPB rates from gnosis subgraph
-    mainnetRates = await getMainnetRates(input)
-  }
+  // We can't fetch GPB rates from gnosis subgraph
+  const ratesUrl = isGnosis
+    ? configs[Network.Mainnet].api.subgraph
+    : subgraphUrl
 
-  return graphql.subgraph.vault.fetchUserRewardsQuery<MergedReward[]>({
-    url: apiUrls.getSubgraphqlUrl(options),
-    variables: {
-      includeExchangeRate: !isGnosis,
-      dateTo: String(dateTo * 1_000),
-      user: userAddress.toLowerCase(),
-      dateFrom: String(dateFrom * 1_000),
-      vaultAddress: vaultAddress.toLowerCase(),
-    },
-    modifyResult: modifyUserRewards(mainnetRates),
+  const timestampTo = String(dateTo * 1_000)
+  const timestampFrom = String(dateFrom * 1_000)
+
+  const [ rewards, networkFiatRates, gnosisFiatRates ] = await Promise.all([
+    graphql.subgraph.vault.fetchUserRewardsQuery({
+      url: subgraphUrl,
+      variables: {
+        where: {
+          timestamp_lte: timestampTo,
+          timestamp_gte: timestampFrom,
+          allocator_: {
+            address: userAddress.toLowerCase(),
+            vault: vaultAddress.toLowerCase(),
+          },
+        },
+      },
+      modifyResult: (data) => data?.allocator || [],
+    }),
+    graphql.subgraph.stats.fetchFiatByDayQuery({
+      url: ratesUrl,
+      variables: {
+        dateTo: timestampTo,
+        dateFrom: timestampFrom,
+      },
+      modifyResult: (data) => data.exchangeRate || [],
+    }),
+    isGnosis
+      ? graphql.subgraph.stats.fetchFiatByDayQuery({
+        url: subgraphUrl,
+        variables: {
+          dateTo: timestampTo,
+          dateFrom: timestampFrom,
+        },
+        modifyResult: (data) => (data.exchangeRate || []).reduce((acc, { timestamp, assetsUsdRate }) => ({
+          ...acc,
+          [timestamp]: assetsUsdRate,
+        }), {}),
+      })
+      : Promise.resolve({}),
+  ])
+
+  const fiatRates = isGnosis
+    ? networkFiatRates.map((data) => ({
+      ...data,
+      assetsUsdRate: gnosisFiatRates[data.timestamp as keyof typeof gnosisFiatRates] || 0,
+    }))
+    : networkFiatRates
+
+  return mergeRewardsFiat({
+    rewards,
+    fiatRates,
   })
 }
 
 
-export default getUserRewards
+export default wrapAbortPromise<GetUserRewardsInput, MergedReward[]>(getUserRewards)
