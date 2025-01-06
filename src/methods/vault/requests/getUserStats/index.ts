@@ -1,5 +1,6 @@
 import { apiUrls, validateArgs, calculateUserStats, getTimestamp } from '../../../../utils'
 import graphql from '../../../../graphql'
+import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
 
 
 type GetUserStatsInput = {
@@ -15,16 +16,18 @@ const getUserStats = (input: GetUserStatsInput) => {
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ daysCount })
 
-  const timestamp = String(getTimestamp(daysCount))
-
-  return graphql.subgraph.vault.fetchUserStatsQuery({
+  return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      timestamp,
-      userAddress: userAddress.toLowerCase(),
-      vaultAddress: vaultAddress.toLowerCase(),
+      where: {
+        timestamp_gte: String(getTimestamp(daysCount)),
+        allocator_: {
+          address: userAddress.toLowerCase(),
+          vault: vaultAddress.toLowerCase(),
+        },
+      } as StakeWiseSubgraphGraph.AllocatorStats_Filter,
     },
-    modifyResult: (response) => calculateUserStats(response.allocator),
+    modifyResult: (data) => calculateUserStats(data?.allocator || []),
   })
 }
 
