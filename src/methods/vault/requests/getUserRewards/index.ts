@@ -34,7 +34,6 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
   const timestampTo = String(dateTo * 1_000)
   const timestampFrom = String(dateFrom * 1_000)
 
-  console.log('GET')
   const [ fiatRates, rewards ] = await Promise.all([
     graphql.subgraph.stats.fetchFiatByDayQuery({
       url: ratesUrl,
