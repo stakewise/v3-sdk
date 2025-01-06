@@ -49,7 +49,7 @@ const getBlocklist = (input: GetBlocklistInput) => {
 
   if (typeof addressIn !== 'undefined') {
     validateArgs.array({ addressIn })
-    validateList(addressIn)
+    validateList(addressIn as string[])
   }
 
   const vault = vaultAddress.toLowerCase()

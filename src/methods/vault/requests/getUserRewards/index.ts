@@ -2,15 +2,14 @@ import { apiUrls, Network, validateArgs, MergedReward, configs, mergeRewardsFiat
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
-import type { UserRewardsQueryVariables } from '../../../../graphql/subgraph/vault'
 
 
 type GetUserRewardsInput = {
   dateTo: number
   dateFrom: number
   options: StakeWise.Options
-  userAddress: UserRewardsQueryVariables['where']['allocator_']['address']
-  vaultAddress: UserRewardsQueryVariables['where']['allocator_']['vault']
+  userAddress: string
+  vaultAddress: string
 }
 
 const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[]> => {
@@ -53,7 +52,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
             address: userAddress.toLowerCase(),
             vault: vaultAddress.toLowerCase(),
           },
-        } as StakeWiseSubgraphGraph.AllocatorStats_Filter,
+        },
       },
       modifyResult: (data) => data?.allocator || [],
     }),

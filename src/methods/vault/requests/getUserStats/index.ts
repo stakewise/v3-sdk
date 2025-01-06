@@ -25,7 +25,7 @@ const getUserStats = (input: GetUserStatsInput) => {
           address: userAddress.toLowerCase(),
           vault: vaultAddress.toLowerCase(),
         },
-      } as StakeWiseSubgraphGraph.AllocatorStats_Filter,
+      },
     },
     modifyResult: (data) => calculateUserStats(data?.allocator || []),
   })
