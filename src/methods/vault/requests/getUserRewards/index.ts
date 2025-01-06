@@ -67,7 +67,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
           [timestamp]: assetsUsdRate,
         }), {}),
       })
-      : Promise.resolve([]),
+      : Promise.resolve({}),
   ])
 
   const fiatRates = isGnosis
