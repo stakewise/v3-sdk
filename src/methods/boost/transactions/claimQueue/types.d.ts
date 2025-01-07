@@ -1,6 +1,6 @@
 import claimQueueGas from './claimQueueGas'
 import claimQueueEncode from './claimQueueEncode'
-import type { Output } from '../../requests/getQueuePosition'
+import type { ClaimPosition } from '../../requests/getQueuePosition'
 
 
 export type ClaimQueueInput = {
@@ -9,7 +9,7 @@ export type ClaimQueueInput = {
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts
-  position: NonNullable<Output['position']>
+  position: ClaimPosition
 }
 
 export interface ClaimQueue {
