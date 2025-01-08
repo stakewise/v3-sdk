@@ -6,6 +6,35 @@ import mutationTemplate from './mutationTemplate'
 import { queryImport, queryTemplate } from './queryTemplate'
 
 
+// If there is a comment that may have a null value, we force the type of that field to `null | T`
+const getNullableTypes = (dirPath: string) => {
+  const nullRegExp = /\snull(\s|,)/
+
+  const schema = fs.readFileSync(path.resolve(dirPath, 'schema.graphql'), 'utf8')
+  const nullableTypes: Record<string, string[]> = {}
+
+  schema
+    .split(/\ntype /)
+    .filter((typeContent) => nullRegExp.test(typeContent))
+    .forEach((typeContent) => {
+      const title = typeContent.split(' ')[0]
+      const fields: string[] = []
+      const filteredContent = typeContent.split(/\n/).filter((line) => line.replace(/"|\s/g, ''))
+
+      filteredContent.forEach((line, index) => {
+        const nullableField = filteredContent[index + 1]?.replace(/\s+|:.+/g, '')
+
+        if (nullRegExp.test(line) && nullableField) {
+          fields.push(nullableField)
+        }
+      })
+
+      nullableTypes[title] = fields
+    })
+
+  return nullableTypes
+}
+
 const getGraphqlQuery = (tsFilePath: string) => {
   const graphqlPath = tsFilePath.replace(/\.ts$/, '')
   const graphqlQuery = fs.readFileSync(graphqlPath, 'utf8')
@@ -104,16 +133,32 @@ const getFileExports = (queryName: string) => {
   return [ fileExports, indexFileExports ].map((fileExports) => fileExports.join('\n'))
 }
 
-const getFileTypes = (client: string, tsFilePath: string) => {
-  return fs.readFileSync(tsFilePath, 'utf8')
+const getFileTypes = (client: string, nullableTypes: Record<string, string[]>, tsFilePath: string) => {
+  let fileTypes = fs.readFileSync(tsFilePath, 'utf8')
     .replace(/import \* as Types from .*\n\n/, '')
     .replace(/import \{ TypedDocumentNode .*/, '')
     .replace(/;\n+/g, '\n')
     .replace(/Types/g, `StakeWise${string.capitalize(client)}Graph`)
     .replace(/export /g, '')
+
+  const nullableKeys = Object.keys(nullableTypes).filter((key) => {
+    return fileTypes.toLowerCase().includes(` ${key.toLowerCase()}`)
+  })
+
+  if (nullableKeys.length) {
+    const nullableFields = nullableKeys.map((key) => nullableTypes[key]).flat()
+
+    nullableFields.forEach((field) => {
+      fileTypes = fileTypes.replace(new RegExp(` ${field}: `, 'g'), ` ${field}: null | `)
+    })
+  }
+
+  return fileTypes
 }
 
 const generateGraphqlQueryFiles = (dirPath: string, client: string) => {
+  const nullableTypes = client === 'backend' ? {} : getNullableTypes(dirPath)
+
   const gqlFolders = fs.readdirSync(dirPath)
     .filter((gqlModelName) => {
       const gqlModelDir = path.resolve(dirPath, gqlModelName)
@@ -153,7 +198,7 @@ const generateGraphqlQueryFiles = (dirPath: string, client: string) => {
       else {
         const isQuery = /Query/.test(queryName)
 
-        const fileTypes = getFileTypes(client, tsFilePath)
+        const fileTypes = getFileTypes(client, nullableTypes, tsFilePath)
         const { fragmentImports, fileContent } = getQueryContent(client, queryName, tsFilePath)
 
         const fileImports = isQuery
@@ -166,7 +211,7 @@ const generateGraphqlQueryFiles = (dirPath: string, client: string) => {
         const imports = fragmentImports
           ? fileImports.concat(`\n${fragmentImports}\n`)
           : fileImports
-        
+
         file = [
           imports,
           fileTypes,

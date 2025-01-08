@@ -61,7 +61,7 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
       positions.push({
         timestamp,
         positionTicket,
-        exitQueueIndex,
+        exitQueueIndex: exitQueueIndex as string,
       })
     }
     else {

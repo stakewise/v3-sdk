@@ -2,7 +2,6 @@ import graphql from '../../../../graphql'
 import { apiUrls, validateArgs } from '../../../../utils'
 import modifyExitRequests from './modifyExitRequests'
 import type { ParseExitRequestsOutput } from './modifyExitRequests'
-import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
 
 
 type GetExitQueuePositionsInput = {

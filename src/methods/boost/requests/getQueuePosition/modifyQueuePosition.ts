@@ -2,8 +2,8 @@ import { BoostQueuePositionsQueryPayload } from '../../../../graphql/subgraph/bo
 
 
 type BoostQueueItem = BoostQueuePositionsQueryPayload['leverageStrategyPositions'][number]
-
-type ClaimPosition = Pick<BoostQueueItem['exitRequest'], 'positionTicket' | 'timestamp' | 'exitQueueIndex'>
+type ExitRequest = NonNullable<BoostQueueItem['exitRequest']>
+export type ClaimPosition = Pick<ExitRequest, 'positionTicket' | 'timestamp' | 'exitQueueIndex'>
 
 export type ParseBoostQueueInput = {
   leverageStrategyPositions: BoostQueueItem[]
