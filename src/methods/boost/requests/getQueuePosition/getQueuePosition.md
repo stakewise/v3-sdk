@@ -25,8 +25,9 @@ type ClaimPosition = {
 
 type Output = {
   totalShares: bigint
-  totalAssets: bigint
   isClaimable: boolean
+  exitingShares: bigint
+  exitingAssets: bigint
   duration: number | null
   position: ClaimPosition | null
 }
@@ -34,8 +35,8 @@ type Output = {
 
 | Name             | Description                                          |
 |------------------|------------------------------------------------------|
-| `totalShares`    | Unlock osToken count |
-| `totalAssets`    | Unlock rewards count |
+| `exitingShares`  | The exiting amount of user exiting osToken shares |
+| `exitingAssets`  | The total amount of user exiting assets |
 | `isClaimable`    | Available for claim or not |
 | `duration`       | Approximate time of position in the queue |
 | `position`       | The data that will be needed for the claim operation |

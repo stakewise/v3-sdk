@@ -1,5 +1,6 @@
 query exitQueue($where: ExitRequest_filter) {
   exitRequests(where: $where) {
+    isClaimed
     timestamp
     totalAssets
     isClaimable

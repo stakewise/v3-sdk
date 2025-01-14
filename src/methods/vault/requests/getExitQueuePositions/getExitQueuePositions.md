@@ -20,9 +20,12 @@ Returns the withdrawal queue for a specific user.
 ```ts
 type ExitRequest = {
   withdrawalTimestamp: string | null
+  exitQueueIndex: string | null
   positionTicket: string
-  totalShares: string
-  totalAssets: string
+  isClaimable: boolean
+  exitedAssets: bigint
+  totalAssets: bigint
+  isClaimed: boolean
   timestamp: string
 }
 
@@ -37,13 +40,13 @@ type Output = {
   duration: number | null
   withdrawable: bigint
   positions: Position[]
-  pending: ExitRequest[]
+  requests: ExitRequest[]
 }
 ```
 
 | Name           | Description                                                                                                                                                                                                                                                                |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `pending`      | Positions not yet available for claim                                                                                                                                                                                                                                      |
+| `requests`      | Array of all requests                                                                                                                                                                                                                                      |
 | `positions`    | Positions in a special format that are required for claiming                                                                                                                                                                                                               |
 | `total`        | Total queued assets (e.g. ETH)                                                                                                                                                                                                                                             |
 | `duration`     | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
