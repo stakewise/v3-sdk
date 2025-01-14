@@ -10,9 +10,9 @@ export type ParseBoostQueueInput = {
 }
 
 export type ParseBoostQueueOutput = {
-  totalShares: bigint
-  totalAssets: bigint
   isClaimable: boolean
+  exitingShares: bigint
+  exitingAssets: bigint
   duration: number | null
   position: ClaimPosition | null
 }
@@ -24,8 +24,8 @@ const modifyQueuePosition = (values: BoostQueuePositionsQueryPayload): ParseBoos
     return {
       duration: null,
       position: null,
-      totalShares: 0n,
-      totalAssets: 0n,
+      exitingShares: 0n,
+      exitingAssets: 0n,
       isClaimable: false,
     }
   }
@@ -36,8 +36,8 @@ const modifyQueuePosition = (values: BoostQueuePositionsQueryPayload): ParseBoos
     duration: null,
     position: null,
     isClaimable: false,
-    totalAssets: BigInt(exitingAssets),
-    totalShares: BigInt(exitingOsTokenShares),
+    exitingAssets: BigInt(exitingAssets || 0),
+    exitingShares: BigInt(exitingOsTokenShares || 0),
   }
 
   if (exitRequest) {

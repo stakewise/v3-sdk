@@ -1,8 +1,15 @@
 import { ExitQueueQueryPayload } from '../../../../graphql/subgraph/exitQueue'
 
 
-type ExitRequest = Omit<ExitQueueQueryPayload['exitRequests'][number], 'withdrawalTimestamp'> & {
+type ExitRequest = ExitQueueQueryPayload['exitRequests'][number]
+
+type OutputExitRequest = Omit<
+  ExitQueueQueryPayload['exitRequests'][number],
+  'withdrawalTimestamp' | 'totalAssets' | 'exitedAssets'
+> & {
   withdrawalTimestamp: string | null
+  exitedAssets: bigint
+  totalAssets: bigint
 }
 
 export type ParseExitRequestsInput = {
@@ -19,8 +26,8 @@ export type ParseExitRequestsOutput = {
   total: bigint
   withdrawable: bigint
   positions: Position[]
-  pending: ExitRequest[]
   duration: number | null
+  requests: OutputExitRequest[]
 }
 
 const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
@@ -30,7 +37,7 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
     return {
       total: 0n,
       duration: 0,
-      pending: [],
+      requests: [],
       positions: [],
       withdrawable: 0n,
     }
@@ -41,9 +48,9 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
   let duration: null | number = 0
 
   const positions: Position[] = []
-  const pending: ExitRequest[] = []
+  const requests: OutputExitRequest[] = []
 
-  exitRequests.forEach((exitRequest, index) => {
+  exitRequests.forEach((exitRequest) => {
     const {
       timestamp,
       totalAssets,
@@ -53,10 +60,13 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
       positionTicket,
     } = exitRequest
 
-    total += BigInt(totalAssets || 0)
+    const totalAssetsBN = BigInt(totalAssets || 0)
+    const exitedAssetsBN = BigInt(exitedAssets || 0)
+
+    total += totalAssetsBN
 
     if (isClaimable) {
-      withdrawable += BigInt(exitedAssets || 0)
+      withdrawable += exitedAssetsBN
 
       positions.push({
         timestamp,
@@ -65,7 +75,11 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
       })
     }
     else {
-      pending.push(exitRequest)
+      requests.push({
+        ...exitRequest,
+        totalAssets: totalAssetsBN,
+        exitedAssets: exitedAssetsBN,
+      })
     }
 
     if (exitRequest.withdrawalTimestamp === null) {
@@ -82,7 +96,7 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
 
   return {
     total,
-    pending,
+    requests,
     duration,
     positions,
     withdrawable,
