@@ -1,5 +1,5 @@
 import { constants } from '../../../utils'
-import localStorage from './local-storage'
+import localStorage from '../../local-storage'
 
 
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
