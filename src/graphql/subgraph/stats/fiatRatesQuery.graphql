@@ -1,4 +1,4 @@
-query FiatRatesNew {
+query FiatRates {
   networks {
     assetsUsdRate
     usdToEurRate
