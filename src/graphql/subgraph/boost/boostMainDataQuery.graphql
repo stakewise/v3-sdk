@@ -1,0 +1,35 @@
+query BoostMainData(
+  $vaultAddress: String!
+  $userAddress: Bytes!
+) {
+  leverageStrategyPositions(
+    where: {
+      vault: $vaultAddress,
+      user: $userAddress
+    }
+  ) {
+    osTokenShares
+    exitingPercent
+    boostRewardAssets: assets
+  }
+  vaults(
+    where: {
+      addressString: $vaultAddress,
+    }
+  ) {
+    osTokenConfig {
+      ltvPercent
+    }
+    osTokenHolderMaxBoostApy
+    allocatorMaxBoostApy
+    apy
+  }
+  allocators(
+    where: {
+      address: $userAddress,
+      vault: $vaultAddress
+    }
+  ) {
+    assets
+  }
+}

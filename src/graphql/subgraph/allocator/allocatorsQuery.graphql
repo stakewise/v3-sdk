@@ -1,0 +1,10 @@
+query Allocators($address: Bytes!, $vaultAddress: String!) {
+  allocators(
+    where: {
+      address: $address,
+      vault: $vaultAddress
+    }
+  ) {
+    assets
+  }
+}

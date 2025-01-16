@@ -1,0 +1,7 @@
+query Stats {
+  networks {
+    usersCount
+    totalAssets
+    totalEarnedAssets
+  }
+}

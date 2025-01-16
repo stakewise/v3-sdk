@@ -3,25 +3,20 @@ import type { Provider } from 'ethers'
 
 import {
   Erc20Abi,
-  VaultAbi,
   KeeperAbi,
-  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
-  PrivateVaultAbi,
   VaultFactoryAbi,
   VestingEscrowAbi,
   EigenPodOwnerAbi,
   V2RewardTokenAbi,
-  BlocklistVaultAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  RestakingVaultAbi,
-  OtherTokenVaultAbi,
+  StakeCalculatorAbi,
+  LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
-  MerkleDistributorAbi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
@@ -30,6 +25,7 @@ import {
 
 import commonMulticall from './multicall/commonMulticall'
 import createContract from './createContract'
+import { createVaultContract } from './vault'
 
 
 const getSwiseToken = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Erc20Token>(
@@ -110,15 +106,15 @@ const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) =>
   provider
 )
 
-const getMerkleDistributor = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MerkleDistributor>(
-  config.addresses.base.merkleDistributor,
-  MerkleDistributorAbi,
+const getStakeCalculator = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.StakeCalculator>(
+  config.addresses.special.stakeCalculator,
+  StakeCalculatorAbi,
   provider
 )
 
-const getOracles = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.Oracles>(
-  config.addresses.base.oracles,
-  OraclesAbi,
+const getLeverageStrategy = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.LeverageStrategy>(
+  config.addresses.special.leverageStrategy,
+  LeverageStrategyAbi,
   provider
 )
 
@@ -130,34 +126,29 @@ type CreateContractsInput = {
 export const createContracts = (input: CreateContractsInput) => {
   const { provider, config } = input
 
+  const createVault = createVaultContract(provider)
   const multicallContract = getMulticall(provider, config)
 
   return {
     helpers: {
+      createVault,
       multicallContract,
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
-      createVault: (address: string) => createContract<StakeWise.ABI.Vault>(address, VaultAbi, provider),
       createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
-      createPrivateVault: (address: string) => createContract<StakeWise.ABI.PrivateVault>(address, PrivateVaultAbi, provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
-      createRestakingVault: (address: string) => createContract<StakeWise.ABI.RestakingVault>(address, RestakingVaultAbi, provider),
-      createBlocklistedVault: (address: string) => createContract<StakeWise.ABI.BlocklistVault>(address, BlocklistVaultAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
-      createOtherTokenVault: (address: string) => createContract<StakeWise.ABI.OtherTokenVault>(address, OtherTokenVaultAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),
     },
     base: {
       keeper: getKeeper(provider, config),
-      oracles: getOracles(provider, config),
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
       mintTokenConfig: {
         v1: getMintTokenConfigV1(provider, config),
         v2: getMintTokenConfigV2(provider, config),
       },
-      merkleDistributor: getMerkleDistributor(provider, config),
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),
@@ -176,6 +167,10 @@ export const createContracts = (input: CreateContractsInput) => {
 
       blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20BlocklistVault: getVaultFactory(provider, config.addresses.factories.erc20BlocklistVault),
+    },
+    special: {
+      stakeCalculator: getStakeCalculator(provider, config),
+      leverageStrategy: getLeverageStrategy(provider, config),
     },
   }
 }

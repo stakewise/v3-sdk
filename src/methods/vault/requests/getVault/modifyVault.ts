@@ -1,6 +1,6 @@
 import { formatEther, getAddress, MaxUint256 } from 'ethers'
 
-import { ModifiedVault } from './types'
+import type { ModifiedVault } from './types'
 import { Network, configs } from '../../../../utils'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
@@ -26,21 +26,19 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     mevEscrow,
     createdAt,
     feePercent,
-    keysManager,
     performance,
     totalAssets,
+    whitelister,
     feeRecipient,
     osTokenConfig,
     blocklistCount,
     whitelistCount,
     validatorsManager,
-    restakeOperatorsManager,
-    restakeWithdrawalsManager,
-    depositDataManager: initialDepositDataManager,
+    depositDataManager,
+    allocatorMaxBoostApy,
+    osTokenHolderMaxBoostApy,
     ...rest
   } = vault
-
-  const depositDataManager = Number(version) > 1 ? initialDepositDataManager : keysManager
 
   return {
     ...rest,
@@ -56,14 +54,12 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
-    keysManager: keysManager ? getAddress(keysManager) : '',
-    whitelister: vault.whitelister ? getAddress(vault.whitelister) : '',
-    whitelistManager: vault.whitelister ? getAddress(vault.whitelister) : '',
+    allocatorMaxBoostApy: Number(allocatorMaxBoostApy),
+    osTokenHolderMaxBoostApy: Number(osTokenHolderMaxBoostApy),
+    whitelistManager: whitelister ? getAddress(whitelister) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',
     blocklistManager: vault.blocklistManager ? getAddress(vault.blocklistManager) : '',
-    restakeOperatorsManager: restakeOperatorsManager ? getAddress(restakeOperatorsManager) : '',
-    restakeWithdrawalsManager: restakeWithdrawalsManager ? getAddress(restakeWithdrawalsManager) : '',
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)
       : configs[network].addresses.base.sharedMevEscrow,
@@ -72,7 +68,7 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
       : '∞',
     osTokenConfig: {
       ltvPercent: osTokenConfig.ltvPercent,
-      thresholdPercent: osTokenConfig.liqThresholdPercent,
+      liqThresholdPercent: osTokenConfig.liqThresholdPercent,
     },
   }
 }

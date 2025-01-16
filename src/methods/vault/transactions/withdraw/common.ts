@@ -1,5 +1,5 @@
 import type { WithdrawInput } from './types'
-import { validateArgs } from '../../../../utils'
+import { validateArgs, getVaultVersion } from '../../../../utils'
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
 
 
@@ -11,13 +11,11 @@ export const commonLogic = async (values: WithdrawInput) => {
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
-  const vaultContract = contracts.helpers.createVault(vaultAddress)
-
-  const version = Number(await vaultContract.version())
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
   // In the second version of the vault we do not use the redeem method,
   // the funds are always withdrawn via a queue
-  const isV1Version = version === 1
+  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
 
   const baseMulticallArgs: VaultMulticallBaseInput = {
     vaultContract,

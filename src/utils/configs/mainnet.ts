@@ -7,10 +7,12 @@ export default {
   network: constants.chains.mainnet,
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
-    subgraph: [
-      'https://mainnet-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
-      'https://mainnet-graph-b.stakewise.io/subgraphs/name/stakewise/stakewise',
-    ],
+    subgraph: 'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/stage',
+    // TODO replace these:
+    // [
+    //   'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
+    //   'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
+    // ],
   },
   pages: {
     beaconchain: 'https://beaconcha.in',
@@ -25,14 +27,12 @@ export default {
     },
     base: {
       keeper: '0x6B5815467da09DaA7DC83Db21c9239d98Bb487b5',
-      oracles: '0x2f1C5E86B13a74f5A6E7B4b35DD77fe29Aa47514',
       multicall: '0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441',
       priceOracle: '0x8023518b2192FB5384DAdc596765B3dD1cdFe471',
       vaultsRegistry: '0x3a0008a588772446f6e656133C2D5029CC4FC20E',
       sharedMevEscrow: '0x48319f97E5Da1233c21c48b80097c0FB7a20Ff86',
       mintTokenConfigV1: '0xE8822246F8864DA92015813A39ae776087Fb1Cd5',
       mintTokenConfigV2: '0x287d1e2A8dE183A8bf8f2b09Fa1340fBd766eb59',
-      merkleDistributor: '0xA3F21010e8b9a3930996C8849Df38f9Ca3647c20',
       depositDataRegistry: '0x75AB6DdCe07556639333d3Df1eaa684F5735223e',
       mintTokenController: '0x2A261e60FB14586B474C208b1B7AC6D0f5000306',
       rewardSplitterFactory: '0x256aF27ce81282A0491A5361172c1Db08f6cC5F8',
@@ -47,8 +47,13 @@ export default {
       blocklistVault: '0x8b6c2C9E09c6022780D164F3cFd882808b8bDBF0',
       erc20BlocklistVault: '0xe487EDDB7C5802e416385544f0A6a4426AF4AE87',
     },
+    special: {
+      stakeCalculator: '0x75c57bd50A3EB7291Da3429956D3566E0153A38f',
+      leverageStrategy: '0x48cD14FDB8e72A03C8D952af081DBB127D6281fc',
+    },
   },
   tokens: {
+    swise: constants.tokens.swise,
     mintToken: constants.tokens.osETH,
     nativeToken: constants.tokens.eth,
     depositToken: constants.tokens.eth,

@@ -8,8 +8,7 @@ const validatePositions = (positions: ClaimExitQueueInput['positions']) => {
   validateArgs.array({ positions })
 
   positions.forEach(({ positionTicket, exitQueueIndex }) => {
-    validateArgs.bigint({ exitQueueIndex })
-    validateArgs.string({ positionTicket })
+    validateArgs.string({ exitQueueIndex, positionTicket })
   })
 }
 
@@ -19,7 +18,7 @@ export const commonLogic = (values: ClaimExitQueueInput) => {
   validatePositions(positions)
 
   const baseMulticallArgs: VaultMulticallBaseInput = {
-    vaultContract: contracts.helpers.createVault(vaultAddress),
+    vaultContract: contracts.helpers.createVault({ vaultAddress }),
     vaultAddress,
     userAddress,
     options,

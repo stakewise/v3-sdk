@@ -1,7 +1,7 @@
 export type SetDepositDataRootInput = {
   userAddress: string
   vaultAddress: string
-  validatorsRoot: string
+  depositDataRoot: string
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts

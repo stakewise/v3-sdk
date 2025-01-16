@@ -7,7 +7,7 @@ export default {
   network: constants.chains.gnosis,
   api: {
     backend: 'https://gnosis-api.stakewise.io/graphql',
-    subgraph: 'https://gnosis-graph.stakewise.io/subgraphs/name/stakewise/stakewise',
+    subgraph: 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod',
   },
   pages: {
     beaconchain: 'https://gnosis.beaconcha.in',
@@ -22,14 +22,12 @@ export default {
     },
     base: {
       keeper: '0xcAC0e3E35d3BA271cd2aaBE688ac9DB1898C26aa',
-      oracles: '0xa6D123620Ea004cc5158b0ec260E934bd45C78c1',
       multicall: '0xb5b692a88BDFc81ca69dcB1d924f59f0413A602a',
       priceOracle: '0x9B1b13afA6a57e54C03AD0428a4766C39707D272',
       vaultsRegistry: '0x7d014B3C6ee446563d4e0cB6fBD8C3D0419867cB',
       sharedMevEscrow: '0x30db0d10d3774e78f8cB214b9e8B72D4B402488a',
       mintTokenConfigV1: ZeroAddress,
       mintTokenConfigV2: '0xd6672fbE1D28877db598DC0ac2559A15745FC3ec',
-      merkleDistributor: '0x7dc30953CE236665d032329F6a922d67F0a33a2B',
       depositDataRegistry: '0x58e16621B5c0786D6667D2d54E28A20940269E16',
       mintTokenController: '0x60B2053d7f2a0bBa70fe6CDd88FB47b579B9179a',
       rewardSplitterFactory: '0x4c6306BA1821D88803e27A115433520F2d6276Fb',
@@ -44,8 +42,13 @@ export default {
       blocklistVault: '0x78FbfBd1DD38892476Ac469325df36604A27F5B7',
       erc20BlocklistVault: '0x99E4300326867FE3f97864a74e500d19654c19e9',
     },
+    special: {
+      stakeCalculator: '0x2A415b65207049AC7481BF69ff9fc1B3Def97c9A',
+      leverageStrategy: ZeroAddress,
+    },
   },
   tokens: {
+    swise: constants.tokens.swise,
     mintToken: constants.tokens.osGNO,
     nativeToken: constants.tokens.xdai,
     depositToken: constants.tokens.gno,

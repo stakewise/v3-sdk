@@ -13,7 +13,9 @@
     "test": "jest --clearCache && jest --onlyChanged",
     "prepare": "npm run typechain && npm run graphql && npm run beforePublish",
     "build": "npm run test && npm run prepare && rm -rf ./dist && npm run rollup",
-    "typechain": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
+    "typechain:vault": "typechain --target ethers-v6 --out-dir src/contracts/vault/types 'src/contracts/vault/abis/*.json'",
+    "typechain:base": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
+    "typechain": "npm run typechain:base && npm run typechain:vault",
     "graphql": "graphql-codegen && ts-node -O '{\"module\": \"commonjs\"}' ./scripts/generateGraphqlExports",
     "rollup": "rollup --config rollup.config.js --bundleConfigAsCjs",
     "beforePublish": "node ./scripts/beforePublish",
@@ -41,7 +43,7 @@
     "staking"
   ],
   "peerDependencies": {
-    "ethers": "^6.13.2"
+    "ethers": "6.13.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",

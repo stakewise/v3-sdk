@@ -1,0 +1,24 @@
+query BoostQueuePositions(
+  $vaultAddress: String!
+  $userAddress: Bytes!
+) {
+  leverageStrategyPositions(
+    where: {
+      user: $userAddress,
+      vault: $vaultAddress
+    }
+  ) {
+    exitingOsTokenShares
+    exitingPercent
+    exitingAssets
+    exitRequest {
+      timestamp
+      totalAssets
+      isClaimable
+      exitedAssets
+      positionTicket
+      exitQueueIndex
+      withdrawalTimestamp
+    }
+  }
+}

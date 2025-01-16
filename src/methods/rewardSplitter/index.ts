@@ -11,7 +11,7 @@ export default {
   requests: {
     /**
      * @description Calculates the amount of assets that the user can claim from the reward splitter.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplittergetclaimamount
+     * @see https://sdk.stakewise.io/rewardSplitter/requests/getclaimamount
      */
     getClaimAmount,
   },
@@ -21,18 +21,18 @@ export default {
      * recipients in predefined proportions. Subsequently, the address of the created reward splitter
      * must be added to the vault as a fee recipient in order to utilize it. Please note that only vault
      * admin is permitted to perform this action.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplittercreate
+     * @see https://sdk.stakewise.io/rewardSplitter/transactions/createrewardsplitter
     */
     create: createRewardSplitter,
     /**
      * @description Claims rewards from the reward splitter contract.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterclaimrewards
+     * @see https://sdk.stakewise.io/rewardSplitter/transactions/claimrewards
      */
     claimRewards,
     /**
      * @description Updates the reward splitter fee recipients and predefined fee splitting proportions.
      * Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
-     * @see https://github.com/stakewise/v3-sdk/?tab=readme-ov-file#sdkrewardsplitterupdatefeerecipients
+     * @see https://sdk.stakewise.io/rewardSplitter/transactions/updatefeerecipients
     */
     updateFeeRecipients,
   },

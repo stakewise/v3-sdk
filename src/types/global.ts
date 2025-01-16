@@ -5,10 +5,8 @@ import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
 import type {
-  VaultAbi as InitialVaultAbi,
   Erc20Abi,
   KeeperAbi,
-  OraclesAbi,
   UsdRateAbi,
   MulticallAbi,
   PriceOracleAbi,
@@ -18,21 +16,16 @@ import type {
   VestingEscrowAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
-  GnosisVaultDiffAbi,
-  OtherTokenVaultAbi,
-  PrivateVaultDiffAbi,
-  MerkleDistributorAbi,
+  StakeCalculatorAbi,
+  LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
-  RestakingVaultDiffAbi,
-  BlocklistVaultDiffAbi,
   DepositDataRegistryAbi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
 } from '../contracts/types'
 
-type VaultAbi = InitialVaultAbi & GnosisVaultDiffAbi
 
 declare global {
 
@@ -43,6 +36,7 @@ declare global {
     type Contracts = ReturnType<typeof createContracts>
     type Utils = ReturnType<typeof methods.createUtils>
     type VaultMethods = ReturnType<typeof methods.createVaultMethods>
+    type BoostMethods = ReturnType<typeof methods.createBoostMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
     type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
 
@@ -77,9 +71,7 @@ declare global {
     type TransactionHash = string
 
     namespace ABI {
-      type Vault = VaultAbi
       type Keeper = KeeperAbi
-      type Oracles = OraclesAbi
       type UsdRate = UsdRateAbi
       type MintToken = Erc20Abi
       type Erc20Token = Erc20Abi
@@ -91,17 +83,14 @@ declare global {
       type VestingEscrow = VestingEscrowAbi
       type RewardSplitter = RewardSplitterAbi
       type VaultsRegistry = VaultsRegistryAbi
-      type OtherTokenVault = OtherTokenVaultAbi
-      type MerkleDistributor = MerkleDistributorAbi
+      type StakeCalculator = StakeCalculatorAbi
+      type LeverageStrategy = LeverageStrategyAbi
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
       type MintTokenController = MintTokenControllerAbi
-      type PrivateVault = VaultAbi & PrivateVaultDiffAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
-      type RestakingVault = RestakingVaultDiffAbi & VaultAbi
-      type BlocklistVault = VaultAbi & BlocklistVaultDiffAbi
     }
   }
 }

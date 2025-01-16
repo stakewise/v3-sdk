@@ -1,4 +1,4 @@
-query BlocklistAccounts($where: VaultBlockedAccount_filter, $limit: Int, $skip: Int, $orderDirection: OrderDirection) {
+query BlocklistAccounts($where: VaultBlockedAccount_filter!, $limit: Int, $skip: Int, $orderDirection: OrderDirection) {
   vaultBlockedAccounts(where: $where, first: $limit, skip: $skip, orderDirection: $orderDirection, orderBy: createdAt) {
     createdAt
     address

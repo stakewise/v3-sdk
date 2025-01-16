@@ -16,9 +16,11 @@ if (process.env.NETWORK === 'gnosis') {
 const config = configs[network]
 const subgraphIndex = Number(process.env.SUBGRAPH_INDEX || 0)
 
-const subgraphUrl = Array.isArray(config.api.subgraph)
+let subgraphUrl = Array.isArray(config.api.subgraph)
   ? config.api.subgraph[subgraphIndex]
   : config.api.subgraph
+
+subgraphUrl = subgraphUrl.replace('prod', 'stage')
 
 const urls: Record<string, string> = {
   backend: config.api.backend,
@@ -30,6 +32,7 @@ console.log(`Generating types for network: ${config.network.id}`, urls)
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
 const typesConfig = {
   maybeValue: 'T',
+  inputMaybeValue: 'Partial<T>',
   defaultScalarType: 'string', // sets BigDecimal to string instead of any
   noExport: true, // replaced with namespace
   enumsAsTypes: true,
@@ -41,6 +44,7 @@ const typesConfig = {
 // https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-urql
 const requestsConfig = {
   maybeValue: 'T',
+  inputMaybeValue: 'Partial<T>',
   defaultScalarType: 'string',
   operationResultSuffix: 'Payload', // gives suffix to payload type
   noExport: false, // disables export by default

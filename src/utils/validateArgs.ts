@@ -44,6 +44,14 @@ const number = (values: Record<string, number>) => {
   })
 }
 
+const boolean = (values: Record<string, boolean>) => {
+  Object.keys(values).forEach((key) => {
+    if (typeof values[key] !== 'boolean') {
+      throw new Error(`The "${key}" argument must be a boolean`)
+    }
+  })
+}
+
 const array = (values: Record<string, any[]>, withEmptyCheck: boolean = true) => {
   Object.keys(values).forEach((key) => {
     if (!Array.isArray(values[key])) {
@@ -51,6 +59,14 @@ const array = (values: Record<string, any[]>, withEmptyCheck: boolean = true) =>
     }
     if (withEmptyCheck && !values[key].length) {
       throw new Error(`The "${key}" argument is an empty array`)
+    }
+  })
+}
+
+const object = (values: Record<string, any>) => {
+  Object.keys(values).forEach((key) => {
+    if (typeof values[key] !== 'object' || values[key] === null) {
+      throw new Error(`The "${key}" argument must be an object`)
     }
   })
 }
@@ -68,9 +84,11 @@ const maxLength = (values: Record<string, { value: string, length: number }>) =>
 export default {
   image,
   array,
+  object,
   bigint,
   string,
   number,
+  boolean,
   address,
   maxLength,
 }

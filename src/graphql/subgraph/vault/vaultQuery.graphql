@@ -14,10 +14,10 @@ query Vault($address: ID!) {
     capacity
     mevEscrow
     isPrivate
-    isRestake
     createdAt
     mevEscrow
     tokenName
+    isGenesis
     feePercent
     totalAssets
     isBlocklist
@@ -25,16 +25,16 @@ query Vault($address: ID!) {
     description
     whitelister
     tokenSymbol
-    keysManager
     feeRecipient
-    validatorsRoot
+    queuedShares
     blocklistCount
     whitelistCount
+    depositDataRoot
     isCollateralized
     blocklistManager
     validatorsManager
     depositDataManager
-    restakeOperatorsManager
-    restakeWithdrawalsManager
+    allocatorMaxBoostApy
+    osTokenHolderMaxBoostApy
   }
 }

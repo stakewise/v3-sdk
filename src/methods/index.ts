@@ -1,7 +1,8 @@
 import vault from './vault'
+import boost from './boost'
 import osToken from './osToken'
-import rewardSplitter from './rewardSplitter'
 import * as utils from './utils'
+import rewardSplitter from './rewardSplitter'
 
 
 type Methods = (
@@ -9,6 +10,9 @@ type Methods = (
 
   | typeof vault.requests
   | typeof vault.transactions
+
+  | typeof boost.requests
+  | typeof boost.transactions
 
   | typeof osToken.requests
   | typeof osToken.transactions
@@ -91,6 +95,10 @@ const methods = {
   createVaultMethods: (params: CommonParams) => ({
     ...createMethods<typeof vault.requests>(vault.requests, params),
     ...createMethods<typeof vault.transactions>(vault.transactions, params),
+  }),
+  createBoostMethods: (params: CommonParams) => ({
+    ...createMethods<typeof boost.requests>(boost.requests, params),
+    ...createMethods<typeof boost.transactions>(boost.transactions, params),
   }),
   createOsTokenMethods: (params: CommonParams) => ({
     ...createMethods<typeof osToken.requests>(osToken.requests, params),

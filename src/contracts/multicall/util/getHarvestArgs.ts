@@ -2,21 +2,23 @@ import getHarvestParams from '../../../methods/vault/requests/getHarvestParams'
 import type { HarvestParamsQueryPayload } from '../../../graphql/subgraph/vault'
 
 
-type Input<T> = {
+type Input = {
   options: StakeWise.Options
   vaultAddress: string
 }
 
-const getHarvestArgs = async <T>(props: Input<T>): Promise<HarvestParamsQueryPayload['harvestParams'] | null> => {
+type Output = Promise<Omit<HarvestParamsQueryPayload['harvestParams'], 'canHarvest'> | null>
+
+const getHarvestArgs = async (props: Input): Output => {
   const { options, vaultAddress } = props
 
-  const harvestParams = await getHarvestParams({
+  const { params, canHarvest } = await getHarvestParams({
     options,
     vaultAddress,
   })
 
-  if (harvestParams?.canHarvest) {
-    return harvestParams
+  if (canHarvest) {
+    return params
   }
 
   return null

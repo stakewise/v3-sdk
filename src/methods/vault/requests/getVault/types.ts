@@ -9,12 +9,13 @@ export type ModifiedVault = Omit<
   | 'version'
   | 'createdAt'
   | 'mevEscrow'
-  | 'keysManager'
   | 'performance'
   | 'whitelister'
   | 'osTokenConfig'
   | 'blocklistCount'
   | 'whitelistCount'
+  | 'allocatorMaxBoostApy'
+  | 'osTokenHolderMaxBoostApy'
 > & {
   apy: number
   version: number
@@ -27,18 +28,10 @@ export type ModifiedVault = Omit<
   whitelistCount: number
   isSmoothingPool: boolean
   whitelistManager: string
+  allocatorMaxBoostApy: number
+  osTokenHolderMaxBoostApy: number
   osTokenConfig: {
     ltvPercent: string // The percent used to calculate how much user can mint OsToken shares
-    thresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position
+    liqThresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position
   }
-
-  /**
-   * @deprecated use depositDataManager
-   */
-  keysManager: string
-
-  /**
-   * @deprecated use whitelistManager
-  */
-  whitelister: string
 }

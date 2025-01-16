@@ -1,6 +1,5 @@
 import { DepositInput } from '../types'
-import { commonLogic, referrer } from './common'
-import getHarvestParams from '../../../requests/getHarvestParams'
+import { commonLogic } from './common'
 
 
 type DepositDataOutput = StakeWise.TransactionData & {
@@ -8,26 +7,24 @@ type DepositDataOutput = StakeWise.TransactionData & {
 }
 
 const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> => {
-  const { options, vaultAddress, userAddress } = values
+  const { assets } = values
 
-  const { vaultContract, canHarvest, overrides } = await commonLogic(values)
+  const { vaultContract, baseParams, updateStateParams, canHarvest } = await commonLogic(values)
 
   if (canHarvest) {
-    const harvestParams = await getHarvestParams({ options, vaultAddress })
-
-    const rx = await vaultContract.updateStateAndDeposit.populateTransaction(userAddress, referrer, harvestParams, overrides)
+    const rx = await vaultContract.updateStateAndDeposit.populateTransaction(...updateStateParams)
 
     return {
       ...rx,
-      value: overrides.value,
+      value: assets,
     }
   }
   else {
-    const rx = await vaultContract.deposit.populateTransaction(userAddress, referrer, overrides)
+    const rx = await vaultContract.deposit.populateTransaction(...baseParams)
 
     return {
       ...rx,
-      value: overrides.value,
+      value: assets,
     }
   }
 }
