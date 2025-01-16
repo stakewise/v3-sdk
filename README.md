@@ -17,5 +17,4 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 ![GitHub forks](https://img.shields.io/github/forks/stakewise/v3-sdk)
 ![Ethers version](https://img.shields.io/badge/ethers-6.12.1-purple)
 
-
 [Read the docs](https://sdk.stakewise.io/setup/prerequisites) for any further information.
