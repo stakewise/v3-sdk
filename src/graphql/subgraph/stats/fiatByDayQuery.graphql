@@ -12,6 +12,10 @@ query FiatByDay(
     timestamp
     usdToEurRate
     usdToGbpRate
+    usdToCnyRate
+    usdToJpyRate
+    usdToKrwRate
+    usdToAudRate
     assetsUsdRate
   }
 }
