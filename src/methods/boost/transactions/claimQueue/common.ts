@@ -6,10 +6,10 @@ import { boostMulticall } from '../../../../contracts'
 export const commonLogic = (values: ClaimQueueInput) => {
   const { contracts, options, position, vaultAddress, userAddress } = values
 
-  const { timestamp, positionTicket, exitQueueIndex } = position
+  const { timestamp, positionTicket } = position
 
   validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.string({ timestamp, positionTicket, exitQueueIndex })
+  validateArgs.string({ timestamp, positionTicket })
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
     leverageStrategyContract: contracts.special.leverageStrategy,

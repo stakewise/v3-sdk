@@ -1,6 +1,6 @@
 import claimQueueGas from './claimQueueGas'
 import claimQueueEncode from './claimQueueEncode'
-import type { ClaimPosition } from '../../requests/getQueuePosition'
+import type { ClaimPosition } from '../../requests/getQueuePosition/modifyQueuePosition'
 
 
 export type ClaimQueueInput = {
