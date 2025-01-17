@@ -14,8 +14,6 @@ class AbortCallback {
 
   then(onSuccess: (data: any) => any, onError?: (error: any) => any) {
     if (this.isAborted) {
-      const dummyPromise = new Promise(() => {})
-
       return new AbortCallback(dummyPromise, this.onAbort)
     }
 
