@@ -7,7 +7,7 @@ export default {
   network: constants.chains.mainnet,
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/stage',
+    subgraph: 'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/stage',
     // TODO replace these:
     // [
     //   'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
