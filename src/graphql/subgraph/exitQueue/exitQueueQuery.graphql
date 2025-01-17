@@ -1,10 +1,12 @@
 query exitQueue($where: ExitRequest_filter) {
   exitRequests(where: $where) {
+    receiver
     isClaimed
     timestamp
     totalAssets
     isClaimable
     exitedAssets
+    isV2Position
     positionTicket
     exitQueueIndex
     withdrawalTimestamp

@@ -22,11 +22,13 @@ type ExitRequest = {
   withdrawalTimestamp: string | null
   exitQueueIndex: string | null
   positionTicket: string
+  isV2Position: boolean
   isClaimable: boolean
   exitedAssets: bigint
   totalAssets: bigint
   isClaimed: boolean
   timestamp: string
+  receiver: string
 }
 
 type Position = {
@@ -44,14 +46,13 @@ type Output = {
 }
 ```
 
-| Name           | Description                                                                                                                                                                                                                                                                |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `requests`      | Array of all requests                                                                                                                                                                                                                                      |
-| `positions`    | Positions in a special format that are required for claiming                                                                                                                                                                                                               |
-| `total`        | Total queued assets (e.g. ETH)                                                                                                                                                                                                                                             |
-| `duration`     | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. |
-|                |                                                                                                                                                                                                                                                                            |- 
-| `withdrawable` | Assets available for withdrawal (e.g. ETH)                                                                                                                                                                                                                                 |
+| Name           | Description                  |
+|----------------|------------------------------|
+| `requests`     | Array of all requests |
+| `positions`    | Positions in a special format that are required for claiming |
+| `total`        | Total queued assets (e.g. ETH) |
+| `duration`     | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. | 
+| `withdrawable` | Assets available for withdrawal (e.g. ETH) |
 
 #### Example:
 
