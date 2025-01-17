@@ -6,7 +6,7 @@ const config: Config = {
   maxWorkers: 1, // Fixed https://github.com/jestjs/jest/issues/11617#issuecomment-1028651059
   rootDir: './src',
   preset: 'ts-jest',
-  resetMocks: true,
+  resetMocks: false,
   testEnvironment: 'node',
   testMatch: [ '**/*.spec.ts' ],
   collectCoverageFrom: [ 'src/**/*.ts' ],

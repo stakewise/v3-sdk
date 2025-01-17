@@ -7,11 +7,9 @@ type FirstCallback<Data> = (value: Data) => Data | any
 
 type EmptyCallback = () => void
 
-type ErrorCallback<Data, ModifiedData = Data> = (error: Error | any) => Promise<void> | AbortRequest<Data, ModifiedData>
-
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
-  onSuccess: ModifyCallback<Data, ModifiedData>
-  onError?: ErrorCallback<Data, ModifiedData>
+  onSuccess?: ModifyCallback<Data, ModifiedData>
+  onError?: (error: any) => Promise<any> | AbortRequest<Data, ModifiedData>
 }
 
 type PendingRequest = {
@@ -21,9 +19,11 @@ type PendingRequest = {
 
 const requestsQueue: Record<string, PendingRequest | undefined> = {}
 
+const dummyPromise = new Promise(() => {})
+
 // Returns fetch promise that can be aborted
 // If we create several promises, only one request will be executed
-class AbortRequest<Data, ModifiedData> {
+class AbortRequest<Data, ModifiedData = Data> {
   private controller = new AbortController()
   request: Promise<Data>
   promise: AbortPromise<ModifiedData>
@@ -36,8 +36,8 @@ class AbortRequest<Data, ModifiedData> {
 
     this.body = init.body as string
     this.isAborted = false
-    this.requestId = `${url}_${this.body}`
 
+    this.requestId = `${url}_${this.body}`
     const pendingRequest = requestsQueue[this.requestId]
 
     if (pendingRequest) {
@@ -68,16 +68,20 @@ class AbortRequest<Data, ModifiedData> {
             throw new Error('Subgraph indexing error')
           }
 
-          return json?.data as Data
+          return (json?.data || json) as Data
         })
         .catch((error) => {
-          requestsQueue[this.requestId] = undefined
+          if (!this.isAborted) {
+            requestsQueue[this.requestId] = undefined
 
-          if (typeof onError === 'function') {
-            onError(error)
+            if (typeof onError === 'function') {
+              onError(error)
+            }
+
+            return Promise.reject(error)
           }
 
-          return Promise.reject(error)
+          return dummyPromise as Data
         })
 
       requestsQueue[this.requestId] = {
@@ -129,7 +133,7 @@ class AbortRequest<Data, ModifiedData> {
     }
     else {
       requestsQueue[this.requestId] = undefined
-      this.controller.abort()
+      this.controller.abort('aborted')
     }
   }
 }
