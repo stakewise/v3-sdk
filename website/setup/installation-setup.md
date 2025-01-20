@@ -30,10 +30,9 @@ import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
 const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
-  provider: new BrowserProvider(window.ethereum, {
-    name: 'mainnet',
-    chainId: Network.Mainnet,
-  }),
+  endpoints: {
+    web3: 'https://mainnet.infura.io/v3/...',
+  },
 })
 ```
 
