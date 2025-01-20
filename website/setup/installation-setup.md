@@ -20,19 +20,13 @@ webpackConfig.module.rules.push(
   }
 )
 ```
-#### Create SDK instance:
+#### Create SDK instance
+
+SDK without specified provider allows to call methods to get data such as `sdk.vault.getVault`,
+but doesn't allow to send transactions such as `sdk.vault.deposit`
 
 ```typescript
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
-
-// sdk without provider allows to call methods to get data such as `sdk.vault.getVault`,
-// but doesn't allow to send transactions such as `sdk.vault.deposit`
-const sdk = new StakeWiseSDK({
-  network: Network.Mainnet,
-  endpoints: {
-    web3: 'https://mainnet.infura.io/v3/...',
-  },
-})
 
 // sdk with provider allows to call methods to get data and send transactions
 const sdk = new StakeWiseSDK({
@@ -42,6 +36,40 @@ const sdk = new StakeWiseSDK({
     chainId: Network.Mainnet,
   }),
 })
+```
+
+SDK with specified provider allows to call methods to get data and send transactions
+
+```typescript
+import { BrowserProvider } from 'ethers'
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  provider: new BrowserProvider(window.ethereum, {
+    name: 'mainnet',
+    chainId: Network.Mainnet,
+  }),
+})
+```
+
+SDK with specified provider using wagmi connector.
+Detailed example can be found [here](https://stackblitz.com/edit/stakewise-sdk?file=src%2Fcomponents%2Futil%2Findex.ts,src%2Fcomponents%2FConnect.tsx,src%2Fcomponents%2FSdkContext.tsx,src%2Fcomponents%2Futil%2FinitContext.ts,src%2Fwagmi.ts,src%2FApp.tsx,src%2Fcomponents%2FConnectWallet.tsx,src%2Fcomponents%2FAccount.tsx).
+
+```typescript
+import { BrowserProvider, Eip1193Provider } from 'ethers'
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+wagmiConnector.getProvder()
+  .then((library) => {
+    const sdk = new StakeWiseSDK({
+      network: Network.Mainnet,
+      provider: new BrowserProvider(library as Eip1193Provider, {
+        name: 'mainnet',
+        chainId: Network.Mainnet,
+      }),
+    })
+  })
 ```
 
 #### SDK Constructor Arguments:
