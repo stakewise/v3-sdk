@@ -35,11 +35,6 @@ const sdk = new StakeWiseSDK({
 })
 
 // sdk with provider allows to call methods to get data and send transactions
-const provider = new BrowserProvider(window.ethereum, {
-  name: 'mainnet',
-  chainId: Network.Mainnet,
-})
-
 const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
   provider: new BrowserProvider(window.ethereum, {
