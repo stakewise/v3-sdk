@@ -28,7 +28,6 @@ but doesn't allow to send transactions such as `sdk.vault.deposit`
 ```typescript
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
-// sdk with provider allows to call methods to get data and send transactions
 const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
   provider: new BrowserProvider(window.ethereum, {
