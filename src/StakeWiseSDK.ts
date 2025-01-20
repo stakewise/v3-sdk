@@ -38,6 +38,20 @@ class StakeWiseSDK {
     }
 
     const provider = options.provider || createProvider(options)
+    const originalGetSigner = provider.getSigner
+
+    provider.getSigner = async function (address?: string) {
+      const providerError = 'To send this transaction, please provide BrowserProvider to the StakeWiseSDK'
+
+      try {
+        const signer = await originalGetSigner.bind(this)(address)
+
+        return signer
+      }
+      catch (error) {
+        throw new Error(providerError)
+      }
+    }
 
     const contracts = createContracts({ provider, config })
 
