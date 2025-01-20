@@ -25,6 +25,8 @@ webpackConfig.module.rules.push(
 ```typescript
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
+// sdk without provider allows to call methods to get data such as `sdk.vault.getVault`,
+// but doesn't allow to send transactions such as `sdk.vault.deposit`
 const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
   endpoints: {
@@ -32,15 +34,28 @@ const sdk = new StakeWiseSDK({
   },
 })
 
+// sdk with provider allows to call methods to get data and send transactions
+const provider = new BrowserProvider(window.ethereum, {
+  name: 'mainnet',
+  chainId: Network.Mainnet,
+})
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  provider: new BrowserProvider(window.ethereum, {
+    name: 'mainnet',
+    chainId: Network.Mainnet,
+  }),
+})
 ```
 
 #### SDK Constructor Arguments:
 
-| Name               | Type                                                             | Required | Description               |
-|--------------------|------------------------------------------------------------------|----------|---------------------------|
-| network            | `Network`                                                        | **Yes**  | Chain id |
-| provider           | `BrowserProvider or JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers |
-| endpoints.web3     | `string OR Array<(string \| { url: string, headers: Headers })>` | **No**   | Your urls for connecting to blockchain. This parameter is required if `provider` is not provided. If more than one URL is provided, they will be used as fallbacks. |
-| endpoints.subgraph | `string`                                                         | **No**   | stakewise subgraph url |
-| endpoints.api      | `string`                                                         | **No**   | stakewise backend url |
+| Name               | Type                                                               | Required | Description                                                                                                                                                         |
+|--------------------|--------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| network            | `Network`                                                          | **Yes**  | Chain id                                                                                                                                                            |
+| provider           | `BrowserProvider` or `JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers. This parameter is required to send transactions.                                                   |
+| endpoints.web3     | `string` or `Array<(string \| { url: string, headers: Headers })>` | **No**   | Your urls for connecting to blockchain. This parameter is required if `provider` is not provided. If more than one URL is provided, they will be used as fallbacks. |
+| endpoints.subgraph | `string`                                                           | **No**   | stakewise subgraph url                                                                                                                                              |
+| endpoints.api      | `string`                                                           | **No**   | stakewise backend url                                                                                                                                               |
 
