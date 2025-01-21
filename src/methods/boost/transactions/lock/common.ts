@@ -104,10 +104,10 @@ export const commonLogic = async (values: CommonLogicInput) => {
     }
   }
 
-  params.push({
-    method: 'deposit',
-    args: [ vaultAddress, amount, referrerAddress ],
-  })
+  // params.push({
+  //   method: 'deposit',
+  //   args: [ vaultAddress, amount, referrerAddress ],
+  // })
 
   console.log('params', params)
 
