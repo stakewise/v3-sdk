@@ -59,7 +59,12 @@ const getPermitSignature = async (values: GetPermitSignatureInput) => {
   })
 
   const signature = await provider.send('eth_signTypedData_v4', [ ownerAddress, data ])
+
+  console.log('signature', signature)
+
   const { v, r, s } = await Signature.from(signature)
+
+  console.log('v, r, s', v, r, s)
 
   return {
     amount,

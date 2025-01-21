@@ -65,6 +65,9 @@ export const commonLogic = async (values: CommonLogicInput) => {
     const allowance = await contracts.tokens.mintToken.allowance(userAddress, strategyProxy)
     const isPermitRequired = allowance < amount
 
+    console.log('allowance', allowance)
+    console.log('isPermitRequired', isPermitRequired)
+
     if (isPermitRequired) {
       if (mockPermitSignature) {
         params.push({
@@ -83,6 +86,8 @@ export const commonLogic = async (values: CommonLogicInput) => {
           ownerAddress: userAddress,
           spenderAddress: strategyProxy,
         })
+
+        console.log('permitParams', permitParams)
 
         params.push({
           method: 'permit',
@@ -103,6 +108,8 @@ export const commonLogic = async (values: CommonLogicInput) => {
     method: 'deposit',
     args: [ vaultAddress, amount, referrerAddress ],
   })
+
+  console.log('params', params)
 
   return {
     ...multicallArgs,
