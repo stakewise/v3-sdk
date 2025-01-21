@@ -62,9 +62,13 @@ const getPermitSignature = async (values: GetPermitSignatureInput) => {
 
   console.log('signature', signature)
 
-  const { v, r, s } = await Signature.from(signature)
-
-  console.log('v, r, s', v, r, s)
+  const params = await Signature.from(signature)
+  const { v, r, s, serialized } = params
+  console.log('v', v)
+  console.log('r', r)
+  console.log('s', s)
+  console.log('serialized', serialized)
+  console.log('params', params)
 
   return {
     amount,
