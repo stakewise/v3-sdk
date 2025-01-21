@@ -26,8 +26,8 @@ const handleMulticall = async ({ contract, multicallParams }: Input) => {
   //   return contract[method](...args, { gasLimit })
   // }
 
-  const estimatedGas = await contract.multicall.estimateGas(calls)
-  const gasLimit = estimatedGas * 110n / 100n
+  // const estimatedGas = await contract.multicall.estimateGas(calls)
+  // const gasLimit = estimatedGas * 110n / 100n
 
   console.log('calls', calls)
 
