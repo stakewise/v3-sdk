@@ -67,7 +67,7 @@ const rewardSplitterMulticall = async <T extends unknown>(values: RewardSplitter
     return handleTransactionData(commonInput) as Promise<T>
   }
 
-  return handleMulticall(commonInput)
+  return handleMulticall(commonInput) as Promise<T>
 }
 
 
