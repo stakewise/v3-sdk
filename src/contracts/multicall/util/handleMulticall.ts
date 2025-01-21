@@ -11,25 +11,27 @@ const handleMulticall = async ({ contract, multicallParams }: Input) => {
   const calls = getMulticallCalls({ multicallParams, contract })
 
   const isSoloCall = calls.length === 1
-
+  console.log('isSoloCall', isSoloCall)
   // Even though ethers tries to find the best price for gas, sometimes it's
   // not enough and the transaction breaks down and users lose money for gas.
   // Adding 10% to the gas limit
-  if (isSoloCall) {
-    const { method, args } = multicallParams[0]
+  // if (isSoloCall) {
+  //   const { method, args } = multicallParams[0]
 
-    // @ts-ignore: no types to describe
-    const estimatedGas = await contract[method].estimateGas(...args)
-    const gasLimit = estimatedGas * 110n / 100n
+  //   // @ts-ignore: no types to describe
+  //   const estimatedGas = await contract[method].estimateGas(...args)
+  //   const gasLimit = estimatedGas * 110n / 100n
 
-    // @ts-ignore: no types to describe
-    return contract[method](...args, { gasLimit })
-  }
+  //   // @ts-ignore: no types to describe
+  //   return contract[method](...args, { gasLimit })
+  // }
 
   const estimatedGas = await contract.multicall.estimateGas(calls)
   const gasLimit = estimatedGas * 110n / 100n
 
-  return contract.multicall(calls, { gasLimit })
+  console.log('calls', calls)
+
+  return contract.multicall(calls)
 }
 
 
