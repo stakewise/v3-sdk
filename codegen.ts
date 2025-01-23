@@ -3,8 +3,8 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
-
-let network: Network = Network.Holesky
+// TODO change
+let network: Network = Network.Mainnet
 
 if (process.env.NETWORK === 'mainnet') {
   network = Network.Mainnet
