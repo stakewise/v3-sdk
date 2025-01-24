@@ -20,7 +20,9 @@ export const commonLogic = async (values: CommonLogicInput) => {
   validateArgs.bigint({ amount })
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
 
-  const isSafeWallet = !isAddress(provider.getSigner(userAddress))
+  const code = await provider.getCode(userAddress)
+  const isSafeWallet = !isAddress(code)
+
   let safeWalletData = null
 
   const permitParams = isSafeWallet ? null : values.permitParams
