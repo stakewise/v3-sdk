@@ -1,6 +1,7 @@
-query VaultStats($vaultAddress: String!  $timestamp: Timestamp!) {
+query VaultStats($vaultAddress: String!  $timestamp: Timestamp!, $limit: Int) {
   vaultStats: vaultStats_collection(
     interval: day
+    first: $limit
     where: {
       vault: $vaultAddress
       timestamp_gte: $timestamp,

@@ -1,8 +1,10 @@
 query UserRewards(
   $where: AllocatorStats_filter
+  $limit: Int
 ) {
   allocator: allocatorStats_collection(
     interval: day
+    first: $limit
     where: $where
   ) {
     apy
