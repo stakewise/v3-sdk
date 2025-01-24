@@ -1,6 +1,5 @@
 import { apiUrls, validateArgs, calculateUserStats, getTimestamp } from '../../../../utils'
 import graphql from '../../../../graphql'
-import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
 
 
 type GetUserStatsInput = {
