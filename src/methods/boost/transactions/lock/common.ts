@@ -1,4 +1,4 @@
-import { ZeroAddress } from 'ethers'
+import { isAddress, MaxUint256, ZeroAddress } from 'ethers'
 
 import type { LockInput } from './types'
 import { validateArgs } from '../../../../utils'
@@ -14,11 +14,16 @@ type CommonLogicInput = LockInput & {
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
     contracts, options, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    permitParams, mockPermitSignature,
+    mockPermitSignature,
   } = values
 
   validateArgs.bigint({ amount })
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+
+  const isSafeWallet = !isAddress(provider.getSigner(userAddress))
+  let safeWalletData = null
+
+  const permitParams = isSafeWallet ? null : values.permitParams
 
   if (permitParams) {
     validateArgs.object({ permitParams })
@@ -66,7 +71,15 @@ export const commonLogic = async (values: CommonLogicInput) => {
     const isPermitRequired = allowance < amount
 
     if (isPermitRequired) {
-      if (mockPermitSignature) {
+      // It is hard to make permit action for Safe wallet,
+      // so we need to use approve instead
+      if (isSafeWallet) {
+        safeWalletData = {
+          contract: contracts.tokens.mintToken,
+          approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],
+        }
+      }
+      else if (mockPermitSignature) {
         params.push({
           method: 'permit',
           args: [
@@ -105,9 +118,12 @@ export const commonLogic = async (values: CommonLogicInput) => {
   })
 
   return {
-    ...multicallArgs,
-    request: {
-      params,
+    safeWalletData,
+    multicallArgs: {
+      ...multicallArgs,
+      request: {
+        params,
+      },
     },
   }
 }

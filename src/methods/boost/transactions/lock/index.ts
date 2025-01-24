@@ -6,7 +6,18 @@ import { boostMulticall } from '../../../../contracts'
 
 
 const lock: Lock = async (values) => {
-  const multicallArgs = await commonLogic(values)
+  const { provider, userAddress } = values
+
+  const { safeWalletData, multicallArgs } = await commonLogic(values)
+
+  if (safeWalletData) {
+    const signer = await provider.getSigner(userAddress)
+    const signedContract = safeWalletData.contract.connect(signer)
+
+    const { hash } = await signedContract.approve(...safeWalletData.approveArgs)
+
+    await provider.waitForTransaction(hash)
+  }
 
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
 
