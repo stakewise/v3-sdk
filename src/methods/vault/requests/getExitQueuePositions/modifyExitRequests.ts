@@ -74,13 +74,12 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
         exitQueueIndex: exitQueueIndex as string,
       })
     }
-    else {
-      requests.push({
-        ...exitRequest,
-        totalAssets: totalAssetsBN,
-        exitedAssets: exitedAssetsBN,
-      })
-    }
+
+    requests.push({
+      ...exitRequest,
+      totalAssets: totalAssetsBN,
+      exitedAssets: exitedAssetsBN,
+    })
 
     if (exitRequest.withdrawalTimestamp === null) {
       duration = null
