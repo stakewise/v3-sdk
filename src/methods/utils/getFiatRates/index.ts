@@ -26,7 +26,7 @@ const getFiatRates = (values: GetFiatRatesInput) => {
         usdToKrwRate,
         usdToAudRate,
         swiseUsdRate,
-      } = data.networks[0]
+      } = data.exchangeRates[0]
 
       let assetUsd = Number(assetsUsdRate)
 
