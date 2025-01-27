@@ -74,6 +74,7 @@ const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<Parse
         exitQueueIndex: exitQueueIndex as string,
       })
     }
+
     requests.push({
       ...exitRequest,
       totalAssets: totalAssetsBN,
