@@ -21,6 +21,7 @@ const getVaultStats = (input: GetVaultStatsInput) => {
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       timestamp,
+      limit: daysCount,
       vaultAddress: vaultAddress.toLowerCase(),
     },
     modifyResult: modifyVaultStats,

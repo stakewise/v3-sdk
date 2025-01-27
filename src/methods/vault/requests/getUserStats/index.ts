@@ -1,6 +1,5 @@
 import { apiUrls, validateArgs, calculateUserStats, getTimestamp } from '../../../../utils'
 import graphql from '../../../../graphql'
-import { StakeWiseSubgraphGraph } from '../../../../types/graphql/subgraph'
 
 
 type GetUserStatsInput = {
@@ -19,6 +18,7 @@ const getUserStats = (input: GetUserStatsInput) => {
   return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
+      limit: daysCount,
       where: {
         timestamp_gte: String(getTimestamp(daysCount)),
         allocator_: {

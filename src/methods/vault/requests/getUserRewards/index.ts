@@ -11,6 +11,12 @@ type GetUserRewardsInput = {
   vaultAddress: string
 }
 
+const calculateLimit = (dateTo: number, dateFrom: number): number => {
+  const millisecondsInDay = 1000 * 60 * 60 * 24
+
+  return Math.floor((dateTo - dateFrom) / millisecondsInDay)
+}
+
 const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[]> => {
   const { options, vaultAddress, userAddress, dateFrom, dateTo } = input
 
@@ -29,6 +35,8 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
     ? configs[Network.Mainnet].api.subgraph
     : subgraphUrl
 
+  const limit = calculateLimit(dateTo, dateFrom)
+
   const timestampTo = String(dateTo * 1_000)
   const timestampFrom = String(dateFrom * 1_000)
 
@@ -36,6 +44,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
     graphql.subgraph.vault.fetchUserRewardsQuery({
       url: subgraphUrl,
       variables: {
+        limit,
         where: {
           timestamp_lte: timestampTo,
           timestamp_gte: timestampFrom,
