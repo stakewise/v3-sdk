@@ -8,7 +8,7 @@ type GetFiatRatesInput = {
 
 const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
   url: configs[Network.Gnosis].api.subgraph,
-  modifyResult: (data) => Number(data.networks[0].assetsUsdRate),
+  modifyResult: (data) => Number(data.exchangeRates[0].assetsUsdRate),
 })
 
 const getFiatRates = (values: GetFiatRatesInput) => {
