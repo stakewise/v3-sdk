@@ -21,11 +21,11 @@ export const commonLogic = async (values: CommonLogicInput) => {
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
 
   const code = await provider.getCode(userAddress)
-  const isSafeWallet = code !== '0x'
+  const isMultiSig = code !== '0x'
 
   let safeWalletData = null
 
-  const permitParams = isSafeWallet ? null : values.permitParams
+  const permitParams = isMultiSig ? null : values.permitParams
 
   if (permitParams) {
     validateArgs.object({ permitParams })
@@ -75,7 +75,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
     if (isPermitRequired) {
       // It is hard to make permit action for Safe wallet,
       // so we need to use approve instead
-      if (isSafeWallet) {
+      if (isMultiSig) {
         safeWalletData = {
           contract: contracts.tokens.mintToken,
           approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],
