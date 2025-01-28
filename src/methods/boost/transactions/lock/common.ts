@@ -23,7 +23,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
   const code = await provider.getCode(userAddress)
   const isMultiSig = code !== '0x'
 
-  let safeWalletData = null
+  let multiSigData = null
 
   const permitParams = isMultiSig ? null : values.permitParams
 
@@ -73,10 +73,10 @@ export const commonLogic = async (values: CommonLogicInput) => {
     const isPermitRequired = allowance < amount
 
     if (isPermitRequired) {
-      // It is hard to make permit action for Safe wallet,
+      // It is hard to make permit action for MultiSig e.g. Safe wallet,
       // so we need to use approve instead
       if (isMultiSig) {
-        safeWalletData = {
+        multiSigData = {
           contract: contracts.tokens.mintToken,
           approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],
         }
@@ -120,7 +120,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
   })
 
   return {
-    safeWalletData,
+    multiSigData,
     multicallArgs: {
       ...multicallArgs,
       request: {

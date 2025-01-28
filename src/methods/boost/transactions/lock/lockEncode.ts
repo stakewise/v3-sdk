@@ -9,7 +9,7 @@ type Output = {
 }
 
 const lockEncode = async (values: LockInput): Promise<Output> => {
-  const { safeWalletData, multicallArgs } = await commonLogic(values)
+  const { multiSigData, multicallArgs } = await commonLogic(values)
 
   const [ lockTxData, approveTxData ] = await Promise.all([
     boostMulticall<{ data: string, to: string }>({
@@ -19,8 +19,8 @@ const lockEncode = async (values: LockInput): Promise<Output> => {
         transactionData: true,
       },
     }),
-    safeWalletData
-      ? safeWalletData.contract.approve.populateTransaction(...safeWalletData.approveArgs)
+    multiSigData
+      ? multiSigData.contract.approve.populateTransaction(...multiSigData.approveArgs)
       : Promise.resolve(null),
   ])
 
