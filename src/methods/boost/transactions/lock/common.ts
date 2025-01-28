@@ -1,4 +1,4 @@
-import { isAddress, MaxUint256, ZeroAddress } from 'ethers'
+import { MaxUint256, ZeroAddress } from 'ethers'
 
 import type { LockInput } from './types'
 import { validateArgs } from '../../../../utils'
@@ -21,7 +21,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
 
   const code = await provider.getCode(userAddress)
-  const isSafeWallet = !isAddress(code)
+  const isSafeWallet = code !== '0x'
 
   let safeWalletData = null
 
