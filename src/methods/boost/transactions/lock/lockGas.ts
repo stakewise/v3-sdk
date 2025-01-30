@@ -5,17 +5,26 @@ import { boostMulticall } from '../../../../contracts'
 
 
 const lockGas = async (values: LockInput) => {
-  const { provider } = values
+  const { provider, userAddress } = values
 
-  const multicallArgs = await commonLogic({ ...values, mockPermitSignature: true })
+  const { multiSigData, multicallArgs } = await commonLogic({ ...values, mockPermitSignature: true })
 
-  const estimatedGas = await boostMulticall<bigint>({
-    ...multicallArgs,
-    request: {
-      ...multicallArgs.request,
-      estimateGas: true,
-    },
-  })
+  const [ estimatedGasMulticall, estimatedGasApprove ] = await Promise.all([
+    boostMulticall<bigint>({
+      ...multicallArgs,
+      request: {
+        ...multicallArgs.request,
+        estimateGas: true,
+      },
+    }),
+    multiSigData
+      ? multiSigData.contract.approve.estimateGas(...multiSigData.approveArgs, {
+        from: userAddress,
+      })
+      : Promise.resolve(0n),
+  ])
+
+  const estimatedGas = estimatedGasMulticall + estimatedGasApprove
 
   return getGas({ estimatedGas, provider })
 }
