@@ -1,4 +1,4 @@
-import { ZeroAddress } from 'ethers'
+import { MaxUint256, ZeroAddress } from 'ethers'
 
 import type { LockInput } from './types'
 import { validateArgs } from '../../../../utils'
@@ -14,11 +14,18 @@ type CommonLogicInput = LockInput & {
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
     contracts, options, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    permitParams, mockPermitSignature,
+    mockPermitSignature,
   } = values
 
   validateArgs.bigint({ amount })
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+
+  const code = await provider.getCode(userAddress)
+  const isMultiSig = code !== '0x'
+
+  let multiSigData = null
+
+  const permitParams = isMultiSig ? null : values.permitParams
 
   if (permitParams) {
     validateArgs.object({ permitParams })
@@ -66,7 +73,15 @@ export const commonLogic = async (values: CommonLogicInput) => {
     const isPermitRequired = allowance < amount
 
     if (isPermitRequired) {
-      if (mockPermitSignature) {
+      // It is hard to make permit action for MultiSig e.g. Safe wallet,
+      // so we need to use approve instead
+      if (isMultiSig) {
+        multiSigData = {
+          contract: contracts.tokens.mintToken,
+          approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],
+        }
+      }
+      else if (mockPermitSignature) {
         params.push({
           method: 'permit',
           args: [
@@ -105,9 +120,12 @@ export const commonLogic = async (values: CommonLogicInput) => {
   })
 
   return {
-    ...multicallArgs,
-    request: {
-      params,
+    multiSigData,
+    multicallArgs: {
+      ...multicallArgs,
+      request: {
+        params,
+      },
     },
   }
 }
