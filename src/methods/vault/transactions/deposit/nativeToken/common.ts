@@ -8,8 +8,8 @@ import { HarvestParamsQueryPayload } from '../../../../../graphql/subgraph/vault
 
 
 type HarvestParams = Omit<HarvestParamsQueryPayload['harvestParams'], 'canHarvest'>
-type UpdateStateParams = [ string, string, HarvestParams, PayableOverrides ] | null
 type BaseParams = [ string, string, PayableOverrides ]
+type UpdateStateParams = [ string, string, HarvestParams, PayableOverrides ]
 
 export const commonLogic = async (values: DepositInput) => {
   const { options, contracts, userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
@@ -25,9 +25,7 @@ export const commonLogic = async (values: DepositInput) => {
   const { params: harvestParams, canHarvest } = await getHarvestParams({ options, vaultAddress })
 
   const baseParams: BaseParams = [ userAddress, referrerAddress, overrides ]
-  const updateStateParams: UpdateStateParams = harvestParams
-    ? [ userAddress, referrerAddress, harvestParams, overrides ]
-    : null
+  const updateStateParams: UpdateStateParams = [ userAddress, referrerAddress, harvestParams, overrides ]
 
   return {
     vaultContract,

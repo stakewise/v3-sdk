@@ -12,7 +12,7 @@ const deposit: Deposit = async (values) => {
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultContract.connect(signer)
 
-  if (canHarvest && updateStateParams) {
+  if (canHarvest) {
     const response = await signedContract.updateStateAndDeposit(...updateStateParams)
 
     return response.hash

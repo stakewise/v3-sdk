@@ -13,7 +13,7 @@ const depositGas = async (values: DepositInput) => {
 
   let estimatedGas = 0n
 
-  if (canHarvest && updateStateParams) {
+  if (canHarvest) {
     estimatedGas = await signedContract.updateStateAndDeposit.estimateGas(...updateStateParams)
   }
   else {

@@ -18,13 +18,6 @@ const getHarvestParams = (values: GetHarvestParamsInput) => {
       address: vaultAddress.toLowerCase(),
     },
     modifyResult: (data) => {
-      if (!data.harvestParams) {
-        return {
-          canHarvest: false,
-          params: null,
-        }
-      }
-
       const { canHarvest, ...params } = data.harvestParams || {}
 
       return {

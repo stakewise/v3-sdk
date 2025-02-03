@@ -11,7 +11,7 @@ const depositEncode = async (values: DepositInput): Promise<DepositDataOutput> =
 
   const { vaultContract, baseParams, updateStateParams, canHarvest } = await commonLogic(values)
 
-  if (canHarvest && updateStateParams) {
+  if (canHarvest) {
     const rx = await vaultContract.updateStateAndDeposit.populateTransaction(...updateStateParams)
 
     return {
