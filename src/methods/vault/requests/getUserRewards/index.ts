@@ -59,6 +59,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
     graphql.subgraph.stats.fetchFiatByDayQuery({
       url: ratesUrl,
       variables: {
+        limit,
         dateTo: timestampTo,
         dateFrom: timestampFrom,
       },
@@ -68,13 +69,15 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
       ? graphql.subgraph.stats.fetchFiatByDayQuery({
         url: subgraphUrl,
         variables: {
+          limit,
           dateTo: timestampTo,
           dateFrom: timestampFrom,
         },
-        modifyResult: (data) => (data.exchangeRate || []).reduce((acc, { timestamp, assetsUsdRate }) => ({
-          ...acc,
-          [timestamp]: assetsUsdRate,
-        }), {}),
+        modifyResult: (data) => (data.exchangeRate || [])
+          .reduce((acc, { timestamp, assetsUsdRate }) => ({
+            ...acc,
+            [timestamp]: assetsUsdRate,
+          }), {}),
       })
       : Promise.resolve({}),
   ])
