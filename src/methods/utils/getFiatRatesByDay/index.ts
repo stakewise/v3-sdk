@@ -7,6 +7,12 @@ type GetFiatRatesByDayInput = {
   dateFrom: number
 }
 
+const calculateLimit = (dateTo: number, dateFrom: number): number => {
+  const millisecondsInDay = 1000 * 60 * 60 * 24
+
+  return Math.floor((dateTo - dateFrom) / millisecondsInDay)
+}
+
 const getFiatRatesByDay = (input: Pick<GetFiatRatesByDayInput, 'dateFrom' | 'dateTo'>) => {
   const { dateFrom, dateTo } = input
 
@@ -15,6 +21,7 @@ const getFiatRatesByDay = (input: Pick<GetFiatRatesByDayInput, 'dateFrom' | 'dat
     variables: {
       dateTo: String(dateTo * 1_000),
       dateFrom: String(dateFrom * 1_000),
+      limit: calculateLimit(dateTo, dateFrom),
     },
     modifyResult: (data) => data.exchangeRate,
   })
