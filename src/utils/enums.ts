@@ -34,3 +34,9 @@ export enum OsTokenPositionHealth {
   Healthy,
   Risky,
 }
+
+export enum BorrowStatus {
+  Healthy,
+  Moderate,
+  Risky,
+}
