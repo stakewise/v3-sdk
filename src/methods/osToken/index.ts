@@ -1,4 +1,5 @@
 // Requests
+import getStats from './requests/getStats'
 import getAPY from './requests/getOsTokenAPY'
 import getMaxMint from './requests/getMaxMint'
 import getRate from './requests/getOsTokenRate'
@@ -61,6 +62,11 @@ export default {
      * @see https://sdk.stakewise.io/utils/getpermitsignature
     */
     getPermitSignature,
+    /**
+     * @description Returns the osToken stats collection. With the help of this data it is possible to build a chart.
+     * @see https://sdk.stakewise.io/osToken/requests/getstats
+     */
+    getStats,
   },
   transactions: {
     /**
