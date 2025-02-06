@@ -1,0 +1,15 @@
+query OsTokenStats(
+  $first: Int
+  $where: OsTokenStats_filter
+) {
+  osTokenStats: osTokenStats_collection(
+    interval: day
+    first: $first
+    where: $where
+  ) {
+    apy
+    timestamp
+    totalAssets
+    earnedAssets
+  }
+}
