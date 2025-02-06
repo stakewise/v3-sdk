@@ -7,9 +7,9 @@ Getting the osToken stats collection. With the help of this data it is possible 
 
 #### Arguments:
 
-| Name   | Type     | Required | Description              |
-|--------|----------|----------|--------------------------|
-| daysCount  | `number` | **Yes**  | The limit in days        |
+| Name      | Type     | Required | Description       |
+|-----------|----------|----------|-------------------|
+| daysCount | `number` | **Yes**  | The limit in days |
 
 #### Returns:
 
@@ -21,12 +21,12 @@ type Output = {
   rewards: number
 }
 ```
-| Name | Description                                                       |
-|------|-------------------------------------------------------------------|
-| `time` | Date and time for each data point                                 |
-| `apy` | Current APY based on time, rewards and balance.                   |
+| Name      | Description                                                       |
+|-----------|-------------------------------------------------------------------|
+| `time`    | Date and time for each data point                                 |
+| `apy`     | Current APY based on time, rewards and balance.                   |
 | `rewards` | Number of assets earned by the osToken during the interval in ETH |
-| `balance` | Total assets in the osToken at the moment of time in ETH            |
+| `balance` | Total assets in the osToken at the moment of time in ETH          |
 #### Example:
 ```ts
 await sdk.osToken.getStats({
