@@ -20,22 +20,28 @@ Get boost data for vault user
 type Output = {
   shares: bigint
   vaultApy: number
+  totalShares: bigint
   rewardAssets: bigint
+  borrowStatus: BorrowStatus
   maxMintShares: bigint
+  borrowedAssets: bigint
   exitingPercent: number
   allocatorMaxBoostApy: number
   osTokenHolderMaxBoostApy: number
 }
 ```
 
-| Name             | Description                                                                                      |
-|------------------|--------------------------------------------------------------------------------------------------|
-| `shares`         | Tokens count of boost |
-| `vaultApy`       | Base vault apy |
-| `maxMintShares`  | Maximum possible number of osToken without deductions |
-| `exitingPercent` | The percent (in wad) of user's position that is currently exiting |
-| `rewardAssets`   | User boost rewards |
-| `allocatorMaxBoostApy` | The average max boost APY earned in this vault by the allocator |
+| Name                       | Description                                                          |
+|----------------------------|----------------------------------------------------------------------|
+| `shares`                   | Tokens count of boost                                                |
+| `totalShares`              | Tokens count of boost + reward assets converted to shares            |
+| `vaultApy`                 | Base vault apy                                                       |
+| `maxMintShares`            | Maximum possible number of osToken without deductions                |
+| `exitingPercent`           | The percent (in wad) of user's position that is currently exiting    |
+| `rewardAssets`             | User boost rewards                                                   |
+| `borrowStatus`             | Aave borrow status. enum BorrowStatus (Healthy, Moderate, Risky)     |
+| `borrowedAssets`           | Amount of borrowed ETH                                               |
+| `allocatorMaxBoostApy`     | The average max boost APY earned in this vault by the allocator      |
 | `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder |
 
 #### Example:

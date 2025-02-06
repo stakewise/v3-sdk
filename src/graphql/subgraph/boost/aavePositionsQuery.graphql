@@ -1,0 +1,5 @@
+query AavePositions($proxyAddress: Bytes!) {
+  aavePositions(where: { user: $proxyAddress }) {
+    borrowedAssets
+  }
+}

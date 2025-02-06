@@ -8,6 +8,8 @@ query BoostMainData(
       user: $userAddress
     }
   ) {
+    proxy
+    borrowLtv
     osTokenShares
     exitingPercent
     boostRewardAssets: assets

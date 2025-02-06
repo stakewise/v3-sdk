@@ -31,12 +31,12 @@ type Output = {
 }
 ```
 
-| Name      | Description                                                                     |
-|-----------|---------------------------------------------------------------------------------|
-| `time`    | Date and time for each data point                                               |
-| `apy`     | Current APY based on time, rewards and balance.                                 |
-| `rewards` | Number of assets earned by the user in current vault during the interval in ETH |
-| `balance` | Total assets by the user in current vault at the moment of time in ETH          |
+| Name      | Description                                                              |
+|-----------|--------------------------------------------------------------------------|
+| `time`    | Date and time for each data point                                        |
+| `apy`     | Current APY based on time, rewards and balance.                          |
+| `rewards` | Number of assets earned by the user in current vault during the interval |
+| `balance` | Total assets by the user in current vault at the moment of time          |
 
 #### Example:
 
