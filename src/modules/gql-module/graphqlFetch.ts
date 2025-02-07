@@ -10,7 +10,7 @@ type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variab
 const graphqlFetch = <Data, Variables, ModifiedData>(
   options: ExtendedFetchInput<Data, Variables, ModifiedData>
 ): AbortRequest<Data, ModifiedData> => {
-  const { url, query, variables, retryCount = 0, modifyResult } = options
+  const { url, query, variables, withTime, retryCount = 0, modifyResult } = options
 
   const operationName = query
     .replace(/^(query|mutation)\s/, '')
@@ -19,7 +19,11 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
 
   const currentUrl = getRequestUrl(url)
   const opName = operationName ? `?opName=${operationName}` : ''
-  const requestUrl = `${currentUrl}${opName}`
+
+  let time = withTime ? `t=${new Date().getTime()}` : ''
+  time = opName ? `&${time}` : `?${time}`
+
+  const requestUrl = `${currentUrl}${opName}${time}`
 
   return new AbortRequest<Data, ModifiedData>(requestUrl, {
     method: 'POST',

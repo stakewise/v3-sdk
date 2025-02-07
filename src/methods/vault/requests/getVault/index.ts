@@ -7,10 +7,11 @@ import modifyVault from './modifyVault'
 type GetVaultInput = {
   options: StakeWise.Options
   vaultAddress: string
+  withTime?: boolean
 }
 
 const getVault = (input: GetVaultInput) => {
-  const { options, vaultAddress } = input
+  const { options, vaultAddress, withTime } = input
 
   validateArgs.address({ vaultAddress })
 
@@ -19,6 +20,7 @@ const getVault = (input: GetVaultInput) => {
     variables: {
       address: vaultAddress.toLowerCase(),
     },
+    withTime,
     modifyResult: (data) => modifyVault({ data, network: options.network }),
   })
 }
