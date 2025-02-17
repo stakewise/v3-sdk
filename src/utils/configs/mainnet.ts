@@ -6,7 +6,7 @@ import constants from '../constants'
 export default {
   network: constants.chains.mainnet,
   api: {
-    backend: 'https://mainnet-api.stakewise.io/graphql',
+    backend: 'https://mainnet-api-b.stakewise.io/graphql',
     subgraph: 'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
     // TODO replace these:
     // [

@@ -21,7 +21,10 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
   const opName = operationName ? `?opName=${operationName}` : ''
 
   let time = withTime ? `t=${new Date().getTime()}` : ''
-  time = opName ? `&${time}` : `?${time}`
+
+  if (withTime) {
+    time = opName ? `&${time}` : `?${time}`
+  }
 
   const requestUrl = `${currentUrl}${opName}${time}`
 
