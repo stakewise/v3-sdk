@@ -28,6 +28,9 @@ const modifyRewardSplitters = (input: RewardSplittersQueryPayload): Output => {
 
     return {
       owner,
+      // TODO AW: get from graph
+      version: 2,
+      isClaimOnBehalfEnabled: false,
       address: getAddress(id),
       totalShares: totalSharesBI,
       feeRecipients: shareHolders.map(({ shares, address }) => {
