@@ -1,6 +1,3 @@
-export { fetchShareHoldersQuery } from './shareHoldersQuery.graphql'
-export type { ShareHoldersQueryPayload, ShareHoldersQueryVariables } from './shareHoldersQuery.graphql'
-
 export { fetchRewardSplittersQuery } from './rewardSplittersQuery.graphql'
 export type { RewardSplittersQueryPayload, RewardSplittersQueryVariables } from './rewardSplittersQuery.graphql'
 
