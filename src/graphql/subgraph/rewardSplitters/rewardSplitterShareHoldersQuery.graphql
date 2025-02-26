@@ -14,9 +14,6 @@ query RewardSplitterShareHolders($address: Bytes!, $vaultAddress: String!, $rewa
     where: {
       address: $address,
       vault: $vaultAddress
-      rewardSplitter_: {
-        id: $rewardSplitterAddress
-      }
     }
   ) {
     earnedVaultAssets
