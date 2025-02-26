@@ -7,7 +7,7 @@ export default {
   network: constants.chains.holesky,
   api: {
     backend: 'https://holesky-api-b.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/evgeny-test-2',
+    subgraph: 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/prod',
   },
   pages: {
     beaconchain: 'https://holesky.beaconcha.in',
