@@ -28,7 +28,7 @@ const validateList = (values: Record<string, FeeRecipient[]>, withEmptyCheck?: b
 export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   const {
     contracts, userAddress, vaultAddress, options,
-    rewardSplitterAddress, feeRecipients,
+    rewardSplitterAddress, feeRecipients, isClaimOnBehalfEnabled,
   } = values
 
   let oldFeeRecipients: FeeRecipient[] = values.oldFeeRecipients as FeeRecipient[]
@@ -97,6 +97,13 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   })
 
   const params: Parameters<typeof rewardSplitterMulticall>[0]['request']['params'] = []
+
+  if (typeof isClaimOnBehalfEnabled !== 'undefined') {
+    params.push({
+      method: 'setClaimOnBehalf',
+      args: [ isClaimOnBehalfEnabled ],
+    })
+  }
 
   Object.keys(increaseList).forEach((address) => {
     params.push({
