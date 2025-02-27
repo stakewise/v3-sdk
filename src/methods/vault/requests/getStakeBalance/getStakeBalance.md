@@ -18,14 +18,15 @@ Getting user's balance in the vault
 
 ```ts
 type Output = {
-  shares: bigint
   assets: bigint
+  totalEarnedAssets: bigint
 }
 ```
 
-| Name     | Description             |
-|----------|-------------------------|
-| `assets` | Balance in ETH          |
+| Name                | Description             |
+|---------------------|-------------------------|
+| `assets`            | Balance in ETH          |
+| `totalEarnedAssets` | Total earned rewards    |
 
 #### Example:
 
