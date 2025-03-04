@@ -4,7 +4,7 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-let network: Network = Network.Holesky
+let network: Network = Network.Chiado // TODO AW: Network.Holesky
 
 if (process.env.NETWORK === 'mainnet') {
   network = Network.Mainnet
