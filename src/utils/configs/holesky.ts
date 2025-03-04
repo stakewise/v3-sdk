@@ -7,7 +7,8 @@ export default {
   network: constants.chains.holesky,
   api: {
     backend: 'https://holesky-api-b.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/prod',
+    // TODO AW: change to 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/prod'
+    subgraph: 'https://graphs.stakewise.io/holesky/subgraphs/name/stakewise/evgeny-test-3',
   },
   pages: {
     beaconchain: 'https://holesky.beaconcha.in',
@@ -30,7 +31,7 @@ export default {
       mintTokenConfigV2: '0x124C33d07F94B31aDF87C12F7cA3a586d3510928',
       depositDataRegistry: '0xAC0F906E433d58FA868F936E8A43230473652885',
       mintTokenController: '0x7BbC1733ee018f103A9a9052a18fA9273255Cf36',
-      rewardSplitterFactory: '0x6780C77293b366036AC1BDE0A2d8E531f8C4A602',
+      rewardSplitterFactory: '0x1C62a091DA7A2FE22aD58f0aFC58BBDDa35D06D2',
     },
     factories: {
       vault: '0x3acDBdbf0459d376dF9378c02Af50c83dc7646e9',
