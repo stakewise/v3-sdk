@@ -22,7 +22,7 @@ const getStakeBalance = (values: GetStakeBalanceInput) => {
     },
     modifyResult: (data) => ({
       assets: BigInt(data?.allocators?.[0]?.assets || 0),
-      // totalEarnedAssets: BigInt(data?.allocators?.[0]?.totalEarnedAssets || 0),
+      totalEarnedAssets: BigInt(data?.allocators?.[0]?.totalEarnedAssets || 0),
     }),
   })
 }
