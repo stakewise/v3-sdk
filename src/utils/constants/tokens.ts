@@ -1,6 +1,7 @@
 export default {
   // Mainnet
   eth: 'ETH',
+  ssv: 'SSV',
   swise: 'SWISE',
   osETH: 'osETH',
 

@@ -6,6 +6,7 @@ export type ModifiedVault = Omit<
   'apy'
   | 'admin'
   | 'address'
+  | 'baseApy'
   | 'version'
   | 'createdAt'
   | 'mevEscrow'
@@ -18,6 +19,7 @@ export type ModifiedVault = Omit<
   | 'osTokenHolderMaxBoostApy'
 > & {
   apy: number
+  baseApy: number
   version: number
   createdAt: number
   vaultAdmin: string

@@ -14,9 +14,10 @@ export default {
   },
   addresses: {
     tokens: {
+      ssv: ZeroAddress,
+      depositToken: ZeroAddress,
       swise: '0x484871C6D54a3dAEBeBBDB0AB7a54c97D72986Bb',
       mintToken: '0xF603c5A3F774F05d4D848A9bB139809790890864',
-      depositToken: ZeroAddress,
       v2RewardToken: '0x2ee2E20702B5881a1171c5dbEd01C3d1e49Bf632',
       v2StakedToken: '0x91167861c590Fd68bEbE662951fBE30C9B23D759',
     },
@@ -48,6 +49,7 @@ export default {
     },
   },
   tokens: {
+    ssv: constants.tokens.ssv,
     swise: constants.tokens.swise,
     mintToken: constants.tokens.osETH,
     nativeToken: constants.tokens.eth,
