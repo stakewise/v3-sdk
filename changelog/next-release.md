@@ -1,5 +1,20 @@
 # New
----
+### 1. Add SSV token to config
+
+### 2. Add new method [sdk.vault.getPeriodicDistributions](https://sdk.stakewise.io/vault/requests/getperiodicdistributions)
+Getting the periodic distribution of additional incentives
+
+```ts
+type Output = Array<{
+  apy: string
+  token: string
+}>
+```
+
+| Name                | Description             |
+|---------------------|-------------------------|
+| `apy` | The average weekly apy of the distribution |
+| `token` | The address of the token that is distributed |
 
 # Updates
 ### 1. [sdk.vault.getStakeBalance](https://sdk.stakewise.io/vault/requests/getstakebalance)
@@ -30,5 +45,3 @@ type Output = {
 | Name      | Description                                                  |
 |-----------|--------------------------------------------------------------|
 | `baseApy` | The vault average weekly base APY (without extra incentives) |
-
-### 3. Add SSV token to config

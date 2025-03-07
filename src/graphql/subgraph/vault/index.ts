@@ -18,3 +18,6 @@ export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } f
 
 export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql'
 export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql'
+
+export { fetchPeriodicDistributionsQuery } from './periodicDistributionsQuery.graphql'
+export type { PeriodicDistributionsQueryPayload, PeriodicDistributionsQueryVariables } from './periodicDistributionsQuery.graphql'
