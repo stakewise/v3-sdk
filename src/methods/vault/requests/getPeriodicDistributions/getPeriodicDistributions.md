@@ -12,8 +12,8 @@ Getting the periodic distribution of additional incentives
 | Name         | Type     | Required | Description               |
 |--------------|----------|----------|---------------------------|
 | vaultAddress | `string` | **Yes**  | The address of the vault |
-| endTimestamp  | `string` | **Yes**  | The timestamp when the distribution ends |
-| startTimestamp  | `string` | **Yes**  | The timestamp when the distribution starts |
+| endTimestamp  | `number` | **Yes**  | The timestamp when the distribution ends |
+| startTimestamp  | `number` | **Yes**  | The timestamp when the distribution starts |
 
 #### Returns:
 
@@ -34,7 +34,7 @@ type Output = Array<{
 ```ts
 await sdk.vault.getPeriodicDistributions({
   userAddress: '0x...',
-  endTimestamp: '1741346116',
-  startTimestamp: '1741346116',
+  endTimestamp: 1741346116,
+  startTimestamp: 1741346116,
 })
 ```

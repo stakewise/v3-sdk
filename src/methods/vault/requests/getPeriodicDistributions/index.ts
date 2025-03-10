@@ -7,8 +7,8 @@ import modifyPeriodicDistributions from './modifyPeriodicDistributions'
 
 type GetPeriodicDistributionsInput = {
   vaultAddress: string
-  endTimestamp: string
-  startTimestamp: string
+  endTimestamp: number
+  startTimestamp: number
   options: StakeWise.Options
 }
 
@@ -16,13 +16,13 @@ const getPeriodicDistributions = (values: GetPeriodicDistributionsInput) => {
   const { options, vaultAddress, startTimestamp, endTimestamp } = values
 
   validateArgs.address({ vaultAddress })
-  validateArgs.string({ startTimestamp, endTimestamp })
+  validateArgs.number({ startTimestamp, endTimestamp })
 
   return graphql.subgraph.vault.fetchPeriodicDistributionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      endTimestamp,
-      startTimestamp,
+      endTimestamp: String(endTimestamp),
+      startTimestamp: String(startTimestamp),
       vaultAddress: vaultAddress.toLowerCase(),
     },
     modifyResult: (data: PeriodicDistributionsQueryPayload) => modifyPeriodicDistributions({ data }),
