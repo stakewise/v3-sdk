@@ -13,6 +13,7 @@ import getHarvestParams from './requests/getHarvestParams'
 import getStakerActions from './requests/getStakerActions'
 import getRewardSplitters from './requests/getRewardSplitters'
 import getExitQueuePositions from './requests/getExitQueuePositions'
+import getPeriodicDistributions from './requests/getPeriodicDistributions'
 
 // Transactions
 import { default as create } from './transactions/create'
@@ -104,6 +105,11 @@ export default {
      * @see https://sdk.stakewise.io/vault/requests/getuserapy
      */
     getUserApy,
+    /**
+     * @description Getting the periodic distribution of additional incentives.
+     * @see https://sdk.stakewise.io/vault/requests/getperiodicdistributions
+     */
+    getPeriodicDistributions,
   },
   transactions: {
     /**
