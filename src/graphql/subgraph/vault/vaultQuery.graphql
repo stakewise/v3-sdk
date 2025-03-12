@@ -10,7 +10,6 @@ query Vault($address: ID!) {
     admin
     version
     isErc20
-    baseApy
     imageUrl
     capacity
     mevEscrow
