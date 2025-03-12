@@ -19,7 +19,7 @@ export type ModifiedVault = Omit<
   | 'osTokenHolderMaxBoostApy'
 > & {
   apy: number
-  baseApy: number
+  // baseApy: number
   version: number
   createdAt: number
   vaultAdmin: string
