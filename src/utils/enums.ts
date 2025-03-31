@@ -1,6 +1,5 @@
 export enum Network {
   Mainnet = 1,
-  Holesky = 17000,
 
   Gnosis = 100,
   Chiado = 10200,

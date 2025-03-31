@@ -16,20 +16,6 @@ const mainnet = {
   isTestnet: false,
 } as const
 
-const holesky = {
-  id: 'holesky',
-  name: 'Holesky Testnet',
-  chainId: Network.Holesky,
-  hexadecimalChainId: '0x4268',
-  blockExplorerUrl: 'https://holesky.etherscan.io',
-  nativeCurrency: {
-    symbol: tokens.eth,
-    name: 'Ethereum',
-    decimals: 18,
-  },
-  isTestnet: true,
-} as const
-
 const chiado = {
   id: 'chiado',
   name: 'Chiado Testnet',
@@ -61,7 +47,6 @@ const gnosis = {
 
 export default {
   mainnet,
-  holesky,
   chiado,
   gnosis,
 }
