@@ -1,3 +1,4 @@
+export { default as getAdminParams } from './getAdminParams'
 export { default as getMetadataParams }  from './getMetadataParams'
 export { default as getBlocklistParams }  from './getBlocklistParams'
 export { default as getWhitelistParams }  from './getWhitelistParams'

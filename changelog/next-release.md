@@ -26,12 +26,12 @@ type Output = {
   assets: bigint
   totalEarnedAssets: bigint
 }
+
 ```
 | Name                | Description             |
 |---------------------|-------------------------|
 | `assets`            | Balance in ETH          |
 | `totalEarnedAssets` | Total earned rewards    |
-
 
 ### 2. [sdk.vault.getVault](https://sdk.stakewise.io/vault/requests/getvault)
 
@@ -41,7 +41,24 @@ type Output = {
 type Output = {
   baseApy: number
 }
+
 ```
 | Name      | Description                                                  |
 |-----------|--------------------------------------------------------------|
 | `baseApy` | The vault average weekly base APY (without extra incentives) |
+
+#### New input:
+
+### 3. [sdk.vault.operate](https://sdk.stakewise.io/vault/transactions/operate)
+
+#### Add new input field:
+
+```ts
+type Output = {
+  admin: string
+}
+
+```
+| Name      | Description                                                  |
+|-----------|--------------------------------------------------------------|
+| `admin`   | Changing the vault administrator                             |

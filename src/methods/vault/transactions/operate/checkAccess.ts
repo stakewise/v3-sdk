@@ -13,7 +13,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
       blocklist, whitelist, whitelistManager, feeRecipient,
-      blocklistManager, metadataIpfsHash, validatorsManager
+      blocklistManager, metadataIpfsHash, validatorsManager, admin,
     } = values
 
     try {
@@ -23,8 +23,9 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
     }
     catch (actionError) {
       const isAdmin = Boolean(
-        whitelistManager
+        admin
         || feeRecipient
+        || whitelistManager
         || blocklistManager
         || metadataIpfsHash
         || validatorsManager
