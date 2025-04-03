@@ -1,8 +1,9 @@
 export enum Network {
   Mainnet = 1,
+  Hoodi = 560048, // Testnet
 
   Gnosis = 100,
-  Chiado = 10200,
+  Chiado = 10200, // Testnet
 }
 
 export enum VaultType {

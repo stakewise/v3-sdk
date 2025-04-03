@@ -11,14 +11,14 @@
   "extensions": {
     "endpoints": {
       "Subgraph GraphQL": {
-        "url": "https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod",
+        "url": "https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod",
         "headers": {
           "user-agent": "JS GraphQL"
         },
         "introspect": false
       },
       "Backend GraphQL": {
-        "url": "https://mainnet-api-b.stakewise.io/graphql",
+        "url": "https://hoodi-api.stakewise.io/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
         },

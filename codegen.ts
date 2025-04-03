@@ -4,8 +4,11 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-let network: Network = Network.Mainnet
+let network: Network = Network.Hoodi
 
+if (process.env.NETWORK === 'mainnet') {
+  network = Network.Mainnet
+}
 if (process.env.NETWORK === 'gnosis') {
   network = Network.Gnosis
 }
