@@ -18,7 +18,7 @@ const mainnet = {
 
 const hoodi = {
   id: 'hoodi',
-  name: 'Hoodi Chain',
+  name: 'Hoodi Testnet',
   chainId: Network.Hoodi,
   hexadecimalChainId: '0x88bb0',
   blockExplorerUrl: 'https://hoodi.etherscan.io',
