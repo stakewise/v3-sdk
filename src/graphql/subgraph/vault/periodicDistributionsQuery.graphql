@@ -9,5 +9,6 @@ query PeriodicDistributions($vaultAddress: Bytes!, $startTimestamp: BigInt, $end
   ) {
     apy
     token
+    endTimestamp
   }
 }
