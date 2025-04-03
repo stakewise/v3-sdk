@@ -2,8 +2,6 @@ import type { PeriodicDistributionsQueryPayload } from '../../../../graphql/subg
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
-import modifyPeriodicDistributions from './modifyPeriodicDistributions'
-
 
 type GetPeriodicDistributionsInput = {
   vaultAddress: string
@@ -25,7 +23,7 @@ const getPeriodicDistributions = (values: GetPeriodicDistributionsInput) => {
       startTimestamp: String(startTimestamp),
       vaultAddress: vaultAddress.toLowerCase(),
     },
-    modifyResult: (data: PeriodicDistributionsQueryPayload) => modifyPeriodicDistributions({ data }),
+    modifyResult: (data: PeriodicDistributionsQueryPayload) => data?.periodicDistributions || [],
   })
 }
 
