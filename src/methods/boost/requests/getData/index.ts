@@ -41,7 +41,7 @@ const getData = async (values: GetBoostInput) => {
     osTokenHolderMaxBoostApy: 0,
   }
 
-  if ([ Network.Mainnet ].includes(options.network)) {
+  if ([ Network.Mainnet, Network.Hoodi ].includes(options.network)) {
     const boostMainData = await graphql.subgraph.boost.fetchBoostMainDataQuery({
       url: apiUrls.getSubgraphqlUrl(options),
       variables: {

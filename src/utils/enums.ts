@@ -1,7 +1,14 @@
 export enum Network {
   Mainnet = 1,
-
   Gnosis = 100,
+
+  /**
+   * Network for mainnet testing
+   */
+  Hoodi = 560048,
+  /**
+   * Network for gnosis testing
+   */
   Chiado = 10200,
 }
 

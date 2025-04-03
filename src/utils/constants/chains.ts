@@ -16,6 +16,20 @@ const mainnet = {
   isTestnet: false,
 } as const
 
+const hoodi = {
+  id: 'hoodi',
+  name: 'Hoodi Chain',
+  chainId: Network.Hoodi,
+  hexadecimalChainId: '0x88bb0',
+  blockExplorerUrl: 'https://hoodi.etherscan.io',
+  nativeCurrency: {
+    symbol: tokens.eth,
+    name: 'Ethereum',
+    decimals: 18,
+  },
+  isTestnet: true,
+} as const
+
 const chiado = {
   id: 'chiado',
   name: 'Chiado Testnet',
@@ -49,4 +63,5 @@ export default {
   mainnet,
   chiado,
   gnosis,
+  hoodi,
 }
