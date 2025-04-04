@@ -16,7 +16,7 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
 ![GitHub forks](https://img.shields.io/github/forks/stakewise/v3-sdk)
-![Networks](https://img.shields.io/badge/networks-mainnet%20%7C%20hoodi(testnet)%20%7C%20gnosis%20%7C%20chiado(testnet)%20-2aa846)
+![Networks](https://img.shields.io/badge/networks-mainnet%20%7C%20hoodi%20(testnet)%20%7C%20gnosis%20%7C%20chiado%20(testnet)%20-2aa846)
 
 
 [Read the docs](https://sdk.stakewise.io/setup/prerequisites) for any further information.
