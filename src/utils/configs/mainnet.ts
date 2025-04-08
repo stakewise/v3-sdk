@@ -7,12 +7,10 @@ export default {
   network: constants.chains.mainnet,
   api: {
     backend: 'https://mainnet-api-b.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
-    // TODO replace these:
-    // [
-    //   'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
-    //   'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
-    // ],
+    subgraph: [
+      'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
+      'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
+    ],
   },
   pages: {
     beaconchain: 'https://beaconcha.in',
