@@ -21,6 +21,7 @@ Getting the periodic distribution of additional incentives
 type Output = Array<{
   apy: string
   token: string
+  endTimestamp: string
 }>
 ```
 
@@ -28,6 +29,7 @@ type Output = Array<{
 |---------------------|-------------------------|
 | `apy` | The average weekly apy of the distribution |
 | `token` | The address of the token that is distributed |
+| `endTimestamp` | The timestamp when the distribution ends |
 
 #### Example:
 

@@ -58,7 +58,8 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
       [ [ formattedParams.capacity, formattedParams.feePercent, metadataIpfsHash ] ]
     )
 
-  const isStakeNativeToken = [ Network.Mainnet ].includes(options.network)
+  const isStakeNativeToken = [ Network.Mainnet, Network.Hoodi ].includes(options.network)
+
   const params: [ string, boolean, PayableOverrides ] = isStakeNativeToken
     ? [ encodedParams, isOwnMevEscrow, { value: constants.blockchain.gwei } ]
     : [ encodedParams, isOwnMevEscrow, {} ]
