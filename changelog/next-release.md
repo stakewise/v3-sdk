@@ -56,9 +56,11 @@ type Output = {
 ```ts
 type Output = {
   admin: string
+  feePercent: number
 }
 
 ```
 | Name      | Description                                                  |
 |-----------|--------------------------------------------------------------|
 | `admin`   | Changing the vault administrator                             |
+| `feePercent`   | Changing fee percent charged by the vault               |

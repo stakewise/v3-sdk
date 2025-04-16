@@ -23,12 +23,15 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | userAddress               | `string`                                     | **Yes**  | -                    | The address of the user making the update (admin, whitelist manager, blocklist manager or keys manager) |  
 | vaultAddress              | `string`                                     | **Yes**  | -                    | The address of the vault |
 | admin                     | `string`                                     | **No**   | -                    | Changing the vault administrator |
+| feePercent                | `number`                                     | **No**   | Admin                | Changing fee percent charged by the vault |
 
 #### Example:
 
 ```ts
 // Data to update the vault by admin.
 const params = {
+  admin: '0x...',
+  feePercent: '600',
   userAddress: '0x...',
   vaultAddress: '0x...',
   image: '...',
