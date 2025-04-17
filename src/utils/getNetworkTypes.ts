@@ -5,8 +5,8 @@ const getNetworkTypes = (options: StakeWise.Options) => {
   const network = options.network
 
   const isEthereum = (
-    network === Network.Holesky
-    || network === Network.Mainnet
+    network === Network.Mainnet
+    || network === Network.Hoodi
   )
 
   const isGnosis = (

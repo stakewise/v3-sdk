@@ -1,12 +1,7 @@
-# New
----
-
 # Updates
 ### 1. [sdk.rewardSplitter.getClaimAmount](https://sdk.stakewise.io/rewardSplitter/requests/getclaimamount)
 
-#### New output:
-
-```ts
+```
 type Item = {
   assets: bigint
   address: string

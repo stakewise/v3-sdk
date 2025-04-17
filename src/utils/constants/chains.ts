@@ -16,12 +16,12 @@ const mainnet = {
   isTestnet: false,
 } as const
 
-const holesky = {
-  id: 'holesky',
-  name: 'Holesky Testnet',
-  chainId: Network.Holesky,
-  hexadecimalChainId: '0x4268',
-  blockExplorerUrl: 'https://holesky.etherscan.io',
+const hoodi = {
+  id: 'hoodi',
+  name: 'Hoodi Testnet',
+  chainId: Network.Hoodi,
+  hexadecimalChainId: '0x88bb0',
+  blockExplorerUrl: 'https://hoodi.etherscan.io',
   nativeCurrency: {
     symbol: tokens.eth,
     name: 'Ethereum',
@@ -61,7 +61,7 @@ const gnosis = {
 
 export default {
   mainnet,
-  holesky,
   chiado,
   gnosis,
+  hoodi,
 }

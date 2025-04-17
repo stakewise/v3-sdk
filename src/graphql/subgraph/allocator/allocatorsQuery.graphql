@@ -6,5 +6,6 @@ query Allocators($address: Bytes!, $vaultAddress: String!) {
     }
   ) {
     assets
+    totalEarnedAssets
   }
 }

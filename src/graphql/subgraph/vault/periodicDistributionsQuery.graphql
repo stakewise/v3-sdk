@@ -1,0 +1,14 @@
+query PeriodicDistributions($vaultAddress: Bytes!, $startTimestamp: BigInt, $endTimestamp: BigInt) {
+  periodicDistributions(
+    where: {
+      data: $vaultAddress,
+      distributionType: VAULT,
+      endTimestamp_gte: $endTimestamp
+      startTimestamp_lte: $startTimestamp,
+    }
+  ) {
+    apy
+    token
+    endTimestamp
+  }
+}

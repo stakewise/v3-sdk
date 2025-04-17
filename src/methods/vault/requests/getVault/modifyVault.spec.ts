@@ -6,7 +6,7 @@ import { Network, configs } from '../../../../utils'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-const network = Network.Holesky
+const network = Network.Mainnet
 
 describe('modifyVault', () => {
   const mockVaultQueryPayload: VaultQueryPayload = {
@@ -26,6 +26,7 @@ describe('modifyVault', () => {
       allocatorMaxBoostApy: '123.2',
       osTokenHolderMaxBoostApy: '123.2',
       apy: '2.80',
+      baseApy: '0.80',
       queuedShares: '0',
       blocklistCount: '0',
       whitelistCount: '0',
@@ -52,6 +53,7 @@ describe('modifyVault', () => {
   it('should correctly transform the vault data', () => {
     const expectedModifiedVault: ModifiedVault = {
       apy: 2.80,
+      baseApy: 0.80,
       isErc20: true,
       feePercent: 2,
       version: 1,
