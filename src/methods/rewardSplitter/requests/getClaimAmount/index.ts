@@ -1,12 +1,13 @@
-import { apiUrls, validateArgs } from '../../../utils'
-import graphql from '../../../graphql'
+import { apiUrls, validateArgs } from '../../../../utils'
+import modifyClaimAmount from './modifyClaimAmount'
+import graphql from '../../../../graphql'
 
 
 type GetClaimAmountInput = {
   vaultAddress: string
   userAddress: string
-  rewardSplitterAddress: string
   options: StakeWise.Options
+  rewardSplitterAddress: string
   contracts: StakeWise.Contracts
 }
 
@@ -22,7 +23,7 @@ const getClaimAmount = (input: GetClaimAmountInput) => {
       vaultAddress: vaultAddress.toLowerCase(),
       rewardSplitterAddress: rewardSplitterAddress.toLowerCase(),
     },
-    modifyResult: (data) => BigInt(data.rewardSplitterShareHolders?.[0]?.earnedVaultAssets || 0),
+    modifyResult: (data) => modifyClaimAmount({ ...data, rewardSplitterAddress }),
   })
 }
 
