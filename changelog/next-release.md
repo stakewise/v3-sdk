@@ -26,7 +26,7 @@ type Output = {
 #### Add new input field:
 
 ```ts
-type Output = {
+type Input = {
   admin: string
   feePercent: number
 }
