@@ -17,3 +17,22 @@ type Output = {
 |------------------|------------------------------------------------------------------|
 | `active`   | Rewards amount from active fee splitter |
 | `inactive` | Aave borrow status. enum BorrowStatus (Healthy, Moderate, Risky) |
+
+
+#### New input:
+
+### 2. [sdk.vault.operate](https://sdk.stakewise.io/vault/transactions/operate)
+
+#### Add new input field:
+
+```ts
+type Input = {
+  admin: string
+  feePercent: number
+}
+
+```
+| Name      | Description                                                  |
+|-----------|--------------------------------------------------------------|
+| `admin`   | Changing the vault administrator                             |
+| `feePercent`   | Changing fee percent charged by the vault               |

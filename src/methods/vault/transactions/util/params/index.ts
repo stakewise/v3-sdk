@@ -1,6 +1,8 @@
+export { default as getAdminParams } from './getAdminParams'
 export { default as getMetadataParams }  from './getMetadataParams'
 export { default as getBlocklistParams }  from './getBlocklistParams'
 export { default as getWhitelistParams }  from './getWhitelistParams'
+export { default as getFeePercentParams }  from './getFeePercentParams'
 export { default as getWhitelisterParams }  from './getWhitelisterParams'
 export { default as getFeeRecipientParams }  from './getFeeRecipientParams'
 export { default as getBlocklistManagerParams }  from './getBlocklistManagerParams'
