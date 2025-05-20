@@ -12,6 +12,7 @@ export type UpdateFeeRecipientsInput = BaseInput & {
   rewardSplitterAddress: string
   feeRecipients: FeeRecipient[]
   oldFeeRecipients?: FeeRecipient[]
+  isClaimOnBehalfEnabled?: boolean
 }
 
 export interface UpdateFeeRecipients {

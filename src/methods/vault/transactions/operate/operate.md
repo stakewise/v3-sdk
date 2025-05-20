@@ -9,25 +9,29 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 
 #### Arguments:
 
-| Name                      | Type                                         | Required | Access               | Description                                                                                                                                                                 |  
-|---------------------------|----------------------------------------------|----------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|  
-| whitelistManager          | `Array<{ address: string, isNew: boolean }>` | **No**   | whitelistManager     | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses.             |  
-| blocklist                 | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager    | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses.            |
-| validatorsManager         | `string`                                     | **No**   | Admin                | Address of the vault deposit data manager. Support only **second version** on valults.                                                                                      |   
-| whitelistManager          | `string`                                     | **No**   | Admin                | Address of the vault whitelistManager                                                                                                                                       |  
-| feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient                                                                                                                                          |
-| blocklistManager          | `string`                                     | **No**   | Admin                | The blocklisted vault blocklist manager                                                                                                                                     |  
-| image                     | `string`                                     | **No**   | Admin                | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                                                    |  
-| displayName               | `string`                                     | **No**   | Admin                | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                                            |  
-| description               | `string`                                     | **No**   | Admin                | The vault description (will be uploaded to IPFS; maximum size is 1000 characters)                                                                                           |  
-| userAddress               | `string`                                     | **Yes**  | -                    | The address of the user making the update (admin, whitelist manager, blocklist manager or keys manager)                                                                     |  
-| vaultAddress              | `string`                                     | **Yes**  | -                    | The address of the vault                                                                                                                                                    |
+| Name                      | Type                                         | Required | Access               | Description                |  
+|---------------------------|----------------------------------------------|----------|----------------------|----------------------------|  
+| whitelistManager          | `Array<{ address: string, isNew: boolean }>` | **No**   | whitelistManager     | List of addresses to update the whitelist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time - 700 addresses. |  
+| blocklist                 | `Array<{ address: string, isNew: boolean }>` | **No**   | Blocklist manager    | List of addresses to update the blocklist. Use `isNew: true` to add a new address, `isNew: false` to remove an existing one. Max count at time  - 700 addresses. |
+| validatorsManager         | `string`                                     | **No**   | Admin                | Address of the vault deposit data manager. Support only **second version** on valults. |   
+| whitelistManager          | `string`                                     | **No**   | Admin                | Address of the vault whitelistManager |  
+| feeRecipient              | `string`                                     | **No**   | Admin                | Address of the vault fee recipient |
+| blocklistManager          | `string`                                     | **No**   | Admin                | The blocklisted vault blocklist manager |  
+| image                     | `string`                                     | **No**   | Admin                | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB) |  
+| displayName               | `string`                                     | **No**   | Admin                | The vault display name (will be uploaded to IPFS; maximum size is 30 characters) |  
+| description               | `string`                                     | **No**   | Admin                | The vault description (will be uploaded to IPFS; maximum size is 1000 characters) |  
+| userAddress               | `string`                                     | **Yes**  | -                    | The address of the user making the update (admin, whitelist manager, blocklist manager or keys manager) |  
+| vaultAddress              | `string`                                     | **Yes**  | -                    | The address of the vault |
+| admin                     | `string`                                     | **No**   | -                    | Changing the vault administrator |
+| feePercent                | `number`                                     | **No**   | Admin                | Changing fee percent charged by the vault |
 
 #### Example:
 
 ```ts
 // Data to update the vault by admin.
 const params = {
+  admin: '0x...',
+  feePercent: '600',
   userAddress: '0x...',
   vaultAddress: '0x...',
   image: '...',

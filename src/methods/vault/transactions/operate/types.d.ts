@@ -1,8 +1,10 @@
 import multicallGas from './multicallGas'
 import multicallEncode from './multicallEncode'
 
+import type { SetAdminParams } from '../util/params/getAdminParams'
 import type { UploadMetadataInput } from '../util/metadata/uploadMetadata'
 import type { SetMetadataParams } from '../util/params/getMetadataParams'
+import type { SetFeePercentParams } from '../util/params/getFeePercentParams'
 import type { UpdateBlocklistParams } from '../util/params/getBlocklistParams'
 import type { UpdateWhitelistParams } from '../util/params/getWhitelistParams'
 import type { SetWhitelisterParams } from '../util/params/getWhitelisterParams'
@@ -20,6 +22,8 @@ type BaseInput = {
 
 type MulticallCommonParams =
   SetWhitelisterParams
+  & SetAdminParams
+  & SetFeePercentParams
   & SetFeeRecipientParams
   & UpdateBlocklistParams
   & UpdateWhitelistParams

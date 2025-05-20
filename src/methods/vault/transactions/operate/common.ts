@@ -4,9 +4,11 @@ import { vaultMulticall } from '../../../../contracts'
 import type { VaultMulticallBaseInput } from '../../../../contracts'
 
 import {
+  getAdminParams,
   getMetadataParams,
   getBlocklistParams,
   getWhitelistParams,
+  getFeePercentParams,
   getWhitelisterParams,
   getFeeRecipientParams,
   getBlocklistManagerParams,
@@ -16,7 +18,7 @@ import {
 
 export const commonLogic = async (values: MulticallTransactionInput) => {
   const {
-    blocklistManager, metadataIpfsHash,
+    blocklistManager, metadataIpfsHash, admin, feePercent,
     blocklist, whitelist, whitelistManager, feeRecipient,
     options, contracts, userAddress, vaultAddress, provider, validatorsManager,
   } = values
@@ -70,6 +72,12 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 
+  if (admin) {
+    const adminParams = getAdminParams({ ...baseInput, admin })
+
+    params.push(...adminParams)
+  }
+
   if (blocklist?.length) {
     const blocklistParams = getBlocklistParams({ ...baseInput, blocklist })
 
@@ -110,6 +118,12 @@ export const commonLogic = async (values: MulticallTransactionInput) => {
     const validatorsManagerParams = getValidatorsManagerParams({ ...baseInput, validatorsManager })
 
     params.push(...validatorsManagerParams)
+  }
+
+  if (feePercent) {
+    const feePercentParams = getFeePercentParams({ ...baseInput, feePercent })
+
+    params.push(...feePercentParams)
   }
 
   return {

@@ -2,7 +2,9 @@ query RewardSplitters($where: RewardSplitter_filter!) {
   rewardSplitters(where: $where, orderBy: id, orderDirection: desc, first: 1000) {
     id
     owner
+    version
     totalShares
+    isClaimOnBehalfEnabled
     shareHolders(orderBy: shares, orderDirection: desc, where: { shares_gt: 0 }) {
       id
       shares
