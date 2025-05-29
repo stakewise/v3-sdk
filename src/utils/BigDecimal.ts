@@ -9,7 +9,7 @@ type Argument = bigint | string | number | BigDecimal
  */
 class BigDecimal {
   #value: BigDecimals
-  #decimalsCount: number | null = null
+  #decimalsCount: number = 18
 
   constructor(value: Argument) {
     this.#value = this.toBigDecimal(value)
@@ -64,18 +64,14 @@ class BigDecimal {
   }
 
   decimals(count: number) {
-    this.#value = this.#value.decimalPlaces(count, BigDecimals.ROUND_DOWN)
+    this.#value = this.#value.decimalPlaces(count, 1)
     this.#decimalsCount = count
 
     return this
   }
 
   toString() {
-    if (this.#decimalsCount != null) {
-      return this.#value.toFixed(this.#decimalsCount)
-    }
-
-    return this.#value.toString()
+    return this.#value.toFixed(this.#decimalsCount)
   }
 
   toNumber() {
