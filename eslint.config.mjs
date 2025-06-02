@@ -30,7 +30,6 @@ export default defineConfig([
     '**/*.d.ts',
     'scripts/*',
     'dist/*',
-
   ]),
   {
     files: [

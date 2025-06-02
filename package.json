@@ -20,7 +20,7 @@
     "graphql": "graphql-codegen && tsx ./scripts/generateGraphqlExports/index.ts",
     "rollup": "rollup --config rollup.config.js",
     "beforePublish": "node ./scripts/beforePublish",
-    "lint": "eslint website src --ext .ts,.tsx,.js,.jsx",
+    "lint": "eslint website/src src --ext .ts,.tsx,.js,.jsx",
     "publish": "npm run build && npm publish --tag=latest"
   },
   "files": [
