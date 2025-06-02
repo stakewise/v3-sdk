@@ -18,6 +18,7 @@ const config: Config = {
   },
   globals: {
     isolatedModules: true,
+    graphql: undefined,
   },
 }
 
