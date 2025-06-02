@@ -28,7 +28,7 @@ describe('AbortPromise', () => {
     const mockThenFn = jest.fn()
     const mockCatchFn = jest.fn()
 
-    const abortPromise = new AbortPromise((resolve, reject) => {
+    const abortPromise = new AbortPromise((resolve) => {
       resolve(null)
     })
       .then(mockThenFn, mockCatchFn)
@@ -58,7 +58,7 @@ describe('AbortPromise', () => {
     const mockThenFn = jest.fn()
     const mockCatchFn = jest.fn()
 
-    const abortPromise = new AbortPromise((resolve, reject) => {
+    const abortPromise = new AbortPromise((resolve) => {
       resolve(null)
     })
       .then(mockThenFn, mockCatchFn)
