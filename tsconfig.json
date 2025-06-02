@@ -2,13 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "strict": true,
-    "jsx": "react",
     "rootDir": ".",
     "allowJs": true,
     "outDir": "dist",
     "sourceMap": true,
     "target": "esnext",
     "module": "esnext",
+    "jsx": "react-jsx",
     "declaration": true,
     "skipLibCheck": true,
     "declarationMap": true,
@@ -29,7 +29,11 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "website/**/*.ts",
+    "website/**/*.tsx",
+    "website/**/*.js",
+    "website/**/*.jsx"
   ],
   "exclude": [
     "node_modules"

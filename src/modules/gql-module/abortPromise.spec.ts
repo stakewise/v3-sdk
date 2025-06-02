@@ -35,8 +35,8 @@ describe('AbortPromise', () => {
 
     await abortPromise
 
-    expect(mockThenFn).toBeCalledTimes(1)
-    expect(mockCatchFn).toBeCalledTimes(0)
+    expect(mockThenFn).toHaveBeenCalledTimes(1)
+    expect(mockCatchFn).toHaveBeenCalledTimes(0)
   })
 
   it('calls catch on promise reject', async () => {
@@ -50,8 +50,8 @@ describe('AbortPromise', () => {
 
     await abortPromise
 
-    expect(mockThenFn).toBeCalledTimes(0)
-    expect(mockCatchFn).toBeCalledTimes(1)
+    expect(mockThenFn).toHaveBeenCalledTimes(0)
+    expect(mockCatchFn).toHaveBeenCalledTimes(1)
   })
 
   it('doesn\'t resolve aborted promise', async () => {
@@ -65,8 +65,8 @@ describe('AbortPromise', () => {
 
     abortPromise.abort()
 
-    expect(mockThenFn).toBeCalledTimes(0)
-    expect(mockCatchFn).toBeCalledTimes(0)
+    expect(mockThenFn).toHaveBeenCalledTimes(0)
+    expect(mockCatchFn).toHaveBeenCalledTimes(0)
   })
 
   it('doesn\'t reject aborted promise', async () => {
@@ -80,8 +80,8 @@ describe('AbortPromise', () => {
 
     abortPromise.abort()
 
-    expect(mockThenFn).toBeCalledTimes(0)
-    expect(mockCatchFn).toBeCalledTimes(0)
+    expect(mockThenFn).toHaveBeenCalledTimes(0)
+    expect(mockCatchFn).toHaveBeenCalledTimes(0)
   })
 
   it('resolves multiple promises in "all" method', async () => {
@@ -130,16 +130,16 @@ describe('AbortPromise', () => {
     const promise1 = new AbortCallback(dummyPromise, abort1)
     const promise2 = new AbortCallback(dummyPromise, abort2)
 
-    // @ts-ignore
+    // @ts-ignore: Fixed type error in AbortPromise.all
     const promise = AbortPromise.all([ promise1, promise2 ])
       .then(mockThenFn, mockCatchFn)
 
     promise.abort()
 
-    expect(abort1).toBeCalledTimes(1)
-    expect(abort2).toBeCalledTimes(1)
-    expect(mockThenFn).toBeCalledTimes(0)
-    expect(mockCatchFn).toBeCalledTimes(0)
+    expect(abort1).toHaveBeenCalledTimes(1)
+    expect(abort2).toHaveBeenCalledTimes(1)
+    expect(mockThenFn).toHaveBeenCalledTimes(0)
+    expect(mockCatchFn).toHaveBeenCalledTimes(0)
   })
 
   it('doesn\'t reject multiple promises in "all" method on abort', async () => {
@@ -151,7 +151,7 @@ describe('AbortPromise', () => {
 
     promise.abort()
 
-    expect(mockThenFn).toBeCalledTimes(0)
-    expect(mockCatchFn).toBeCalledTimes(0)
+    expect(mockThenFn).toHaveBeenCalledTimes(0)
+    expect(mockCatchFn).toHaveBeenCalledTimes(0)
   })
 })

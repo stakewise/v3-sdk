@@ -1,0 +1,3 @@
+sh ./scripts/pre-push.sh
+
+npm run lint

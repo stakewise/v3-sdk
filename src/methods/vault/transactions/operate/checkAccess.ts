@@ -13,7 +13,7 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
       blocklist, whitelist, whitelistManager, feeRecipient,
-      blocklistManager, metadataIpfsHash, validatorsManager
+      blocklistManager, metadataIpfsHash, validatorsManager,
     } = values
 
     try {

@@ -15,7 +15,9 @@ const checkBlocklistManagerAccess = async ({ userAddress, vaultAddress, contract
       return Promise.reject('User must be the vault blocklist manager to perform this action')
     }
   }
-  catch {}
+  catch (error) {
+    return Promise.reject(`Failed to check blocklist manager access: ${error}`)
+  }
 }
 
 
