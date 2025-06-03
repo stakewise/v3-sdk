@@ -11,7 +11,9 @@ const checkAdminAccess = async ({ userAddress, vaultAddress, contracts }: CheckI
       return Promise.reject('User must be the vault admin to perform this action')
     }
   }
-  catch {}
+  catch (error) {
+    return Promise.reject(`Failed to check admin access: ${error}`)
+  }
 }
 
 

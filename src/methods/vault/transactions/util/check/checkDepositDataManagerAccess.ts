@@ -17,7 +17,9 @@ const checkDepositDataManagerAccess = async ({ userAddress, vaultAddress, contra
       return Promise.reject(`User must be the vault deposit data manager to perform this action`)
     }
   }
-  catch {}
+  catch (error) {
+    return Promise.reject(`Failed to check deposit data manager access: ${error}`)
+  }
 }
 
 

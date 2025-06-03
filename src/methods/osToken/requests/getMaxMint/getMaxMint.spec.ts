@@ -46,7 +46,7 @@ describe('getMaxMint', () => {
 
   it('should return max mint shares based on calculations', async () => {
     mockContracts.helpers.createVault.mockReturnValue({
-      version: () => Promise.resolve(1n)
+      version: () => Promise.resolve(1n),
     })
 
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)
@@ -86,7 +86,7 @@ describe('getMaxMint', () => {
 
   it('should return 0n if max mint shares is less than or equal to minted shares', async () => {
     mockContracts.helpers.createVault.mockReturnValue({
-      version: () => Promise.resolve(1n)
+      version: () => Promise.resolve(1n),
     })
 
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)

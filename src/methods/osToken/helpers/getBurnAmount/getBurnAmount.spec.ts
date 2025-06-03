@@ -28,9 +28,9 @@ describe('getBurnAmount', () => {
       },
       helpers: {
         createVault: jest.fn().mockReturnValue({
-          version: () => Promise.resolve(1n)
-        })
-      }
+          version: () => Promise.resolve(1n),
+        }),
+      },
     }
 
     const result = await getBurnAmount({
@@ -56,9 +56,9 @@ describe('getBurnAmount', () => {
       },
       helpers: {
         createVault: jest.fn().mockReturnValue({
-          version: () => Promise.resolve(2n)
-        })
-      }
+          version: () => Promise.resolve(2n),
+        }),
+      },
     }
 
     const result = await getBurnAmount({
@@ -82,9 +82,9 @@ describe('getBurnAmount', () => {
       },
       helpers: {
         createVault: jest.fn().mockReturnValue({
-          version: () => Promise.resolve(1n)
-        })
-      }
+          version: () => Promise.resolve(1n),
+        }),
+      },
     }
 
     const result = await getBurnAmount({
