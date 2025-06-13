@@ -1,5 +1,6 @@
 query FiatRates {
   exchangeRates {
+    osTokenAssetsRate
     assetsUsdRate
     usdToEurRate
     usdToGbpRate
@@ -8,5 +9,7 @@ query FiatRates {
     usdToKrwRate
     usdToAudRate
     swiseUsdRate
+    obolUsdRate
+    ssvUsdRate
   }
 }

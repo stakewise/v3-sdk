@@ -1,7 +1,6 @@
 export default {
   // Mainnet
   eth: 'ETH',
-  ssv: 'SSV',
   swise: 'SWISE',
   osETH: 'osETH',
 
@@ -15,4 +14,8 @@ export default {
   rGNO: 'rGNO',
   rETH2: 'rETH2',
   sETH2: 'sETH2',
+
+  // Special
+  ssv: 'SSV',
+  obol: 'Obol',
 } as const
