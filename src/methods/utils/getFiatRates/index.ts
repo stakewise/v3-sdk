@@ -18,6 +18,7 @@ const getFiatRates = (values: GetFiatRatesInput) => {
     url: configs[Network.Mainnet].api.subgraph,
     modifyResult: async (data) => {
       const {
+        osTokenAssetsRate,
         assetsUsdRate,
         usdToEurRate,
         usdToGbpRate,
@@ -26,6 +27,8 @@ const getFiatRates = (values: GetFiatRatesInput) => {
         usdToKrwRate,
         usdToAudRate,
         swiseUsdRate,
+        obolUsdRate,
+        ssvUsdRate,
       } = data.exchangeRates[0]
 
       let assetUsd = Number(assetsUsdRate)
@@ -37,14 +40,20 @@ const getFiatRates = (values: GetFiatRatesInput) => {
       }
 
       return {
-        'ASSET/USD': assetUsd,
+        // Fiat
         'USD/EUR': Number(usdToEurRate),
         'USD/GBP': Number(usdToGbpRate),
         'USD/CNY': Number(usdToCnyRate),
         'USD/JPY': Number(usdToJpyRate),
         'USD/KRW': Number(usdToKrwRate),
         'USD/AUD': Number(usdToAudRate),
+
+        // Tokens
+        'ASSET/USD': assetUsd,
+        'SSV/USD': Number(ssvUsdRate),
+        'OBOL/USD': Number(obolUsdRate),
         'SWISE/USD': Number(swiseUsdRate),
+        'osToken/USD': Number(osTokenAssetsRate) * assetUsd,
       }
     },
   })

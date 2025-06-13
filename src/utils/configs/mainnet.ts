@@ -18,6 +18,7 @@ export default {
   addresses: {
     tokens: {
       ssv: '0x9d65ff81a3c488d585bbfb0bfe3c7707c7917f54',
+      obol: '0x0b010000b7624eb9b3dfbc279673c76e9d29d5f7',
       swise: '0x48C3399719B582dD63eB5AADf12A40B4C3f52FA2',
       mintToken: '0xf1C9acDc66974dFB6dEcB12aA385b9cD01190E38',
       depositToken: ZeroAddress,
@@ -53,6 +54,7 @@ export default {
   },
   tokens: {
     ssv: constants.tokens.ssv,
+    obol: constants.tokens.obol,
     swise: constants.tokens.swise,
     mintToken: constants.tokens.osETH,
     nativeToken: constants.tokens.eth,
