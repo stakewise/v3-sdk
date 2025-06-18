@@ -2,11 +2,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "assets",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "receiver",
         "type": "address"
@@ -30,9 +25,33 @@
   },
   {
     "inputs": [],
-    "name": "swapXdaiToGno",
+    "name": "keysManager",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "upgradeToAndCall",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   }
 ]

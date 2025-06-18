@@ -1,15 +1,15 @@
 import DepositWithMintDiffAbi from './DepositWithMintDiffAbi.json'
 import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
-import NativeTokenVaultAbi from './NativeTokenVaultAbi.json'
-import OtherTokenVaultAbi from './OtherTokenVaultAbi.json'
+import MainnetVaultDiffAbi from './MainnetVaultDiffAbi.json'
 import GnosisVaultDiffAbi from './GnosisVaultDiffAbi.json'
+import DefaultVaultAbi from './DefaultVaultAbi.json'
 
 
 export {
+  DefaultVaultAbi,
   GnosisVaultDiffAbi,
-  OtherTokenVaultAbi,
-  NativeTokenVaultAbi,
+  MainnetVaultDiffAbi,
   PrivateVaultDiffAbi,
   BlocklistVaultDiffAbi,
   DepositWithMintDiffAbi,
