@@ -7,7 +7,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
-import pkg from './package.json'
+import pkg from './package.json' with { type: 'json' }
 
 
 const config = [
@@ -39,6 +39,7 @@ const config = [
         exclude: [
           'node_modules',
           '**/*.spec.ts',
+          'website/**/*',
         ],
       }),
       json(),

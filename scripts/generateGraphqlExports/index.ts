@@ -1,19 +1,23 @@
-import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
 
 import removeOldFiles from './removeOldFiles'
 import addGraphqlNamespace from './addGraphqlNamespace'
 import generateGraphqlQueryFiles from './generateGraphqlQueryFiles'
 
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname  = dirname(__filename)
+
 const endpoints = [
   {
-    dir: path.resolve(__dirname, '../../src/graphql/backend'),
-    types: path.resolve(__dirname, '../../src/types/graphql/backend.d.ts'),
+    dir: resolve(__dirname, '../../src/graphql/backend'),
+    types: resolve(__dirname, '../../src/types/graphql/backend.d.ts'),
     client: 'backend',
   },
   {
-    dir: path.resolve(__dirname, '../../src/graphql/subgraph'),
-    types: path.resolve(__dirname, '../../src/types/graphql/subgraph.d.ts'),
+    dir: resolve(__dirname, '../../src/graphql/subgraph'),
+    types: resolve(__dirname, '../../src/types/graphql/subgraph.d.ts'),
     client: 'subgraph',
   },
 ]

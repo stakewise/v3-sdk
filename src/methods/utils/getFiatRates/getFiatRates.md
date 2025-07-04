@@ -17,8 +17,12 @@ type Output = {
   'USD/JPY': number
   'USD/KRW': number
   'USD/AUD': number
+
+  'SSV/USD': number
+  'OBOL/USD': number
   'ASSET/USD': number
   'SWISE/USD': number
+  'osToken/USD': number
 }
 ```
 

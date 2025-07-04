@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import MemoryStorage from './MemoryStorage'
 
 
@@ -50,9 +49,8 @@ class LocalStorage {
 
       return value && JSON.parse(value)
     }
-    catch (err) {
-      // @ts-ignore
-      if (ffErrors.includes(err.name)) {
+    catch (error: any) {
+      if (ffErrors.includes(error.name)) {
         this.clear(storage)
 
         return null
@@ -68,9 +66,8 @@ class LocalStorage {
     try {
       storage.setItem(name, JSON.stringify(value))
     }
-    catch (err) {
-      // @ts-ignore
-      if (ffErrors.includes(err.name)) {
+    catch (error: any) {
+      if (ffErrors.includes(error.name)) {
         this.clear(storage)
       }
     }
@@ -94,8 +91,7 @@ class LocalStorage {
     try {
       storage.clear()
     }
-    catch (error) {
-      // @ts-ignore
+    catch (error: any) {
       if (ffErrors.includes(error.name) && !this.corruptedAlertWasShowed) {
         // eslint-disable-next-line max-len
         alert('Oops, looks like your browser storage got corrupted. Follow the steps at https://support.mozilla.org/en-US/kb/storage to fix it.')

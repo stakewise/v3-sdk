@@ -32,7 +32,7 @@ type Input = {
 }
 
 ```
-| Name      | Description                                                  |
-|-----------|--------------------------------------------------------------|
-| `admin`   | Changing the vault administrator                             |
-| `feePercent`   | Changing fee percent charged by the vault               |
+| Name           | Description                                                  |
+|----------------|--------------------------------------------------------------|
+| `admin`        | Changing the vault administrator                             |
+| `feePercent`   | Changing fee percent charged by the vault                    |

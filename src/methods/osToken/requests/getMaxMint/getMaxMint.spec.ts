@@ -46,13 +46,13 @@ describe('getMaxMint', () => {
 
   it('should return max mint shares based on calculations', async () => {
     mockContracts.helpers.createVault.mockReturnValue({
-      version: () => Promise.resolve(1n)
+      version: () => Promise.resolve(1n),
     })
 
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)
 
     await getMaxMint({
-      ltvPercent: 9000n,
+      ltvPercent: 900000000000000000n,
       mintedAssets: 2001547526745735889n,
       stakedAssets: 15001277163464317262n,
       vaultAddress: ZeroAddress,
@@ -66,7 +66,7 @@ describe('getMaxMint', () => {
 
   it('should return correct vault with second vault versions', async () => {
     mockContracts.helpers.createVault.mockReturnValue({
-      version: () => Promise.resolve(2n)
+      version: () => Promise.resolve(2n),
     })
 
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)
@@ -86,7 +86,7 @@ describe('getMaxMint', () => {
 
   it('should return 0n if max mint shares is less than or equal to minted shares', async () => {
     mockContracts.helpers.createVault.mockReturnValue({
-      version: () => Promise.resolve(1n)
+      version: () => Promise.resolve(1n),
     })
 
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)

@@ -15,7 +15,9 @@ const checkWhitelisterAccess = async ({ userAddress, vaultAddress, contracts }: 
       return Promise.reject('User must be the vault whitelist manager to perform this action')
     }
   }
-  catch {}
+  catch (error) {
+    return Promise.reject(`Failed to check whitelister access: ${error}`)
+  }
 }
 
 

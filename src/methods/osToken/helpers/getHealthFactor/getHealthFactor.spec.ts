@@ -5,14 +5,14 @@ import getHealthFactor from './index'
 
 describe('getHealthFactor function', () => {
 
-  it('should return a health of Healthy when healthFactor is >= 1.02', async () => {
+  it('should return a health of Healthy when healthFactor is >= 1.02', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 1020n,
-      liqThresholdPercent: 10000n,
+      liqThresholdPercent: 1000000000000000000n,
     }
 
-    const result = await getHealthFactor(input)
+    const result = getHealthFactor(input)
 
     expect(result).toEqual({
       value: 1.02,
@@ -24,7 +24,7 @@ describe('getHealthFactor function', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 1015n,
-      liqThresholdPercent: 10000n,
+      liqThresholdPercent: 1000000000000000000n,
     }
 
     const result = await getHealthFactor(input)
@@ -39,7 +39,7 @@ describe('getHealthFactor function', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 1005n,
-      liqThresholdPercent: 10000n,
+      liqThresholdPercent: 1000000000000000000n,
     }
 
     const result = await getHealthFactor(input)
@@ -50,14 +50,14 @@ describe('getHealthFactor function', () => {
     })
   })
 
-  it('should return a health of Unhealthy when healthFactor is < 1.00', async () => {
+  it('should return a health of Unhealthy when healthFactor is < 1.00', () => {
     const input = {
       mintedAssets: 1000n,
       stakedAssets: 995n,
-      liqThresholdPercent: 10000n,
+      liqThresholdPercent: 1000000000000000000n,
     }
 
-    const result = await getHealthFactor(input)
+    const result = getHealthFactor(input)
 
     expect(result).toEqual({
       value: 0.995,
@@ -65,20 +65,20 @@ describe('getHealthFactor function', () => {
     })
   })
 
-  it('should return a health of Healthy and a value of 0 when mintedAssets or stakedAssets is 0', async () => {
+  it('should return a health of Healthy and a value of 0 when mintedAssets or stakedAssets is 0', () => {
     const input1 = {
       mintedAssets: 0n,
       stakedAssets: 1000n,
-      liqThresholdPercent: 10000n,
+      liqThresholdPercent: 1000000000000000000n,
     }
     const input2 = {
       mintedAssets: 1000n,
       stakedAssets: 0n,
-      liqThresholdPercent: 10000n,
+      liqThresholdPercent: 1000000000000000000n,
     }
 
-    const result1 = await getHealthFactor(input1)
-    const result2 = await getHealthFactor(input2)
+    const result1 = getHealthFactor(input1)
+    const result2 = getHealthFactor(input2)
 
     expect(result1).toEqual({
       value: 0,

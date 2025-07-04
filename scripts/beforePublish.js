@@ -1,9 +1,9 @@
-const { execSync } = require('child_process')
-const package = require('../package.json')
+import { execSync } from 'child_process'
+import pkg from '../package.json' with { type: 'json' }
 
 
 const check = async () => {
-  const npmVersion = package.version
+  const npmVersion = pkg.version
   const releaseVersion = execSync(`git ls-remote https://github.com/stakewise/v3-sdk refs/tags/${npmVersion}`, { encoding: 'utf8' })
     .replace(/.*\//, '')
     .trim()

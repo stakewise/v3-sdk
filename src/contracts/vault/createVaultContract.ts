@@ -2,18 +2,18 @@ import type { Provider } from 'ethers'
 
 
 import {
+  DefaultVaultAbi,
   GnosisVaultDiffAbi,
-  OtherTokenVaultAbi,
-  NativeTokenVaultAbi,
+  MainnetVaultDiffAbi,
   PrivateVaultDiffAbi,
   BlocklistVaultDiffAbi,
   DepositWithMintDiffAbi,
 } from './abis'
 
 import {
+  DefaultVaultAbi as DefaultVaultAbiType,
   GnosisVaultDiffAbi as GnosisVaultDiffType,
-  OtherTokenVaultAbi as OtherTokenVaultType,
-  NativeTokenVaultAbi as NativeTokenVaultType,
+  MainnetVaultDiffAbi as MainnetVaultDiffType,
   PrivateVaultDiffAbi as PrivateVaultDiffType,
   BlocklistVaultDiffAbi as BlocklistVaultDiffType,
   DepositWithMintDiffAbi as DepositWithMintDiffType,
@@ -36,8 +36,8 @@ type CreateContractsInput<T> = {
 
 type Output<T extends Options> = Omit<
   (T['chainId'] extends Network.Chiado | Network.Gnosis
-    ? OtherTokenVaultType & GnosisVaultDiffType
-    : NativeTokenVaultType
+    ? DefaultVaultAbiType & GnosisVaultDiffType
+    : DefaultVaultAbiType & MainnetVaultDiffType
   ) &
   (T['isBlocklist'] extends true
     ? BlocklistVaultDiffType
@@ -67,8 +67,8 @@ const createVaultContract = (provider: Provider) => (
     ].includes(options?.chainId || Network.Mainnet)
 
     let baseAbi = isGnosis
-      ? OtherTokenVaultAbi.concat(GnosisVaultDiffAbi)
-      : NativeTokenVaultAbi
+      ? DefaultVaultAbi.concat(GnosisVaultDiffAbi)
+      : DefaultVaultAbi.concat(MainnetVaultDiffAbi)
 
     if (options?.isBlocklist) {
       baseAbi = baseAbi.concat(BlocklistVaultDiffAbi)

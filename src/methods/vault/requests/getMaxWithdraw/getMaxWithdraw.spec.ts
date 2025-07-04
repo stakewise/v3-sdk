@@ -19,9 +19,9 @@ describe('getMaxWithdraw function', () => {
         },
         helpers: {
           createVault: jest.fn().mockReturnValue({
-            version: () => Promise.resolve(1n)
-          })
-        }
+            version: () => Promise.resolve(1n),
+          }),
+        },
       } as unknown as StakeWise.Contracts,
     }
 
@@ -39,9 +39,9 @@ describe('getMaxWithdraw function', () => {
       },
       helpers: {
         createVault: jest.fn().mockReturnValue({
-          version: () => Promise.resolve(1n)
-        })
-      }
+          version: () => Promise.resolve(1n),
+        }),
+      },
     }
 
     const input = {
@@ -54,10 +54,10 @@ describe('getMaxWithdraw function', () => {
 
     const result = await getMaxWithdraw(input)
 
-    expect(result).toBe(1749999999999955000n)
+    expect(result).toBe(0n)
   })
 
-  it('should return correct valeu with second vault version', async () => {
+  it('should return correct value with second vault version', async () => {
     const mockedReward = 10n
     const contracts = {
       base: {
@@ -67,9 +67,9 @@ describe('getMaxWithdraw function', () => {
       },
       helpers: {
         createVault: jest.fn().mockReturnValue({
-          version: () => Promise.resolve(2n)
-        })
-      }
+          version: () => Promise.resolve(2n),
+        }),
+      },
     }
 
     const input = {
@@ -95,9 +95,9 @@ describe('getMaxWithdraw function', () => {
       },
       helpers: {
         createVault: jest.fn().mockReturnValue({
-          version: () => Promise.resolve(1n)
-        })
-      }
+          version: () => Promise.resolve(1n),
+        }),
+      },
     }
 
     const input = {

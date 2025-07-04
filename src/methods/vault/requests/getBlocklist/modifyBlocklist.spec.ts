@@ -11,16 +11,18 @@ describe('modifyBlocklist', () => {
   }
 
   it('should correctly transform the whitelist data', () => {
-    const expectedModifiedVault = [
-      {
-        createdAt: 1693395816000,
-        address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      },
-      {
-        createdAt: 1693395816000,
-        address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      },
-    ]
+    const expectedModifiedVault = {
+      blocklist: [
+        {
+          createdAt: 1693395816000,
+          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+        },
+        {
+          createdAt: 1693395816000,
+          address: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+        },
+      ],
+    }
 
     const result = modifyBlocklist({
       data: mockBlocklistQueryPayload,
@@ -38,6 +40,6 @@ describe('modifyBlocklist', () => {
       data: mockDataWithoutBlockedAccounts,
     })
 
-    expect(result).toEqual([])
+    expect(result).toEqual({ blocklist: [] })
   })
 })
