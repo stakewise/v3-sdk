@@ -1,4 +1,4 @@
-import { parseEther, ZeroAddress } from 'ethers'
+import { ethers, ZeroAddress } from 'ethers'
 
 import getMaxWithdraw from './index'
 
@@ -46,8 +46,8 @@ describe('getMaxWithdraw function', () => {
 
     const input = {
       ltvPercent: 8000n, // 80%
-      mintedAssets: parseEther('1'),
-      stakedAssets: parseEther('3'),
+      mintedAssets: ethers.parseEther('1'),
+      stakedAssets: ethers.parseEther('3'),
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
     }
@@ -74,8 +74,8 @@ describe('getMaxWithdraw function', () => {
 
     const input = {
       ltvPercent: 800000000000000000n, // 80%
-      mintedAssets: parseEther('1'),
-      stakedAssets: parseEther('3'),
+      mintedAssets: ethers.parseEther('1'),
+      stakedAssets: ethers.parseEther('3'),
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
     }
@@ -102,8 +102,8 @@ describe('getMaxWithdraw function', () => {
 
     const input = {
       ltvPercent: 5000n, // 50%
-      mintedAssets: parseEther('4'),
-      stakedAssets: parseEther('3'),
+      mintedAssets: ethers.parseEther('4'),
+      stakedAssets: ethers.parseEther('3'),
       contracts: contracts as any,
       vaultAddress: ZeroAddress,
     }
