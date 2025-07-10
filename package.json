@@ -9,7 +9,7 @@
   "typings": "dist/index.d.ts",
   "module": "dist/index.esm.js",
   "description": "StakeWise v3 SDK",
-  "homepage": "https://github.com/stakewise/v3-sdk",
+  "homepage": "https://github.com/AlexGavrilov939/stakewise-v3-sdk-cjs",
   "scripts": {
     "test": "jest --clearCache && jest --all",
     "prepare": "husky && npm run typechain && npm run graphql && npm run beforePublish",
