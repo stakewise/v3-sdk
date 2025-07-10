@@ -16,16 +16,17 @@ const config = [
     output: [
       {
         name: pkg.name,
-        file: pkg.module,
+        file: 'dist/index.esm.js',
         exports: 'named',
         sourcemap: true,
         format: 'es',
       },
       {
         name: pkg.name,
-        file: pkg.main,
+        file: 'dist/index.cjs',
         sourcemap: true,
         format: 'cjs',
+        exports: 'named',
       },
     ],
     plugins: [
