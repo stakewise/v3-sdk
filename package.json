@@ -2,7 +2,7 @@
   "type": "module",
   "version": "3.6.0",
   "sideEffects": false,
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "license": "AGPL-3.0-only",
   "name": "@stakewise/v3-sdk",
@@ -30,11 +30,11 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "import": "./dist/index.esm.js"
     },
-    "./index.js": "./dist/index.js",
-    "./index.js.map": "./dist/index.js.map",
+    "./index.cjs": "./dist/index.cjs",
+    "./index.cjs.map": "./dist/index.cjs.map",
     "./index.esm.js": "./dist/index.esm.js",
     "./index.esm.js.map": "./dist/index.esm.js.map",
     "./package.json": "./package.json"
