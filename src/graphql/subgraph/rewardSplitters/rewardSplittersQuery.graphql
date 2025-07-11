@@ -4,7 +4,6 @@ query RewardSplitters($where: RewardSplitter_filter!) {
     owner
     version
     totalShares
-    isClaimOnBehalfEnabled
     shareHolders(orderBy: shares, orderDirection: desc, where: { shares_gt: 0 }) {
       id
       shares
