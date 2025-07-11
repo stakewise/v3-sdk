@@ -31,7 +31,6 @@ type RewardSplitter = {
   version: number
   totalShares: bigint
   feeRecipients: FeeRecipient[]
-  isClaimOnBehalfEnabled: boolean
 }
 
 type Output = {

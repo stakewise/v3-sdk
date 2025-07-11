@@ -10,6 +10,5 @@ export type RewardSplitter = {
   version: number
   totalShares: bigint
   feeRecipients: FeeRecipient[]
-  isClaimOnBehalfEnabled: boolean
 }
   
