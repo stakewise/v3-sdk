@@ -12,8 +12,8 @@ type Action<Input, Output> = (props: Input) => Promise<Output>
 const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
-      blocklist, whitelist, whitelistManager, feeRecipient,
-      blocklistManager, metadataIpfsHash, validatorsManager,
+      blocklist, whitelist, whitelistManager, feeRecipient, feePercent,
+      blocklistManager, metadataIpfsHash, validatorsManager, admin,
     } = values
 
     try {
@@ -23,8 +23,10 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
     }
     catch (actionError) {
       const isAdmin = Boolean(
-        whitelistManager
+        admin
+        || feePercent
         || feeRecipient
+        || whitelistManager
         || blocklistManager
         || metadataIpfsHash
         || validatorsManager

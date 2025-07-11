@@ -3,8 +3,8 @@ import { default as getClaimAmount } from './requests/getClaimAmount'
 
 // Transactions
 import { default as claimRewards } from './transactions/claimRewards'
-import { default as createRewardSplitter } from './transactions/createRewardSplitter'
 import { default as updateFeeRecipients } from './transactions/updateFeeRecipients'
+import { default as createRewardSplitter } from './transactions/createRewardSplitter'
 
 
 export default {

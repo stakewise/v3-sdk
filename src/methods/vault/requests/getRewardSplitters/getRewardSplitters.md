@@ -28,6 +28,7 @@ type FeeRecipient = {
 type RewardSplitter = {
   owner: string
   address: string
+  version: number
   totalShares: bigint
   feeRecipients: FeeRecipient[]
 }

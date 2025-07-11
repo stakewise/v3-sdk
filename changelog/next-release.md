@@ -1,7 +1,38 @@
-# New
+# Updates
+### 1. [sdk.rewardSplitter.getClaimAmount](https://sdk.stakewise.io/rewardSplitter/requests/getclaimamount)
 
-- Upgraded Ethereum/Web3, GraphQL codegen, and TypeScript toolchain.
-- Updated Rollup build system and plugins.
-- Refreshed testing (Hardhat, OpenZeppelin, Jest) and linting (ESLint).
-- Add new ESLint configuration and pre-push hook
-- Refactor tests and improve error handling in access checks
+```
+type Item = {
+  assets: bigint
+  address: string
+}
+
+type Output = {
+  active: Item
+  inactive: Array<Item>
+}
+```
+
+| Name             | Description                                                      |
+|------------------|------------------------------------------------------------------|
+| `active`   | Rewards amount from active fee splitter |
+| `inactive` | Aave borrow status. enum BorrowStatus (Healthy, Moderate, Risky) |
+
+
+#### New input:
+
+### 2. [sdk.vault.operate](https://sdk.stakewise.io/vault/transactions/operate)
+
+#### Add new input field:
+
+```ts
+type Input = {
+  admin: string
+  feePercent: number
+}
+
+```
+| Name           | Description                                                  |
+|----------------|--------------------------------------------------------------|
+| `admin`        | Changing the vault administrator                             |
+| `feePercent`   | Changing fee percent charged by the vault                    |
