@@ -1,19 +1,19 @@
 import { constants } from '../../../utils'
 import localStorage from '../../local-storage'
 
+import type { ErrorRecord } from '../types'
 
-const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
-const saveErrorUrlToSessionStorage = (url: string) => {
-  const currentErrorUrl = localStorage.getSessionItem<string>(sessionErrorUrl)
+const SESSION_KEY = constants.sessionStorageNames.moduleErrorUrl
+const ERROR_TTL = 60 * 60 * 1_000 // 1hr
 
-  if (currentErrorUrl !== url) {
-    localStorage.setSessionItem(sessionErrorUrl, url)
-
-    setTimeout(() => {
-      localStorage.removeSessionItem(sessionErrorUrl)
-    },  60 * 60 * 1000) // 1 hour
+const saveErrorUrlToSessionStorage = (baseUrl: string): void => {
+  const record: ErrorRecord = {
+    url: baseUrl,
+    expiresAt: Date.now() + ERROR_TTL,
   }
+
+  localStorage.setSessionItem(SESSION_KEY, JSON.stringify(record))
 }
 
 
