@@ -12,3 +12,8 @@ export type FetchCodegenInput<Data, Variables, ModifiedData> = {
   variables?: Variables
   modifyResult?: (data: Data) => ModifiedData
 }
+
+export type ErrorRecord = {
+  url: string
+  expiresAt: number
+}

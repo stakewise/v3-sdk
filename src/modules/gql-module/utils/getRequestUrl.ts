@@ -1,31 +1,46 @@
 import { constants } from '../../../utils'
 import localStorage from '../../local-storage'
 
+import type { ErrorRecord } from '../types'
+
 
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
-const getRequestUrl = (url: string | ReadonlyArray<string>): string => {
-  const isArray = Array.isArray(url)
+const getErroredUrlFromSessionStorage = (): string | null => {
+  const sessionRecord = localStorage.getSessionItem<ErrorRecord>(sessionErrorUrl)
 
-  if (isArray) {
-    const count = url.length
-
-    if (!count) {
-      throw new Error('The array does not contain the url for the query')
-    }
-
-    if (count === 1) {
-      return url[0]
-    }
-
-    const [ primaryUrl, backupUrl ] = url
-
-    const hasError = localStorage.getSessionItem<string>(sessionErrorUrl) === primaryUrl
-
-    return hasError ? backupUrl : primaryUrl
+  if (!sessionRecord) {
+    return null
   }
 
-  return url as string
+  if (sessionRecord.expiresAt <= Date.now()) {
+    localStorage.removeSessionItem(sessionErrorUrl)
+
+    return null
+  }
+
+  return sessionRecord.url
+}
+
+const getRequestUrl = (urls: string | ReadonlyArray<string>): string => {
+  if (typeof urls === 'string') {
+    return urls
+  }
+
+  if (!urls.length) {
+    throw new Error('The array does not contain the url for the query')
+  }
+
+  if (urls.length === 1) {
+    return urls[0]
+  }
+
+  const primary = urls[0]
+  const backup  = urls[1]
+
+  const errored = getErroredUrlFromSessionStorage()
+
+  return errored === primary ? backup : primary
 }
 
 

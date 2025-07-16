@@ -1,3 +1,3 @@
 export default {
-  moduleErrorUrl: 'SW_gqlModuleErrorUrl',
+  moduleErrorUrl: 'SW_sdk_gqlModuleErrorUrl',
 }
