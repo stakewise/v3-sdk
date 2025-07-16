@@ -4,10 +4,10 @@ import localStorage from '../../local-storage'
 import type { ErrorRecord } from '../types'
 
 
-const SESSION_KEY = constants.sessionStorageNames.moduleErrorUrl
+const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
 const getErroredUrlFromSessionStorage = (): string | null => {
-  const raw = localStorage.getSessionItem<string>(SESSION_KEY)
+  const raw = localStorage.getSessionItem<string>(sessionErrorUrl)
 
   if (!raw) {
     return null
@@ -19,13 +19,13 @@ const getErroredUrlFromSessionStorage = (): string | null => {
     rec = JSON.parse(raw)
   }
   catch {
-    localStorage.removeSessionItem(SESSION_KEY)
+    localStorage.removeSessionItem(sessionErrorUrl)
 
     return null
   }
 
   if (rec.expiresAt <= Date.now()) {
-    localStorage.removeSessionItem(SESSION_KEY)
+    localStorage.removeSessionItem(sessionErrorUrl)
 
     return null
   }
