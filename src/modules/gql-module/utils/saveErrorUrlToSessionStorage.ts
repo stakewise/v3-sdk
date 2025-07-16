@@ -13,7 +13,7 @@ const saveErrorUrlToSessionStorage = (baseUrl: string): void => {
     expiresAt: Date.now() + expireTime,
   }
 
-  localStorage.setSessionItem(sessionErrorUrl, JSON.stringify(record))
+  localStorage.setSessionItem(sessionErrorUrl, record)
 }
 
 

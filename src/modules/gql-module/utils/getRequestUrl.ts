@@ -7,30 +7,19 @@ import type { ErrorRecord } from '../types'
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
 const getErroredUrlFromSessionStorage = (): string | null => {
-  const raw = localStorage.getSessionItem<string>(sessionErrorUrl)
+  const sessionRecord = localStorage.getSessionItem<ErrorRecord>(sessionErrorUrl)
 
-  if (!raw) {
+  if (!sessionRecord) {
     return null
   }
 
-  let rec: ErrorRecord
-
-  try {
-    rec = JSON.parse(raw)
-  }
-  catch {
+  if (sessionRecord.expiresAt <= Date.now()) {
     localStorage.removeSessionItem(sessionErrorUrl)
 
     return null
   }
 
-  if (rec.expiresAt <= Date.now()) {
-    localStorage.removeSessionItem(sessionErrorUrl)
-
-    return null
-  }
-
-  return rec.url
+  return sessionRecord.url
 }
 
 const getRequestUrl = (urls: string | ReadonlyArray<string>): string => {
