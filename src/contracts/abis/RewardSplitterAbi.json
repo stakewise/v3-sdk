@@ -69,6 +69,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "claimer",
+        "type": "address"
+      }
+    ],
+    "name": "setClaimer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "account",
         "type": "address"
       }
