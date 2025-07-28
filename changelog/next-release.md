@@ -52,3 +52,30 @@ type Input = {
 |----------------|--------------------------------------------------------------|
 | `admin`        | Changing the vault administrator                             |
 | `feePercent`   | Changing fee percent charged by the vault                    |
+
+
+#### New output:
+
+### 4. [sdk.vault.getRewardSplitters](https://sdk.stakewise.io/vault/requests/getrewardsplitters)
+
+#### Add new output field:
+```ts
+type FeeRecipient = {
+  shares: bigint
+  percent: number
+  address: string
+}
+
+type RewardSplitter = {
+  owner: string
+  address: string
+  claimer: string // new field
+  version: number
+  totalShares: bigint
+  feeRecipients: FeeRecipient[]
+}
+
+type Output = {
+  rewardSplitters: RewardSplitter[]
+}
+```
