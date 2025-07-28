@@ -5,6 +5,7 @@ import setClaimerEncode from './setClaimerEncode'
 
 export type SetClaimerInput = Omit<BaseInput, 'vaultAddress'> & {
   claimerAddress: string
+  rewardSplitterAddress: string
 }
 
 export interface SetClaimer {

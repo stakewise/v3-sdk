@@ -24,12 +24,13 @@ const modifyRewardSplitters = (input: RewardSplittersQueryPayload): Output => {
   }
 
   const modifiedRewardSplitters = rewardSplitters.map((item) => {
-    const { id, owner, version, totalShares, shareHolders } = item
+    const { id, claimer, owner, version, totalShares, shareHolders } = item
 
     const totalSharesBI = BigInt(totalShares)
 
     return {
       owner,
+      claimer,
       version: Number(version),
       address: getAddress(id),
       totalShares: totalSharesBI,
