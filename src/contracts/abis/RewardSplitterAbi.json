@@ -66,17 +66,17 @@
     "type": "function"
   },
   {
+    "type": "function",
+    "name": "setClaimer",
     "inputs": [
       {
-        "internalType": "address",
-        "name": "claimer",
-        "type": "address"
+        "name": "_claimer",
+        "type": "address",
+        "internalType": "address"
       }
     ],
-    "name": "setClaimer",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "stateMutability": "nonpayable"
   },
   {
     "inputs": [
