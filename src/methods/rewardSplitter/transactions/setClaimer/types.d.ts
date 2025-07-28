@@ -3,7 +3,7 @@ import setClaimerGas from './setClaimerGas'
 import setClaimerEncode from './setClaimerEncode'
 
 
-export type SetClaimerInput = BaseInput & {
+export type SetClaimerInput = Omit<BaseInput, 'vaultAddress'> & {
   claimerAddress: string
 }
 

@@ -30,9 +30,8 @@ type Output = {
 | Name                  | Type     | Required | Description                                                                                                                          |
 |-----------------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
 | userAddress           | `string` | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin |
-| vaultAddress          | `string` | **Yes**  | The address of the vault                                                                                                             |
-| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter                                                                                                   |
 | claimerAddress        | `string` | **Yes**  | The address of the claimer                                                                                                           |
+| rewardSplitterAddress | `string` | **Yes**  | The address of the reward splitter                                                                                                   |
 
 
 #### New input:
