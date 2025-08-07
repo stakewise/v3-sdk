@@ -22,7 +22,12 @@ const getHarvestParams = (values: GetHarvestParamsInput) => {
 
       return {
         canHarvest,
-        params,
+        params: {
+          proof: params.proof || [],
+          reward: params.reward || 0n,
+          rewardsRoot: params.rewardsRoot,
+          unlockedMevReward: params.unlockedMevReward || 0n,
+        },
       }
     },
   })
