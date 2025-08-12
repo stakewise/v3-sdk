@@ -1,4 +1,4 @@
-query UserRewards(
+query UserRewardsSpecial(
   $where: AllocatorStats_filter
   $limit: Int
 ) {
