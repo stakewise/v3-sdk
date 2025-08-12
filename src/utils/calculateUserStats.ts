@@ -2,6 +2,8 @@ import { formatEther } from 'ethers'
 
 
 type Input = Array<{
+  stakeEarnedAssets?: string
+  extraEarnedAssets?: string
   earnedAssets: string
   totalAssets: string
   timestamp: string
@@ -25,7 +27,9 @@ type ModifiedStats = {
   rewards: Data[]
 }
 
-const calculateUserStats = (data: Input): ModifiedStats => {
+const format = (value: string) => Number(formatEther(value || 0n))
+
+const calculateUserStats = (data: Input, isSpecial?: boolean): ModifiedStats => {
   const result: StatsMap = {
     apy: {},
     balance: {},
@@ -33,11 +37,11 @@ const calculateUserStats = (data: Input): ModifiedStats => {
   }
 
   data.forEach((stats) => {
-    const { earnedAssets, totalAssets, timestamp, apy } = stats
+    const { earnedAssets, totalAssets, timestamp, apy, stakeEarnedAssets = '0', extraEarnedAssets = '0' } = stats
 
     const timeInSeconds = Number(timestamp) / 1_000_000
-    const balance = Number(formatEther(totalAssets || 0n))
-    const rewards = Number(formatEther(earnedAssets || 0n))
+    const balance = format(totalAssets)
+    const rewards = format(earnedAssets)
     const keys = (Object.keys(result) as Array<keyof StatsMap>)
 
     keys.forEach((key) => {
@@ -47,10 +51,15 @@ const calculateUserStats = (data: Input): ModifiedStats => {
     })
 
     result.balance[timestamp].value += balance
-    result.rewards[timestamp].value += rewards
+
+    result.rewards[timestamp].value += isSpecial
+      ? format(stakeEarnedAssets) + format(extraEarnedAssets)
+      : rewards
 
     if (apy) {
-      result.apy[timestamp].value += Number(apy)
+      result.apy[timestamp].value += isSpecial
+        ? (format(stakeEarnedAssets) + format(extraEarnedAssets)) / (format(totalAssets) - format(stakeEarnedAssets)) * 365 * 100
+        : Number(apy)
     }
   })
 

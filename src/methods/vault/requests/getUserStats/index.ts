@@ -7,15 +7,20 @@ type GetUserStatsInput = {
   userAddress: string
   vaultAddress: string
   options: StakeWise.Options
+  isSpecial?: boolean
 }
 
 const getUserStats = (input: GetUserStatsInput) => {
-  const { options, userAddress, vaultAddress, daysCount } = input
+  const { options, userAddress, vaultAddress, daysCount, isSpecial } = input
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ daysCount })
 
-  return graphql.subgraph.vault.fetchUserRewardsQuery({
+  const method = isSpecial
+    ? graphql.subgraph.vault.fetchUserRewardsSpecialQuery
+    : graphql.subgraph.vault.fetchUserRewardsQuery
+
+  return method({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       limit: daysCount,
@@ -27,7 +32,7 @@ const getUserStats = (input: GetUserStatsInput) => {
         },
       },
     },
-    modifyResult: (data) => calculateUserStats(data?.allocator || []),
+    modifyResult: (data) => calculateUserStats(data?.allocator || [], true),
   })
 }
 
