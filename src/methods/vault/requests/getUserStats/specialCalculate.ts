@@ -2,6 +2,10 @@ import { formatEther } from 'ethers'
 
 
 type Input = Array<{
+  stakeEarnedAssets?: string
+  extraEarnedAssets?: string
+  boostActionTime?: number
+  isBoostAction?: boolean
   earnedAssets: string
   totalAssets: string
   timestamp: string
@@ -35,7 +39,16 @@ const calculateUserStats = (data: Input): ModifiedStats => {
   }
 
   data.forEach((stats) => {
-    const { earnedAssets, totalAssets, timestamp, apy } = stats
+    const {
+      earnedAssets,
+      totalAssets,
+      timestamp,
+      apy,
+      isBoostAction,
+      boostActionTime,
+      stakeEarnedAssets = '0',
+      extraEarnedAssets = '0',
+    } = stats
 
     const timeInSeconds = Number(timestamp) / 1_000_000
     const balance = format(totalAssets)
@@ -49,10 +62,15 @@ const calculateUserStats = (data: Input): ModifiedStats => {
     })
 
     result.balance[timestamp].value += balance
-    result.rewards[timestamp].value += rewards
+
+    result.rewards[timestamp].value += isBoostAction
+      ? format(stakeEarnedAssets) + format(extraEarnedAssets)
+      : rewards
 
     if (apy) {
-      result.apy[timestamp].value += Number(apy)
+      result.apy[timestamp].value += isBoostAction
+        ? (format(stakeEarnedAssets) + format(extraEarnedAssets)) / (format(totalAssets) - format(stakeEarnedAssets)) * 365 * 100
+        : Number(apy)
     }
   })
 

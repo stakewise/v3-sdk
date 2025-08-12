@@ -1,6 +1,8 @@
 import { apiUrls, validateArgs, calculateUserStats, getTimestamp } from '../../../../utils'
 import graphql from '../../../../graphql'
 
+import specialFetch from './specialFetch'
+
 
 type GetUserStatsInput = {
   daysCount: number
@@ -10,17 +12,17 @@ type GetUserStatsInput = {
   isSpecial?: boolean
 }
 
-const getUserStats = (input: GetUserStatsInput) => {
+const getUserStats = async (input: GetUserStatsInput) => {
   const { options, userAddress, vaultAddress, daysCount, isSpecial } = input
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ daysCount })
 
-  const method = isSpecial
-    ? graphql.subgraph.vault.fetchUserRewardsSpecialQuery
-    : graphql.subgraph.vault.fetchUserRewardsQuery
+  if (isSpecial) {
+    return specialFetch(input)
+  }
 
-  return method({
+  return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       limit: daysCount,
@@ -32,7 +34,7 @@ const getUserStats = (input: GetUserStatsInput) => {
         },
       },
     },
-    modifyResult: (data) => calculateUserStats(data?.allocator || [], true),
+    modifyResult: (data) => calculateUserStats(data?.allocator || []),
   })
 }
 
