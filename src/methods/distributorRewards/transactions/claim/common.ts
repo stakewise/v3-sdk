@@ -9,9 +9,9 @@ export const commonLogic = async (values: ClaimInput) => {
   validateArgs.array({ proof, tokens, cumulativeAmounts }, true)
 
   Object.keys({ proof, tokens, cumulativeAmounts }).forEach((key) => {
-    const array = values[key]
+    const array = values[key as keyof typeof values] as unknown[]
 
-    array.forEach((string) => {
+    array.forEach((string: unknown) => {
       if (typeof string !== 'string') {
         throw new Error(`The "${key}" argument must be an array of strings`)
       }
@@ -22,6 +22,6 @@ export const commonLogic = async (values: ClaimInput) => {
 
   return {
     merkleDistributorV2: contracts.special.merkleDistributorV2.connect(signer),
-    params: [ userAddress, tokens, cumulativeAmounts, proof ],
+    params: [ userAddress, tokens, cumulativeAmounts, proof ] as Parameters<typeof contracts.special.merkleDistributorV2.claim>,
   }
 }

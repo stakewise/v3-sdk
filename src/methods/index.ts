@@ -20,6 +20,9 @@ type Methods = (
 
   | typeof rewardSplitter.requests
   | typeof rewardSplitter.transactions
+
+  | typeof distributorRewards.requests
+  | typeof distributorRewards.transactions
 )
 
 interface UnknownMethod {

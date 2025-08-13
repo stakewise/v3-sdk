@@ -8,7 +8,7 @@ import { default as claim } from './transactions/claim'
 export default {
   requests: {
     /**
-     * @description Calculates the amount of assets that the user can claim from the reward splitter.
+     * @description Returns the set of distributor rewards tokens that are currently claimable.
      * @see https://sdk.stakewise.io/distributorRewards/requests/getrewards
      */
     getRewards,

@@ -9,7 +9,7 @@ export type ClaimInput = Omit<BaseInput, 'vaultAddress'> & {
   cumulativeAmounts: string[]
 }
 
-export interface CreateRewardSplitter {
+export interface Claim {
   (values: ClaimInput): Promise<StakeWise.TransactionHash>
   estimateGas: typeof claimGas
   encode: typeof claimEncode

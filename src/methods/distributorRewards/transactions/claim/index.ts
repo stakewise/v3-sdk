@@ -1,10 +1,10 @@
 import { commonLogic } from './common'
-import type { CreateRewardSplitter } from './types'
+import type { Claim } from './types'
 import claimGas from './claimGas'
 import claimEncode from './claimEncode'
 
 
-const claim: CreateRewardSplitter = async (values) => {
+const claim: Claim = async (values) => {
   const { merkleDistributorV2, params } = await commonLogic(values)
 
   const result = await merkleDistributorV2.claim(...params)
