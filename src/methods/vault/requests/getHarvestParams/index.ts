@@ -1,5 +1,6 @@
 import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
+import modifyHarvestParams from './modifyHarvestParams'
 
 
 type GetHarvestParamsInput = {
@@ -17,19 +18,7 @@ const getHarvestParams = (values: GetHarvestParamsInput) => {
     variables: {
       address: vaultAddress.toLowerCase(),
     },
-    modifyResult: (data) => {
-      const { canHarvest, ...params } = data.harvestParams || {}
-
-      return {
-        canHarvest,
-        params: {
-          proof: params.proof || [],
-          reward: params.reward || 0n,
-          rewardsRoot: params.rewardsRoot,
-          unlockedMevReward: params.unlockedMevReward || 0n,
-        },
-      }
-    },
+    modifyResult: modifyHarvestParams,
   })
 }
 

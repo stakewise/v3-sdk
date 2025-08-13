@@ -19,7 +19,7 @@ const getRewards = (input: GetRewardsInput) => {
     variables: {
       address: userAddress.toLowerCase(),
     },
-    modifyResult: (data) => modifyRewards(data),
+    modifyResult: modifyRewards,
   })
 }
 
