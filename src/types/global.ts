@@ -40,6 +40,7 @@ declare global {
     type BoostMethods = ReturnType<typeof methods.createBoostMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
     type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
+    type DistributorRewardsMethods = ReturnType<typeof methods.createDistributorRewardsMethods>
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {
