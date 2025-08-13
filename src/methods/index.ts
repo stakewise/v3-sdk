@@ -3,6 +3,7 @@ import boost from './boost'
 import osToken from './osToken'
 import * as utils from './utils'
 import rewardSplitter from './rewardSplitter'
+import distributorRewards from './distributorRewards'
 
 
 type Methods = (
@@ -19,6 +20,9 @@ type Methods = (
 
   | typeof rewardSplitter.requests
   | typeof rewardSplitter.transactions
+
+  | typeof distributorRewards.requests
+  | typeof distributorRewards.transactions
 )
 
 interface UnknownMethod {
@@ -107,6 +111,10 @@ const methods = {
   createRewardSplitterMethods: (params: CommonParams) => ({
     ...createMethods<typeof rewardSplitter.requests>(rewardSplitter.requests, params),
     ...createMethods<typeof rewardSplitter.transactions>(rewardSplitter.transactions, params),
+  }),
+  createDistributorRewardsMethods: (params: CommonParams) => ({
+    ...createMethods<typeof distributorRewards.requests>(distributorRewards.requests, params),
+    ...createMethods<typeof distributorRewards.transactions>(distributorRewards.transactions, params),
   }),
 }
 

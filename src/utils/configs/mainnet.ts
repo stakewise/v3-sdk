@@ -50,6 +50,7 @@ export default {
     special: {
       stakeCalculator: '0x75c57bd50A3EB7291Da3429956D3566E0153A38f',
       leverageStrategy: '0x48cD14FDB8e72A03C8D952af081DBB127D6281fc',
+      merkleDistributorV2: '0xa9dc250dF4EE9273D09CFa455da41FB1cAC78d34',
     },
   },
   tokens: {

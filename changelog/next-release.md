@@ -1,5 +1,10 @@
+# New
+### 1. Get distributor rewards and claim:
+- [sdk.distributorRewards.getRewards](/distributorRewards/requests/getrewards)
+- [sdk.distributorRewards.claim](/distributorRewards/transactions/claim)
+
 # Updates
-### 1. [sdk.rewardSplitter.getClaimAmount](https://sdk.stakewise.io/rewardSplitter/requests/getclaimamount)
+### 2. [sdk.rewardSplitter.getClaimAmount](https://sdk.stakewise.io/rewardSplitter/requests/getclaimamount)
 
 ```
 type Item = {
@@ -21,7 +26,7 @@ type Output = {
 
 #### New input:
 
-### 2. [sdk.vault.operate](https://sdk.stakewise.io/vault/transactions/operate)
+### 3. [sdk.vault.operate](https://sdk.stakewise.io/vault/transactions/operate)
 
 #### Add new input field:
 
