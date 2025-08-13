@@ -1,6 +1,7 @@
 import RewardSplitterFactoryAbi from './RewardSplitterFactoryAbi.json'
 import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
+import MerkleDistributorV2Abi from './MerkleDistributorV2Abi.json'
 import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
 import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
 import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
@@ -25,6 +26,7 @@ export {
   RewardSplitterFactoryAbi,
   VestingEscrowFactoryAbi,
   MintTokenControllerAbi,
+  MerkleDistributorV2Abi,
   DepositDataRegistryAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,

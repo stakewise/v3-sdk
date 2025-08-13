@@ -21,6 +21,7 @@ import type {
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   DepositDataRegistryAbi,
+  MerkleDistributorV2Abi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
@@ -88,6 +89,7 @@ declare global {
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
+      type MerkleDistributorV2 = MerkleDistributorV2Abi
       type MintTokenController = MintTokenControllerAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi
