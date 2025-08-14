@@ -43,6 +43,8 @@ const specialFetch = async (input: SpecialFetchInput) => {
     },
   })
 
+  console.log('boostMainData', boostMainData)
+
   const alocators = await graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
@@ -58,6 +60,8 @@ const specialFetch = async (input: SpecialFetchInput) => {
       } as AllocatorActionsQueryVariables['where'],
     },
   })
+
+  console.log('alocators', alocators)
 
   if (boostMainData.leverageStrategyPositions?.[0]?.proxy) {
     alocatorsForProxy = await graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery({
@@ -99,6 +103,8 @@ const specialFetch = async (input: SpecialFetchInput) => {
       },
     },
   })
+
+  console.log('rewards', rewards)
 
   return specialCalculate(rewards.allocator.map((item) => {
     const hasBoostActions = Boolean(boostActionsTimes.length)
