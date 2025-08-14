@@ -39,8 +39,6 @@ const specialFetch = async (input: SpecialFetchInput) => {
     },
   })
 
-  console.log('boostMainData', boostMainData)
-
   const alocators = await graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
@@ -56,8 +54,6 @@ const specialFetch = async (input: SpecialFetchInput) => {
       } as AllocatorActionsQueryVariables['where'],
     },
   })
-
-  console.log('alocators', alocators)
 
   if (boostMainData.leverageStrategyPositions?.[0]?.proxy) {
     alocatorsForProxy = await graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery({
@@ -100,8 +96,6 @@ const specialFetch = async (input: SpecialFetchInput) => {
     },
   })
 
-  console.log('rewards', rewards)
-
   return specialCalculate(rewards.allocator.map((item) => {
     const hasBoostActions = Boolean(boostActionsTimes.length)
 
@@ -109,16 +103,7 @@ const specialFetch = async (input: SpecialFetchInput) => {
       return item
     }
 
-    const boostActionTime = boostActionsTimes.find((seconds) => {
-      const result = isSameDay(Number(item.timestamp), seconds)
-
-      if (result) {
-        console.log('item.timestamp', item.timestamp, seconds)
-        console.log('item', item)
-      }
-
-      return result
-    })
+    const boostActionTime = boostActionsTimes.find((seconds) => isSameDay(Number(item.timestamp), seconds))
 
     return {
       ...item,

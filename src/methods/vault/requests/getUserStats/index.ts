@@ -18,8 +18,6 @@ const getUserStats = async (input: GetUserStatsInput) => {
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ daysCount })
 
-  console.log('isSpecial 2', isSpecial)
-
   if (isSpecial) {
     return specialFetch(input)
   }
