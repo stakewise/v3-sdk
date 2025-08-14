@@ -16,15 +16,11 @@ const isSameDay = (microseconds: number, seconds: number) => {
   const date1 = new Date(microseconds / 1000)
   const date2 = new Date(seconds * 1000)
 
-  const year1 = date1.getFullYear()
-  const month1 = date1.getMonth()
-  const day1 = date1.getDate()
-
-  const year2 = date2.getFullYear()
-  const month2 = date2.getMonth()
-  const day2 = date2.getDate()
-
-  return year1 === year2 && month1 === month2 && day1 === day2
+  return (
+    date1.getUTCFullYear() === date2.getUTCFullYear()
+    && date1.getUTCMonth() === date2.getUTCMonth()
+    && date1.getUTCDate() === date2.getUTCDate()
+  )
 }
 
 const specialFetch = async (input: SpecialFetchInput) => {
@@ -113,7 +109,16 @@ const specialFetch = async (input: SpecialFetchInput) => {
       return item
     }
 
-    const boostActionTime = boostActionsTimes.find((seconds) => isSameDay(Number(item.timestamp), seconds))
+    const boostActionTime = boostActionsTimes.find((seconds) => {
+      const result = isSameDay(Number(item.timestamp), seconds)
+
+      if (result) {
+        console.log('item.timestamp', item.timestamp, seconds)
+        console.log('item', item)
+      }
+
+      return result
+    })
 
     return {
       ...item,
