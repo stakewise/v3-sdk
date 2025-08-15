@@ -24,9 +24,9 @@ const getHarvestParams = (values: GetHarvestParamsInput) => {
         canHarvest,
         params: {
           proof: params.proof || [],
-          reward: params.reward || 0n,
+          reward: params.reward || '0',
           rewardsRoot: params.rewardsRoot,
-          unlockedMevReward: params.unlockedMevReward || 0n,
+          unlockedMevReward: params.unlockedMevReward || '0',
         },
       }
     },
