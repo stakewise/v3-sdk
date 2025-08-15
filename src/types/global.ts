@@ -21,6 +21,7 @@ import type {
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   DepositDataRegistryAbi,
+  MerkleDistributorV2Abi,
   MintTokenControllerAbi,
   VestingEscrowFactoryAbi,
   RewardSplitterFactoryAbi,
@@ -39,6 +40,7 @@ declare global {
     type BoostMethods = ReturnType<typeof methods.createBoostMethods>
     type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
     type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
+    type DistributorRewardsMethods = ReturnType<typeof methods.createDistributorRewardsMethods>
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {
@@ -88,6 +90,7 @@ declare global {
       type MintTokenConfigV1 = MintTokenConfigV1Abi
       type MintTokenConfigV2 = MintTokenConfigV2Abi
       type DepositDataRegistry = DepositDataRegistryAbi
+      type MerkleDistributorV2 = MerkleDistributorV2Abi
       type MintTokenController = MintTokenControllerAbi
       type VestingEscrowFactory = VestingEscrowFactoryAbi
       type RewardSplitterFactory = RewardSplitterFactoryAbi

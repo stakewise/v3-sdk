@@ -3,6 +3,7 @@ query RewardSplitters($where: RewardSplitter_filter!) {
     id
     owner
     version
+    claimer
     totalShares
     shareHolders(orderBy: shares, orderDirection: desc, where: { shares_gt: 0 }) {
       id
