@@ -2,6 +2,7 @@
 import { default as getClaimAmount } from './requests/getClaimAmount'
 
 // Transactions
+import { default as setClaimer } from './transactions/setClaimer'
 import { default as claimRewards } from './transactions/claimRewards'
 import { default as updateFeeRecipients } from './transactions/updateFeeRecipients'
 import { default as createRewardSplitter } from './transactions/createRewardSplitter'
@@ -29,6 +30,12 @@ export default {
      * @see https://sdk.stakewise.io/rewardSplitter/transactions/claimrewards
      */
     claimRewards,
+    /**
+     * @description Allows the reward splitter owner to set a claimer
+     * that can claim vault fees on behalf of the shareholders.
+     * @see https://sdk.stakewise.io/rewardSplitter/transactions/setclaimer
+     */
+    setClaimer,
     /**
      * @description Updates the reward splitter fee recipients and predefined fee splitting proportions.
      * Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
