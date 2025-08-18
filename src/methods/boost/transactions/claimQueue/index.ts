@@ -6,7 +6,7 @@ import { boostMulticall } from '../../../../contracts'
 
 
 const claimQueue: ClaimQueue = async (values) => {
-  const multicallArgs = commonLogic(values)
+  const multicallArgs = await commonLogic(values)
 
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
 

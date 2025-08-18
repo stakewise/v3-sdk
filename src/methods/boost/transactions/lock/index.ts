@@ -3,12 +3,17 @@ import lockEncode from './lockEncode'
 import type { Lock } from './types'
 import { commonLogic } from './common'
 import { boostMulticall } from '../../../../contracts'
+import upgradeLeverageStrategy from '../upgradeLeverageStrategy'
 
 
 const lock: Lock = async (values) => {
   const { provider, userAddress } = values
 
-  const { multiSigData, multicallArgs } = await commonLogic(values)
+  const { multiSigData, multicallArgs, isUpgradeRequired } = await commonLogic(values)
+
+  if (isUpgradeRequired) {
+    await upgradeLeverageStrategy({ contracts, userAddress, vaultAddress })
+  }
 
   if (multiSigData) {
     const signer = await provider.getSigner(userAddress)

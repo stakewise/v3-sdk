@@ -12,6 +12,7 @@ type GetBoostInput = {
 
 type Output = {
   shares: bigint
+  version: number
   vaultApy: number
   totalShares: bigint
   borrowStatus: BorrowStatus
@@ -30,6 +31,7 @@ const getData = async (values: GetBoostInput) => {
 
   const boost: Output = {
     shares: 0n,
+    version: 2,
     vaultApy: 0,
     totalShares: 0n,
     borrowStatus: BorrowStatus.Healthy,
@@ -72,6 +74,7 @@ const getData = async (values: GetBoostInput) => {
       },
     })
 
+    const version = leverageStrategyPosition?.version || 2
     const stakedAssets = BigInt(allocators[0]?.assets || 0)
     const ltvPercent = BigInt(osTokenConfig.ltvPercent || 0)
     const borrowLtv = Number(leverageStrategyPosition?.borrowLtv || 0)
@@ -100,6 +103,7 @@ const getData = async (values: GetBoostInput) => {
 
     return {
       shares,
+      version,
       totalShares,
       borrowStatus,
       rewardAssets,

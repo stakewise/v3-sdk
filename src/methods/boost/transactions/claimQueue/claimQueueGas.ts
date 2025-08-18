@@ -7,7 +7,7 @@ import { boostMulticall } from '../../../../contracts'
 const claimQueueGas = async (values: ClaimQueueInput) => {
   const { provider } = values
 
-  const multicallArgs = commonLogic(values)
+  const multicallArgs = await commonLogic(values)
 
   const estimatedGas = await boostMulticall<bigint>({
     ...multicallArgs,

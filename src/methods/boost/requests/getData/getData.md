@@ -19,6 +19,7 @@ Get boost data for vault user
 ```ts
 type Output = {
   shares: bigint
+  version: number
   vaultApy: number
   totalShares: bigint
   rewardAssets: bigint
@@ -34,6 +35,7 @@ type Output = {
 | Name                       | Description                                                          |
 |----------------------------|----------------------------------------------------------------------|
 | `shares`                   | Tokens count of boost                                                |
+| `version`                  | The version of the leverage strategy contract                        |
 | `totalShares`              | Tokens count of boost + reward assets converted to shares            |
 | `vaultApy`                 | Base vault apy                                                       |
 | `maxMintShares`            | Maximum possible number of osToken without deductions                |

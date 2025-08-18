@@ -2,10 +2,11 @@ import { parseEther } from 'ethers'
 import type { UnlockInput } from './types'
 import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
+import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../util'
 
 
-export const commonLogic = (values: UnlockInput) => {
-  const { contracts, options, percent, vaultAddress, userAddress } = values
+export const commonLogic = async (values: UnlockInput) => {
+  const { options, percent, vaultAddress, userAddress, leverageStrategyData } = values
 
   validateArgs.number({ percent })
   validateArgs.address({ vaultAddress, userAddress })
@@ -17,8 +18,14 @@ export const commonLogic = (values: UnlockInput) => {
     throw new Error(`The "percent" argument must be less than or equal to 100`)
   }
 
+  if (leverageStrategyData) {
+    validateLeverageStrategyData(leverageStrategyData)
+  }
+
+  const { leverageStrategyContract, isUpgradeRequired } = await getLeverageStrategyContract(values)
+
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
-    leverageStrategyContract: contracts.special.leverageStrategy,
+    leverageStrategyContract,
     vaultAddress,
     userAddress,
     options,
@@ -36,5 +43,6 @@ export const commonLogic = (values: UnlockInput) => {
     request: {
       params,
     },
+    isUpgradeRequired,
   }
 }
