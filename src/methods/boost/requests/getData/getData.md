@@ -17,9 +17,13 @@ Get boost data for vault user
 #### Returns:
 
 ```ts
+type LeverageStrategyData = {
+  version: number
+  isUpgradeRequired: boolean
+}
+
 type Output = {
   shares: bigint
-  version: number
   vaultApy: number
   totalShares: bigint
   rewardAssets: bigint
@@ -29,22 +33,24 @@ type Output = {
   exitingPercent: number
   allocatorMaxBoostApy: number
   osTokenHolderMaxBoostApy: number
+  leverageStrategyData: LeverageStrategyData
 }
 ```
 
-| Name                       | Description                                                          |
-|----------------------------|----------------------------------------------------------------------|
-| `shares`                   | Tokens count of boost                                                |
-| `version`                  | The version of the leverage strategy contract                        |
-| `totalShares`              | Tokens count of boost + reward assets converted to shares            |
-| `vaultApy`                 | Base vault apy                                                       |
-| `maxMintShares`            | Maximum possible number of osToken without deductions                |
-| `exitingPercent`           | The percent (in wad) of user's position that is currently exiting    |
-| `rewardAssets`             | User boost rewards                                                   |
-| `borrowStatus`             | Aave borrow status. enum BorrowStatus (Healthy, Moderate, Risky)     |
-| `borrowedAssets`           | Amount of borrowed ETH                                               |
-| `allocatorMaxBoostApy`     | The average max boost APY earned in this vault by the allocator      |
-| `osTokenHolderMaxBoostApy` | The average max boost APY earned in this vault by the osToken holder |
+| Name                                     | Description                                                          |
+|------------------------------------------|----------------------------------------------------------------------|
+| `shares`                                 | Tokens count of boost                                                |
+| `totalShares`                            | Tokens count of boost + reward assets converted to shares            |
+| `vaultApy`                               | Base vault apy                                                       |
+| `maxMintShares`                          | Maximum possible number of osToken without deductions                |
+| `exitingPercent`                         | The percent (in wad) of user's position that is currently exiting    |
+| `rewardAssets`                           | User boost rewards                                                   |
+| `borrowStatus`                           | Aave borrow status. enum BorrowStatus (Healthy, Moderate, Risky)     |
+| `borrowedAssets`                         | Amount of borrowed ETH                                               |
+| `allocatorMaxBoostApy`                   | The average max boost APY earned in this vault by the allocator      |
+| `osTokenHolderMaxBoostApy`               | The average max boost APY earned in this vault by the osToken holder |
+| `leverageStrategyData.version`           | The version of the leverage strategy contract                        |
+| `leverageStrategyData.isUpgradeRequired` | The upgrade status of the leverage strategy contract                 |
 
 #### Example:
 

@@ -1,4 +1,4 @@
-import { LeverageStrategyDataQueryPayload } from '../../../../graphql/subgraph/boost'
+import { LeverageStrategyDataQueryPayload } from '../../../graphql/subgraph/boost'
 
 
 export type Output = {

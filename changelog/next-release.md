@@ -10,7 +10,7 @@
 Upgrade the leverage strategy contract
 
 ### 2. Add new method [sdk.boost.getLeverageStrategyData](https://sdk.stakewise.io/boost/requests/getleveragestrategydata)
-Get the leverage strategy `version` and status `isUpgradeRequired`
+Get the `leverageStrategyData` object with `version` and `isUpgradeRequired` properties.
 
 # Updates
 ### 1. [sdk.boost.claimQueue](https://sdk.stakewise.io/boost/transactions/claimQueue)

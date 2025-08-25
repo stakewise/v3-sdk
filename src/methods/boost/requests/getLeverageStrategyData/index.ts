@@ -1,7 +1,7 @@
 import graphql from 'graphql'
 import { apiUrls, validateArgs } from '../../../../utils'
 
-import modifyLeverageStrategyData from './modifyLeverageStrategyData'
+import modifyLeverageStrategyData from '../../util/modifyLeverageStrategyData'
 
 
 type GetLeverageStrategyDataInput = {

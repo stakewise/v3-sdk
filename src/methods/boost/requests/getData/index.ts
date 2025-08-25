@@ -1,5 +1,6 @@
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
+import modifyLeverageStrategyData from '../../util/modifyLeverageStrategyData'
 import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../../../utils'
 
 
@@ -12,7 +13,6 @@ type GetBoostInput = {
 
 type Output = {
   shares: bigint
-  version: number
   vaultApy: number
   totalShares: bigint
   borrowStatus: BorrowStatus
@@ -22,6 +22,10 @@ type Output = {
   borrowedAssets: bigint
   allocatorMaxBoostApy: number
   osTokenHolderMaxBoostApy: number
+  leverageStrategyData: {
+    version: number
+    isUpgradeRequired: boolean
+  }
 }
 
 const getData = async (values: GetBoostInput) => {
@@ -31,7 +35,6 @@ const getData = async (values: GetBoostInput) => {
 
   const boost: Output = {
     shares: 0n,
-    version: 2,
     vaultApy: 0,
     totalShares: 0n,
     borrowStatus: BorrowStatus.Healthy,
@@ -41,6 +44,10 @@ const getData = async (values: GetBoostInput) => {
     borrowedAssets: 0n,
     allocatorMaxBoostApy: 0,
     osTokenHolderMaxBoostApy: 0,
+    leverageStrategyData: {
+      version: 2,
+      isUpgradeRequired: false,
+    },
   }
 
   if ([ Network.Mainnet, Network.Hoodi ].includes(options.network)) {
@@ -74,7 +81,6 @@ const getData = async (values: GetBoostInput) => {
       },
     })
 
-    const version = leverageStrategyPosition?.version || 2
     const stakedAssets = BigInt(allocators[0]?.assets || 0)
     const ltvPercent = BigInt(osTokenConfig.ltvPercent || 0)
     const borrowLtv = Number(leverageStrategyPosition?.borrowLtv || 0)
@@ -82,6 +88,7 @@ const getData = async (values: GetBoostInput) => {
     const exitingPercent = Number(leverageStrategyPosition?.exitingPercent || 0)
     const rewardAssets = BigInt(leverageStrategyPosition?.boostRewardAssets || 0)
     const borrowedAssets = BigInt(aaveData?.aavePositions[0]?.borrowedAssets || 0)
+    const leverageStrategyData = modifyLeverageStrategyData({ leverageStrategyPositions })
 
     const maxMintAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
@@ -103,13 +110,13 @@ const getData = async (values: GetBoostInput) => {
 
     return {
       shares,
-      version,
       totalShares,
       borrowStatus,
       rewardAssets,
       maxMintShares,
       exitingPercent,
       borrowedAssets,
+      leverageStrategyData,
       vaultApy: Number(apy),
       allocatorMaxBoostApy: Number(allocatorMaxBoostApy),
       osTokenHolderMaxBoostApy: Number(osTokenHolderMaxBoostApy),
