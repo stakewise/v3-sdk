@@ -1,4 +1,4 @@
-import graphql from 'graphql'
+import graphql from '../../../../graphql'
 import { apiUrls, validateArgs } from '../../../../utils'
 
 import modifyLeverageStrategyData from '../../util/modifyLeverageStrategyData'
