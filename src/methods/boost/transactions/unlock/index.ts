@@ -7,6 +7,8 @@ import upgradeLeverageStrategy from '../upgradeLeverageStrategy'
 
 
 const unlock: Unlock = async (values) => {
+  const { contracts, userAddress, vaultAddress } = values
+
   const { isUpgradeRequired, ...multicallArgs } = await commonLogic(values)
 
   if (isUpgradeRequired) {
