@@ -5,6 +5,7 @@ import upgradeLeverageStrategyEncode from './upgradeLeverageStrategyEncode'
 export type UpgradeLeverageStrategyInput = {
   userAddress: string
   vaultAddress: string
+  provider: StakeWise.Provider
   contracts: StakeWise.Contracts
 }
 

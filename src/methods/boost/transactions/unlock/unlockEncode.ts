@@ -6,7 +6,7 @@ import upgradeLeverageStrategy from '../upgradeLeverageStrategy'
 
 type Output = {
   unlockTxData: StakeWise.TransactionData
-  upgradeLeverageStrategyTxData: StakeWise.TransactionData
+  upgradeLeverageStrategyTxData: StakeWise.TransactionData | null
 }
 
 const unlockEncode = async (values: UnlockInput): Promise<Output> => {
