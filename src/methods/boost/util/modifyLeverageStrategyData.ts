@@ -2,7 +2,7 @@ import { LeverageStrategyDataQueryPayload } from '../../../graphql/subgraph/boos
 
 
 export type Output = {
-  version: number | null
+  version: number
   isUpgradeRequired: boolean
 }
 
@@ -18,7 +18,7 @@ const modifyLeverageStrategyData = (values: LeverageStrategyDataQueryPayload): O
     }
   }
 
-  const version = Number(leverageStrategyData.version)
+  const version = Number(leverageStrategyData.version) || 1
   const exitingPercent = Number(leverageStrategyData.exitingPercent)
 
   return {

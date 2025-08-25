@@ -1,6 +1,6 @@
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import modifyLeverageStrategyData from '../../util/modifyLeverageStrategyData'
+import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../util/modifyLeverageStrategyData'
 import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../../../utils'
 
 
@@ -22,10 +22,7 @@ type Output = {
   borrowedAssets: bigint
   allocatorMaxBoostApy: number
   osTokenHolderMaxBoostApy: number
-  leverageStrategyData: {
-    version: number
-    isUpgradeRequired: boolean
-  }
+  leverageStrategyData: LeverageStrategyData
 }
 
 const getData = async (values: GetBoostInput) => {
