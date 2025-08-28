@@ -25,8 +25,6 @@ type ModifiedStats = {
   rewards: Data[]
 }
 
-const format = (value: string) => Number(formatEther(value || 0n))
-
 const calculateUserStats = (data: Input): ModifiedStats => {
   const result: StatsMap = {
     apy: {},
@@ -38,8 +36,8 @@ const calculateUserStats = (data: Input): ModifiedStats => {
     const { earnedAssets, totalAssets, timestamp, apy } = stats
 
     const timeInSeconds = Number(timestamp) / 1_000_000
-    const balance = format(totalAssets)
-    const rewards = format(earnedAssets)
+    const balance = Number(formatEther(totalAssets || 0n))
+    const rewards = Number(formatEther(earnedAssets || 0n))
     const keys = (Object.keys(result) as Array<keyof StatsMap>)
 
     keys.forEach((key) => {

@@ -1,26 +1,19 @@
 import { apiUrls, validateArgs, calculateUserStats, getTimestamp } from '../../../../utils'
 import graphql from '../../../../graphql'
 
-import specialFetch from './specialFetch'
-
 
 type GetUserStatsInput = {
   daysCount: number
   userAddress: string
   vaultAddress: string
   options: StakeWise.Options
-  isSpecial?: boolean
 }
 
-const getUserStats = async (input: GetUserStatsInput) => {
-  const { options, userAddress, vaultAddress, daysCount, isSpecial } = input
+const getUserStats = (input: GetUserStatsInput) => {
+  const { options, userAddress, vaultAddress, daysCount } = input
 
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ daysCount })
-
-  if (isSpecial) {
-    return specialFetch(input)
-  }
 
   return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
