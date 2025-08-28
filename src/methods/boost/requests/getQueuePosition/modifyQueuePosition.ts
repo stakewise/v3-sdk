@@ -5,11 +5,8 @@ type BoostQueueItem = BoostQueuePositionsQueryPayload['leverageStrategyPositions
 type ExitRequest = NonNullable<BoostQueueItem['exitRequest']>
 export type ClaimPosition = Pick<ExitRequest, 'positionTicket' | 'timestamp' | 'exitQueueIndex'>
 
-export type ParseBoostQueueInput = {
-  leverageStrategyPositions: BoostQueueItem[]
-}
-
 export type ParseBoostQueueOutput = {
+  version: number
   isClaimable: boolean
   exitingShares: bigint
   exitingAssets: bigint
@@ -22,6 +19,7 @@ const modifyQueuePosition = (values: BoostQueuePositionsQueryPayload): ParseBoos
 
   if (!leverageStrategyPositions.length || !leverageStrategyPositions[0].exitingPercent) {
     return {
+      version: 1,
       duration: null,
       position: null,
       exitingShares: 0n,
@@ -30,9 +28,10 @@ const modifyQueuePosition = (values: BoostQueuePositionsQueryPayload): ParseBoos
     }
   }
 
-  const { exitingOsTokenShares, exitingAssets, exitRequest } = leverageStrategyPositions[0]
+  const { exitingOsTokenShares, exitingAssets, exitRequest, version } = leverageStrategyPositions[0]
 
   const output: ParseBoostQueueOutput = {
+    version: Number(version) || 1,
     duration: null,
     position: null,
     isClaimable: false,

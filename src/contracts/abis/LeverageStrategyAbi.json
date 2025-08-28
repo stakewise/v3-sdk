@@ -206,5 +206,18 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType":"address",
+        "name":"vault",
+        "type":"address"
+      }
+    ],
+    "name":"upgradeProxy",
+    "outputs":[],
+    "stateMutability":"nonpayable",
+    "type":"function"
   }
 ]

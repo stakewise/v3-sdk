@@ -1,3 +1,4 @@
+import { validateArgs } from '../../../../utils'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
@@ -10,7 +11,9 @@ type GetLeverageStrategyProxyInput = {
 const getLeverageStrategyProxy = (values: GetLeverageStrategyProxyInput) => {
   const { contracts, userAddress, vaultAddress } = values
 
-  return contracts.special.leverageStrategy.getStrategyProxy(vaultAddress, userAddress)
+  validateArgs.address({ userAddress, vaultAddress })
+
+  return contracts.special.leverageStrategyV2.getStrategyProxy(vaultAddress, userAddress)
 }
 
 

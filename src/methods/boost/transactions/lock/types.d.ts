@@ -15,6 +15,10 @@ export type LockInput = {
   amount: bigint
   userAddress: string
   vaultAddress: string
+  leverageStrategyData?: {
+    version: number
+    isUpgradeRequired: boolean
+  }
   referrerAddress?: string
   permitParams?: PermitParams
   options: StakeWise.Options
