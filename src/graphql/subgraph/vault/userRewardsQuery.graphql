@@ -11,5 +11,9 @@ query UserRewards(
     timestamp
     earnedAssets
     totalAssets
+    osTokenFeeAssets
+    boostEarnedAssets
+    stakeEarnedAssets
+    extraEarnedAssets
   }
 }

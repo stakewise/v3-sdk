@@ -78,3 +78,44 @@ type Output = {
   rewardSplitters: RewardSplitter[]
 }
 ```
+
+#### New output:
+
+### 5. [sdk.vault.getUserStats](https://sdk.stakewise.io/vault/requests/getuserstats)
+
+#### Extended the type for rewards:
+```ts
+type Stat = {
+  time: number
+  value: number
+}
+
+type Rewards = Stat & {
+  extraData?: {
+    boostRewards: number
+    stakeRewards: number
+    extraRewards: number
+  }
+}
+
+type Output = {
+  apy: Stat[]
+  balance: Stat[]
+  rewards: Rewards[]
+}
+```
+
+#### New output:
+
+### 6. [sdk.vault.getStakeBalance](https://sdk.stakewise.io/vault/requests/getstakebalance)
+
+#### Add new output field:
+```ts
+type Output = {
+  assets: bigint
+  totalEarnedAssets: bigint
+  totalStakeEarnedAssets: bigint // new field
+  totalBoostEarnedAssets: bigint // new field
+  totalExtraEarnedAssets: bigint // new field
+}
+```

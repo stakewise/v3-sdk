@@ -2,13 +2,24 @@ import { formatEther } from 'ethers'
 
 
 type Input = Array<{
+  boostEarnedAssets: string
+  stakeEarnedAssets: string
+  extraEarnedAssets: string
+  osTokenFeeAssets: string
   earnedAssets: string
   totalAssets: string
   timestamp: string
   apy?: string
 }>
 
+type ExtraData = {
+  boostRewards: number
+  stakeRewards: number
+  extraRewards: number
+}
+
 type Data = {
+  extraData?: ExtraData
   value: number
   time: number
 }
@@ -33,11 +44,21 @@ const calculateUserStats = (data: Input): ModifiedStats => {
   }
 
   data.forEach((stats) => {
-    const { earnedAssets, totalAssets, timestamp, apy } = stats
+    const {
+      boostEarnedAssets,
+      stakeEarnedAssets,
+      extraEarnedAssets,
+      osTokenFeeAssets,
+      earnedAssets,
+      totalAssets,
+      timestamp,
+      apy,
+    } = stats
 
     const timeInSeconds = Number(timestamp) / 1_000_000
     const balance = Number(formatEther(totalAssets || 0n))
     const rewards = Number(formatEther(earnedAssets || 0n))
+
     const keys = (Object.keys(result) as Array<keyof StatsMap>)
 
     keys.forEach((key) => {
@@ -48,6 +69,17 @@ const calculateUserStats = (data: Input): ModifiedStats => {
 
     result.balance[timestamp].value += balance
     result.rewards[timestamp].value += rewards
+
+    // Extra data, to show in Legend
+    const boostRewards = Number(formatEther(boostEarnedAssets || 0n))
+    const extraRewards = Number(formatEther(extraEarnedAssets || 0n))
+    const stakeRewards = Number(formatEther(Number(stakeEarnedAssets) - Number(osTokenFeeAssets)))
+
+    result.rewards[timestamp].extraData = {
+      boostRewards,
+      stakeRewards,
+      extraRewards,
+    }
 
     if (apy) {
       result.apy[timestamp].value += Number(apy)
