@@ -7,7 +7,7 @@ import { commonLogic } from './common'
 const upgradeLeverageStrategy: UpgradeLeverageStrategy = async (values) => {
   const { provider, userAddress, vaultAddress } = values
 
-  const leverageStrategyContract = await commonLogic(values)
+  const leverageStrategyContract = commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = leverageStrategyContract.connect(signer)

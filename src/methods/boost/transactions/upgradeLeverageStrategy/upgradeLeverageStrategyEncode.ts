@@ -5,7 +5,7 @@ import { commonLogic } from './common'
 const upgradeLeverageStrategyEncode = async (values: UpgradeLeverageStrategyInput): Promise<StakeWise.TransactionData> => {
   const { vaultAddress } = values
 
-  const leverageStrategyContract = await commonLogic(values)
+  const leverageStrategyContract = commonLogic(values)
 
   return leverageStrategyContract.upgradeProxy.populateTransaction(vaultAddress)
 }
