@@ -48,6 +48,8 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
   const { options, vaultAddress, userAddress, request, vaultContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
+  console.log('vaultContract', vaultContract)
+
   const contract = await getSignedContract({
     contract: vaultContract,
     userAddress,
