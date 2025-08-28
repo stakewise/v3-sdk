@@ -85,7 +85,9 @@ const calculateUserStats = (data: Input): ModifiedStats => {
     }
 
     if (stakeEarnedAssets && osTokenFeeAssets) {
-      extraData.stakeRewards = Number(formatEther(Number(stakeEarnedAssets) - Number(osTokenFeeAssets)))
+      const totalStakeRewards = Number(stakeEarnedAssets) - Number(osTokenFeeAssets)
+
+      extraData.stakeRewards = Number(formatEther(String(totalStakeRewards)))
     }
 
     if (Object.keys(extraData).length) {
