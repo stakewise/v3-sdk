@@ -20,7 +20,7 @@ Boost your osToken apy using leverage staking
 | leverageStrategyData | `LeverageStrategyData` | **No**  | Leverage strategy data from [sdk.boost.getLeverageStrategyData](/boost/requests/getleveragestrategydata). If not provided, it will be fetched automatically during the transaction |
 
 ```ts
-type LeverageStrategyhData = {
+type LeverageStrategyData = {
   version: number
   isRequired: boolean
 }

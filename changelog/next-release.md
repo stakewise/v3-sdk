@@ -31,7 +31,7 @@ type Input = {
 type Input = {
   leverageStrategyData?: {
     version: 1 | 2
-    isUpgradeRequired?: boolean
+    isUpgradeRequired: boolean
   }
 }
 ```
@@ -44,7 +44,7 @@ type Input = {
 type Input = {
   leverageStrategyData?: {
     version: 1 | 2
-    isUpgradeRequired?: boolean
+    isUpgradeRequired: boolean
   }
 }
 ```
