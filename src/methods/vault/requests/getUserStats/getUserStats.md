@@ -24,10 +24,18 @@ type Stat = {
   value: number
 }
 
+type Rewards = Stat & {
+  extraData?: {
+    boostRewards: number
+    stakeRewards: number
+    extraRewards: number
+  }
+}
+
 type Output = {
   apy: Stat[]
   balance: Stat[]
-  rewards: Stat[]
+  rewards: Rewards[]
 }
 ```
 

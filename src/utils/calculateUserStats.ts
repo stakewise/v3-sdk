@@ -2,13 +2,24 @@ import { formatEther } from 'ethers'
 
 
 type Input = Array<{
+  boostEarnedAssets?: string
+  stakeEarnedAssets?: string
+  extraEarnedAssets?: string
+  osTokenFeeAssets?: string
   earnedAssets: string
   totalAssets: string
   timestamp: string
   apy?: string
 }>
 
+type ExtraData = {
+  boostRewards: number
+  stakeRewards: number
+  extraRewards: number
+}
+
 type Data = {
+  extraData?: ExtraData
   value: number
   time: number
 }
@@ -33,11 +44,21 @@ const calculateUserStats = (data: Input): ModifiedStats => {
   }
 
   data.forEach((stats) => {
-    const { earnedAssets, totalAssets, timestamp, apy } = stats
+    const {
+      boostEarnedAssets,
+      stakeEarnedAssets,
+      extraEarnedAssets,
+      osTokenFeeAssets,
+      earnedAssets,
+      totalAssets,
+      timestamp,
+      apy,
+    } = stats
 
     const timeInSeconds = Number(timestamp) / 1_000_000
     const balance = Number(formatEther(totalAssets || 0n))
     const rewards = Number(formatEther(earnedAssets || 0n))
+
     const keys = (Object.keys(result) as Array<keyof StatsMap>)
 
     keys.forEach((key) => {
@@ -51,6 +72,26 @@ const calculateUserStats = (data: Input): ModifiedStats => {
 
     if (apy) {
       result.apy[timestamp].value += Number(apy)
+    }
+
+    const extraData: Partial<ExtraData> = {}
+
+    if (boostEarnedAssets) {
+      extraData.boostRewards = Number(formatEther(boostEarnedAssets))
+    }
+
+    if (extraEarnedAssets) {
+      extraData.extraRewards = Number(formatEther(extraEarnedAssets))
+    }
+
+    if (stakeEarnedAssets && osTokenFeeAssets) {
+      const totalStakeRewards = Number(stakeEarnedAssets) - Number(osTokenFeeAssets)
+
+      extraData.stakeRewards = Number(formatEther(String(totalStakeRewards)))
+    }
+
+    if (Object.keys(extraData).length) {
+      result.rewards[timestamp].extraData = extraData as ExtraData
     }
   })
 
