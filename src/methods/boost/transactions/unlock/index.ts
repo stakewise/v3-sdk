@@ -3,10 +3,15 @@ import type { Unlock } from './types'
 import { commonLogic } from './common'
 import unlockEncode from './unlockEncode'
 import { boostMulticall } from '../../../../contracts'
+import upgradeLeverageStrategy from '../upgradeLeverageStrategy'
 
 
 const unlock: Unlock = async (values) => {
-  const multicallArgs = commonLogic(values)
+  const { isUpgradeRequired, ...multicallArgs } = await commonLogic(values)
+
+  if (isUpgradeRequired) {
+    await upgradeLeverageStrategy(values)
+  }
 
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
 

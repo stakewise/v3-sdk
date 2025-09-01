@@ -125,6 +125,12 @@ const getLeverageStrategy = (provider: Provider, config: StakeWise.Config) => cr
   provider
 )
 
+const getLeverageStrategyV2 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.LeverageStrategy>(
+  config.addresses.special.leverageStrategyV2,
+  LeverageStrategyAbi,
+  provider
+)
+
 type CreateContractsInput = {
   provider: Provider
   config: StakeWise.Config
@@ -178,6 +184,7 @@ export const createContracts = (input: CreateContractsInput) => {
     special: {
       stakeCalculator: getStakeCalculator(provider, config),
       leverageStrategy: getLeverageStrategy(provider, config),
+      leverageStrategyV2: getLeverageStrategyV2(provider, config),
       merkleDistributorV2: getMerkleDistributorV2(provider, config),
     },
   }

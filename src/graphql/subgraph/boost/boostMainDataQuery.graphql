@@ -9,6 +9,7 @@ query BoostMainData(
     }
   ) {
     proxy
+    version
     borrowLtv
     osTokenShares
     exitingPercent

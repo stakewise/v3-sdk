@@ -47,6 +47,7 @@ export default {
     special: {
       stakeCalculator: '0x2A415b65207049AC7481BF69ff9fc1B3Def97c9A',
       leverageStrategy: ZeroAddress,
+      leverageStrategyV2: ZeroAddress,
       merkleDistributorV2: '0xFBceefdBB0ca25a4043b35EF49C2810425243710',
     },
   },

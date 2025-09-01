@@ -1,0 +1,14 @@
+query LeverageStrategyData(
+  $vaultAddress: String!
+  $userAddress: Bytes!
+) {
+  leverageStrategyPositions(
+    where: {
+      vault: $vaultAddress,
+      user: $userAddress
+    }
+  ) {
+    version
+    exitingPercent
+  }
+}

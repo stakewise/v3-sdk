@@ -9,8 +9,8 @@ query UserRewards(
   ) {
     apy
     timestamp
-    earnedAssets
     totalAssets
+    earnedAssets
     osTokenFeeAssets
     boostEarnedAssets
     stakeEarnedAssets

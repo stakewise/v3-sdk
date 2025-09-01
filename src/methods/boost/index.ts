@@ -1,12 +1,14 @@
 // Requests
 import getData from './requests/getData'
 import getQueuePosition from './requests/getQueuePosition'
+import getLeverageStrategyData from './requests/getLeverageStrategyData'
 import getLeverageStrategyProxy from './requests/getLeverageStrategyProxy'
 
 // Transactions
 import { default as lock } from './transactions/lock'
 import { default as unlock } from './transactions/unlock'
 import { default as claimQueue } from './transactions/claimQueue'
+import { default as upgradeLeverageStrategy } from './transactions/upgradeLeverageStrategy'
 
 
 export default {
@@ -21,6 +23,11 @@ export default {
      * @see https://sdk.stakewise.io/boost/requests/getqueueposition
      */
     getQueuePosition,
+    /**
+     * @description Get Aave leverage strategy contract data
+     * @see https://sdk.stakewise.io/boost/requests/getleveragestrategydata
+     */
+    getLeverageStrategyData,
     /**
      * @description Get Aave leverage strategy proxy contract address
      * @see https://sdk.stakewise.io/boost/requests/getleveragestrategyproxy
@@ -43,5 +50,10 @@ export default {
      * @see https://sdk.stakewise.io/boost/transactions/claimqueue
      */
      claimQueue,
+    /**
+     * @description Upgrade leverage strategy contract version
+     * @see https://sdk.stakewise.io/boost/transactions/upgradeleveragestrategy
+     */
+    upgradeLeverageStrategy,
   },
 } as const

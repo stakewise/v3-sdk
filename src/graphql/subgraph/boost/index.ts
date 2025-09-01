@@ -6,3 +6,6 @@ export type { AavePositionsQueryPayload, AavePositionsQueryVariables } from './a
 
 export { fetchBoostQueuePositionsQuery } from './boostQueuePositionsQuery.graphql'
 export type { BoostQueuePositionsQueryPayload, BoostQueuePositionsQueryVariables } from './boostQueuePositionsQuery.graphql'
+
+export { fetchLeverageStrategyDataQuery } from './leverageStrategyDataQuery.graphql'
+export type { LeverageStrategyDataQueryPayload, LeverageStrategyDataQueryVariables } from './leverageStrategyDataQuery.graphql'
