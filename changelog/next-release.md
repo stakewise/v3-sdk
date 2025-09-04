@@ -119,3 +119,14 @@ type Output = {
   totalExtraEarnedAssets: bigint // new field
 }
 ```
+
+#### New output:
+
+### 7. [sdk.vault.getVault](https://sdk.stakewise.io/vault/requests/getvault)
+
+#### Add new output field:
+```ts
+type Output = {
+  lastFeeUpdateTimestamp: string // new field
+}
+```
