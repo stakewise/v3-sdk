@@ -5,6 +5,7 @@ import { validateArgs } from '../../../../utils'
 import { boostMulticall } from '../../../../contracts'
 import { getPermitSignature } from '../../../utils'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
+import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../util'
 
 
 type CommonLogicInput = LockInput & {
@@ -14,11 +15,17 @@ type CommonLogicInput = LockInput & {
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
     contracts, options, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    mockPermitSignature,
+    mockPermitSignature, leverageStrategyData,
   } = values
 
   validateArgs.bigint({ amount })
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+
+  if (leverageStrategyData) {
+    validateLeverageStrategyData(leverageStrategyData)
+  }
+
+  const { leverageStrategyContract, isUpgradeRequired } = await getLeverageStrategyContract(values)
 
   const code = await provider.getCode(userAddress)
   const isMultiSig = code !== '0x'
@@ -39,7 +46,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
   }
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
-    leverageStrategyContract: contracts.special.leverageStrategy,
+    leverageStrategyContract,
     vaultAddress,
     userAddress,
     options,
@@ -127,5 +134,6 @@ export const commonLogic = async (values: CommonLogicInput) => {
         params,
       },
     },
+    isUpgradeRequired,
   }
 }

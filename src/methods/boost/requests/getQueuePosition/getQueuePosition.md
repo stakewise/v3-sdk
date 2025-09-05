@@ -24,6 +24,7 @@ type ClaimPosition = {
 }
 
 type Output = {
+  version: number
   totalShares: bigint
   isClaimable: boolean
   exitingShares: bigint
@@ -33,13 +34,14 @@ type Output = {
 }
 ```
 
-| Name             | Description                                          |
-|------------------|------------------------------------------------------|
-| `exitingShares`  | The exiting amount of user exiting osToken shares |
-| `exitingAssets`  | The total amount of user exiting assets |
-| `isClaimable`    | Available for claim or not |
-| `duration`       | Approximate time of position in the queue |
-| `position`       | The data that will be needed for the claim operation |
+| Name          | Description                                          |
+|---------------|------------------------------------------------------|
+| exitingShares | The exiting amount of user exiting osToken shares    |
+| exitingAssets | The total amount of user exiting assets              |
+| isClaimable   | Available for claim or not                           |
+| duration      | Approximate time of position in the queue            |
+| position      | The data that will be needed for the claim operation |
+| version       | The leverage strategy version                        |
 
 #### Example:
 

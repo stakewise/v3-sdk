@@ -6,6 +6,7 @@ import type { ClaimPosition } from '../../requests/getQueuePosition/modifyQueueP
 export type ClaimQueueInput = {
   userAddress: string
   vaultAddress: string
+  leverageStrategyVersion?: number
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts

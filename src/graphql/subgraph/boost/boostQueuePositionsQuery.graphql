@@ -8,6 +8,7 @@ query BoostQueuePositions(
       vault: $vaultAddress
     }
   ) {
+    version
     exitingOsTokenShares
     exitingPercent
     exitingAssets
