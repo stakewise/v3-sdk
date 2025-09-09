@@ -27,12 +27,5 @@
     ],
     "stateMutability": "payable",
     "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "swapXdaiToGno",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   }
 ]
