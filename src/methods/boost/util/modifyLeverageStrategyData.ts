@@ -14,7 +14,7 @@ const modifyLeverageStrategyData = (values: LeverageStrategyDataQueryPayload): O
   if (!leverageStrategyData) {
     return {
       version: 2,
-      isUpgradeRequired: false
+      isUpgradeRequired: false,
     }
   }
 
