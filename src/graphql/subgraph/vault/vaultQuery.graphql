@@ -28,6 +28,7 @@ query Vault($address: ID!) {
     tokenSymbol
     feeRecipient
     queuedShares
+    lastFeePercent
     blocklistCount
     whitelistCount
     depositDataRoot

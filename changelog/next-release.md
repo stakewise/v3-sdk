@@ -127,6 +127,7 @@ type Output = {
 #### Add new output field:
 ```ts
 type Output = {
+  lastFeePercent: number // new field
   lastFeeUpdateTimestamp: string // new field
 }
 ```
