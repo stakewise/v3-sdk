@@ -32,17 +32,17 @@ export default {
       mintTokenConfigV2: '0x6D5957e075fd93b3B9F36Da93d7462F14387706d',
       depositDataRegistry: '0xFAce8504462AEb9BB6ae7Ecb206BD7B1EdF7956D',
       mintTokenController: '0x5518052f2d898f062ee59964004A560F24E2eE7d',
-      rewardSplitterFactory: '0xd500de4ecEe1Ffb7881719CE0A2688acB4864F04',
+      rewardSplitterFactory: '0xd12Df8543e0522CCbF12d231e822B7264c634775',
     },
     factories: {
-      vault: '0xE0766385879F16Ff626C2651d254131A4675DB43',
-      erc20Vault: '0xEC739F8DE9576c342Cd16A0FfBd58A8d5D72E5e4',
+      vault: '0x7A8cbBf690084E43De778173cfAcf7313c9122DD',
+      erc20Vault: '0x97795DA27138BD8d79204D37F3A2e80fA4d30488',
 
-      privateVault: '0x5Cbae77C8C1769cb980ac85E194B04d03495A9BA',
-      erc20PrivateVault: '0x89F624d3C7E70EDf30B6AEcEcBC34Cef510de052',
+      privateVault: '0x4C958642F1CD735F13aed02A4FB015153edDf8Fd',
+      erc20PrivateVault: '0x1831834dC4Bf88B9d9183015e1285B105Ec2FdC9',
 
-      blocklistVault: '0xbb91b06C6038F9be3E0CE9C4192f152837dA5F55',
-      erc20BlocklistVault: '0x886A7Ca996003F77b70890a94c2C1ca9d64099C0',
+      blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
+      erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
     },
     special: {
       stakeCalculator: '0x35704E96851d4aDd48475757b8f9bbb2390D9e4E',
