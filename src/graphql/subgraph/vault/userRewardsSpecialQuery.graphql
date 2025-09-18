@@ -1,0 +1,17 @@
+query UserRewardsSpecial(
+  $where: AllocatorStats_filter
+  $limit: Int
+) {
+  allocator: allocatorStats_collection(
+    interval: day
+    first: $limit
+    where: $where
+  ) {
+    apy
+    timestamp
+    totalAssets
+    earnedAssets
+    stakeEarnedAssets
+    extraEarnedAssets
+  }
+}
