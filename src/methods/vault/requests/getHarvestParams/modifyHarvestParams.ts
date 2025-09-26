@@ -9,7 +9,7 @@ const modifyHarvestParams = (data: HarvestParamsQueryPayload) => {
     params: {
       proof: params.proof || [],
       reward: params.reward || '0',
-      rewardsRoot: params.rewardsRoot,
+      rewardsRoot: params.rewardsRoot || '0x0000000000000000000000000000000000000000000000000000000000000000',
       unlockedMevReward: params.unlockedMevReward || '0',
     },
   }
