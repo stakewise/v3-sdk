@@ -11,7 +11,6 @@ type Input = {
 // When running callStatic, we want to get result data, but not from these methods
 const deleteResultFromMethods = [
   'updateState',
-  'swapXdaiToGno',
   'updateVaultState',
 ]
 

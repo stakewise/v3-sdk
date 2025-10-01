@@ -4,12 +4,10 @@ import {
   handleCallStatic,
   getSignedContract,
   handleEstimateGas,
-  testMulticallParams,
   handleTransactionData,
 } from './util'
 
 import type { MulticallRequestInput } from './types'
-import { Network } from '../../utils'
 
 
 type VaultContractAbi = ReturnType<StakeWise.Contracts['helpers']['createVault']>
@@ -29,6 +27,7 @@ type VaultMulticallInput = VaultMulticallBaseInput & {
 const harvestCheckMethods = [
   'deposit',
   'mintOsToken',
+  'setFeePercent',
   'enterExitQueue',
   'setFeeRecipient',
   'convertToAssets',
@@ -42,7 +41,6 @@ const harvestCheckMethods = [
 /**
  * @description This method will automatically add the execution of the updateState method to the vault,
  * __but this method must be added to the whitelist__ inside the vaultMulticall method (harvestCheckMethods)
- * This method will also add swapXdaiToGno execution if needed.
 */
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
   const { options, vaultAddress, userAddress, request, vaultContract } = values
@@ -66,39 +64,15 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
     })
 
     if (harvestArgs) {
-      const needSwap = [ Network.Chiado, Network.Gnosis ].includes(options.network)
-
       const updateStateParams = {
         method: 'updateState',
         args: [ harvestArgs ],
       }
 
-      const swapParams = {
-        method: 'swapXdaiToGno',
-        args: [],
-      }
-
-      const fallbackParams = [
+      multicallParams = [
         updateStateParams,
         ...multicallParams,
       ]
-
-      if (needSwap) {
-        // This call depends on the balancer pool, so we should check if it works before making the call
-        // otherwise we shouldn't add it to multicallParams
-        multicallParams = await testMulticallParams({
-          contract,
-          multicallParams: [
-            updateStateParams,
-            swapParams,
-            ...multicallParams,
-          ],
-          fallbackParams,
-        })
-      }
-      else {
-        multicallParams = fallbackParams
-      }
     }
   }
 

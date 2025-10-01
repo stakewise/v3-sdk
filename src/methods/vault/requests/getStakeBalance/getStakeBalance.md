@@ -20,6 +20,9 @@ Getting user's balance in the vault
 type Output = {
   assets: bigint
   totalEarnedAssets: bigint
+  totalStakeEarnedAssets: bigint
+  totalBoostEarnedAssets: bigint
+  totalExtraEarnedAssets: bigint
 }
 ```
 
@@ -27,6 +30,9 @@ type Output = {
 |---------------------|-------------------------|
 | `assets`            | Balance in ETH          |
 | `totalEarnedAssets` | Total earned rewards    |
+| `totalStakeEarnedAssets` | Total earned assets from staking    |
+| `totalBoostEarnedAssets` | Total earned assets from boost    |
+| `totalExtraEarnedAssets` | Total earned assets from extra incentives, rewards    |
 
 #### Example:
 

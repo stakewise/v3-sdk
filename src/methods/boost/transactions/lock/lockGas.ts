@@ -28,7 +28,7 @@ const lockGas = async (values: LockInput) => {
       : Promise.resolve(0n),
     isUpgradeRequired
       ? upgradeLeverageStrategy.estimateGas(values)
-      : Promise.resolve(0n)
+      : Promise.resolve(0n),
   ])
 
   const estimatedGas = multicallGas + approveGas + leverageStrategyUpgradeGas

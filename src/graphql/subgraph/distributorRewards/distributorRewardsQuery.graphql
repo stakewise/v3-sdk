@@ -1,0 +1,8 @@
+query distributorRewards($address: Bytes!) {
+  distributorClaims(where: { user: $address }) {
+    proof
+    tokens
+    unclaimedAmounts
+    cumulativeAmounts
+  }
+}

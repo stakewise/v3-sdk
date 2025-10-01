@@ -54,6 +54,6 @@ export default {
      * @description Upgrade leverage strategy contract version
      * @see https://sdk.stakewise.io/boost/transactions/upgradeleveragestrategy
      */
-     upgradeLeverageStrategy,
+    upgradeLeverageStrategy,
   },
 } as const

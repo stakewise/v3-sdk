@@ -13,7 +13,7 @@ export type MintInput = {
 }
 
 export interface Mint {
-  (values: DepositInput): Promise<StakeWise.TransactionHash>
+  (values: MintInput): Promise<StakeWise.TransactionHash>
   estimateGas: typeof mintGas
   encode: typeof mintEncode
 }

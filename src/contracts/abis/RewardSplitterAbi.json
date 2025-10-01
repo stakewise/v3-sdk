@@ -66,6 +66,19 @@
     "type": "function"
   },
   {
+    "type": "function",
+    "name": "setClaimer",
+    "inputs": [
+      {
+        "name": "_claimer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -135,6 +148,19 @@
       }
     ],
     "name": "increaseShares",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
+      }
+    ],
+    "name": "setClaimOnBehalf",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

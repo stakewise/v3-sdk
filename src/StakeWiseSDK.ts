@@ -29,6 +29,7 @@ class StakeWiseSDK {
   readonly contracts: StakeWise.Contracts
   readonly osToken: StakeWise.OsTokenMethods
   readonly rewardSplitter: StakeWise.RewardSplitterMethods
+  readonly distributorRewards: StakeWise.DistributorRewardsMethods
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
@@ -77,6 +78,7 @@ class StakeWiseSDK {
     this.boost = methods.createBoostMethods(argsForMethods)
     this.osToken = methods.createOsTokenMethods(argsForMethods)
     this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
+    this.distributorRewards = methods.createDistributorRewardsMethods(argsForMethods)
   }
 
   async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {

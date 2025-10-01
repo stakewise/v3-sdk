@@ -24,6 +24,10 @@ export type LockInput = {
   options: StakeWise.Options
   provider: StakeWise.Provider
   contracts: StakeWise.Contracts
+  leverageStrategyData?: {
+    version: number
+    isUpgradeRequired: boolean
+  }
 }
 
 export interface Lock {

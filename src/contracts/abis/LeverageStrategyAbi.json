@@ -210,14 +210,14 @@
   {
     "inputs": [
       {
-        "internalType":"address",
-        "name":"vault",
-        "type":"address"
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
       }
     ],
-    "name":"upgradeProxy",
-    "outputs":[],
-    "stateMutability":"nonpayable",
-    "type":"function"
+    "name": "upgradeProxy",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]

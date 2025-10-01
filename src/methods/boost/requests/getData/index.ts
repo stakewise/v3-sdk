@@ -1,7 +1,7 @@
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../util/modifyLeverageStrategyData'
 import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../../../utils'
+import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../util/modifyLeverageStrategyData'
 
 
 type GetBoostInput = {

@@ -34,6 +34,7 @@ type Output = {
   mevRecipient: string
   queuedShares: string
   whitelistCount: number
+  lastFeePercent: number
   blocklistCount: number
   imageUrl: string | null
   isSmoothingPool: boolean
@@ -44,6 +45,7 @@ type Output = {
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
+  lastFeeUpdateTimestamp: string
   osTokenConfig: {
     ltvPercent: string
     liqThresholdPercent: string
@@ -85,6 +87,8 @@ type Output = {
 | `whitelist`                 | List of authorized users for deposits |
 | `blocklist`                 | List of blocked users for deposits |
 | `performance`               | Vault performance indicator (percent) |
+| `lastFeeUpdateTimestamp`               | The timestamp of the last fee update |
+| `lastFeePercent`               | The vault last fee percent |
 | `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 
 #### Example:

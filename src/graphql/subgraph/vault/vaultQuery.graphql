@@ -28,6 +28,7 @@ query Vault($address: ID!) {
     tokenSymbol
     feeRecipient
     queuedShares
+    lastFeePercent
     blocklistCount
     whitelistCount
     depositDataRoot
@@ -36,6 +37,7 @@ query Vault($address: ID!) {
     validatorsManager
     depositDataManager
     allocatorMaxBoostApy
+    lastFeeUpdateTimestamp
     osTokenHolderMaxBoostApy
   }
 }
