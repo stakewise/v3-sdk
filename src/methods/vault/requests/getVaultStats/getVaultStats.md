@@ -22,6 +22,8 @@ type Output = {
   time: number
   balance: number
   rewards: number
+  extraRewards: number
+  stakeRewards: number
 }
 ```
 
@@ -31,6 +33,8 @@ type Output = {
 | `apy`     | Current APY based on time, rewards and balance.          |
 | `rewards` | Number of assets earned by the vault during the interval |
 | `balance` | Total assets in the vault at the moment of time          |
+| `extraRewards` | Number of extra assets earned by the vault during the interval        |
+| `stakeRewards` | Number of assets earned from staking by the vault during the interval          |
 
 #### Example:
 

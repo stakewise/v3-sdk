@@ -11,5 +11,7 @@ query VaultStats($vaultAddress: String!  $timestamp: Timestamp!, $limit: Int) {
     timestamp
     totalAssets
     earnedAssets
+    stakeEarnedAssets
+    extraEarnedAssets
   }
 }

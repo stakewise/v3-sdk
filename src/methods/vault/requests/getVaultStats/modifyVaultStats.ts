@@ -11,10 +11,14 @@ const modifyVaultStats = (data: VaultStatsQueryPayload): ModifiedVaultStats[] =>
     const timeInSeconds = Number(stat.timestamp) / 1_000_000
     const balance = Number(formatEther(stat.totalAssets || '0'))
     const rewards = Number(formatEther(stat.earnedAssets || '0'))
+    const extraRewards = Number(formatEther(stat.extraEarnedAssets || '0'))
+    const stakeRewards = Number(formatEther(stat.stakeEarnedAssets || '0'))
 
     return {
       balance,
       rewards,
+      extraRewards,
+      stakeRewards,
       time: timeInSeconds,
       apy: Number(stat.apy),
     }

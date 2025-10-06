@@ -3,4 +3,6 @@ export type ModifiedVaultStats = {
   time: number
   balance: number
   rewards: number
+  extraRewards: number
+  stakeRewards: number
 }
