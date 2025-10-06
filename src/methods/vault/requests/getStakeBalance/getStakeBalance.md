@@ -20,6 +20,7 @@ Getting user's balance in the vault
 type Output = {
   assets: bigint
   totalEarnedAssets: bigint
+  totalOsTokenFeeAssets: bigint
   totalStakeEarnedAssets: bigint
   totalBoostEarnedAssets: bigint
   totalExtraEarnedAssets: bigint
@@ -30,7 +31,8 @@ type Output = {
 |---------------------|-------------------------|
 | `assets`            | Balance in ETH          |
 | `totalEarnedAssets` | Total earned rewards    |
-| `totalStakeEarnedAssets` | Total earned assets from staking    |
+| `totalOsTokenFeeAssets` | Total earned rewards    |
+| `totalStakeEarnedAssets` | Allocator's total OsToken fee assets    |
 | `totalBoostEarnedAssets` | Total earned assets from boost    |
 | `totalExtraEarnedAssets` | Total earned assets from extra incentives, rewards    |
 
