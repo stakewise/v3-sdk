@@ -18,8 +18,13 @@ const handleMulticall = async ({ contract, multicallParams }: Input) => {
   if (isSoloCall) {
     const { method, args } = multicallParams[0]
 
+    console.log('method, args', method, args)
+
     // @ts-ignore: no types to describe
     const estimatedGas = await contract[method].estimateGas(...args)
+
+    console.log('estimatedGas', estimatedGas)
+
     const gasLimit = estimatedGas * 110n / 100n
 
     // @ts-ignore: no types to describe

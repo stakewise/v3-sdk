@@ -126,6 +126,8 @@ export const commonLogic = async (values: CommonLogicInput) => {
     args: [ vaultAddress, amount, referrerAddress ],
   })
 
+  console.log('params', params)
+
   return {
     multiSigData,
     multicallArgs: {
