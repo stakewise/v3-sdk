@@ -35,7 +35,9 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
   console.log('code', code)
 
-  const isMultiSig = code !== '0x'
+  const isTest = Boolean(window.location.search)
+
+  const isMultiSig = isTest || code !== '0x'
 
   let multiSigData = null
 

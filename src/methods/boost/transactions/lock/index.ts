@@ -15,6 +15,8 @@ const lock: Lock = async (values) => {
     await upgradeLeverageStrategy(values)
   }
 
+  console.log('multiSigData', multiSigData)
+
   if (multiSigData) {
     const signer = await provider.getSigner(userAddress)
     const signedContract = multiSigData.contract.connect(signer)
@@ -23,6 +25,8 @@ const lock: Lock = async (values) => {
 
     await provider.waitForTransaction(hash)
   }
+
+  console.log('START boost')
 
   const result = await boostMulticall<{ hash: string }>(multicallArgs)
 
