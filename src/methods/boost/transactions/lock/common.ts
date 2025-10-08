@@ -25,9 +25,16 @@ export const commonLogic = async (values: CommonLogicInput) => {
     validateLeverageStrategyData(leverageStrategyData)
   }
 
+  console.log('START')
+
   const { leverageStrategyContract, isUpgradeRequired } = await getLeverageStrategyContract(values)
 
+  console.log('leverageStrategyContract, isUpgradeRequired', leverageStrategyContract, isUpgradeRequired)
+
   const code = await provider.getCode(userAddress)
+
+  console.log('code', code)
+
   const isMultiSig = code !== '0x'
 
   let multiSigData = null
@@ -54,6 +61,8 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
   const params: Parameters<typeof boostMulticall>[0]['request']['params'] = []
 
+  console.log('permitParams', permitParams)
+
   if (permitParams) {
     const { vault, amount, deadline, v, r, s } = permitParams
 
@@ -70,13 +79,19 @@ export const commonLogic = async (values: CommonLogicInput) => {
     })
   }
   else {
+    console.log('PROXY start')
     const strategyProxy = await getLeverageStrategyProxy({
       contracts,
       userAddress,
       vaultAddress,
     })
 
+    console.log('strategyProxy', strategyProxy)
+
     const allowance = await contracts.tokens.mintToken.allowance(userAddress, strategyProxy)
+
+    console.log('allowance', allowance)
+
     const isPermitRequired = allowance < amount
 
     if (isPermitRequired) {
@@ -98,6 +113,8 @@ export const commonLogic = async (values: CommonLogicInput) => {
         })
       }
       else {
+        console.log('permitParams start')
+
         const permitParams = await getPermitSignature({
           options,
           provider,
@@ -105,6 +122,8 @@ export const commonLogic = async (values: CommonLogicInput) => {
           ownerAddress: userAddress,
           spenderAddress: strategyProxy,
         })
+
+        console.log('permitParams', permitParams)
 
         params.push({
           method: 'permit',
