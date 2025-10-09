@@ -37,12 +37,16 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
   const { options, vaultAddress, userAddress, leverageStrategyContract, request } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
+  console.log('boostMulticall: get contract start')
+
   const contract = await getSignedContract({
     contract: leverageStrategyContract,
     userAddress,
     options,
     request,
   })
+
+  console.log('boostMulticall: get contract', contract)
 
   let multicallParams = [ ...params ]
 
@@ -53,6 +57,8 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
       options,
       vaultAddress,
     })
+
+     console.log('boostMulticall: harvestArgs', harvestArgs)
 
     if (harvestArgs) {
       multicallParams = [

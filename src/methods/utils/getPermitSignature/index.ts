@@ -18,7 +18,7 @@ const getPermitSignature = async (values: GetPermitSignatureInput) => {
   const { options, provider, amount = maxUint256, contract, ownerAddress, spenderAddress } = values
 
   const currentTimestamp = Number((Date.now() / 1000).toFixed(0))
-  const deadline = currentTimestamp + 3600 // + 1 hour
+  const deadline = 1760029910 // currentTimestamp + 3600 // + 1 hour
 
   const [ tokenName, mintTokenAddress, tokenNonce ] = await Promise.all([
     contract.name(),
