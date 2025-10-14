@@ -21,7 +21,6 @@ type Output = {
   exitingPercent: number
   borrowedAssets: bigint
   allocatorMaxBoostApy: number
-  osTokenHolderMaxBoostApy: number
   leverageStrategyData: LeverageStrategyData
 }
 
@@ -40,7 +39,6 @@ const getData = async (values: GetBoostInput) => {
     maxMintShares: 0n,
     borrowedAssets: 0n,
     allocatorMaxBoostApy: 0,
-    osTokenHolderMaxBoostApy: 0,
     leverageStrategyData: {
       version: 2,
       isUpgradeRequired: false,
@@ -66,7 +64,6 @@ const getData = async (values: GetBoostInput) => {
       apy,
       osTokenConfig,
       allocatorMaxBoostApy,
-      osTokenHolderMaxBoostApy,
     } = vaults[0]
 
     const leverageStrategyPosition = leverageStrategyPositions[0]
@@ -116,7 +113,6 @@ const getData = async (values: GetBoostInput) => {
       leverageStrategyData,
       vaultApy: Number(apy),
       allocatorMaxBoostApy: Number(allocatorMaxBoostApy),
-      osTokenHolderMaxBoostApy: Number(osTokenHolderMaxBoostApy),
     }
   }
 

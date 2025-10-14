@@ -11,7 +11,7 @@ describe('modifyVaultStats function', () => {
       vaultStats: [
         {
           apy: '1.78',
-          timestamp: '1727049600000000',
+          timestamp: '1727049600',
           earnedAssets: '337535438824070468',
           totalAssets: '6894313501899116340545',
         },

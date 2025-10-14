@@ -82,7 +82,6 @@ type Output = {
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
 | `allocatorMaxBoostApy`      | The average max boost APY earned in this vault by the allocator |
-| `osTokenHolderMaxBoostApy`  | The average max boost APY earned in this vault by the osToken holder |
 | `description`               | Description of vault |
 | `whitelist`                 | List of authorized users for deposits |
 | `blocklist`                 | List of blocked users for deposits |

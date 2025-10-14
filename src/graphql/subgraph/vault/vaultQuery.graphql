@@ -38,6 +38,5 @@ query Vault($address: ID!) {
     depositDataManager
     allocatorMaxBoostApy
     lastFeeUpdateTimestamp
-    osTokenHolderMaxBoostApy
   }
 }

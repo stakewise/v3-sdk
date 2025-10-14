@@ -1,0 +1,26 @@
+### 1. [sdk.vault.getStakeBalance](https://sdk.stakewise.io/vault/requests/getstakebalance)
+
+#### Remove output field:
+```ts
+type Output = {
+  totalExtraEarnedAssets: string 
+}
+```
+### 2. [sdk.boost.getData](https://sdk.stakewise.io/boost/requests/getdata)
+
+#### Remove output field:
+```ts
+type Output = {
+  osTokenHolderMaxBoostApy: number
+}
+```
+### 3. Remove [sdk.osToken.getStats]
+
+### 4. [sdk.vault.getVault](https://sdk.stakewise.io/vault/requests/getvault)
+
+#### Remove output field:
+```ts
+type Output = {
+  osTokenHolderMaxBoostApy: string 
+}
+```
