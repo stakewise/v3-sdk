@@ -1,3 +1,9 @@
+## Removed methods
+
+- sdk.osToken.getStats
+
+## Modified methods
+
 ### 1. [sdk.vault.getStakeBalance](https://sdk.stakewise.io/vault/requests/getstakebalance)
 
 #### Remove output field:
@@ -14,9 +20,8 @@ type Output = {
   osTokenHolderMaxBoostApy: number
 }
 ```
-### 3. Remove [sdk.osToken.getStats]
 
-### 4. [sdk.vault.getVault](https://sdk.stakewise.io/vault/requests/getvault)
+### 3. [sdk.vault.getVault](https://sdk.stakewise.io/vault/requests/getvault)
 
 #### Remove output field:
 ```ts
