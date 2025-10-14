@@ -1,19 +1,18 @@
 query UserRewards(
-  $where: AllocatorStats_filter
+  $where: AllocatorSnapshot_filter
   $limit: Int
 ) {
-  allocator: allocatorStats_collection(
-    interval: day
+  allocator: allocatorSnapshots(
     first: $limit
     where: $where
+    orderBy: timestamp
+    orderDirection: asc
   ) {
     apy
     timestamp
     totalAssets
     earnedAssets
-    osTokenFeeAssets
     boostEarnedAssets
     stakeEarnedAssets
-    extraEarnedAssets
   }
 }

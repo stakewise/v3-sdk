@@ -4,8 +4,6 @@ import { formatEther } from 'ethers'
 type Input = Array<{
   boostEarnedAssets?: string
   stakeEarnedAssets?: string
-  extraEarnedAssets?: string
-  osTokenFeeAssets?: string
   earnedAssets: string
   totalAssets: string
   timestamp: string
@@ -15,7 +13,6 @@ type Input = Array<{
 type ExtraData = {
   boostRewards: number
   stakeRewards: number
-  extraRewards: number
 }
 
 type Data = {
@@ -47,8 +44,6 @@ const calculateUserStats = (data: Input): ModifiedStats => {
     const {
       boostEarnedAssets,
       stakeEarnedAssets,
-      extraEarnedAssets,
-      osTokenFeeAssets,
       earnedAssets,
       totalAssets,
       timestamp,
@@ -80,14 +75,8 @@ const calculateUserStats = (data: Input): ModifiedStats => {
       extraData.boostRewards = Number(formatEther(boostEarnedAssets))
     }
 
-    if (extraEarnedAssets) {
-      extraData.extraRewards = Number(formatEther(extraEarnedAssets))
-    }
-
-    if (stakeEarnedAssets && osTokenFeeAssets) {
-      const totalStakeRewards = Number(stakeEarnedAssets) - Number(osTokenFeeAssets)
-
-      extraData.stakeRewards = Number(formatEther(String(totalStakeRewards)))
+    if (stakeEarnedAssets) {
+      extraData.stakeRewards = Number(formatEther(stakeEarnedAssets))
     }
 
     if (Object.keys(extraData).length) {

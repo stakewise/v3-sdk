@@ -22,7 +22,6 @@ type Output = {
   totalEarnedAssets: bigint
   totalStakeEarnedAssets: bigint
   totalBoostEarnedAssets: bigint
-  totalExtraEarnedAssets: bigint
 }
 ```
 
@@ -32,7 +31,6 @@ type Output = {
 | `totalEarnedAssets` | Total earned rewards    |
 | `totalStakeEarnedAssets` | Total earned assets from staking    |
 | `totalBoostEarnedAssets` | Total earned assets from boost    |
-| `totalExtraEarnedAssets` | Total earned assets from extra incentives, rewards    |
 
 #### Example:
 

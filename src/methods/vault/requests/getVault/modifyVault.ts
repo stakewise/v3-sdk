@@ -38,7 +38,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     validatorsManager,
     depositDataManager,
     allocatorMaxBoostApy,
-    osTokenHolderMaxBoostApy,
     ...rest
   } = vault
 
@@ -59,7 +58,6 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
     allocatorMaxBoostApy: Number(allocatorMaxBoostApy),
-    osTokenHolderMaxBoostApy: Number(osTokenHolderMaxBoostApy),
     whitelistManager: whitelister ? getAddress(whitelister) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',

@@ -16,7 +16,6 @@ export type ModifiedVault = Omit<
   | 'blocklistCount'
   | 'whitelistCount'
   | 'allocatorMaxBoostApy'
-  | 'osTokenHolderMaxBoostApy'
 > & {
   apy: number
   baseApy: number
@@ -31,7 +30,6 @@ export type ModifiedVault = Omit<
   isSmoothingPool: boolean
   whitelistManager: string
   allocatorMaxBoostApy: number
-  osTokenHolderMaxBoostApy: number
   osTokenConfig: {
     ltvPercent: string // The percent used to calculate how much user can mint OsToken shares
     liqThresholdPercent: string // The liquidation threshold percent used to calculate health factor for OsToken position

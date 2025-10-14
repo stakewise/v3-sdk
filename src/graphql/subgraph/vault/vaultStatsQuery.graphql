@@ -1,7 +1,8 @@
 query VaultStats($vaultAddress: String!  $timestamp: Timestamp!, $limit: Int) {
-  vaultStats: vaultStats_collection(
-    interval: day
+  vaultStats: vaultSnapshots(
     first: $limit
+    orderBy: timestamp
+    orderDirection: asc
     where: {
       vault: $vaultAddress
       timestamp_gte: $timestamp,

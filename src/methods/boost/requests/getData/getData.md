@@ -32,7 +32,6 @@ type Output = {
   borrowedAssets: bigint
   exitingPercent: number
   allocatorMaxBoostApy: number
-  osTokenHolderMaxBoostApy: number
   leverageStrategyData: LeverageStrategyData
 }
 ```
@@ -48,7 +47,6 @@ type Output = {
 | `borrowStatus`                           | Aave borrow status. enum BorrowStatus (Healthy, Moderate, Risky)     |
 | `borrowedAssets`                         | Amount of borrowed ETH                                               |
 | `allocatorMaxBoostApy`                   | The average max boost APY earned in this vault by the allocator      |
-| `osTokenHolderMaxBoostApy`               | The average max boost APY earned in this vault by the osToken holder |
 | `leverageStrategyData.version`           | The version of the leverage strategy contract                        |
 | `leverageStrategyData.isUpgradeRequired` | The upgrade status of the leverage strategy contract                 |
 
