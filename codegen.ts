@@ -4,7 +4,7 @@ import { Network } from './src/utils/enums'
 import configs from './src/utils/configs'
 
 
-let network: Network = Network.Hoodi
+let network: Network = Network.Mainnet
 
 if (process.env.NETWORK === 'mainnet') {
   network = Network.Mainnet
@@ -16,11 +16,9 @@ if (process.env.NETWORK === 'gnosis') {
 const config = configs[network]
 const subgraphIndex = Number(process.env.SUBGRAPH_INDEX || 0)
 
-let subgraphUrl = Array.isArray(config.api.subgraph)
+const subgraphUrl = Array.isArray(config.api.subgraph)
   ? config.api.subgraph[subgraphIndex]
   : config.api.subgraph
-
-subgraphUrl = subgraphUrl.replace('prod', 'stage')
 
 const urls: Record<string, string> = {
   backend: config.api.backend,
