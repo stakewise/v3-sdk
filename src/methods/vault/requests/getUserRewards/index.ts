@@ -42,9 +42,6 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
     throw new Error('Selected date range exceeds the limit. The maximum allowed span is 1000 days. Please choose a shorter range.')
   }
 
-  const timestampTo = String(dateTo * 1_000)
-  const timestampFrom = String(dateFrom * 1_000)
-
   const [ rewards, networkFiatRates, gnosisFiatRates ] = await Promise.all([
     graphql.subgraph.vault.fetchUserRewardsQuery({
       url: subgraphUrl,
