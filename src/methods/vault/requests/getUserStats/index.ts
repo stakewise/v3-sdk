@@ -1,4 +1,4 @@
-import { apiUrls, validateArgs, calculateUserStats, getTimestamp } from '../../../../utils'
+import { apiUrls, validateArgs, calculateUserStats } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
@@ -20,7 +20,6 @@ const getUserStats = (input: GetUserStatsInput) => {
     variables: {
       limit: daysCount,
       where: {
-        timestamp_gte: String(getTimestamp(daysCount)),
         allocator_: {
           address: userAddress.toLowerCase(),
           vault: vaultAddress.toLowerCase(),

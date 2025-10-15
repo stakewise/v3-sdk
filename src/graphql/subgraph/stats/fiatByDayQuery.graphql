@@ -1,15 +1,7 @@
-query FiatByDay(
-  $limit: Int!
-  $dateTo: Timestamp!
-  $dateFrom: Timestamp!
-) {
+query FiatByDay($limit: Int!) {
   exchangeRate: exchangeRateStats_collection(
     interval: day
     first: $limit
-    where: {
-      timestamp_gte: $dateFrom,
-      timestamp_lte: $dateTo
-    }
   ) {
     timestamp
     usdToEurRate

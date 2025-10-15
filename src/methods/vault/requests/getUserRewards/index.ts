@@ -51,8 +51,6 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
       variables: {
         limit,
         where: {
-          timestamp_lte: timestampTo,
-          timestamp_gte: timestampFrom,
           allocator_: {
             address: userAddress.toLowerCase(),
             vault: vaultAddress.toLowerCase(),
@@ -65,8 +63,6 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
       url: ratesUrl,
       variables: {
         limit,
-        dateTo: timestampTo,
-        dateFrom: timestampFrom,
       },
       modifyResult: (data) => data.exchangeRate || [],
     }),
@@ -75,8 +71,6 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
         url: subgraphUrl,
         variables: {
           limit,
-          dateTo: timestampTo,
-          dateFrom: timestampFrom,
         },
         modifyResult: (data) => (data.exchangeRate || [])
           .reduce((acc, { timestamp, assetsUsdRate }) => ({

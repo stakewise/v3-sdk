@@ -6,7 +6,7 @@ query UserRewards(
     first: $limit
     where: $where
     orderBy: timestamp
-    orderDirection: asc
+    orderDirection: desc
   ) {
     apy
     timestamp
