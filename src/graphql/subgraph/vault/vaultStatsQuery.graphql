@@ -1,11 +1,10 @@
-query VaultStats($vaultAddress: String!  $timestamp: Timestamp!, $limit: Int) {
+query VaultStats($vaultAddress: String!, $limit: Int) {
   vaultStats: vaultSnapshots(
     first: $limit
     orderBy: timestamp
-    orderDirection: asc
+    orderDirection: desc
     where: {
       vault: $vaultAddress
-      timestamp_gte: $timestamp,
     }
   ) {
     apy
