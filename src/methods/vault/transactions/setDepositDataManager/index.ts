@@ -7,7 +7,7 @@ import setDepositDataManagerEncode from './setDepositDataManagerEncode'
 import { getVaultVersion } from '../../../../utils'
 
 
-const setDepositDataManager: SetDepositDataManagerRoot = async (values) => {
+const setDepositDataManager: SetDepositDataManagerRoot = checkAccess<string>(async (values) => {
   const { provider, userAddress, managerAddress, vaultAddress, contracts, options } = values
 
   const signer = await provider.getSigner(userAddress)
@@ -33,10 +33,10 @@ const setDepositDataManager: SetDepositDataManagerRoot = async (values) => {
   const result = await signedDepositDataRegistryContract.setDepositDataManager(vaultAddress, managerAddress)
 
   return result?.hash
-}
+}) as SetDepositDataManagerRoot
 
 setDepositDataManager.encode = checkAccess<StakeWise.TransactionData>(setDepositDataManagerEncode)
 setDepositDataManager.estimateGas = checkAccess<bigint>(setDepositDataManagerGas)
 
 
-export default checkAccess<string>(setDepositDataManager)
+export default setDepositDataManager

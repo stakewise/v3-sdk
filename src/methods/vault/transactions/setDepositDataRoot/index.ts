@@ -7,7 +7,7 @@ import setDepositDataRootEncode from './setDepositDataRootEncode'
 import { getVaultVersion } from '../../../../utils'
 
 
-const setDepositDataRoot: SetDepositDataRoot = async (values) => {
+const setDepositDataRoot: SetDepositDataRoot = checkAccess<string>(async (values) => {
   const { provider, userAddress, vaultAddress, depositDataRoot, contracts, options } = values
 
   const signer = await provider.getSigner(userAddress)
@@ -34,10 +34,10 @@ const setDepositDataRoot: SetDepositDataRoot = async (values) => {
   const result = await signedDepositDataRegistryContract.setDepositDataRoot(vaultAddress, depositDataRoot)
 
   return result?.hash
-}
+}) as SetDepositDataRoot
 
 setDepositDataRoot.encode = checkAccess<StakeWise.TransactionData>(setDepositDataRootEncode)
 setDepositDataRoot.estimateGas = checkAccess<bigint>(setDepositDataRootGas)
 
 
-export default checkAccess<string>(setDepositDataRoot)
+export default setDepositDataRoot

@@ -37,6 +37,7 @@ type MulticallParams = Partial<
 
 type MulticallTransactionParams = Partial<
   SetMetadataParams
+  & UploadMetadataInput
   & MulticallCommonParams
 >
 
