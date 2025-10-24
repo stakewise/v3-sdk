@@ -19,6 +19,8 @@ const getFiatRatesByDay = (input: Pick<GetFiatRatesByDayInput, 'dateFrom' | 'dat
   return graphql.subgraph.stats.fetchFiatByDayQuery({
     url: configs[Network.Mainnet].api.subgraph,
     variables: {
+      dateTo: String(dateTo * 1_000),
+      dateFrom: String(dateFrom * 1_000),
       limit: calculateLimit(dateTo, dateFrom),
     },
     modifyResult: (data) => data.exchangeRate,
