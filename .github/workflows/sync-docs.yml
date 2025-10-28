@@ -7,25 +7,25 @@ on:
       - 'src/**/*.md'
       - 'src/**/*.mdx'
 
+permissions:
+  contents: write
+  pull-requests: read
+
 jobs:
   sync-docs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          
-      - name: Install sync tools
-        run: npm ci
 
       - name: Import GPG key
         env:
@@ -36,18 +36,29 @@ jobs:
           mkdir -p ~/.gnupg
           chmod 700 ~/.gnupg
 
+          # Конфиг для работы GPG в CI (без интерактивного ввода)
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo RELOADAGENT | gpg-connect-agent
 
+          # Импорт приватного ключа (без вывода содержимого)
           echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
-          gpg --list-secret-keys --keyid-format LONG
 
+          # Обёртка для GPG с loopback режимом — чтобы git не падал на /dev/tty
+          mkdir -p ~/.local/bin
+          echo '#!/bin/sh
+          exec /usr/bin/gpg --batch --yes --pinentry-mode loopback "$@"' > ~/.local/bin/gpg-loopback
+          chmod +x ~/.local/bin/gpg-loopback
+
+          # Настройки Git для подписи
+          git config --global gpg.program ~/.local/bin/gpg-loopback
           git config --global user.signingkey "$GPG_KEY_ID"
           git config --global commit.gpgSign true
-          git config --global gpg.program "gpg --batch --yes --pinentry-mode loopback"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install sync tools
+        run: npm ci
 
       - name: Run docs sync
         env:
@@ -56,6 +67,4 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
           export GPG_TTY=$(tty)
-          export GIT_TRACE=1
-          export GPG_PASS=$GPG_PASSPHRASE
           npm run sync:docs
