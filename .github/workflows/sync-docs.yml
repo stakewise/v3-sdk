@@ -35,16 +35,19 @@ jobs:
         run: |
           mkdir -p ~/.gnupg
           chmod 700 ~/.gnupg
+
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
           echo RELOADAGENT | gpg-connect-agent
+
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
+          gpg --list-secret-keys --keyid-format LONG
+
           git config --global user.signingkey "$GPG_KEY_ID"
           git config --global commit.gpgSign true
-          git config --global gpg.program gpg
+          git config --global gpg.program "gpg --batch --yes --pinentry-mode loopback"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          export GPG_TTY=$(tty)
 
       - name: Run docs sync
         env:
@@ -53,5 +56,6 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
           export GPG_TTY=$(tty)
-          git config --global gpg.passphrase "$GPG_PASSPHRASE"
+          export GIT_TRACE=1
+          export GPG_PASS=$GPG_PASSPHRASE
           npm run sync:docs
