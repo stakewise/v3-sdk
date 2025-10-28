@@ -1,0 +1,33 @@
+name: Sync Docs to StakeWise Docs
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/**/*.md'
+      - 'src/**/*.mdx'
+
+jobs:
+  sync-docs:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          
+      - name: Install sync tools
+        run: npm ci
+
+      - name: Run docs sync
+        env:
+          TOKEN: ${{ secrets.SYNC_DOCS }}
+        run: npm run sync:docs
