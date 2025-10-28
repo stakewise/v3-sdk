@@ -4,7 +4,7 @@ import { glob } from 'glob'
 import simpleGit from 'simple-git'
 
 
-const token = process.env.GITHUB_TOKEN
+const token = process.env.TOKEN
 const srcPath = `${process.cwd()}/src`
 const docsPath = `${process.cwd()}/docs`
 const docsRepoUrl = `https://${token}@github.com/stakewise/stakewise-docs.git`
@@ -91,7 +91,7 @@ const changeTargetPath = (path: string) => path
     await git
       .addConfig('user.name', 'github-actions[bot]')
       .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
-      .addConfig('commit.gpgsign', 'false')
+      .addConfig('commit.gpgsign', 'true')
 
     log.success(`GitHub Commit signer is set.`)
 

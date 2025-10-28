@@ -29,5 +29,5 @@ jobs:
 
       - name: Run docs sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.SYNC_DOCS }}
         run: npm run sync:docs
