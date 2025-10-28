@@ -26,12 +26,29 @@ jobs:
           
       - name: Install sync tools
         run: npm ci
-      - name: Install GPG
+
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
         run: |
-          apt-get update
-          apt-get install -y gnupg
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          echo "default-key $GPG_KEY_ID" >> ~/.gnupg/gpg.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo RELOADAGENT | gpg-connect-agent
+          git config --global user.signingkey "$GPG_KEY_ID"
+          git config --global commit.gpgSign true
+          git config --global gpg.program gpg
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          export GPG_TTY=$(tty)
 
       - name: Run docs sync
         env:
           TOKEN: ${{ secrets.SYNC_DOCS }}
-        run: npm run sync:docs
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+        run: |
+          export GPG_TTY=$(tty)
+          npm run sync:docs
