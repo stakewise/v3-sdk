@@ -20,27 +20,26 @@ const changeTargetPath = (path: string) => path
   .replace('requests/', '')
 
 ;(async () => {
-  const git = simpleGit();
+  let git = simpleGit()
 
   log.info('🤖 Start of documentation synchronization...')
 
   try {
     if (!token) {
-      throw new Error('Emtry token!')
+      throw new Error('Empty token!')
     }
 
     const isExist = await fs.pathExists(docsPath)
 
     if (isExist) {
       log.info('📁 Docs folder already exist.')
-
-      await git.cwd(docsPath).pull('origin', 'main')
-
+      git = simpleGit(docsPath)
+      await git.pull('origin', 'main')
       log.success('The documentation repository was updated.')
     }
     else {
       await git.clone(docsRepoUrl, docsPath)
-
+      git = simpleGit(docsPath)
       log.success('The documentation repository has been cloned.')
     }
 
@@ -49,9 +48,7 @@ const changeTargetPath = (path: string) => path
     })
 
     log.info(`🔢 Found ${sourceFiles.length} files to sync`)
-
     await fs.emptyDir(`${docsPath}/docs/sdk`)
-
     log.info(`🧹 SDK folder in docs has been cleaned up.`)
 
     const branchName = 'sync-test'
@@ -64,47 +61,40 @@ const changeTargetPath = (path: string) => path
 
     if (isBranchExist) {
       log.info(`The branch 'sync-test' already exist.`)
-
       await git.checkout(branchName)
       await git.pull()
-
       log.success(`Checkout to 'sync-test' and pull success.`)
     }
     else {
       await git.checkoutLocalBranch(branchName)
-
       log.success(`Create branch 'sync-test' success.`)
     }
 
     for (const file of sourceFiles) {
       const sourceFile = `${srcPath}/${file}`
       const targetFile = changeTargetPath(`${docsPath}/docs/sdk/${file}`)
-
       await fs.ensureDir(path.dirname(targetFile))
       await fs.copy(sourceFile, targetFile)
-
       log.info(`Copied: ${file.replace(/.*\/(.*)\.(mdx?)$/, '$1.$2')}`)
     }
 
     await git
       .addConfig('user.name', 'github-actions[bot]')
       .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
-      .addConfig('commit.gpgsign', 'true');
+      .addConfig('commit.gpgsign', 'true')
 
-    log.success(`GitHub Commit signer is setted.`)
-
+    log.success(`GitHub Commit signer is set.`)
     await git.add('.')
-
-    const date = new Date().toLocaleDateString('ru-RU');
+    
+    const date = new Date().toLocaleDateString('ru-RU')
     await git.commit(`Sync SDK documentation test [${date}]`)
-
-    log.success('Changes are commited.')
-
+    log.success('Changes are committed.')
+    
     await git.push('origin', branchName)
-
     log.success("Changes are pushed to 'sync-test' branch.")
   }
   catch (error) {
     log.error(`${error}`)
+    process.exit(1)
   } 
 })()
