@@ -91,8 +91,6 @@ const changeTargetPath = (path: string) => path
     await git
       .addConfig('user.name', 'github-actions[bot]')
       .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
-      .addConfig('commit.gpgsign', 'true')
-      .addConfig('gpg.program', 'gpg')
 
     log.success(`GitHub Commit signer is set.`)
 
