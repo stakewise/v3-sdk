@@ -1,4 +1,4 @@
-name: Sync Docs to StakeWise Docs
+name: Sync docs to StakeWise Docs
 
 on:
   pull_request:
@@ -29,5 +29,5 @@ jobs:
 
       - name: Run docs sync
         env:
-          TOKEN: ${{ secrets.SYNC_DOCS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run sync:docs
