@@ -1,5 +1,4 @@
 import path from 'path'
-import time from 'dayjs'
 import fs from 'fs-extra'
 import { glob } from 'glob'
 import simpleGit from 'simple-git'
@@ -96,7 +95,7 @@ const changeTargetPath = (path: string) => path
 
     await git.add('.')
 
-    const date = time().format('DD.MM.YYYY')
+    const date = new Date().toLocaleDateString('ru-RU');
     await git.commit(`Sync SDK documentation test [${date}]`)
 
     log.success('Changes are commited.')
