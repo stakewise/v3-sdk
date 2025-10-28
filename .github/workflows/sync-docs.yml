@@ -26,6 +26,10 @@ jobs:
           
       - name: Install sync tools
         run: npm ci
+      - name: Install GPG
+        run: |
+          apt-get update
+          apt-get install -y gnupg
 
       - name: Run docs sync
         env:
