@@ -36,21 +36,22 @@ jobs:
           mkdir -p ~/.gnupg
           chmod 700 ~/.gnupg
 
-          # Конфиг для работы GPG в CI (без интерактивного ввода)
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo RELOADAGENT | gpg-connect-agent
 
-          # Импорт приватного ключа (без вывода содержимого)
+          cat <<EOF > ~/.gnupg/gpg-passphrase
+          $GPG_PASSPHRASE
+          EOF
+          chmod 600 ~/.gnupg/gpg-passphrase
+
           echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
 
-          # Обёртка для GPG с loopback режимом — чтобы git не падал на /dev/tty
           mkdir -p ~/.local/bin
           echo '#!/bin/sh
-          exec /usr/bin/gpg --batch --yes --pinentry-mode loopback "$@"' > ~/.local/bin/gpg-loopback
+          exec /usr/bin/gpg --batch --yes --passphrase-file ~/.gnupg/gpg-passphrase --pinentry-mode loopback "$@"' > ~/.local/bin/gpg-loopback
           chmod +x ~/.local/bin/gpg-loopback
 
-          # Настройки Git для подписи
           git config --global gpg.program ~/.local/bin/gpg-loopback
           git config --global user.signingkey "$GPG_KEY_ID"
           git config --global commit.gpgSign true
