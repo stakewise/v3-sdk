@@ -100,7 +100,7 @@ const changeTargetPath = (path: string) => path
 
     await git.push('origin', branchName)
 
-    log.success("Changes are pushed to '${branchName}' branch.")
+    log.success(`Changes are pushed to '${branchName}' branch.`)
 
     await sendDiscordNotification({
       discordWebhookUrl,

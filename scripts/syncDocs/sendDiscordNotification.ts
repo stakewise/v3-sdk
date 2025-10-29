@@ -21,7 +21,7 @@ const sendDiscordNotification = async (values: Input) => {
     const users = JSON.parse(process.env.DISCORD_USERS_JSON || '{}')
 
     const user = users[author]
-
+    console.log('author', author)
     const mention = user ? `**<@${user}>**` : 'Unknown author'
 
     const discordMessage = {
