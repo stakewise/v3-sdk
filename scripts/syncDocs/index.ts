@@ -5,7 +5,6 @@ import simpleGit from 'simple-git'
 
 
 const token = process.env.TOKEN
-const gpgKey = process.env.GPG_KEY_ID
 
 const srcPath = `${process.cwd()}/src`
 const docsPath = `${process.cwd()}/docs`
@@ -93,9 +92,6 @@ const changeTargetPath = (path: string) => path
     await git
       .addConfig('user.name', 'github-actions[bot]')
       .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
-      .addConfig('commit.gpgsign', 'true')
-      .addConfig('user.signingkey', gpgKey as string)
-      .addConfig('gpg.program', 'gpg')
 
     log.success(`GitHub Commit signer is set.`)
 

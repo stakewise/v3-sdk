@@ -10,7 +10,7 @@ export default {
     subgraph: 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod',
   },
   pages: {
-    beaconchain: 'https://gnosis.beaconcha.in',
+    beaconchain: 'https://dora.gnosischain.com',
   },
   addresses: {
     tokens: {

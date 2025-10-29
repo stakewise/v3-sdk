@@ -27,33 +27,16 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Import GPG key
+      - name: Enable SSH commit signing
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          SYNC_DOCS_SSH_KEY: ${{ secrets.SYNC_DOCS_SSH_KEY }}
         run: |
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
+          mkdir -p ~/.ssh
+          echo "$SYNC_DOCS_SSH_KEY" > ~/.ssh/signing_key
+          chmod 600 ~/.ssh/signing_key
 
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo RELOADAGENT | gpg-connect-agent
-
-          cat <<EOF > ~/.gnupg/gpg-passphrase
-          $GPG_PASSPHRASE
-          EOF
-          chmod 600 ~/.gnupg/gpg-passphrase
-
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
-
-          mkdir -p ~/.local/bin
-          echo '#!/bin/sh
-          exec /usr/bin/gpg --batch --yes --passphrase-file ~/.gnupg/gpg-passphrase --pinentry-mode loopback "$@"' > ~/.local/bin/gpg-loopback
-          chmod +x ~/.local/bin/gpg-loopback
-
-          git config --global gpg.program ~/.local/bin/gpg-loopback
-          git config --global user.signingkey "$GPG_KEY_ID"
+          git config --global gpg.format ssh
+          git config --global user.signingkey ~/.ssh/signing_key
           git config --global commit.gpgSign true
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -63,9 +46,8 @@ jobs:
 
       - name: Run docs sync
         env:
-          TOKEN: ${{ secrets.SYNC_DOCS }}
-          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SSH_KEY: ${{ secrets.SYNC_DOCS_SSH_KEY }}
         run: |
           export GPG_TTY=$(tty)
           npm run sync:docs
