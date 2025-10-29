@@ -40,7 +40,7 @@ const sendDiscordNotification = async (values: Input) => {
             },
             {
               name: '📁 Files Synced',
-              value: `**${filesCount} files**`,
+              value: `${filesCount} files`,
               inline: true
             }
           ],
