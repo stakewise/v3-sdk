@@ -53,27 +53,6 @@ const changeTargetPath = (path: string) => path
 
     log.info(`🧹 SDK folder in docs has been cleaned up.`)
 
-    const branches = await git.branch()
-
-    const isBranchExist = (
-      branches.all.includes(branchName)
-      || branches.all.includes(`remotes/origin/${branchName}`)
-    )
-
-    if (isBranchExist) {
-      log.info(`The branch 'sync-test' already exist.`)
-
-      await git.checkout(branchName)
-      await git.pull()
-
-      log.success(`Checkout to 'sync-test' and pull success.`)
-    }
-    else {
-      await git.checkoutLocalBranch(branchName)
-
-      log.success(`Create branch 'sync-test' success.`)
-    }
-
     const localBranches = await git.branchLocal()
     const remoteBranches = await git.listRemote(['--heads', 'origin', branchName])
 
@@ -121,7 +100,7 @@ const changeTargetPath = (path: string) => path
 
     await git.push('origin', branchName)
 
-    log.success("Changes are pushed to 'sync-test' branch.")
+    log.success("Changes are pushed to '${branchName}' branch.")
 
     await sendDiscordNotification({
       discordWebhookUrl,
