@@ -96,7 +96,7 @@ const changeTargetPath = (path: string) => path
     await git.add('.')
 
     const date = new Date().toLocaleDateString('ru-RU')
-    const title = `Sync SDK documentation test [${date}]`
+    const title = `Sync SDK documentation [${date}]`
 
     await git.commit(title)
 

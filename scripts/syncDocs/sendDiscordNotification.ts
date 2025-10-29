@@ -25,7 +25,7 @@ const sendDiscordNotification = async (values: Input) => {
     const mention = user ? `**<@${user}>**` : 'Unknown author'
 
     const discordMessage = {
-      username: 'Docs Sync Bot',
+      username: 'SDK Docs Sync',
       avatar_url: 'https://github.com/github.png',
       embeds: [
         {
@@ -35,12 +35,12 @@ const sendDiscordNotification = async (values: Input) => {
           fields: [
             {
               name: '🔗 Pull Request',
-              value: `[View PR](${prUrl})`,
+              value: `**[View PR](${prUrl})**`,
               inline: true
             },
             {
-              name: '📄 Files Synced',
-              value: `${filesCount} files`,
+              name: '📁 Files Synced',
+              value: `**${filesCount} files**`,
               inline: true
             }
           ],
