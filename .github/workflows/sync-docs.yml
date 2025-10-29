@@ -32,7 +32,7 @@ jobs:
           SYNC_DOCS_SSH_KEY: ${{ secrets.SYNC_DOCS_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$SYNC_DOCS_SSH_KEY" > ~/.ssh/signing_key
+          echo "$ACTIONS_SSH_SIGNING_KEY" > ~/.ssh/signing_key
           chmod 600 ~/.ssh/signing_key
 
           git config --global gpg.format ssh
@@ -41,13 +41,15 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Configure SSH for pushing
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
       - name: Install sync tools
         run: npm ci
 
       - name: Run docs sync
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SSH_KEY: ${{ secrets.SYNC_DOCS_SSH_KEY }}
-        run: |
-          export GPG_TTY=$(tty)
-          npm run sync:docs
+        run: npm run sync:docs

@@ -4,11 +4,9 @@ import { glob } from 'glob'
 import simpleGit from 'simple-git'
 
 
-const token = process.env.TOKEN
-
 const srcPath = `${process.cwd()}/src`
 const docsPath = `${process.cwd()}/docs`
-const docsRepoUrl = `https://${token}@github.com/stakewise/stakewise-docs.git`
+const docsRepoUrl = 'git@github.com:stakewise/stakewise-docs.git'
 
 const log = {
   success: (message: string) => console.log(`\x1b[32m✅ ${message}\x1b[0m\n`),
@@ -26,10 +24,6 @@ const changeTargetPath = (path: string) => path
   log.info('🤖 Start of documentation synchronization...')
 
   try {
-    if (!token) {
-      throw new Error('Empty token!')
-    }
-
     const isExist = await fs.pathExists(docsPath)
 
     if (isExist) {
@@ -85,9 +79,9 @@ const changeTargetPath = (path: string) => path
 
       await fs.ensureDir(path.dirname(targetFile))
       await fs.copy(sourceFile, targetFile)
-
-      log.info(`Copied: ${file.replace(/.*\/(.*)\.(mdx?)$/, '$1.$2')}`)
     }
+
+    log.success('Files are copied')
 
     await git
       .addConfig('user.name', 'github-actions[bot]')
