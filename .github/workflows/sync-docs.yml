@@ -43,6 +43,7 @@ jobs:
       - name: Run docs sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
           DISCORD_USERS_JSON: ${{ secrets.DISCORD_USERS_JSON }}
           DISCORD_WEBHOOK_URL: ${{ secrets.SYNC_DOCS_DISCORD_WEBHOOK_URL }}
           COMMIT_AUTHOR: ${{ github.actor }}

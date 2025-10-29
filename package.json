@@ -55,6 +55,7 @@
     "@graphql-codegen/typescript": "4.1.6",
     "@graphql-codegen/typescript-operations": "4.6.1",
     "@graphql-tools/jest-transform": "2.0.0",
+    "@octokit/rest": "22.0.0",
     "@openzeppelin/test-environment": "0.1.9",
     "@rollup/plugin-commonjs": "26.0.3",
     "@rollup/plugin-json": "6.1.0",

@@ -4,6 +4,7 @@ import { glob } from 'glob'
 import simpleGit from 'simple-git'
 
 import log from './log'
+import createPullRequest from './createPullRequest'
 import sendDiscordNotification from './sendDiscordNotification'
 
 
@@ -14,6 +15,7 @@ const docsPath = `${process.cwd()}/docs`
 const docsRepoUrl = 'git@github.com:stakewise/stakewise-docs.git'
 
 const commitAuthor = process.env.COMMIT_AUTHOR || 'unknown'
+const syncDocsToken = process.env.SYNC_DOCS_TOKEN
 const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
 
 const changeTargetPath = (path: string) => path
@@ -94,7 +96,9 @@ const changeTargetPath = (path: string) => path
     await git.add('.')
 
     const date = new Date().toLocaleDateString('ru-RU')
-    await git.commit(`Sync SDK documentation test [${date}]`)
+    const title = `Sync SDK documentation test [${date}]`
+
+    await git.commit(title)
 
     log.success('Changes are committed.')
 
@@ -102,11 +106,20 @@ const changeTargetPath = (path: string) => path
 
     log.success(`Changes are pushed to '${branchName}' branch.`)
 
+    const prData = await createPullRequest({
+      authToken: syncDocsToken,
+      repo: 'stakewise-docs',
+      owner: 'stakewise',
+      baseBranch: 'main',
+      branchName,
+      title,
+    })
+
     await sendDiscordNotification({
       discordWebhookUrl,
       author: commitAuthor,
+      prUrl: prData.html_url,
       filesCount: sourceFiles.length,
-      prUrl: '', // pr.data.html_url
     })
   }
   catch (error) {
