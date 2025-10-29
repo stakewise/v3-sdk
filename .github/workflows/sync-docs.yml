@@ -27,26 +27,15 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Enable SSH commit signing
-        env:
-          SYNC_DOCS_SSH_KEY: ${{ secrets.SYNC_DOCS_SSH_KEY }}
+      - name: Configure Git
         run: |
-          mkdir -p ~/.ssh
-          echo "$ACTIONS_SSH_SIGNING_KEY" > ~/.ssh/signing_key
-          chmod 600 ~/.ssh/signing_key
-
-          git config --global gpg.format ssh
-          git config --global user.signingkey ~/.ssh/signing_key
-          git config --global commit.gpgSign true
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Configure SSH for pushing
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
+      - name: Setup SSH key for docs repository
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SYNC_DOCS_SSH_KEY }}
 
       - name: Install sync tools
         run: npm ci

@@ -26,9 +26,6 @@ const changeTargetPath = (path: string) => path
   try {
     const isExist = await fs.pathExists(docsPath)
 
-    console.log('docsPath', docsPath)
-    console.log('srcPath', srcPath)
-
     if (isExist) {
       log.info('📁 Docs folder already exist.')
 
