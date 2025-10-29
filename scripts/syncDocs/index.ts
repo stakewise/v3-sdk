@@ -87,12 +87,6 @@ const changeTargetPath = (path: string) => path
 
     log.success('Files are copied')
 
-    await git
-      .addConfig('user.name', 'github-actions[bot]')
-      .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
-
-    log.success(`GitHub Commit signer is set.`)
-
     await git.add('.')
 
     const date = new Date().toLocaleDateString('ru-RU')
@@ -115,12 +109,12 @@ const changeTargetPath = (path: string) => path
       title,
     })
 
-    await sendDiscordNotification({
-      discordWebhookUrl,
-      author: commitAuthor,
-      prUrl: prData.html_url,
-      filesCount: sourceFiles.length,
-    })
+    // await sendDiscordNotification({
+    //   discordWebhookUrl,
+    //   author: commitAuthor,
+    //   prUrl: prData.html_url,
+    //   filesCount: sourceFiles.length,
+    // })
   }
   catch (error) {
     log.error(`${error}`)
