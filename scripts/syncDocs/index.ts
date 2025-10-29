@@ -3,16 +3,18 @@ import fs from 'fs-extra'
 import { glob } from 'glob'
 import simpleGit from 'simple-git'
 
+import log from './log'
+import sendDiscordNotification from './sendDiscordNotification'
+
+
+const branchName = 'sync-sdk'
 
 const srcPath = `${process.cwd()}/src`
 const docsPath = `${process.cwd()}/docs`
 const docsRepoUrl = 'git@github.com:stakewise/stakewise-docs.git'
 
-const log = {
-  success: (message: string) => console.log(`\x1b[32m✅ ${message}\x1b[0m\n`),
-  info: (message: string) => console.log(`\x1b[36m${message}\x1b[0m\n`),
-  error: (message: string) => console.log(`\x1b[31m❌ ${message}\x1b[0m\n`)
-}
+const commitAuthor = process.env.COMMIT_AUTHOR || 'unknown'
+const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
 
 const changeTargetPath = (path: string) => path
   .replace('methods/', '')
@@ -51,7 +53,6 @@ const changeTargetPath = (path: string) => path
 
     log.info(`🧹 SDK folder in docs has been cleaned up.`)
 
-    const branchName = 'sync-test'
     const branches = await git.branch()
 
     const isBranchExist = (
@@ -73,6 +74,28 @@ const changeTargetPath = (path: string) => path
       log.success(`Create branch 'sync-test' success.`)
     }
 
+    const localBranches = await git.branchLocal()
+    const remoteBranches = await git.listRemote(['--heads', 'origin', branchName])
+
+    if (localBranches.all.includes(branchName)) {
+      log.info(`🗑️ Local branch '${branchName}' exists, deleting...`)
+
+      await git.deleteLocalBranch(branchName, true)
+
+      log.success(`Local branch '${branchName}' deleted.`)
+    }
+
+    if (remoteBranches.includes(`refs/heads/${branchName}`)) {
+      log.info(`🗑️ Remote branch '${branchName}' exists, deleting...`)
+
+      await git.push('origin', `:${branchName}`)
+
+      log.success(`Remote branch '${branchName}' deleted.`)
+    }
+
+    await git.checkoutLocalBranch(branchName)
+    log.success(`🔄 Created new branch '${branchName}'.`)
+
     for (const file of sourceFiles) {
       const sourceFile = `${srcPath}/${file}`
       const targetFile = changeTargetPath(`${docsPath}/docs/sdk/${file}`)
@@ -90,15 +113,22 @@ const changeTargetPath = (path: string) => path
     log.success(`GitHub Commit signer is set.`)
 
     await git.add('.')
-    
+
     const date = new Date().toLocaleDateString('ru-RU')
     await git.commit(`Sync SDK documentation test [${date}]`)
 
     log.success('Changes are committed.')
-    
+
     await git.push('origin', branchName)
 
     log.success("Changes are pushed to 'sync-test' branch.")
+
+    await sendDiscordNotification({
+      discordWebhookUrl,
+      author: commitAuthor,
+      filesCount: sourceFiles.length,
+      prUrl: '', // pr.data.html_url
+    })
   }
   catch (error) {
     log.error(`${error}`)

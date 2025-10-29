@@ -41,4 +41,9 @@ jobs:
         run: npm ci
 
       - name: Run docs sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DISCORD_USERS_JSON: ${{ secrets.DISCORD_USERS_JSON }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.SYNC_DOCS_DISCORD_WEBHOOK_URL }}
+          COMMIT_AUTHOR: ${{ github.actor }}
         run: npm run sync:docs
