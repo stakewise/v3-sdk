@@ -21,7 +21,8 @@
     "rollup": "rollup --config rollup.config.js",
     "beforePublish": "node ./scripts/beforePublish",
     "lint": "eslint website/src src --ext .ts,.tsx,.js,.jsx",
-    "publish": "npm run build && npm publish --tag=latest"
+    "publish": "npm run build && npm publish --tag=latest",
+    "sync:docs": "tsx ./scripts/syncDocs/index.ts"
   },
   "files": [
     "dist/",
@@ -54,6 +55,7 @@
     "@graphql-codegen/typescript": "4.1.6",
     "@graphql-codegen/typescript-operations": "4.6.1",
     "@graphql-tools/jest-transform": "2.0.0",
+    "@octokit/rest": "22.0.0",
     "@openzeppelin/test-environment": "0.1.9",
     "@rollup/plugin-commonjs": "26.0.3",
     "@rollup/plugin-json": "6.1.0",
@@ -61,6 +63,7 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "12.1.2",
     "@typechain/ethers-v6": "0.5.1",
+    "@types/fs-extra": "11.0.4",
     "@types/jest": "29.5.14",
     "@types/rollup-plugin-peer-deps-external": "2.2.5",
     "@typescript-eslint/eslint-plugin": "8.33.0",
@@ -70,6 +73,8 @@
     "eslint-import-resolver-typescript": "4.4.2",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jest": "28.12.0",
+    "fs-extra": "11.3.2",
+    "glob": "11.0.3",
     "globals": "16.2.0",
     "hardhat": "2.24.1",
     "hardhat-jest-plugin": "0.0.6",
@@ -81,6 +86,7 @@
     "rollup-plugin-delete": "3.0.1",
     "rollup-plugin-dts": "6.2.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
+    "simple-git": "3.28.0",
     "ts-jest": "29.3.4",
     "ts-node": "10.9.2",
     "tsx": "4.19.4",

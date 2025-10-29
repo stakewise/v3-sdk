@@ -1,0 +1,158 @@
+---
+id: migration
+title: Migrate from 2.x to 3.x
+sidebar_position: 3
+---
+
+:::danger Breaking changes
+:::
+
+#### Removed methods:
+- sdk.vault.getScorePercentiles
+- sdk.osToken.getAvgRewardsPerSecond
+- sdk.vault.getSnapshots ( Use [getVaultStats](/vault/requests/getvaultstats) instead )
+- sdk.osToken.getConfig ( Use [getVault](/vault/requests/getvault) instead to get the result in `osTokenConfig` field )
+
+---
+
+### [getHarvestParams](/vault/requests/getharvestparams)
+
+#### New output format:
+
+```ts
+type Output = {
+  canHarvest: boolean
+  params: {
+    reward: string
+    proof: Array<string>
+    rewardsRoot: string
+    unlockedMevReward: string
+  }
+}
+```
+
+| Name | Description |
+|------|------------|
+| `canHarvest` | Defines whether the vault can harvest new rewards |
+| `reward` | The vault reward used to submit state update proof |
+| `proof` | The vault rewards root proof used to submit state update proof |
+| `rewardsRoot` | The vault rewards root |
+| `unlockedMevReward` | The vault unlocked MEV reward used to submit state update proof |
+
+---
+### [getPosition](/osToken/requests/getposition)
+
+#### Removed minted fee field
+
+```ts
+type RemovedOutput = {
+  minted: {
+    fee: 'bigint'
+  }
+}
+```
+---
+### [getStakeBalance](/vault/requests/getstakebalance)
+#### Removed output field
+
+```ts
+type RemovedOutput = {
+  shares: 'bigint'
+}
+```
+---
+### [getUserRewards](/vault/requests/getuserrewards)
+#### Update output format:
+
+```ts
+type Output = Array<{
+  date: number
+  dailyRewards: number
+  dailyRewardsEur: number
+  dailyRewardsGbp: number
+  dailyRewardsUsd: number
+}>
+```
+
+#### New arguments:
+
+| Name         | Type     | Type    | Description                   |
+|--------------|----------|---------|-------------------------------|
+| dateFrom     | `number` | **Yes** | Time to start in milliseconds |
+| dateTo       | `number` | **Yes** | Time to end  in milliseconds  |
+| userAddress  | `string` | **Yes** | The user address              |
+| vaultAddress | `string` | **Yes** | The address of the vault      |
+
+---
+### [getExitQueuePositions](/vault/requests/getexitqueuepositions)
+#### Changed output field
+
+```ts
+// Output changed type from bigint to string
+`positions[number]['exitQueueIndex']`
+```
+---
+### [operate](/vault/transactions/operate)
+#### Removed input fields:
+ - depositDataRoot (Use [setDepositDataRoot](/vault/transactions/setdepositdataroot) instead)
+ - depositDataManager (Use [setDepositDataManager](/vault/transactions/setdepositdatamanager) instead)
+
+```ts
+type RemovedInput = {
+  depositDataManager: string
+  depositDataRoot: string
+}
+```
+---
+:::warning Updates
+:::
+### [getVault](/vault/requests/getvault)
+
+#### New output field:
+
+```ts
+type AddedOutput = {
+  osTokenConfig: {
+    ltvPercent: string
+    liqThresholdPercent: string
+  }
+  queuedShares: string
+  allocatorMaxBoostApy: number
+  isGenesis: boolean
+}
+```
+
+| Name | Description |
+|------|------------|
+| `osTokenConfig` | contains the `ltvPercent`, which is the percentage used to calculate how much a user can mint in OsToken shares, and `liqThresholdPercent`, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
+| `isGenesis` | This vault is owned by stakewise |
+| `allocatorMaxBoostApy` | The average max boost APY earned in this vault by the allocator |
+| `queuedShares` | The total number of queued shares |
+
+---
+### [getExitQueuePositions](/vault/requests/getexitqueuepositions)
+#### Added optional input field:
+
+| Name         | Type      | Required |
+|--------------|-----------|----------|
+| isClaimed    | `boolean` | **No**   |
+
+---
+:::tip New methods
+:::
+
+#### Vault:
+- [getUserStats](/vault/requests/getuserstats)
+- [getVaultStats](/vault/requests/getvaultstats)
+#### Boost:
+- [lock](/boost/transactions/lock)
+- [getData](/boost/requests/getdata)
+- [unlock](/boost/transactions/unlock)
+- [claimQueue](/boost/transactions/claimqueue)
+- [getQueuePosition](/boost/requests/getqueueposition)
+- [getLeverageStrategyProxy](/boost/requests/getleveragestrategyproxy)
+#### Utils:
+- [getFiatRates](/utils/getfiatrates)
+- [getStakewiseStats](/utils/getstakewisestats)
+- [getFiatRatesByDay](/utils/getfiatratesbyday)
+- [getPermitSignature](/utils/getpermitsignature)

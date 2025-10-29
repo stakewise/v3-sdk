@@ -1,0 +1,51 @@
+name: Sync docs to StakeWise Docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**/*.md'
+      - 'src/**/*.mdx'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  sync-docs:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup SSH key for docs repository
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SYNC_DOCS_SSH_KEY }}
+
+      - name: Install sync tools
+        run: npm ci
+
+      - name: Run docs sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+          DISCORD_USERS_JSON: ${{ secrets.DISCORD_USERS_JSON }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.SYNC_DOCS_DISCORD_WEBHOOK_URL }}
+          COMMIT_AUTHOR: ${{ github.actor }}
+        run: npm run sync:docs
