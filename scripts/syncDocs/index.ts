@@ -87,6 +87,10 @@ const changeTargetPath = (path: string) => path
 
     log.success('Files are copied')
 
+    await git
+      .addConfig('user.name', 'github-actions[bot]')
+      .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
+
     await git.add('.')
 
     const date = new Date().toLocaleDateString('ru-RU')

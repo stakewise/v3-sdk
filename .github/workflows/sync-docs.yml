@@ -28,35 +28,11 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Configure Git for SSH signing
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global gpg.format ssh
-          git config --global commit.gpgsign true
-          git config --global tag.gpgsign false
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Setup SSH key for docs repository
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SYNC_DOCS_SSH_KEY }}
-
-      - name: Configure SSH signing key
-        run: |
-          ssh-add -L | head -1 > /tmp/signing-key.pub
-          git config --global user.signingkey /tmp/signing-key.pub
-
       - name: Install sync tools
         run: npm ci
 
       - name: Run docs sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
           DISCORD_USERS_JSON: ${{ secrets.DISCORD_USERS_JSON }}
           DISCORD_WEBHOOK_URL: ${{ secrets.SYNC_DOCS_DISCORD_WEBHOOK_URL }}
