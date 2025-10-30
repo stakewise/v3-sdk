@@ -28,11 +28,6 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
       - name: Setup SSH key for docs repository
         uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -43,7 +38,6 @@ jobs:
 
       - name: Run docs sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
           DISCORD_USERS_JSON: ${{ secrets.DISCORD_USERS_JSON }}
           DISCORD_WEBHOOK_URL: ${{ secrets.SYNC_DOCS_DISCORD_WEBHOOK_URL }}
