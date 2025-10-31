@@ -19,4 +19,4 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 ![Networks](https://img.shields.io/badge/networks-mainnet%20%7C%20hoodi%20(testnet)%20%7C%20gnosis%20%7C%20chiado%20(testnet)%20-2aa846)
 
 
-[Read the docs](https://sdk.stakewise.io/setup/prerequisites) for any further information.
+[Read the docs](https://docs.stakewise.io/sdk/) for any further information.

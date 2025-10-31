@@ -1,31 +1,68 @@
 ---
 id: installation-setup
 title: Installation and Setup
-sidebar_position: 2
+sidebar_position: 1
 ---
 
+## Installation
+
+Install the SDK using **npm** or **yarn**:
+
 ```bash
-npm i @stakewise/v3-sdk
+npm install @stakewise/v3-sdk
+# or
+yarn add @stakewise/v3-sdk
 ```
 
-If your builder doesn't support `.graphql` files, then you need to add a plugin. For example, for webpack this would be graphql-tag.
-If you are using another builder, you can easily find GQL support plugins
+---
 
-```typescript
-webpackConfig.module.rules.push(
+## GraphQL Loader Setup
+
+The SDK includes `.graphql` queries.  
+If your build tool does not natively support importing `.graphql` files, you’ll need to install and configure a corresponding plugin.
+
+For **Webpack**, add the `graphql-tag` loader:
+
+```ts
+// Webpack config
+loaders: [
   {
     test: /\.(graphql|gql)$/,
-    loader: 'graphql-tag/loader',
     exclude: /node_modules/,
+    loader: 'graphql-tag/loader'
   }
-)
+],
+
+// If you are using Next.js
+module.exports = {
+  ...nextConfig,
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(graphql|gql)$/,
+      loader: 'graphql-tag/loader',
+      exclude: /node_modules/,
+    })
+
+    return config
+  }
+}
 ```
-#### Create SDK instance
 
-SDK without specified provider allows to call methods to get data such as `sdk.vault.getVault`,
-but doesn't allow to send transactions such as `sdk.vault.deposit`
+💡 If you are using another bundler (like Vite, Rollup, or Parcel),  
+search for “GraphQL loader” or “GraphQL plugin” for your specific build system.
 
-```typescript
+---
+
+## Creating an SDK Instance
+
+### 1. Without a Provider (read-only mode)
+
+An SDK instance created **without a provider** allows you to call **read-only** methods  
+(such as `sdk.vault.getVault`) to fetch data.  
+
+However, you **cannot send transactions** (e.g., `sdk.vault.deposit`).
+
+```ts
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
 const sdk = new StakeWiseSDK({
@@ -35,48 +72,78 @@ const sdk = new StakeWiseSDK({
   },
 })
 ```
+---
 
-SDK with specified provider allows to call methods to get data and send transactions
+### 2. With a Provider (read + write mode)
 
-```typescript
+An SDK instance created **with a provider** allows both **data fetching** and **transaction execution**.
+
+```ts
 import { BrowserProvider } from 'ethers'
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
+const eip1193Provider = window.ethereum
+
+const browserProvider = new BrowserProvider(eip1193Provider, {
+  chainId: Network.Mainnet,
+  name: 'mainnet',
+})
+
 const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
-  provider: new BrowserProvider(window.ethereum, {
-    name: 'mainnet',
-    chainId: Network.Mainnet,
-  }),
+  provider: browserProvider,
 })
 ```
 
-SDK with specified provider using wagmi connector.
-Detailed example can be found [here](https://stackblitz.com/edit/stakewise-sdk?file=src%2Fcomponents%2Futil%2Findex.ts,src%2Fcomponents%2FConnect.tsx,src%2Fcomponents%2FSdkContext.tsx,src%2Fcomponents%2Futil%2FinitContext.ts,src%2Fwagmi.ts,src%2FApp.tsx,src%2Fcomponents%2FConnectWallet.tsx,src%2Fcomponents%2FAccount.tsx).
+---
 
-```typescript
+### 3. With Wagmi Connector and React
+
+If you’re using **wagmi** for wallet connections, you can initialize the SDK with an existing wagmi connector.
+
+🔗 A full working example can be found on  
+**[Example of connecting the SDK with the Wagmi library](https://stackblitz.com/edit/stakewise-sdk?file=src%2Fcomponents%2Futil%2Findex.ts,src%2Fcomponents%2FConnect.tsx,src%2Fcomponents%2FSdkContext.tsx,src%2Fcomponents%2Futil%2FinitContext.ts,src%2Fwagmi.ts,src%2FApp.tsx,src%2Fcomponents%2FConnectWallet.tsx,src%2Fcomponents%2FAccount.tsx)**
+
+```ts
+import React, { useCallback } from 'react'
 import { BrowserProvider, Eip1193Provider } from 'ethers'
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+import { useAccount } from 'wagmi'
 
-wagmiConnector.getProvder()
-  .then((library) => {
-    const sdk = new StakeWiseSDK({
+const useStakeWiseSDK = async () => {
+  const { address, connector } = useAccount()
+
+  const createSDK = useCallback(async () => {
+    if (!address || typeof connector?.getProvider !== 'function') {
+      return new StakeWiseSDK({ network: Network.Mainnet })
+    }
+
+    const library = await connector.getProvider() as Eip1193Provider
+
+    return new StakeWiseSDK({
       network: Network.Mainnet,
-      provider: new BrowserProvider(library as Eip1193Provider, {
-        name: 'mainnet',
+      provider: new BrowserProvider(library, {
         chainId: Network.Mainnet,
+        name: 'mainnet',
       }),
     })
-  })
+  }, [])
+
+  return createSDK
+}
 ```
+---
 
-#### SDK Constructor Arguments:
+## SDK Constructor Options
 
-| Name               | Type                                                               | Required | Description                                                                                                                                                         |
-|--------------------|--------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| network            | `Network`                                                          | **Yes**  | Chain id                                                                                                                                                            |
-| provider           | `BrowserProvider` or `JsonRpcProvider`                             | **No**   | You can provide your implementation of the provender for ethers. This parameter is required to send transactions.                                                   |
-| endpoints.web3     | `string` or `Array<(string \| { url: string, headers: Headers })>` | **No**   | Your urls for connecting to blockchain. This parameter is required if `provider` is not provided. If more than one URL is provided, they will be used as fallbacks. |
-| endpoints.subgraph | `string`                                                           | **No**   | stakewise subgraph url                                                                                                                                              |
-| endpoints.api      | `string`                                                           | **No**   | stakewise backend url                                                                                                                                               |
+| Name | Type | Required | Description |
+|------|------|-----------|-------------|
+| **network** | `Network` | ✅ Yes | Chain ID to connect the SDK instance to. |
+| **provider** | `BrowserProvider` or `JsonRpcProvider` | No | Custom ethers provider instance. Required to send transactions. |
+| **endpoints.web3** | `string` or `Array<string>` or `Array<{ url: string, headers: Headers }>` | No | Custom RPC endpoints for blockchain access. Required if `provider` is not provided. Multiple URLs are used as fallbacks. |
+| **endpoints.subgraph** | `string` | No | Optional custom URL for the StakeWise subgraph. |
+| **endpoints.api** | `string` | No | Optional custom URL for the StakeWise backend API. |
 
+---
+
+✅ **Tip:** For production environments, we recommend passing your own RPC endpoints instead of public ones to ensure reliability and rate-limit control.
