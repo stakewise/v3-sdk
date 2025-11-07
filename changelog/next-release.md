@@ -23,6 +23,12 @@ type Output = {
 
 ### 3. [sdk.vault.getVault](https://sdk.stakewise.io/vault/requests/getvault)
 
+#### Add output field:
+```ts
+type Output = {
+  isMetaVault: boolean 
+}
+```
 #### Remove output field:
 ```ts
 type Output = {
