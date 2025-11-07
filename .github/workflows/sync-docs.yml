@@ -9,12 +9,11 @@ on:
       - 'src/**/*.mdx'
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: read
 
 jobs:
   sync-docs:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
 
     steps:
@@ -27,14 +26,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Setup SSH key for docs repository
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SYNC_DOCS_SSH_KEY }}
 
-      - name: Install sync tools
-        run: npm ci
+      - name: Install dependencies securely
+        run: |
+          npm ci --ignore-scripts --audit false --fund false
+      
+      - name: Version check
+        run: npm run check:version
+        continue-on-error: false
 
       - name: Run docs sync
         env:

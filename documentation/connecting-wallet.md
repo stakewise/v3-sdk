@@ -1,12 +1,13 @@
 ---
 id: connecting
 title: Connecting a Wallet
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 # Connecting a Wallet
 
-To enable your users to send transactions (such as `sdk.vault.deposit`), your application needs to connect their wallet to the SDK.  
+To enable your users to send transactions (such as `sdk.vault.deposit`), your application needs to connect their wallet to the SDK.
+
 This connection is established using an **[EIP-1193 provider](https://eips.ethereum.org/EIPS/eip-1193)**.
 
 ```ts
@@ -72,7 +73,7 @@ eip1193Provider.on('chainChanged', chainChanged)
 eip1193Provider.on('accountsChanged', accountsChanged)
 ```
 
-### Binance
+### `Binance`
 
 ```ts
 import { BrowserProvider } from 'ethers'
@@ -108,7 +109,7 @@ const sdk = new StakeWiseSDK({
 })
 ```
 
-### WalletConnect
+### `WalletConnect`
 
 ```ts
 import { BrowserProvider } from 'ethers'
@@ -144,7 +145,7 @@ const sdk = new StakeWiseSDK({
 })
 ```
 
-### Safe{Wallet}
+### `Safe{Wallet}`
 
 ```ts
 import { BrowserProvider } from 'ethers'
@@ -173,7 +174,7 @@ const sdk = new StakeWiseSDK({
 })
 ```
 
-### Coinbase
+### `Coinbase`
 
 ```ts
 import { BrowserProvider } from 'ethers'

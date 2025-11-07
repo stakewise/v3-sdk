@@ -12,14 +12,14 @@
   "homepage": "https://github.com/stakewise/v3-sdk",
   "scripts": {
     "test": "jest --clearCache && jest --all",
-    "prepare": "husky && npm run typechain && npm run graphql && npm run beforePublish",
+    "prepare": "husky && npm run typechain && npm run graphql && npm run check:version",
     "build": "npm run test && npm run prepare && rm -rf ./dist && npm run rollup",
     "typechain:vault": "typechain --target ethers-v6 --out-dir src/contracts/vault/types 'src/contracts/vault/abis/*.json'",
     "typechain:base": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
     "typechain": "npm run typechain:base && npm run typechain:vault",
     "graphql": "graphql-codegen && tsx ./scripts/generateGraphqlExports/index.ts",
     "rollup": "rollup --config rollup.config.js",
-    "beforePublish": "node ./scripts/beforePublish",
+    "check:version": "node ./scripts/checkVersion.js",
     "lint": "eslint website/src src --ext .ts,.tsx,.js,.jsx",
     "publish": "npm run build && npm publish --tag=latest",
     "sync:docs": "tsx ./scripts/syncDocs/index.ts"
