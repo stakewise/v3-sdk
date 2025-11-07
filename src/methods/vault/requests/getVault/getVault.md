@@ -29,6 +29,7 @@ type Output = {
   vaultAdmin: string
   totalAssets: string
   performance: number
+  isMetaVault: boolean
   feeRecipient: string
   vaultAddress: string
   mevRecipient: string
@@ -64,6 +65,7 @@ type Output = {
 | `feePercent`                | Commission rate |
 | `isPrivate`                 | Whether the vault is private |
 | `isGenesis`                 | Is a stakewise vault |
+| `isMetaVault`               | Indicates whether the Vault is a meta vault and has sub vaults |
 | `queuedShares`              | The total number of queued shares |
 | `isBlocklist`               | Whether the vault has blocklist |
 | `vaultAdmin`                | Vault administrator address |
