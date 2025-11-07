@@ -20,6 +20,7 @@ query Vault($address: ID!) {
     tokenName
     isGenesis
     feePercent
+    isMetaVault
     totalAssets
     isBlocklist
     displayName
