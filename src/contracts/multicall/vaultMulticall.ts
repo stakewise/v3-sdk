@@ -61,13 +61,13 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   const { isMetaVault } = await getVault({ options, vaultAddress })
 
-  if (needHarvest) {
+  if (needHarvest && !isMetaVault) {
     const harvestArgs = await getHarvestArgs({
       options,
       vaultAddress,
     })
 
-    if (harvestArgs && !isMetaVault) {
+    if (harvestArgs) {
       const updateStateParams = {
         method: 'updateState',
         args: [ harvestArgs ],
