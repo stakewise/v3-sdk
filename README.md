@@ -1,5 +1,5 @@
 <div align="center">
-    <a href="https://sdk.stakewise.io">
+    <a href="https://docs.stakewise.io">
         <img src="https://app.stakewise.io/logo512.png" alt="StakeWise Logo" width="100">
     </a>
     <h1>StakeWise V3 SDK</h1>

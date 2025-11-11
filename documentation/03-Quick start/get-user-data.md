@@ -1,7 +1,7 @@
 ---
 id: get-user-data
 title: Get user data
-sidebar_position: 0
+sidebar_position: 1
 ---
 
 # Get user data
@@ -48,15 +48,21 @@ type Input = {
 const getUserData = async (values: Input) => {
   try {
     const [
+      boost,
       apy,
+      osToken,
       stake,
+      unboostQueuePosition,
       exitQueuePositions,
       statsChart,
       userActions,
       rewardsTable,
      ] = await Promise.all([
+      sdk.boost.getData(values),
       sdk.vault.getUserApy(values),
+      sdk.osToken.getBalance(values),
       sdk.vault.getStakeBalance(values),
+      sdk.boost.getQueuePosition(values),
       sdk.vault.getExitQueuePositions(values),
       sdk.vault.getUserStats({ ...values, daysCount: 30 }),
       sdk.vault.getStakerActions({ ...values, skip: 0, limit: 20, types: userActionTypes })
@@ -64,11 +70,15 @@ const getUserData = async (values: Input) => {
     ])
 
     console.log('Result:', {
-      mainData,
+      apy,
+      stake,
+      boost,
+      osToken,
       statsChart,
-      validatorsList,
-      whitelist,
-      blocklist,
+      userActions,
+      rewardsTable,
+      exitQueuePositions,
+      unboostQueuePosition,
     })
   }
   catch (error) {
@@ -76,6 +86,9 @@ const getUserData = async (values: Input) => {
   }
 }
 
-getUserData('YOUR_VAULT_ADDRESS')
+getUserData({
+  userAddress: 'USER_ADDRESS',
+  vaultAddress: 'VAULT_ADDRESS',
+})
 ```
 ---

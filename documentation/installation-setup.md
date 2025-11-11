@@ -18,49 +18,66 @@ yarn add @stakewise/v3-sdk
 
 ## GraphQL Loader Setup
 
-The SDK includes `.graphql` queries.  
-If your build tool does not natively support importing `.graphql` files, you’ll need to install and configure a corresponding plugin.
+The SDK includes `.graphql` queries. If your build tool does not natively support importing `.graphql` files, you’ll need to install and configure a corresponding plugin.
 
-For **Webpack**, add the `graphql-tag` loader:
+### `Webpack Configuration`
 
 ```ts
-// Webpack config
-loaders: [
-  {
-    test: /\.(graphql|gql)$/,
-    exclude: /node_modules/,
-    loader: 'graphql-tag/loader'
-  }
-],
-
-// If you are using Next.js
+// webpack.config.js
 module.exports = {
-  ...nextConfig,
+  module: {
+    rules: [
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader'
+      }
+    ]
+  }
+}
+```
+
+### `Next.js Configuration`
+
+```ts
+// next.config.js
+module.exports = {
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(graphql|gql)$/,
       loader: 'graphql-tag/loader',
       exclude: /node_modules/,
     })
-
     return config
   }
 }
 ```
 
-💡 If you are using another bundler (like Vite, Rollup, or Parcel),  
-search for “GraphQL loader” or “GraphQL plugin” for your specific build system.
+### `Vite Configuration`
+
+```ts
+// vite.config.js
+import graphql from '@rollup/plugin-graphql'
+
+export default {
+  plugins: [graphql()]
+}
+```
+
+💡 If you are using another bundler, search for “GraphQL loader” or “GraphQL plugin” for your specific build system.
 
 ---
 
 ## Creating an SDK Instance
 
-### 1. Without a Provider (read-only mode)
+### 1. Without a Provider (read-only mode + encoding)
 
-An SDK instance created **without a provider** allows you to call **read-only** methods  
-(such as `sdk.vault.getVault`) to fetch data.  
+Perfect for:
+- Frontend read-only operations
+- Custodial wallet backends (using encoded transactions)
+- Data dashboards without transaction capabilities
 
-However, you **cannot send transactions** (e.g., `sdk.vault.deposit`).
+However, you **cannot send transactions** (e.g., `sdk.vault.deposit`), but you can get **transaction calldata** (`sdk.vault.deposit.encode`)
 
 ```ts
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
@@ -75,6 +92,10 @@ const sdk = new StakeWiseSDK({
 ---
 
 ### 2. With a Provider (read + write mode)
+
+Perfect for:
+- Browser wallet integrations (MetaMask, WalletConnect, etc.)
+- Direct transaction execution
 
 An SDK instance created **with a provider** allows both **data fetching** and **transaction execution**.
 

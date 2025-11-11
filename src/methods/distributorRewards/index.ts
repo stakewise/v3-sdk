@@ -9,14 +9,14 @@ export default {
   requests: {
     /**
      * @description Returns the set of distributor rewards tokens that are currently claimable.
-     * @see https://sdk.stakewise.io/distributorRewards/requests/getrewards
+     * @see https://docs.stakewise.io/distributorRewards/requests/getrewards
      */
     getRewards,
   },
   transactions: {
     /**
      * @description Claims rewards from the merkle distributor V2 contract.
-     * @see https://sdk.stakewise.io/distributorRewards/transactions/claim
+     * @see https://docs.stakewise.io/distributorRewards/transactions/claim
      */
     claim,
   },

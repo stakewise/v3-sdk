@@ -34,10 +34,10 @@ const getVaultData = async (vaultAddress: string) => {
 
     console.log('Result:', {
       mainData,
-      statsChart,
-      validatorsList,
       whitelist,
       blocklist,
+      statsChart,
+      validatorsList,
     })
   }
   catch (error) {

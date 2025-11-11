@@ -15,6 +15,13 @@ The SDK retrieves data from both **subgraphs** and **on-chain smart contracts**,
 
 ---
 
+## Data Sources & Transactions
+
+- **Data Fetching**: Queries subgraphs and smart contracts for real-time information
+- **Transaction Execution**: Sends transactions when provided with a wallet-connected provider
+
+---
+
 ## Supported Networks
 
 The SDK currently supports:
@@ -57,17 +64,20 @@ const sdk = new StakeWiseSDK({
 
 ## Prerequisites
 
-**ethers.js:** Version 6.14.3 or higher is required.
+- **Ethers Library:** Version 6.14.3 or higher is required.
+- **GraphQL Support** Your bundler must be configured to handle `.graphql` and `.gql` file extensions
 
 ---
 
 ## Transaction Flexibility
 
-When you use transaction sending methods, you can use them in two ways and also get the gas price.
+The SDK supports both **client-side** (browser wallet) and **backend** (custodial) transaction execution. Each write method provides three execution patterns:
 
-- **Direct Send:** `sdk.vault.method(...)` - Directly sends the transaction.
-- **Encode Calldata:** `sdk.vault.method.encode(...)` - Returns the encoded calldata for custom transaction building.
-- **Gas Estimation:** `sdk.vault.method.estimateGas(...)` - Estimates the gas required for the transaction.
+| Method | Description | Use Case |
+|--------|-------------|----------|
+| `sdk.vault.method(...)` | Direct transaction sending | Browser wallets & quick executions |
+| `sdk.vault.method.encode(...)` | Returns encoded calldata | Custom transaction building & custodial wallets |
+| `sdk.vault.method.estimateGas(...)` | Estimates gas costs | cost calculation |
 
 ---
 

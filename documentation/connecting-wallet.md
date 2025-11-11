@@ -6,15 +6,17 @@ sidebar_position: 2
 
 # Connecting a Wallet
 
-To enable your users to send transactions (such as `sdk.vault.deposit`), your application needs to connect their wallet to the SDK.
+To enable transaction capabilities (like `deposit`, `withdraw`, etc.), your application needs to connect a user's wallet to the SDK. This guide covers different connection strategies.
 
-This connection is established using an **[EIP-1193 provider](https://eips.ethereum.org/EIPS/eip-1193)**.
+## EIP-1193 Provider Standard
+
+The SDK uses the **[EIP-1193](https://eips.ethereum.org/EIPS/eip-1193)** provider standard for wallet connections. This is the common interface implemented by most Ethereum wallets.
 
 ```ts
 interface Eip1193Provider {
   on(event: "connect", listener: (info: ProviderInfo) => void): void
-  on(event: "disconnect", listener: (error: ProviderRpcError) => void): void
   on(event: "message", listener: (message: ProviderMessage) => void): void
+  on(event: "disconnect", listener: (error: ProviderRpcError) => void): void
   on(event: "chainChanged", listener: (chainId: ProviderChainId) => void): void
   on(event: "accountsChanged", listener: (accounts: ProviderAccounts) => void): void
   request(request: { method: string, params?: Array<any> | Record<string, any> }): Promise<any>
@@ -63,15 +65,9 @@ A good example is **`Wagmi`** or **`RainbowKit`**.
 
 ---
 
-## Direct Integration (Optional)
+## Direct Wallet Integration
 
-If you prefer to integrate directly with specific wallet libraries, you can do so by following the examples below. After connecting to the provider, it is recommended to subscribe to events and pass handlers for network or address changes, as well as for disconnection events.
-
-```ts
-eip1193Provider.on('disconnect', disconnect)
-eip1193Provider.on('chainChanged', chainChanged)
-eip1193Provider.on('accountsChanged', accountsChanged)
-```
+For specific wallet integrations, here are common patterns:
 
 ### `Binance`
 
@@ -109,7 +105,7 @@ const sdk = new StakeWiseSDK({
 })
 ```
 
-### `WalletConnect`
+### `WalletConnect v2`
 
 ```ts
 import { BrowserProvider } from 'ethers'
@@ -204,4 +200,29 @@ const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
   provider: browserProvider,
 })
+```
+
+## Event Handling
+
+Always subscribe to provider events to handle wallet state changes:
+
+```ts
+const setupEventHandlers = (provider: EIP1193Provider) => {
+  provider.on('accountsChanged', (accounts: string[]) => {
+    console.log('Accounts changed:', accounts)
+    // Update your UI or reconnect SDK
+  })
+
+  provider.on('chainChanged', (chainId: string) => {
+    console.log('Network changed:', chainId)
+    // Reinitialize SDK with new network
+  })
+
+  provider.on('disconnect', (error: any) => {
+    console.log('Wallet disconnected:', error)
+    // Reset to read-only mode
+  })
+}
+
+setupEventHandlers(eip1193Provider)
 ```
