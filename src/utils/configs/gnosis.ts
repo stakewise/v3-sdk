@@ -6,7 +6,7 @@ import constants from '../constants'
 export default {
   network: constants.chains.gnosis,
   api: {
-    backend: 'https://gnosis-api-b.stakewise.io/graphql',
+    backend: 'https://gnosis-api.stakewise.io/graphql',
     subgraph: 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod',
   },
   pages: {
