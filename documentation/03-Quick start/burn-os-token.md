@@ -47,7 +47,7 @@ const burn = async (values: Input) => {
     }
 
     if (shares > mint.shares) {
-      throw new Error('Insufficient osToken in wallet')
+      throw new Error('Insufficient osToken balance')
     }
 
     const { health } = sdk.osToken.getHealthFactor({

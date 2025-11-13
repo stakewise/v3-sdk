@@ -63,6 +63,11 @@ const unstake = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    const positions = await sdk.vault.getExitQueuePositions({ userAddress, vaultAddress })
+
+    // After unstaking, the withdrawal of funds will be added to the exit queue, which can be obtained using the SDK.
+    console.log('positions:', positions)
   }
   catch (error) {
     console.error(error)

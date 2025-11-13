@@ -22,7 +22,6 @@ const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
 const changeTargetPath = (path: string) => path
   .replace('methods/', 'API/')
   .replace('requests/', '')
-
   .replace('transactions/', '01-transactions/')
   .replace('/vault/', '/01-vault/')
   .replace('/boost/', '/02-boost/')
@@ -104,40 +103,40 @@ const changeTargetPath = (path: string) => path
 
     log.success('Files are copied')
 
-    // await git
-    //   .addConfig('user.name', 'github-actions[bot]')
-    //   .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
+    await git
+      .addConfig('user.name', 'github-actions[bot]')
+      .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
 
-    // log.success(`GitHub Commit signer is set.`)
+    log.success(`GitHub Commit signer is set.`)
 
-    // await git.add('.')
+    await git.add('.')
 
-    // const date = new Date().toLocaleDateString('ru-RU')
-    // const title = `Sync SDK documentation [${date}]`
+    const date = new Date().toLocaleDateString('ru-RU')
+    const title = `Sync SDK documentation [${date}]`
 
-    // await git.commit(title)
+    await git.commit(title)
 
-    // log.success('Changes are committed.')
+    log.success('Changes are committed.')
 
-    // await git.push('origin', branchName)
+    await git.push('origin', branchName)
 
-    // log.success(`Changes are pushed to '${branchName}' branch.`)
+    log.success(`Changes are pushed to '${branchName}' branch.`)
 
-    // const prData = await createPullRequest({
-    //   authToken: syncDocsToken,
-    //   repo: 'stakewise-docs',
-    //   owner: 'stakewise',
-    //   baseBranch: 'main',
-    //   branchName,
-    //   title,
-    // })
+    const prData = await createPullRequest({
+      authToken: syncDocsToken,
+      repo: 'stakewise-docs',
+      owner: 'stakewise',
+      baseBranch: 'main',
+      branchName,
+      title,
+    })
 
-    // await sendDiscordNotification({
-    //   discordWebhookUrl,
-    //   author: commitAuthor,
-    //   prUrl: prData.html_url,
-    //   filesCount: filesCount,
-    // })
+    await sendDiscordNotification({
+      discordWebhookUrl,
+      author: commitAuthor,
+      prUrl: prData.html_url,
+      filesCount: filesCount,
+    })
   }
   catch (error) {
     log.error(`${error}`)

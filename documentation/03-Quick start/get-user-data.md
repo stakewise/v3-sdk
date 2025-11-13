@@ -53,6 +53,7 @@ const getUserData = async (values: Input) => {
       osToken,
       stake,
       unboostQueuePosition,
+      maxUnstakeAmount,
       exitQueuePositions,
       statsChart,
       userActions,
@@ -63,6 +64,7 @@ const getUserData = async (values: Input) => {
       sdk.osToken.getBalance(values),
       sdk.vault.getStakeBalance(values),
       sdk.boost.getQueuePosition(values),
+      sdk.vault.getMaxWithdrawAmount(values),
       sdk.vault.getExitQueuePositions(values),
       sdk.vault.getUserStats({ ...values, daysCount: 30 }),
       sdk.vault.getStakerActions({ ...values, skip: 0, limit: 20, types: userActionTypes })
