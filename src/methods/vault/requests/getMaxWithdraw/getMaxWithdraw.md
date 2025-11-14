@@ -1,5 +1,6 @@
 ---
 id: getMaxWithdraw
+title: getMaxWithdraw
 slug: /vault/requests/getmaxwithdraw
 ---
 

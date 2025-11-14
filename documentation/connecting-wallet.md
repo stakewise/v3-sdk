@@ -80,7 +80,7 @@ import { getProvider } from '@binance/w3w-ethereum-provider'
 const getBinanceProvider = async () => {
   const provider = getProvider({
     showQrCodeModal: true,
-    lng: 'en-US,
+    lng: 'en-US',
     chainId: 1,
     rpc: {
       1: 'https://mainnet.infura.io/v3/...',
