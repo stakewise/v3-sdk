@@ -29,7 +29,6 @@ const changeTargetPath = (path: string) => path
   .replace('/rewardSplitter/', '/04-rewardSplitter/')
   .replace('/distributorRewards/', '/05-distributorRewards/')
   .replace('/utils/', '/06-utils/')
-
   .replace(/([^/]+)\/\1\.md$/, '$1.md')
 
 ;(async () => {
