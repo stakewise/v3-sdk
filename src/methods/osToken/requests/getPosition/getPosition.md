@@ -1,5 +1,6 @@
 ---
 id: getPosition
+title: getPosition
 slug: /osToken/requests/getposition
 ---
 

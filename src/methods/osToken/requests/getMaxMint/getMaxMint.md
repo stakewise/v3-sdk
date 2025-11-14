@@ -1,5 +1,6 @@
 ---
 id: getMaxMint
+title: getMaxMint
 slug: /osToken/requests/getmaxmint
 ---
 
