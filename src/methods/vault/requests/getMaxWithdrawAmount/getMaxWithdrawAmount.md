@@ -1,10 +1,7 @@
 ---
-id: getMaxWithdraw
-slug: /vault/requests/getmaxwithdraw
+id: getMaxWithdrawAmount
+slug: /vault/requests/getmaxwithdrawamount
 ---
-
-# Deprecated!
-Use getMaxWithdrawAmount
 
 #### Description:
 
@@ -15,9 +12,7 @@ How much a user can withdraw. Use this method if the user has mintedAssets, if m
 | Name         | Type     | Required | Info                                                         |
 |--------------|----------|----------|--------------------------------------------------------------|
 | vaultAddress | `string` | **Yes**  | The address of the vault                                     |
-| ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
-| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)     |
-| stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
+| userAddress  | `string` | **Yes**  | The address of the user                                     |
 
 #### Returns:
 
@@ -28,10 +23,8 @@ type Output = bigint
 #### Example:
 
 ```ts
-await sdk.vault.getMaxWithdraw({
-  ltvPercent: 0n,
-  mintedAssets: 0n,
-  stakedAssets: 0n,
+await sdk.vault.getMaxWithdrawAmount({
   vaultAddress: '0x...',
+  userAddress: '0x...',
 })
 ```

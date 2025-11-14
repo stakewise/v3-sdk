@@ -1,11 +1,11 @@
 ---
-id: getConfig
+id: getOsTokenConfig
+slug: /vault/getostokenconfig
 ---
 
 #### Description:
 
-Deprecated, use `const { osTokenConfig } = await sdk.vault.getVault()` instead.
-Returns basic information on the token
+Returns osToken collateral parameters for the specified vault: `ltvPercent` and `liqThresholdPercent`.
 
 #### Arguments:
 
@@ -29,5 +29,5 @@ type Output = {
 #### Example:
 
 ```ts
-await sdk.osToken.getConfig({ vaultAddress: '0x...' })
+await sdk.utils.getOsTokenConfig({ vaultAddress: '0x...' })
 ```

@@ -3,6 +3,9 @@ id: getPosition
 slug: /osToken/requests/getposition
 ---
 
+# Deprecated!
+Use getBalance
+
 #### Description:
 
 User position data

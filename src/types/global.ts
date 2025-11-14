@@ -1,4 +1,4 @@
-import type { BrowserProvider, JsonRpcProvider, FallbackProvider } from 'ethers'
+import type { BrowserProvider, JsonRpcProvider, FallbackProvider, JsonRpcSigner, TransactionResponse } from 'ethers'
 
 import methods from '../methods'
 import { Network, configs } from '../utils'
@@ -44,8 +44,8 @@ declare global {
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {
-      getSigner: () => any
-      send: () => any
+      getSigner: () => Promise<JsonRpcSigner>
+      send: () => Promise<TransactionResponse>
     }
 
     type UrlWithHeaders = {

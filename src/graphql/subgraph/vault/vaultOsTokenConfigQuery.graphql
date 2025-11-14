@@ -1,0 +1,8 @@
+query VaultOsTokenConfig($address: ID!) {
+  vault(id: $address) {
+    osTokenConfig {
+      ltvPercent
+      liqThresholdPercent
+    }
+  }
+}

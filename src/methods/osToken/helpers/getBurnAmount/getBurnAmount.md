@@ -3,6 +3,9 @@ id: getBurnAmount
 slug: /osToken/helpers/getburnamount
 ---
 
+# Deprecated!
+Use getBurnAmountForUnstake
+
 #### Description:
 
 How many osToken burn do you need to make to withdraw all deposit.

@@ -1,0 +1,25 @@
+import { apiUrls, validateArgs } from '../../../../utils'
+import graphql from '../../../../graphql'
+
+
+type GetOsTokenConfigInput = {
+  options: StakeWise.Options
+  vaultAddress: string
+}
+
+const getOsTokenConfig = async (input: GetOsTokenConfigInput) => {
+  const { options, vaultAddress } = input
+
+  validateArgs.address({ vaultAddress })
+
+  return graphql.subgraph.vault.fetchVaultOsTokenConfigQuery({
+    url: apiUrls.getSubgraphqlUrl(options),
+    variables: {
+      address: vaultAddress.toLowerCase(),
+    },
+    modifyResult: (data) => data.vault.osTokenConfig,
+  })
+}
+
+
+export default getOsTokenConfig

@@ -19,5 +19,8 @@ export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } f
 export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql'
 export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql'
 
+export { fetchVaultOsTokenConfigQuery } from './vaultOsTokenConfigQuery.graphql'
+export type { VaultOsTokenConfigQueryPayload, VaultOsTokenConfigQueryVariables } from './vaultOsTokenConfigQuery.graphql'
+
 export { fetchPeriodicDistributionsQuery } from './periodicDistributionsQuery.graphql'
 export type { PeriodicDistributionsQueryPayload, PeriodicDistributionsQueryVariables } from './periodicDistributionsQuery.graphql'
