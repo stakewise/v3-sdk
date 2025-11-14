@@ -3,6 +3,9 @@ id: getMaxMint
 slug: /osToken/requests/getmaxmint
 ---
 
+# Deprecated!
+Use getMaxMintAmount
+
 #### Description:
 
 Maximum number of **shares** for minting

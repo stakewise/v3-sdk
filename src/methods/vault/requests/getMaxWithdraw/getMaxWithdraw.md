@@ -3,6 +3,9 @@ id: getMaxWithdraw
 slug: /vault/requests/getmaxwithdraw
 ---
 
+# Deprecated!
+Use getMaxWithdrawAmount
+
 #### Description:
 
 How much a user can withdraw. Use this method if the user has mintedAssets, if minted balance is null then maxWithdraw will be equal to stakedAssests.
