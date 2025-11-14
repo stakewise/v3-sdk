@@ -51,7 +51,7 @@ const burn = async (values: Input) => {
     }
 
     const { health } = sdk.osToken.getHealthFactor({
-      liqThresholdPercent: vault.osTokenConfig.liqThresholdPercent,
+      liqThresholdPercent: BigInt(vault.osTokenConfig.liqThresholdPercent),
       mintedAssets: mint.shares - shares,
       stakedAssets: stake.assets,
     })

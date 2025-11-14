@@ -46,6 +46,8 @@ type Input = {
 }
 
 const getUserData = async (values: Input) => {
+  const lastMonthStart = new Date().getTime() - (1000 * 60 * 60 * 24 * 31)
+
   try {
     const [
       boost,
@@ -67,8 +69,8 @@ const getUserData = async (values: Input) => {
       sdk.vault.getMaxWithdrawAmount(values),
       sdk.vault.getExitQueuePositions(values),
       sdk.vault.getUserStats({ ...values, daysCount: 30 }),
-      sdk.vault.getStakerActions({ ...values, skip: 0, limit: 20, types: userActionTypes })
-      sdk.vault.getUserRewards({ ...values, dateFrom: Date.now(), dateTo: Date.now() - 2_592_000_000 })
+      sdk.vault.getStakerActions({ ...values, skip: 0, limit: 20, types: userActionTypes }),
+      sdk.vault.getUserRewards({ ...values, dateFrom: lastMonthStart, dateTo: Date.now() }),
     ])
 
     console.log('Result:', {
@@ -79,6 +81,7 @@ const getUserData = async (values: Input) => {
       statsChart,
       userActions,
       rewardsTable,
+      maxUnstakeAmount,
       exitQueuePositions,
       unboostQueuePosition,
     })

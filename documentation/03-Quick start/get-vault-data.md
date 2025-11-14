@@ -26,7 +26,7 @@ const getVaultData = async (vaultAddress: string) => {
       blocklist,
      ] = await Promise.all([
       sdk.vault.getVault({ vaultAddress }),
-      sdk.vault.getVaultStats({ vaultAddress, days: 30 }),
+      sdk.vault.getVaultStats({ vaultAddress, daysCount: 30 }),
       sdk.vault.getValidators({ vaultAddress, skip: 0, limit: 20 }),
       sdk.vault.getWhitelist({ vaultAddress }), // For private vaults
       sdk.vault.getBlocklist({ vaultAddress }), // For blocklist vaults

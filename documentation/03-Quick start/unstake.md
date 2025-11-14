@@ -56,9 +56,9 @@ const unstake = async (values: Input) => {
       console.warn(`To withdraw your tokens in full, you must first burn an ${value} osToken.`)
     }
 
-    const hash = sdk.vault.withdraw({
-      userAddress: address,
+    const hash = await sdk.vault.withdraw({
       vaultAddress,
+      userAddress,
       assets,
     })
 

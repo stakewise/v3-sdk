@@ -66,16 +66,16 @@ const boost = async (values: Input) => {
         const signer = await sdk.provider.getSigner(userAddress)
         const signedContract = osTokenContract.connect(signer)
 
-        const { hash } = signedContract.approve(permitAddress, shares)
+        const { hash } = await signedContract.approve(permitAddress, shares)
 
         await sdk.provider.waitForTransaction(hash)
       }
       else {
         // Use gasless permit for EOAs
         const { amount, deadline, v, r, s } = await sdk.utils.getPermitSignature({
+          contract: sdk.contracts.tokens.mintToken,
           spenderAddress: permitAddress,
           ownerAddress: userAddress,
-          contract: tokenAddress,
         })
 
         permitParams = {
@@ -90,10 +90,10 @@ const boost = async (values: Input) => {
     }
 
     const hash = await sdk.boost.lock({
+      amount: shares,
       permitParams,
       vaultAddress,
       userAddress,
-      amount,
     })
 
     await sdk.provider.waitForTransaction(hash)

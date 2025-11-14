@@ -45,9 +45,7 @@ const mint = async (values: Input) => {
       throw new Error('You need to make a stake in advance to be able to mint osETH.')
     }
 
-    const newMintedShares = shares + mint.shares
-
-    if (maxMintShares < newMintedShares) {
+    if (maxMintShares < shares) {
       throw new Error('You do not have sufficient stake funds for this operation.')
     }
 

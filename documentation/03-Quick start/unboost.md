@@ -32,21 +32,17 @@ type Input = {
 
 type PermitParams = Parameters<typeof sdk.boost.lock>[0]['permitParams']
 
-const boost = async (values: Input) => {
+const unboost = async (values: Input) => {
   const { percent, userAddress, vaultAddress } = values
 
-  const tokenAddress = sdk.config.addresses.tokens.mintToken
-
   try {
-    const shares = parseEther(amount)
-
     const boost = await sdk.boost.getData({ userAddress, vaultAddress })
 
     if (!boost.shares) {
       throw new Error('You don\'t have a boost.')
     }
 
-    if (shares > boost.shares) {
+    if (percent > 100) {
       throw new Error('Insufficient boost balance')
     }
 
@@ -57,7 +53,7 @@ const boost = async (values: Input) => {
       `)
     }
 
-    const hash = await signSDK.boost.unlock({
+    const hash = await sdk.boost.unlock({
       percent,
       userAddress,
       vaultAddress,
@@ -75,8 +71,8 @@ const boost = async (values: Input) => {
   }
 }
 
-boost({
-  percent: 50, // 100 = 100%
+unboost({
+  percent: 50,
   userAddress: 'USER_ADDRESS',
   vaultAddress: 'VAULT_ADDRESS',
 })
