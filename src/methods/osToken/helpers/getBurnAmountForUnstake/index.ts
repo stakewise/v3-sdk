@@ -1,7 +1,6 @@
 import getBalance from '../../requests/getBalance'
 import { constants, validateArgs } from '../../../../utils'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import getStakeBalance from '../../../vault/requests/getStakeBalance'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
 
@@ -17,10 +16,9 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
 
   validateArgs.address({ vaultAddress })
 
-  const [ config, mint, stake ] = await Promise.all([
+  const [ config, mint ] = await Promise.all([
     getOsTokenConfig({ vaultAddress, options }),
     getBalance({ options, contracts, vaultAddress, userAddress }),
-    getStakeBalance({ options, contracts, vaultAddress, userAddress }),
   ])
 
   const hasMinted = mint.shares && mint.shares > 0
