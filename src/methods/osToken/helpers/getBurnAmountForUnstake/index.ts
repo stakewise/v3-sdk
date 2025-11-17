@@ -29,7 +29,7 @@ const getBurnAmount = async (values: GetBurnAmountInput) => {
     return 0n
   }
 
-  const stakedWithPercent = stake.assets * BigInt(config.ltvPercent) / constants.blockchain.amount1
+  const stakedWithPercent = BigInt(config.ltvPercent) / constants.blockchain.amount1
 
   const assetsToBurn = mint.assets - stakedWithPercent
 
