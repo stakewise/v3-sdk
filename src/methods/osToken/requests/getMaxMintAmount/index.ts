@@ -1,20 +1,31 @@
+import getBalance from '../getBalance'
 import { constants, validateArgs } from '../../../../utils'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
+import getStakeBalance from '../../../vault/requests/getStakeBalance'
+import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
 
-type GetMaxMintInput = {
-  ltvPercent: bigint
-  mintedAssets: bigint
-  stakedAssets: bigint
+type GetMaxMintAmountInput = {
+  userAddress: string
   vaultAddress: string
+  options: StakeWise.Options
   contracts: StakeWise.Contracts
 }
 
-const getMaxMint = async (values: GetMaxMintInput) => {
-  const { contracts, ltvPercent, mintedAssets, stakedAssets, vaultAddress } = values
+const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
+  const { contracts, options, vaultAddress, userAddress } = values
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.bigint({ ltvPercent, mintedAssets, stakedAssets })
+  validateArgs.address({ vaultAddress, userAddress })
+
+  const [ config, mint, stake ] = await Promise.all([
+    getOsTokenConfig({ vaultAddress, options }),
+    getBalance({ options, contracts, vaultAddress, userAddress }),
+    getStakeBalance({ options, contracts, vaultAddress, userAddress }),
+  ])
+
+  const ltvPercent = BigInt(config.ltvPercent)
+  const stakedAssets = stake.assets
+  const mintedAssets = mint.assets
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {
     return 0n
@@ -24,17 +35,17 @@ const getMaxMint = async (values: GetMaxMintInput) => {
 
   const maxMintedAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
   const maxMintedAssetsHourReward = (maxMintedAssets * avgRewardPerSecond * 3600n) / constants.blockchain.amount1
-  const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
+  const maxMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
 
-  if (canMintAssets > 0) {
-    const maxMintShares = await contracts.base.mintTokenController.convertToShares(canMintAssets)
+  if (maxMintAssets > 0) {
+    const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
 
     // solves the problem of incorrect rounding
-    return maxMintShares - 1n
+    return maxMintShares -1n
   }
 
   return 0n
 }
 
 
-export default wrapAbortPromise<GetMaxMintInput, bigint>(getMaxMint)
+export default wrapAbortPromise<GetMaxMintAmountInput, bigint>(getMaxMintAmount)
