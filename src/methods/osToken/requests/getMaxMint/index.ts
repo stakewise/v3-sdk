@@ -29,7 +29,8 @@ const getMaxMint = async (values: GetMaxMintInput) => {
   if (canMintAssets > 0) {
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(canMintAssets)
 
-    return maxMintShares
+    // solves the problem of incorrect rounding
+    return maxMintShares - 1n
   }
 
   return 0n
