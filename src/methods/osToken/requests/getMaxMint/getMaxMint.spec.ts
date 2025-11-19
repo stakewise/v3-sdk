@@ -49,6 +49,7 @@ describe('getMaxMint', () => {
       version: () => Promise.resolve(1n),
     })
 
+    mockContracts.base.mintTokenController.convertToShares.mockResolvedValue(10n)
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)
 
     await getMaxMint({
@@ -59,6 +60,7 @@ describe('getMaxMint', () => {
       contracts: mockContracts,
     })
 
+    mockContracts.base.mintTokenController.convertToShares.mockResolvedValue(10n)
     const result = mockContracts.base.mintTokenController.convertToShares.mock.calls[0][0]
 
     expect(result).toEqual(11499601920372052438n)
@@ -69,6 +71,7 @@ describe('getMaxMint', () => {
       version: () => Promise.resolve(2n),
     })
 
+    mockContracts.base.mintTokenController.convertToShares.mockResolvedValue(10n)
     mockContracts.base.mintTokenController.avgRewardPerSecond.mockResolvedValue(2n)
 
     await getMaxMint({

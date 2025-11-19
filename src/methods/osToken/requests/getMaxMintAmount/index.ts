@@ -35,12 +35,13 @@ const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
 
   const maxMintedAssets = stakedAssets * ltvPercent / constants.blockchain.amount1
   const maxMintedAssetsHourReward = (maxMintedAssets * avgRewardPerSecond * 3600n) / constants.blockchain.amount1
-  const canMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
+  const maxMintAssets = maxMintedAssets - maxMintedAssetsHourReward - mintedAssets
 
-  if (canMintAssets > 0) {
-    const maxMintShares = await contracts.base.mintTokenController.convertToShares(canMintAssets)
+  if (maxMintAssets > 0) {
+    const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
 
-    return maxMintShares
+    // solves the problem of incorrect rounding
+    return maxMintShares -1n
   }
 
   return 0n
