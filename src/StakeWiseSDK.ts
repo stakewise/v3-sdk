@@ -50,6 +50,7 @@ class StakeWiseSDK {
         return signer
       }
       catch (error) {
+        console.error('getSigner err:', error)
         throw new Error(providerError)
       }
     }

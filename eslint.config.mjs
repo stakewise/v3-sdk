@@ -124,5 +124,17 @@ export default defineConfig([
         'error', { count: 2 },
       ]
     }
+  },
+  {
+    files: ['rollup.config.js'],
+    languageOptions: {
+      parserOptions: {
+        project: null,
+      }
+    },
+    rules: {
+      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+    }
   }
 ])

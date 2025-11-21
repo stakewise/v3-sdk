@@ -45,7 +45,11 @@ const config = [
       json(),
       terser({
         format: {
-          comments: false,
+          comments: (_, comment) => {
+            const isDocsDescription = comment.value.includes('docs.stakewise.io')
+
+            return isDocsDescription
+          },
         },
       }),
     ],
