@@ -1,6 +1,12 @@
 import type { BrowserProvider, JsonRpcProvider, FallbackProvider, JsonRpcSigner, TransactionResponse } from 'ethers'
 
-import methods from '../methods'
+import VaultInstance from '../services/vault'
+import BoostInstance from '../services/boost'
+import UtilsInstance from '../services/utils'
+import OsTokenInstance from '../services/osToken'
+import RewardSplitterInstance from '../services/rewardSplitter'
+import DistributorRewardsInstance from '../services/distributorRewards'
+
 import { Network, configs } from '../utils'
 import { createContracts } from '../contracts'
 
@@ -33,14 +39,36 @@ declare global {
   namespace StakeWise {
     type Config = typeof configs[Network]
     type Provider = BrowserProvider | JsonRpcProvider | CustomFallbackProvider
-
     type Contracts = ReturnType<typeof createContracts>
-    type Utils = ReturnType<typeof methods.createUtils>
-    type VaultMethods = ReturnType<typeof methods.createVaultMethods>
-    type BoostMethods = ReturnType<typeof methods.createBoostMethods>
-    type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
-    type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
-    type DistributorRewardsMethods = ReturnType<typeof methods.createDistributorRewardsMethods>
+
+    namespace Services {
+      type Vault = VaultInstance
+      type Boost = BoostInstance
+      type Utils = UtilsInstance
+      type OsToken = OsTokenInstance
+      type RewardSplitter = RewardSplitterInstance
+      type DistributorRewards = DistributorRewardsInstance
+    }
+
+    type CommonParams = {
+      options: StakeWise.Options
+      provider: StakeWise.Provider
+      contracts: StakeWise.Contracts
+    }
+
+    type ExtractInput<T> = Omit<T, keyof CommonParams>
+
+    type AnyTxMethod = {
+      (values: any): any
+      encode(values: any): any
+      estimateGas(values: any): any
+    }
+
+    type ExtractTxMethod<T extends AnyTxMethod> = {
+      (values: StakeWise.ExtractInput<Parameters<T>[0]>): ReturnType<T>
+      encode(values: StakeWise.ExtractInput<Parameters<T['encode']>[0]>): ReturnType<T['encode']>
+      estimateGas(values: StakeWise.ExtractInput<Parameters<T['estimateGas']>[0]>): ReturnType<T['estimateGas']>
+    }
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {

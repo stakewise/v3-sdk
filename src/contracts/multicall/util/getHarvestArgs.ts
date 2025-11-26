@@ -1,4 +1,4 @@
-import getHarvestParams from '../../../methods/vault/requests/getHarvestParams'
+import getHarvestParams from '../../../services/vault/requests/getHarvestParams'
 import type { HarvestParamsQueryPayload } from '../../../graphql/subgraph/vault'
 
 

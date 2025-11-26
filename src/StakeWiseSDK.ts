@@ -1,4 +1,4 @@
-import methods from './methods'
+import { Vault, Boost, RewardSplitter, DistributorRewards, OsToken, Utils } from './services'
 import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
 
 import {
@@ -20,16 +20,17 @@ type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMultica
 }
 
 class StakeWiseSDK {
-  readonly utils: StakeWise.Utils
   readonly config: StakeWise.Config
   readonly options: StakeWise.Options
   readonly provider: StakeWise.Provider
-  readonly vault: StakeWise.VaultMethods
-  readonly boost: StakeWise.BoostMethods
   readonly contracts: StakeWise.Contracts
-  readonly osToken: StakeWise.OsTokenMethods
-  readonly rewardSplitter: StakeWise.RewardSplitterMethods
-  readonly distributorRewards: StakeWise.DistributorRewardsMethods
+
+  readonly vault: StakeWise.Services.Vault
+  readonly utils: StakeWise.Services.Utils
+  readonly boost: StakeWise.Services.Boost
+  readonly osToken: StakeWise.Services.OsToken
+  readonly rewardSplitter: StakeWise.Services.RewardSplitter
+  readonly distributorRewards: StakeWise.Services.DistributorRewards
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
@@ -72,14 +73,14 @@ class StakeWiseSDK {
       this.config.api.backend = options.endpoints.api
     }
 
-    const argsForMethods = { options, contracts, provider }
+    const commonParams = { options, contracts, provider }
 
-    this.utils = methods.createUtils(argsForMethods)
-    this.vault = methods.createVaultMethods(argsForMethods)
-    this.boost = methods.createBoostMethods(argsForMethods)
-    this.osToken = methods.createOsTokenMethods(argsForMethods)
-    this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
-    this.distributorRewards = methods.createDistributorRewardsMethods(argsForMethods)
+    this.vault = new Vault(commonParams)
+    this.utils = new Utils(commonParams)
+    this.boost = new Boost(commonParams)
+    this.osToken = new OsToken(commonParams)
+    this.rewardSplitter = new RewardSplitter(commonParams)
+    this.distributorRewards = new DistributorRewards(commonParams)
   }
 
   async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {

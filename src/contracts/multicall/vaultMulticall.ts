@@ -1,4 +1,4 @@
-import getVault from '../../methods/vault/requests/getVault'
+import getVault from '../../services/vault/requests/getVault'
 
 import {
   getHarvestArgs,
