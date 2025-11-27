@@ -5,7 +5,7 @@ import type { LockInput } from './types'
 import { validateArgs } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
-import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../util'
+import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../helpers'
 
 
 type CommonLogicInput = LockInput & {

@@ -1,7 +1,7 @@
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../../../helpers'
-import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../util/modifyLeverageStrategyData'
+import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../helpers/modifyLeverageStrategyData'
 
 
 export type GetBoostDataInput = StakeWise.CommonParams & {
