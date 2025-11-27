@@ -57,7 +57,12 @@ class StakeWiseSDK {
       this.config.api.backend = options.endpoints.api
     }
 
-    const commonParams: StakeWise.CommonParams = { options, contracts, provider, config }
+    const commonParams: StakeWise.CommonParams = {
+      contracts,
+      provider,
+      options,
+      config,
+    }
 
     this.vault = new Vault(commonParams)
     this.utils = new Utils(commonParams)
