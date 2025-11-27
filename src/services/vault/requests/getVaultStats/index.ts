@@ -3,8 +3,7 @@ import modifyVaultStats from './modifyVaultStats'
 import graphql from '../../../../graphql'
 
 
-export type GetVaultStatsInput = {
-  options: StakeWise.Options
+export type GetVaultStatsInput = StakeWise.CommonParams & {
   vaultAddress: string
   daysCount: number
 }

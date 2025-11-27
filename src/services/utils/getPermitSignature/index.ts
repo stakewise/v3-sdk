@@ -5,13 +5,11 @@ import { constants } from '../../../utils'
 
 const maxUint256 = constants.blockchain.maxUint256
 
-export type GetPermitSignatureInput = {
-  options: StakeWise.Options
-  provider: StakeWise.Provider
+export type GetPermitSignatureInput = StakeWise.CommonParams & {
   contract: StakeWise.ABI.Erc20Token
-  amount?: bigint
-  ownerAddress: string
   spenderAddress: string
+  ownerAddress: string
+  amount?: bigint
 }
 
 export const getPermitSignature = async (values: GetPermitSignatureInput) => {

@@ -1,8 +1,7 @@
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
-export type GetSharesFromAssetsInput = {
-  contracts: StakeWise.Contracts
+export type GetSharesFromAssetsInput = StakeWise.CommonParams & {
   amount: bigint
 }
 

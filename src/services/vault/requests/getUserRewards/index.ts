@@ -3,10 +3,9 @@ import { wrapAbortPromise } from '../../../../modules/gql-module'
 import graphql from '../../../../graphql'
 
 
-export type GetUserRewardsInput = {
+export type GetUserRewardsInput = StakeWise.CommonParams & {
   dateTo: number
   dateFrom: number
-  options: StakeWise.Options
   userAddress: string
   vaultAddress: string
 }

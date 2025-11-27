@@ -3,9 +3,8 @@ import graphql from '../../../../graphql'
 import modifyHarvestParams from './modifyHarvestParams'
 
 
-export type GetHarvestParamsInput = {
+export type GetHarvestParamsInput = StakeWise.CommonParams & {
   vaultAddress: string
-  options: StakeWise.Options
 }
 
 const getHarvestParams = (values: GetHarvestParamsInput) => {

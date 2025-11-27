@@ -2,13 +2,7 @@ import { BigDecimal, constants } from '../../../../utils'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
-type GetOsTokenRateInput = {
-  contracts: StakeWise.Contracts
-}
-
-type Output = string
-
-const getOsTokenRate = async (input: GetOsTokenRateInput) => {
+const getOsTokenRate = async (input: StakeWise.CommonParams) => {
   const { contracts } = input
 
   const mintTokenRate = await contracts.base.priceOracle.latestAnswer()
@@ -19,4 +13,4 @@ const getOsTokenRate = async (input: GetOsTokenRateInput) => {
 }
 
 
-export default wrapAbortPromise<GetOsTokenRateInput, Output>(getOsTokenRate)
+export default wrapAbortPromise<StakeWise.CommonParams, string>(getOsTokenRate)

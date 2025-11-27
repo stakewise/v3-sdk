@@ -5,9 +5,9 @@ import type { CreateVaultInput } from './types'
 
 const create = async (values: CreateVaultInput) => {
   const { image, displayName, description, ...rest } = values
-  const { provider, options, userAddress } = rest
+  const { provider, userAddress } = rest
 
-  const metadataIpfsHash = await uploadMetadata({ image, displayName, description, options })
+  const metadataIpfsHash = await uploadMetadata(values)
   const { vaultFactory, params } = await commonLogic({ metadataIpfsHash, ...rest })
 
   const signer = await provider.getSigner(userAddress)

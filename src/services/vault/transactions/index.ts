@@ -1,6 +1,7 @@
 import { getNetworkTypes } from '../../../utils'
 
 import { createOperate, ExtractOperate } from './operate'
+import { multicall, VaultMulticallInput } from './multicall'
 import { createWithdraw, ExtractWithdraw } from './withdraw'
 import { createVaultCreator, ExtractCreateVault } from './createVault'
 import { createClaimExitQueue, ExtractClaimExitQueue } from './claimExitQueue'
@@ -10,6 +11,8 @@ import { createSetDepositDataManager, ExtractSetDepositDataManager } from './set
 
 
 class VaultTransactions {
+  readonly params: StakeWise.CommonParams
+
   /**
    * @description Deposit (stake) in a vault.
    * @see https://docs.stakewise.io/vault/transactions/deposit
@@ -53,8 +56,9 @@ class VaultTransactions {
   */
   public setDepositDataManager: ExtractSetDepositDataManager
 
-
   constructor(params: StakeWise.CommonParams) {
+    this.params = params
+
     const { isEthereum } = getNetworkTypes(params.options)
 
     this.deposit = isEthereum
@@ -67,6 +71,14 @@ class VaultTransactions {
     this.claimExitQueue = createClaimExitQueue(params)
     this.setDepositDataRoot = createSetDepositDataRoot(params)
     this.setDepositDataManager = createSetDepositDataManager(params)
+  }
+
+  /**
+   * @description Assistant function for custom multi-query requests to the vault.
+   * @see https://docs.stakewise.io/vault/transactions/multicall
+  */
+  public multicall<T>(values: StakeWise.ExtractInput<VaultMulticallInput>) {
+    return multicall<T>({ ...this.params, ...values })
   }
 }
 

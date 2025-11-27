@@ -4,8 +4,7 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import modifyLeverageStrategyData from '../../util/modifyLeverageStrategyData'
 
 
-export type GetLeverageStrategyDataInput = {
-  options: StakeWise.Options
+export type GetLeverageStrategyDataInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
 }

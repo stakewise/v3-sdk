@@ -1,7 +1,4 @@
-export type BaseInput = {
+export type BaseInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
-  provider: StakeWise.Provider
 }

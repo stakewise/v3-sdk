@@ -9,12 +9,9 @@ import type { SetFeeRecipientParams } from '../util/params/getFeeRecipientParams
 import type { SetBlocklistManagerParams } from '../util/params/getBlocklistManagerParams'
 import type { SetValidatorsManagerParams } from '../util/params/getValidatorsManagerParams'
 
-type BaseInput = {
+type BaseInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
-  provider: StakeWise.Provider
 }
 
 type OperateCommonParams =

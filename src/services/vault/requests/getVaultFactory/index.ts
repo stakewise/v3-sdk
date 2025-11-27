@@ -1,13 +1,12 @@
-import { VaultType } from './enums'
+import { VaultType } from '../../../../utils'
 
 
-type Input = {
-  contracts: StakeWise.Contracts
+export type GetVaultFactoryInput = StakeWise.CommonParams & {
   vaultType?: VaultType
   isErc20?: boolean
 }
 
-const getVaultFactory = ({ vaultType, contracts, isErc20 }: Input) => {
+const getVaultFactory = ({ vaultType, contracts, isErc20 }: GetVaultFactoryInput) => {
   const vaultFactories = isErc20 ? {
     [VaultType.Default]: contracts.factories.erc20Vault,
     [VaultType.Private]: contracts.factories.erc20PrivateVault,

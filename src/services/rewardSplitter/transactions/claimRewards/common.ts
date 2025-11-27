@@ -7,22 +7,17 @@ import getSharesFromAssets from './getSharesFromAssets'
 
 
 export const commonLogic = async (values: ClaimRewardsInput) => {
-  const {
-    contracts, userAddress, vaultAddress, options,
-    rewardSplitterAddress, assets,
-  } = values
+  const { contracts, userAddress, vaultAddress, rewardSplitterAddress, assets } = values
 
   validateArgs.address({ vaultAddress, userAddress, rewardSplitterAddress })
   validateArgs.bigint({ assets })
 
   const baseMulticall: RewardSplitterMulticallBaseInput = {
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
-  const shares = await getSharesFromAssets({ assets, vaultAddress, userAddress, options, contracts })
+  const shares = await getSharesFromAssets(values)
   const params: Parameters<typeof rewardSplitterMulticall>[0]['request']['params'] = [
     { method: 'syncRewards', args: [] },
     { method: 'enterExitQueue', args: [ shares, userAddress ] },

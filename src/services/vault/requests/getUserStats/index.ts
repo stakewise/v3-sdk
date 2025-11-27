@@ -2,11 +2,10 @@ import { apiUrls, validateArgs, calculateUserStats } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-export type GetUserStatsInput = {
+export type GetUserStatsInput = StakeWise.CommonParams & {
   daysCount: number
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
 }
 
 const getUserStats = (input: GetUserStatsInput) => {

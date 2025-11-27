@@ -10,7 +10,7 @@ type PermitParams = {
   s: string
 }
 
-export type LockInput = {
+export type LockInput = StakeWise.CommonParams & {
   amount: bigint
   userAddress: string
   vaultAddress: string
@@ -20,9 +20,6 @@ export type LockInput = {
   }
   referrerAddress?: string
   permitParams?: PermitParams
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
   leverageStrategyData?: {
     version: number
     isUpgradeRequired: boolean

@@ -1,9 +1,7 @@
 import getLeverageStrategyData from '../requests/getLeverageStrategyData'
 
 
-type Input = {
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
+type GetLeverageStrategyContractInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
   leverageStrategyData?: {
@@ -12,12 +10,12 @@ type Input = {
   }
 }
 
-const getLeverageStrategyContract = async (values: Input) => {
-  const { options, contracts, userAddress, vaultAddress } = values
+const getLeverageStrategyContract = async (values: GetLeverageStrategyContractInput) => {
+  const { contracts } = values
 
   const leverageStrategyData = values.leverageStrategyData
     ? values.leverageStrategyData
-    : await getLeverageStrategyData({ options, userAddress, vaultAddress })
+    : await getLeverageStrategyData(values)
 
   let leverageStrategyContract = contracts.special.leverageStrategy
 

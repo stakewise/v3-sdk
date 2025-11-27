@@ -6,7 +6,7 @@ import { getLeverageStrategyContract, validateLeverageStrategyData } from '../..
 
 
 export const commonLogic = async (values: UnlockInput) => {
-  const { options, percent, vaultAddress, userAddress, leverageStrategyData } = values
+  const { percent, vaultAddress, userAddress, leverageStrategyData } = values
 
   validateArgs.number({ percent })
   validateArgs.address({ vaultAddress, userAddress })
@@ -26,9 +26,7 @@ export const commonLogic = async (values: UnlockInput) => {
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
     leverageStrategyContract,
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   const params: Parameters<typeof boostMulticall>[0]['request']['params'] = []

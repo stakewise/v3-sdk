@@ -3,10 +3,8 @@ import modifyRewards from './modifyRewards'
 import graphql from '../../../../graphql'
 
 
-export type GetRewardsInput = {
+export type GetRewardsInput = StakeWise.CommonParams & {
   userAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 const getRewards = (input: GetRewardsInput) => {

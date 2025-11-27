@@ -2,11 +2,9 @@ import { wrapAbortPromise } from '../../../../modules/gql-module'
 import { validateArgs } from '../../../../utils'
 
 
-export type GetOsTokenBalanceInput = {
+export type GetOsTokenBalanceInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 type Output = {

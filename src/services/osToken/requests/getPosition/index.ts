@@ -3,12 +3,11 @@ import { wrapAbortPromise } from '../../../../modules/gql-module'
 import { validateArgs } from '../../../../utils'
 
 
-export type GetOsTokenPositionInput = {
+export type GetOsTokenPositionInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
   stakedAssets: bigint
   liqThresholdPercent: bigint
-  contracts: StakeWise.Contracts
 }
 
 type Output = {

@@ -14,7 +14,7 @@ type CommonLogicInput = LockInput & {
 
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
-    contracts, options, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
+    contracts, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
     mockPermitSignature, leverageStrategyData,
   } = values
 
@@ -47,9 +47,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
     leverageStrategyContract,
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   const params: Parameters<typeof boostMulticall>[0]['request']['params'] = []
@@ -70,11 +68,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
     })
   }
   else {
-    const strategyProxy = await getLeverageStrategyProxy({
-      contracts,
-      userAddress,
-      vaultAddress,
-    })
+    const strategyProxy = await getLeverageStrategyProxy(values)
 
     const allowance = await contracts.tokens.mintToken.allowance(userAddress, strategyProxy)
     const isPermitRequired = allowance < amount

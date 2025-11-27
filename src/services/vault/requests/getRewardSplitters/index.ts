@@ -5,11 +5,10 @@ import type { RewardSplittersQueryVariables } from '../../../../graphql/subgraph
 import modifyRewardSplitters from './modifyRewardSplitters'
 
 
-export type GetRewardSplittersInput = {
+export type GetRewardSplittersInput = StakeWise.CommonParams & {
   id?: string
   owner?: string
   vaultAddress: string
-  options: StakeWise.Options
 }
 
 const getRewardSplitters = (input: GetRewardSplittersInput) => {

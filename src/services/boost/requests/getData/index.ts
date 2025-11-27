@@ -4,11 +4,9 @@ import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../.
 import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../util/modifyLeverageStrategyData'
 
 
-export type GetBoostDataInput = {
+export type GetBoostDataInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 type Output = {

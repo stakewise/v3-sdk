@@ -4,21 +4,19 @@ import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
 
-export type GetBurnAmountForUnstakeInput = {
+export type GetBurnAmountForUnstakeInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => {
-  const { contracts, options, vaultAddress, userAddress } = values
+  const { contracts, vaultAddress } = values
 
   validateArgs.address({ vaultAddress })
 
   const [ config, mint ] = await Promise.all([
-    getOsTokenConfig({ vaultAddress, options }),
-    getBalance({ options, contracts, vaultAddress, userAddress }),
+    getOsTokenConfig(values),
+    getBalance(values),
   ])
 
   const hasMinted = mint.shares && mint.shares > 0

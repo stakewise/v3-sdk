@@ -4,8 +4,7 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import type { ParseBoostQueueOutput } from './modifyQueuePosition'
 
 
-export type GetQueuePositionInput = {
-  options: StakeWise.Options
+export type GetQueuePositionInput = StakeWise.CommonParams & {
   vaultAddress: string
   userAddress: string
 }

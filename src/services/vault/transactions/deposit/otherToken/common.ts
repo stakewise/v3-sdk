@@ -25,9 +25,7 @@ export const commonLogic = (values: DepositInput) => {
 
   const baseInput: VaultMulticallBaseInput = {
     vaultContract,
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   return {

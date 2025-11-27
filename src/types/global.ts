@@ -38,8 +38,18 @@ declare global {
 
   namespace StakeWise {
     type Config = typeof configs[Network]
-    type Provider = BrowserProvider | JsonRpcProvider | CustomFallbackProvider
     type Contracts = ReturnType<typeof createContracts>
+    type Provider = BrowserProvider | JsonRpcProvider | CustomFallbackProvider
+
+    type Options = {
+      network: Network
+      provider?: Provider
+      endpoints?: {
+        api?: string
+        subgraph?: string | ReadonlyArray<string>
+        web3?: Web3Endpoints
+      }
+    }
 
     namespace Services {
       type Vault = VaultInstance
@@ -51,6 +61,7 @@ declare global {
     }
 
     type CommonParams = {
+      config: StakeWise.Config
       options: StakeWise.Options
       provider: StakeWise.Provider
       contracts: StakeWise.Contracts
@@ -82,16 +93,6 @@ declare global {
     }
 
     type Web3Endpoints = string | string[] | UrlWithHeaders[]
-
-    type Options = {
-      network: Network
-      provider?: Provider
-      endpoints?: {
-        api?: string
-        subgraph?: string | ReadonlyArray<string>
-        web3?: Web3Endpoints
-      }
-    }
 
     type TransactionData = {
       data: string

@@ -7,7 +7,7 @@ import {
 } from '../util'
 
 
-type Action<Input, Output> = (props: Input) => Promise<Output>
+type Action<Input, Output> = (values: Input) => Promise<Output>
 
 const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {

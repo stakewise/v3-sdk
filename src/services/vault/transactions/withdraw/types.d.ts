@@ -1,10 +1,7 @@
-export type WithdrawInput = {
+export type WithdrawInput = StakeWise.CommonParams & {
   assets: bigint
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
 }
 
 export interface ExtractWithdraw {

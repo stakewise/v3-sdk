@@ -13,15 +13,13 @@ const validatePositions = (positions: ClaimExitQueueInput['positions']) => {
 }
 
 export const commonLogic = (values: ClaimExitQueueInput) => {
-  const { options, contracts, positions, vaultAddress, userAddress } = values
+  const { contracts, positions, vaultAddress, userAddress } = values
 
   validatePositions(positions)
 
   const baseMulticallArgs: VaultMulticallBaseInput = {
     vaultContract: contracts.helpers.createVault({ vaultAddress }),
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = positions.map((position) => {

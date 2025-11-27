@@ -1,23 +1,7 @@
 import { Vault, Boost, RewardSplitter, DistributorRewards, OsToken, Utils } from './services'
-import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
+import { configs, createProvider } from './utils'
+import { createContracts } from './contracts'
 
-import {
-  getGas,
-  configs,
-  VaultType,
-  createProvider,
-  getVaultFactory,
-  getVaultVersion,
-} from './utils'
-
-
-type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
-
-type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
-
-type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
-  rewardSplitterAddress: string
-}
 
 class StakeWiseSDK {
   readonly config: StakeWise.Config
@@ -73,7 +57,7 @@ class StakeWiseSDK {
       this.config.api.backend = options.endpoints.api
     }
 
-    const commonParams = { options, contracts, provider }
+    const commonParams: StakeWise.CommonParams = { options, contracts, provider, config }
 
     this.vault = new Vault(commonParams)
     this.utils = new Utils(commonParams)
@@ -81,64 +65,6 @@ class StakeWiseSDK {
     this.osToken = new OsToken(commonParams)
     this.rewardSplitter = new RewardSplitter(commonParams)
     this.distributorRewards = new DistributorRewards(commonParams)
-  }
-
-  async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
-    const { userAddress, vaultAddress, request } = values
-
-    const { isBlocklist, isPrivate, version } = await this.vault.getVault({ vaultAddress })
-
-    const vaultContract = this.contracts.helpers.createVault({
-      options: {
-        isPrivate,
-        isBlocklist,
-        isDepositWithMint: version >= 3,
-        chainId: this.config.network.chainId,
-      },
-      vaultAddress,
-    })
-
-    return vaultMulticall<T>({
-      options: this.options,
-      vaultContract,
-      vaultAddress,
-      userAddress,
-      request,
-    })
-  }
-
-  getVaultFactory({ vaultType, isErc20 }: GetVaultFactoryInput) {
-    return getVaultFactory({
-      vaultType,
-      isErc20,
-      contracts: this.contracts,
-    })
-  }
-
-  rewardSplitterMulticall<T extends unknown>(values: RewardSplitterMulticallInput) {
-    const { userAddress, vaultAddress, rewardSplitterAddress, request } = values
-
-    return rewardSplitterMulticall<T>({
-      rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-      options: this.options,
-      vaultAddress,
-      userAddress,
-      request,
-    })
-  }
-
-  getGas(estimatedGas: bigint) {
-    return getGas({
-      provider: this.provider,
-      estimatedGas,
-    })
-  }
-
-  getVaultVersion(vaultAddress: string) {
-    return getVaultVersion({
-      contracts: this.contracts,
-      vaultAddress,
-    })
   }
 
   get network() {

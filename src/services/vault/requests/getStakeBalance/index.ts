@@ -2,11 +2,9 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-export type GetStakeBalanceInput = {
+export type GetStakeBalanceInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 const getStakeBalance = (values: GetStakeBalanceInput) => {

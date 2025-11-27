@@ -44,9 +44,7 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
 
   const baseMulticall: RewardSplitterMulticallBaseInput = {
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   if (!oldFeeRecipients) {

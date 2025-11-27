@@ -2,9 +2,7 @@ import { getGas } from '../../utils'
 import { vaultMulticall } from '../../contracts'
 
 
-export type GetVaultMulticallGas = Parameters<typeof vaultMulticall>[0] & {
-  provider: StakeWise.Provider
-}
+export type GetVaultMulticallGas = Parameters<typeof vaultMulticall>[0] & StakeWise.CommonParams
 
 export const getVaultMulticallGas = async (values: GetVaultMulticallGas) => {
   const { provider } = values

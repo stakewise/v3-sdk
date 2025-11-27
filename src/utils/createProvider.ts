@@ -1,7 +1,5 @@
 import { JsonRpcProvider, FallbackProvider, FetchRequest, FetchResponse } from 'ethers'
 
-import apiUrls from './apiUrls'
-
 
 const getFetchRequest = (_url: string | StakeWise.UrlWithHeaders) => {
   const url = typeof _url === 'string' ? _url : _url.url

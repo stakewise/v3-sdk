@@ -1,14 +1,11 @@
 import type { ClaimPosition } from '../../requests/getQueuePosition/modifyQueuePosition'
 
 
-export type ClaimQueueInput = {
+export type ClaimQueueInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  leverageStrategyVersion?: number
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
   position: ClaimPosition
+  leverageStrategyVersion?: number
 }
 
 export interface ExtractClaimQueue {

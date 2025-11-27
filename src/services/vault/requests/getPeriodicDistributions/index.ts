@@ -3,11 +3,10 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-export type GetPeriodicDistributionsInput = {
+export type GetPeriodicDistributionsInput = StakeWise.CommonParams & {
   vaultAddress: string
   endTimestamp: number
   startTimestamp: number
-  options: StakeWise.Options
 }
 
 const getPeriodicDistributions = (values: GetPeriodicDistributionsInput) => {

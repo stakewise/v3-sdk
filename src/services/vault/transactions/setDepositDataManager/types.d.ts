@@ -1,10 +1,7 @@
-export type SetDepositDataManagerInput = {
+export type SetDepositDataManagerInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
   managerAddress: string
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
 }
 
 export interface ExtractSetDepositDataManager {

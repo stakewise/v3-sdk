@@ -2,8 +2,7 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-export type GetUserApyInput = {
-  options: StakeWise.Options
+export type GetUserApyInput = StakeWise.CommonParams & {
   vaultAddress: string
   userAddress: string
 }

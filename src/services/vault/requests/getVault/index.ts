@@ -4,8 +4,7 @@ import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'
 
 
-export type GetVaultInput = {
-  options: StakeWise.Options
+export type GetVaultInput = StakeWise.CommonParams & {
   vaultAddress: string
   withTime?: boolean
 }

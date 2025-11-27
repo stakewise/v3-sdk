@@ -2,11 +2,9 @@ import upgradeLeverageStrategyGas from './upgradeLeverageStrategyGas'
 import upgradeLeverageStrategyEncode from './upgradeLeverageStrategyEncode'
 
 
-export type UpgradeLeverageStrategyInput = {
+export type UpgradeLeverageStrategyInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
 }
 
 export interface ExtractUpgradeLeverageStrategy {

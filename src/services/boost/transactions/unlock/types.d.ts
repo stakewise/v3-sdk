@@ -1,7 +1,7 @@
 import { UnlockEncodeOutput } from './unlockEncode'
 
 
-export type UnlockInput = {
+export type UnlockInput = StakeWise.CommonParams & {
   percent: number
   userAddress: string
   vaultAddress: string
@@ -9,9 +9,6 @@ export type UnlockInput = {
     version: number
     isUpgradeRequired: boolean
   }
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
 }
 
 export interface ExtractUnlock {

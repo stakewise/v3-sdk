@@ -8,15 +8,13 @@ export type UploadMetadataInput = {
   description?: string
 }
 
-type Input = UploadMetadataInput & {
-  options: StakeWise.Options
-}
+type Input = UploadMetadataInput & StakeWise.CommonParams
 
-const uploadMetadata = async (input: Input) => {
+const uploadMetadata = async (values: Input) => {
   const skip = [
-    input.image,
-    input.displayName,
-    input.description,
+    values.image,
+    values.displayName,
+    values.description,
   ]
     .every((value) => typeof value === 'undefined')
 
@@ -24,7 +22,7 @@ const uploadMetadata = async (input: Input) => {
     return
   }
 
-  const { image = '', displayName = '', description = '', options } = input
+  const { image = '', displayName = '', description = '', options } = values
 
   validateArgs.string({ image, displayName, description })
 

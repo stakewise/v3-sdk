@@ -1,9 +1,7 @@
-export type BurnInput = {
+export type BurnInput = StakeWise.CommonParams & {
   shares: bigint
   userAddress: string
   vaultAddress: string
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
 }
 
 export interface ExtractBurn {

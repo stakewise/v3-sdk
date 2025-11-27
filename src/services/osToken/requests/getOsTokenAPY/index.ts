@@ -2,11 +2,7 @@ import { apiUrls } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-type FetchOsTokenSnapshotsInput = {
-  options: StakeWise.Options
-}
-
-const getOsTokenAPY = (input: FetchOsTokenSnapshotsInput) => {
+const getOsTokenAPY = (input: StakeWise.CommonParams) => {
   const { options } = input
 
   return graphql.subgraph.osToken.fetchOsTokenApyQuery({

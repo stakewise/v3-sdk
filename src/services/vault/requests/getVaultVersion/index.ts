@@ -1,9 +1,8 @@
-type Input = {
+export type GetVaultVersionInput = StakeWise.CommonParams & {
   vaultAddress: string
-  contracts: StakeWise.Contracts
 }
 
-const getVaultVersion = async (values: Input) => {
+const getVaultVersion = async (values: GetVaultVersionInput) => {
   const { contracts, vaultAddress } = values
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })

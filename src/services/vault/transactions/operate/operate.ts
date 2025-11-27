@@ -7,9 +7,8 @@ import { vaultMulticall } from '../../../../contracts'
 
 const operate = checkAccess<string>(async (values: OperateInput) => {
   const { image, displayName, description, ...rest } = values
-  const { options } = rest
 
-  const metadataIpfsHash = await uploadMetadata({ image, displayName, description, options })
+  const metadataIpfsHash = await uploadMetadata(values)
   const multicallCommonArgs = await commonLogic({ metadataIpfsHash, ...rest })
 
   const result = await vaultMulticall<{ hash: string }>(multicallCommonArgs)

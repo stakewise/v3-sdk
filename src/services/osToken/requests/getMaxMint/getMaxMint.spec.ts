@@ -27,6 +27,9 @@ describe('getMaxMint', () => {
       stakedAssets: 100n,
       vaultAddress: ZeroAddress,
       contracts: mockContracts,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toEqual(0n)
@@ -39,6 +42,9 @@ describe('getMaxMint', () => {
       stakedAssets: 0n,
       vaultAddress: ZeroAddress,
       contracts: mockContracts,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toEqual(0n)
@@ -58,6 +64,9 @@ describe('getMaxMint', () => {
       stakedAssets: 15001277163464317262n,
       vaultAddress: ZeroAddress,
       contracts: mockContracts,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     mockContracts.base.mintTokenController.convertToShares.mockResolvedValue(10n)
@@ -80,6 +89,9 @@ describe('getMaxMint', () => {
       stakedAssets: 15001277163464317262n,
       vaultAddress: ZeroAddress,
       contracts: mockContracts,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     const result = mockContracts.base.mintTokenController.convertToShares.mock.calls[0][0]
@@ -101,6 +113,9 @@ describe('getMaxMint', () => {
       stakedAssets: 2000n,
       vaultAddress: ZeroAddress,
       contracts: mockContracts,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toEqual(0n)

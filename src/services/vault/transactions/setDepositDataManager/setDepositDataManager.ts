@@ -1,8 +1,7 @@
 import { commonLogic } from './common'
 import checkAccess from './checkAccess'
 import type { SetDepositDataManagerInput } from './types'
-
-import { getVaultVersion } from '../../../../utils'
+import getVaultVersion from '../../requests/getVaultVersion'
 
 
 const setDepositDataManager = checkAccess<string>(async (values: SetDepositDataManagerInput) => {
@@ -10,7 +9,7 @@ const setDepositDataManager = checkAccess<string>(async (values: SetDepositDataM
 
   const signer = await provider.getSigner(userAddress)
 
-  const { isV1Version } = await getVaultVersion({ vaultAddress, contracts })
+  const { isV1Version } = await getVaultVersion(values)
 
   if (isV1Version) {
     const vaultContract = contracts.helpers.createVault({

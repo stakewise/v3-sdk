@@ -6,10 +6,9 @@ import Utils from '../../../utils'
 
 const operateEncode = async (values: OperateInput): Promise<StakeWise.TransactionData> => {
   const { image, displayName, description, ...rest } = values
-  const { options } = rest
 
   const utils = new Utils(values)
-  const metadataIpfsHash = await uploadMetadata({ image, displayName, description, options })
+  const metadataIpfsHash = await uploadMetadata(values)
   const multicallArgs = await commonLogic({ metadataIpfsHash, ...rest })
 
   return utils.getVaultMulticallEncode(multicallArgs)

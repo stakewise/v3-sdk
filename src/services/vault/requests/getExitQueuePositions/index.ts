@@ -4,8 +4,7 @@ import modifyExitRequests from './modifyExitRequests'
 import type { ParseExitRequestsOutput } from './modifyExitRequests'
 
 
-export type GetExitQueuePositionsInput = {
-  options: StakeWise.Options
+export type GetExitQueuePositionsInput = StakeWise.CommonParams & {
   vaultAddress: string
   userAddress: string
   isClaimed?: boolean

@@ -2,8 +2,7 @@ import { validateArgs } from '../../../../utils'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
-export type GetLeverageStrategyProxyInput = {
-  contracts: StakeWise.Contracts
+export type GetLeverageStrategyProxyInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
 }

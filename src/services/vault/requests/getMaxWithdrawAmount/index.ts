@@ -6,24 +6,22 @@ import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getMintedBalance from '../../../osToken/requests/getBalance'
 
 
-export type GetMaxWithdrawAmountInput = {
+export type GetMaxWithdrawAmountInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 const min = parseEther('0.00001')
 
 const getMaxWithdraw = async (values: GetMaxWithdrawAmountInput) => {
-  const { contracts, options, userAddress, vaultAddress } = values
+  const { contracts, vaultAddress } = values
 
   validateArgs.address({ vaultAddress })
 
   const [ config, mint, stake ] = await Promise.all([
-    getOsTokenConfig({ vaultAddress, options }),
-    getMintedBalance({ options, contracts, vaultAddress, userAddress }),
-    getStakeBalance({ options, contracts, vaultAddress, userAddress }),
+    getOsTokenConfig(values),
+    getMintedBalance(values),
+    getStakeBalance(values),
   ])
 
   if (!mint.assets) {

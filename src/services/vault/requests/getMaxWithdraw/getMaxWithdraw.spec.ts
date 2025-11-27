@@ -23,6 +23,9 @@ describe('getMaxWithdraw function', () => {
           }),
         },
       } as unknown as StakeWise.Contracts,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     }
 
     const result = await getMaxWithdraw(input)
@@ -50,6 +53,9 @@ describe('getMaxWithdraw function', () => {
       stakedAssets: parseEther('3'),
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     }
 
     const result = await getMaxWithdraw(input)
@@ -78,6 +84,9 @@ describe('getMaxWithdraw function', () => {
       stakedAssets: parseEther('3'),
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     }
 
     const result = await getMaxWithdraw(input)
@@ -106,6 +115,9 @@ describe('getMaxWithdraw function', () => {
       stakedAssets: parseEther('3'),
       contracts: contracts as any,
       vaultAddress: ZeroAddress,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     }
 
     const result = await getMaxWithdraw(input)

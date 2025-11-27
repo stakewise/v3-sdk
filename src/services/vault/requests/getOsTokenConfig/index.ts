@@ -2,8 +2,7 @@ import { apiUrls, validateArgs } from '../../../../utils'
 import graphql from '../../../../graphql'
 
 
-export type GetOsTokenConfigInput = {
-  options: StakeWise.Options
+export type GetOsTokenConfigInput = StakeWise.CommonParams & {
   vaultAddress: string
 }
 

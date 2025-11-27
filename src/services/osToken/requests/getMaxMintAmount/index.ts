@@ -5,22 +5,20 @@ import getStakeBalance from '../../../vault/requests/getStakeBalance'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
 
-export type GetMaxMintAmountInput = {
+export type GetMaxMintAmountInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
 }
 
 const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
-  const { contracts, options, vaultAddress, userAddress } = values
+  const { contracts, vaultAddress, userAddress } = values
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const [ config, mint, stake ] = await Promise.all([
-    getOsTokenConfig({ vaultAddress, options }),
-    getBalance({ options, contracts, vaultAddress, userAddress }),
-    getStakeBalance({ options, contracts, vaultAddress, userAddress }),
+  const [ config, stake, mint ] = await Promise.all([
+    getOsTokenConfig(values),
+    getStakeBalance(values),
+    getBalance(values),
   ])
 
   const ltvPercent = BigInt(config.ltvPercent)

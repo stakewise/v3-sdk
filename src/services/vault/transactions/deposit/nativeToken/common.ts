@@ -12,7 +12,7 @@ type BaseParams = [ string, string, PayableOverrides ]
 type UpdateStateParams = [ string, string, HarvestParams, PayableOverrides ]
 
 export const commonLogic = async (values: DepositInput) => {
-  const { options, contracts, userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
+  const { contracts, userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
 
   validate(values)
 
@@ -22,7 +22,7 @@ export const commonLogic = async (values: DepositInput) => {
     value: assets,
   }
 
-  const { params: harvestParams, canHarvest } = await getHarvestParams({ options, vaultAddress })
+  const { params: harvestParams, canHarvest } = await getHarvestParams(values)
 
   const baseParams: BaseParams = [ userAddress, referrerAddress, overrides ]
   const updateStateParams: UpdateStateParams = [ userAddress, referrerAddress, harvestParams, overrides ]

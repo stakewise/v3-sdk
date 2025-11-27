@@ -1,11 +1,8 @@
-export type DepositInput = {
+export type DepositInput = StakeWise.CommonParams & {
   assets: bigint
   userAddress: string
   vaultAddress: string
   referrerAddress?: string
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
 }
 
 export interface ExtractDeposit {

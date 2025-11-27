@@ -5,8 +5,7 @@ import { ModifiedStakerActions } from './types'
 import graphql from '../../../../graphql'
 
 
-export type GetStakerActionsInput = {
-  options: StakeWise.Options
+export type GetStakerActionsInput = StakeWise.CommonParams & {
   userAddress?: string
   types?: AllocatorActionType[]
   skip: AllocatorActionsQueryVariables['skip']

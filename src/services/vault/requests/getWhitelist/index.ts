@@ -8,16 +8,12 @@ import Utils from '../../../utils'
 
 type GetListVariablesInput = StakeWise.ExtractInput<Parameters<Utils['getListVariables']>[0]>
 
-export type GetWhitelistInput = GetListVariablesInput & {
-  options: StakeWise.Options
-  provider: StakeWise.Provider
-  contracts: StakeWise.Contracts
-}
+export type GetWhitelistInput = GetListVariablesInput & StakeWise.CommonParams
 
-const getWhitelist = (input: GetWhitelistInput) => {
-  const { options, provider, contracts, ...rest } = input
+const getWhitelist = (values: GetWhitelistInput) => {
+  const { options, provider, contracts, ...rest } = values
 
-  const utils = new Utils({ options, provider, contracts })
+  const utils = new Utils(values)
   const variables = utils.getListVariables<WhitelistAccountsQueryVariables>(rest)
 
   return graphql.subgraph.vault.fetchWhitelistAccountsQuery<ModifiedWhitelist>({

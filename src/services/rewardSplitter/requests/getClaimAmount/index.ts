@@ -3,12 +3,10 @@ import modifyClaimAmount from './modifyClaimAmount'
 import graphql from '../../../../graphql'
 
 
-export type GetClaimAmountInput = {
+export type GetClaimAmountInput = StakeWise.CommonParams & {
   vaultAddress: string
   userAddress: string
-  options: StakeWise.Options
   rewardSplitterAddress: string
-  contracts: StakeWise.Contracts
 }
 
 const getClaimAmount = (input: GetClaimAmountInput) => {

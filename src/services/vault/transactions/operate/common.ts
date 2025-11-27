@@ -57,9 +57,7 @@ export const commonLogic = async (values: OperateTransactionInput) => {
 
   const baseMulticall: VaultMulticallBaseInput = {
     vaultContract,
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   const baseInput = {

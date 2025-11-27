@@ -11,8 +11,7 @@ import type { LeverageStrategyAbi } from '../types'
 import type { MulticallRequestInput } from './types'
 
 
-export type BoostMulticallBaseInput = {
-  options: StakeWise.Options
+export type BoostMulticallBaseInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
   leverageStrategyContract: LeverageStrategyAbi
@@ -49,10 +48,7 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
   if (needHarvest) {
-    const harvestArgs = await getHarvestArgs({
-      options,
-      vaultAddress,
-    })
+    const harvestArgs = await getHarvestArgs(values)
 
     if (harvestArgs) {
       multicallParams = [

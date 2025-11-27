@@ -1,16 +1,14 @@
 import { vaultMulticall } from '../../../../contracts'
 
 
-type GetSharesFromAssetsInput = {
+type GetSharesFromAssetsInput = StakeWise.CommonParams & {
   assets: bigint
-  vaultAddress: string
   userAddress: string
-  options: StakeWise.Options
-  contracts: StakeWise.Contracts
+  vaultAddress: string
 }
 
-const getSharesFromAssets = async (input: GetSharesFromAssetsInput) => {
-  const { assets, vaultAddress, userAddress, options, contracts } = input
+const getSharesFromAssets = async (values: GetSharesFromAssetsInput) => {
+  const { assets, vaultAddress, contracts } = values
 
   const request = {
     params: [
@@ -20,11 +18,9 @@ const getSharesFromAssets = async (input: GetSharesFromAssetsInput) => {
   }
 
   const result = await vaultMulticall<[ { shares: bigint } ]>({
-    request,
-    options,
-    userAddress,
-    vaultAddress,
     vaultContract: contracts.helpers.createVault({ vaultAddress }),
+    request,
+    ...values,
   })
 
   return result?.[0]?.shares | 0n

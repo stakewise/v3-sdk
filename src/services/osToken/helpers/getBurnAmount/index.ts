@@ -2,13 +2,12 @@ import { constants, validateArgs } from '../../../../utils'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
-export type GetBurnAmountInput = {
+export type GetBurnAmountInput = StakeWise.CommonParams & {
   ltvPercent: bigint
   mintedAssets: bigint
   stakedAssets: bigint
   vaultAddress: string
   newStakedAssets: bigint
-  contracts: StakeWise.Contracts
 }
 
 const getBurnAmount = async (values: GetBurnAmountInput) => {

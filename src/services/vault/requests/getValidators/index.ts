@@ -5,11 +5,10 @@ import modifyValidators from './modifyValidators'
 import graphql from '../../../../graphql'
 
 
-export type GetValidatorsInput = {
-  options: StakeWise.Options
+export type GetValidatorsInput = StakeWise.CommonParams & {
   vaultAddress: ValidatorsQueryVariables['vaultAddress']
-  skip: ValidatorsQueryVariables['skip']
   limit: ValidatorsQueryVariables['first']
+  skip: ValidatorsQueryVariables['skip']
 }
 
 const getValidators = (input: GetValidatorsInput) => {

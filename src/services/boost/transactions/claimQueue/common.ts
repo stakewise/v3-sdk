@@ -5,7 +5,7 @@ import getLeverageStrategyData from '../../requests/getLeverageStrategyData'
 
 
 export const commonLogic = async (values: ClaimQueueInput) => {
-  const { contracts, options, position, vaultAddress, userAddress, leverageStrategyVersion } = values
+  const { contracts, position, vaultAddress, userAddress, leverageStrategyVersion } = values
 
   const { timestamp, positionTicket } = position
 
@@ -27,7 +27,7 @@ export const commonLogic = async (values: ClaimQueueInput) => {
     : contracts.special.leverageStrategy
 
   if (!leverageStrategyVersion) {
-    const { version } = await getLeverageStrategyData({ vaultAddress, userAddress, options })
+    const { version } = await getLeverageStrategyData(values)
 
     if (version === 2) {
       leverageStrategyContract = contracts.special.leverageStrategyV2
@@ -36,9 +36,7 @@ export const commonLogic = async (values: ClaimQueueInput) => {
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {
     leverageStrategyContract,
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   const params: Parameters<typeof boostMulticall>[0]['request']['params'] = [

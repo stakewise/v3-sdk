@@ -3,9 +3,8 @@ import { apiUrls, validateArgs } from '../../../utils'
 import graphql from '../../../graphql'
 
 
-export type GetTransactionsInput = {
+export type GetTransactionsInput = StakeWise.CommonParams & {
   hash: string
-  options: StakeWise.Options
 }
 
 export const getTransactions = (input: GetTransactionsInput) => {

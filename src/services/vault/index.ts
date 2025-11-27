@@ -9,6 +9,8 @@ import {
   getUserRewards, GetUserRewardsInput,
   getMaxWithdraw, GetMaxWithdrawInput,
   getStakeBalance, GetStakeBalanceInput,
+  getVaultVersion, GetVaultVersionInput,
+  getVaultFactory, GetVaultFactoryInput,
   getStakerActions, GetStakerActionsInput,
   getOsTokenConfig, GetOsTokenConfigInput,
   getHarvestParams, GetHarvestParamsInput,
@@ -92,6 +94,22 @@ class Vault extends VaultTransactions {
   */
   public getMaxWithdraw(values: StakeWise.ExtractInput<GetMaxWithdrawInput>) {
     return getMaxWithdraw({ ...this.params, ...values })
+  }
+
+  /**
+   * @description Getting the vault current version.
+   * @see https://docs.stakewise.io/vault/requests/getvaultversion
+  */
+  public getVaultVersion(values: StakeWise.ExtractInput<GetVaultVersionInput>) {
+    return getVaultVersion({ ...this.params, ...values })
+  }
+
+  /**
+   * @description Getting the factory to vault creation.
+   * @see https://docs.stakewise.io/vault/requests/getvaultfactory
+  */
+  public getVaultFactory(values: StakeWise.ExtractInput<GetVaultFactoryInput>) {
+    return getVaultFactory({ ...this.params, ...values })
   }
 
   /**

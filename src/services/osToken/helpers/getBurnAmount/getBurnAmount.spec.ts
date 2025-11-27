@@ -12,6 +12,9 @@ describe('getBurnAmount', () => {
       newStakedAssets: 900n,
       vaultAddress: ZeroAddress,
       contracts: {} as any,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toBe(0n)
@@ -40,6 +43,9 @@ describe('getBurnAmount', () => {
       newStakedAssets: 1900n,
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toBe(100n)
@@ -68,6 +74,9 @@ describe('getBurnAmount', () => {
       newStakedAssets: 1900n,
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toBe(100n)
@@ -94,6 +103,9 @@ describe('getBurnAmount', () => {
       newStakedAssets: 1200n,
       vaultAddress: ZeroAddress,
       contracts: contracts as any,
+      provider: {} as any,
+      options: {} as any,
+      config: {} as any,
     })
 
     expect(result).toBe(0n)

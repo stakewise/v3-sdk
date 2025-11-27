@@ -6,16 +6,14 @@ import { vaultMulticall } from '../../../../contracts'
 
 
 export const commonLogic = (values: MintInput) => {
-  const { contracts, options, vaultAddress, userAddress, referrerAddress = ZeroAddress, shares } = values
+  const { contracts, vaultAddress, userAddress, referrerAddress = ZeroAddress, shares } = values
 
   validateArgs.bigint({ shares })
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
 
   const multicallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
     vaultContract: contracts.helpers.createVault({ vaultAddress }),
-    vaultAddress,
-    userAddress,
-    options,
+    ...values,
   }
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
