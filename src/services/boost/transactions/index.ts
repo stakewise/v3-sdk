@@ -4,7 +4,7 @@ import { createClaimQueue, ExtractClaimQueue } from './claimQueue'
 import { createUpgradeLeverageStrategy, ExtractUpgradeLeverageStrategy } from './upgradeLeverageStrategy'
 
 
-class RewardSplitterTransactions {
+class BoostTransactions {
 
   /**
    * @description Lock your osToken to increase apy
@@ -39,4 +39,4 @@ class RewardSplitterTransactions {
 }
 
 
-export default RewardSplitterTransactions
+export default BoostTransactions

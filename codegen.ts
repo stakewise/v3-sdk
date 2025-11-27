@@ -1,7 +1,6 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
-
-import { Network } from './src/utils/enums'
-import configs from './src/utils/configs'
+import { Network } from './src/helpers/enums'
+import configs from './src/helpers/configs'
 
 
 let network: Network = Network.Mainnet

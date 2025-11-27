@@ -4,7 +4,7 @@ import { createUpdateFeeRecipients, ExtractUpdateFeeRecipients } from './updateF
 import { createRewardSplitterCreator, ExtractCreateRewardSplitter } from './createRewardSplitter'
 
 
-class OsTokenTransactions {
+class RewardSplitterTransactions {
   /**
    * @description Allows the reward splitter owner to set a claimer
    * that can claim vault fees on behalf of the shareholders.
@@ -43,4 +43,4 @@ class OsTokenTransactions {
 }
 
 
-export default OsTokenTransactions
+export default RewardSplitterTransactions

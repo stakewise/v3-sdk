@@ -12,10 +12,10 @@ import {
   GetLeverageStrategyProxyInput,
 } from './requests'
 
-import RewardSplitterTransactions from './transactions'
+import BoostTransactions from './transactions'
 
 
-class RewardSplitter extends RewardSplitterTransactions {
+class Boost extends BoostTransactions {
   readonly params: StakeWise.CommonParams
 
   constructor(params: StakeWise.CommonParams) {
@@ -57,4 +57,4 @@ class RewardSplitter extends RewardSplitterTransactions {
 }
 
 
-export default RewardSplitter
+export default Boost
