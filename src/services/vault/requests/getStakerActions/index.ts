@@ -1,5 +1,5 @@
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
-import { AllocatorActionType, apiUrls, validateArgs } from '../../../../utils'
+import { AllocatorActionType, apiUrls, validateArgs } from '../../../../helpers'
 import modifyStakerActions from './modifyStakerActions'
 import { ModifiedStakerActions } from './types'
 import graphql from '../../../../graphql'

@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { BurnInput } from './types'
-import { getGas } from '../../../../utils'
+import { getGas } from '../../../../helpers'
 
 
 const burnGas = async (values: BurnInput) => {

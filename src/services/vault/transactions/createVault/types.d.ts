@@ -1,9 +1,8 @@
-import type { BaseInput } from '../../../utils'
-import type { VaultType } from '../../../../utils'
+import type { VaultType } from '../../../../helpers'
 import type { UploadMetadataInput } from '../util/metadata/uploadMetadata'
 
 
-export type CreateVaultCommonInput = Omit<BaseInput, 'vaultAddress'> & {
+export type CreateVaultCommonInput = Omit<StakeWise.BaseInput, 'vaultAddress'> & {
   type?: VaultType
   vaultToken?: {
     name: string

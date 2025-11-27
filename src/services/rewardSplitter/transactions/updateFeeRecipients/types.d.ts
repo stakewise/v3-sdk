@@ -1,4 +1,3 @@
-import type { BaseInput } from '../../../utils'
 import type { FeeRecipient as SubgraphFeeRecipient } from '../../../vault/requests/getRewardSplitters/types'
 
 
@@ -6,7 +5,7 @@ export type FeeRecipient = Pick<SubgraphFeeRecipient, 'address' | 'shares'> & {
   percent?: number
 }
 
-export type UpdateFeeRecipientsInput = BaseInput & {
+export type UpdateFeeRecipientsInput = StakeWise.BaseInput & {
   rewardSplitterAddress: string
   feeRecipients: FeeRecipient[]
   oldFeeRecipients?: FeeRecipient[]

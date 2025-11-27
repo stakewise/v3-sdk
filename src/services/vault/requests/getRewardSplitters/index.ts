@@ -1,4 +1,4 @@
-import { apiUrls, validateArgs } from '../../../../utils'
+import { apiUrls, validateArgs } from '../../../../helpers'
 import { fetchRewardSplittersQuery } from '../../../../graphql/subgraph/rewardSplitters'
 import type { RewardSplittersQueryVariables } from '../../../../graphql/subgraph/rewardSplitters'
 

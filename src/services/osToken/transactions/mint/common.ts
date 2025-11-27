@@ -1,7 +1,7 @@
 import { ZeroAddress } from 'ethers'
 
 import type { MintInput } from './types'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import { vaultMulticall } from '../../../../contracts'
 
 

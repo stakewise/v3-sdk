@@ -1,4 +1,4 @@
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import type { CreateRewardSplitterInput } from './types'
 import { checkAdminAccess } from '../../../vault/transactions/util'
 

@@ -68,7 +68,7 @@ class Utils {
   }
 }
 
-export type { BaseInput } from './types'
+
 export type {
   GetVaultMulticallEncodeInput,
   GetListVariablesInput,

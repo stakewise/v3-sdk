@@ -2,7 +2,7 @@ import { AbiCoder, MaxUint256 } from 'ethers'
 import type { CreateVaultTransactionInput } from './types'
 import validateCreateVaultArgs from './validateCreateVaultArgs'
 import { PayableOverrides } from '../../../../contracts/types/common'
-import { constants, Network, validateArgs, VaultType } from '../../../../utils'
+import { constants, Network, validateArgs, VaultType } from '../../../../helpers'
 
 
 export const commonLogic = async (values: CreateVaultTransactionInput) => {

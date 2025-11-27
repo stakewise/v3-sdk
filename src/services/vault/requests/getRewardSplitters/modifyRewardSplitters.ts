@@ -1,6 +1,6 @@
 import { getAddress } from 'ethers'
 import { RewardSplitter } from './types'
-import { BigDecimal } from '../../../../utils'
+import { BigDecimal } from '../../../../helpers'
 import type { RewardSplittersQueryPayload } from '../../../../graphql/subgraph/rewardSplitters'
 
 

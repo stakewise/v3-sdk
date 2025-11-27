@@ -1,5 +1,5 @@
 import getBalance from '../../requests/getBalance'
-import { constants, validateArgs } from '../../../../utils'
+import { constants, validateArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 

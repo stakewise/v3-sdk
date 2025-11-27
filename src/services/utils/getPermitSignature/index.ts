@@ -1,6 +1,6 @@
 import { Signature } from 'ethers'
 
-import { constants } from '../../../utils'
+import { constants } from '../../../helpers'
 
 
 const maxUint256 = constants.blockchain.maxUint256

@@ -7,7 +7,7 @@ import OsTokenInstance from '../services/osToken'
 import RewardSplitterInstance from '../services/rewardSplitter'
 import DistributorRewardsInstance from '../services/distributorRewards'
 
-import { Network, configs } from '../utils'
+import { Network, configs } from '../helpers'
 import { createContracts } from '../contracts'
 
 import type {
@@ -79,6 +79,11 @@ declare global {
       (values: StakeWise.ExtractInput<Parameters<T>[0]>): ReturnType<T>
       encode(values: StakeWise.ExtractInput<Parameters<T['encode']>[0]>): ReturnType<T['encode']>
       estimateGas(values: StakeWise.ExtractInput<Parameters<T['estimateGas']>[0]>): ReturnType<T['estimateGas']>
+    }
+
+    type BaseInput = StakeWise.CommonParams & {
+      userAddress: string
+      vaultAddress: string
     }
 
     // FallbackProvider has no base methods unlike JsonRpcProvider

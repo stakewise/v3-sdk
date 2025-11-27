@@ -1,4 +1,4 @@
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 

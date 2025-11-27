@@ -1,7 +1,4 @@
-import type { BaseInput } from '../../../utils'
-
-
-export type SetClaimerInput = Omit<BaseInput, 'vaultAddress'> & {
+export type SetClaimerInput = Omit<StakeWise.BaseInput, 'vaultAddress'> & {
   claimerAddress: string
   rewardSplitterAddress: string
 }

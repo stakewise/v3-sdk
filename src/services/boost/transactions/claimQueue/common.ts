@@ -1,5 +1,5 @@
 import type { ClaimQueueInput } from './types'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 import getLeverageStrategyData from '../../requests/getLeverageStrategyData'
 

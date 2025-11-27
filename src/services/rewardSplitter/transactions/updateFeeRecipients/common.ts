@@ -1,7 +1,7 @@
 import { isAddress } from 'ethers'
 
 import Vault from '../../../vault'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import { rewardSplitterMulticall } from '../../../../contracts'
 import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
 import { checkAdminAccess } from '../../../vault/transactions/util'

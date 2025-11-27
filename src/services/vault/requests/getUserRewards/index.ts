@@ -1,4 +1,4 @@
-import { apiUrls, Network, validateArgs, MergedReward, configs, mergeRewardsFiat } from '../../../../utils'
+import { apiUrls, Network, validateArgs, MergedReward, configs, mergeRewardsFiat } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import graphql from '../../../../graphql'
 

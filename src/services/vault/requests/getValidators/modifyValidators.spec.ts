@@ -1,7 +1,7 @@
 import { formatEther } from 'ethers'
 
 import type { ValidatorsQueryPayload } from '../../../../graphql/backend/vault'
-import { Network, configs } from '../../../../utils'
+import { Network, configs } from '../../../../helpers'
 import modifyValidators from './modifyValidators'
 
 

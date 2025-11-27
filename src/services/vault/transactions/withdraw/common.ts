@@ -1,5 +1,5 @@
 import type { WithdrawInput } from './types'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
 

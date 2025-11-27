@@ -1,5 +1,5 @@
 import type { TransactionsQueryVariables } from '../../../graphql/subgraph/transactions'
-import { apiUrls, validateArgs } from '../../../utils'
+import { apiUrls, validateArgs } from '../../../helpers'
 import graphql from '../../../graphql'
 
 

@@ -2,7 +2,7 @@ import { MaxUint256 } from 'ethers'
 
 import modifyVault from './modifyVault'
 import type { ModifiedVault } from './types'
-import { Network, configs } from '../../../../utils'
+import { Network, configs } from '../../../../helpers'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 

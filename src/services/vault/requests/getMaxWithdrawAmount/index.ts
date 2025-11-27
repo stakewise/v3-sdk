@@ -1,7 +1,7 @@
 import { parseEther } from 'ethers'
 import getStakeBalance from '../getStakeBalance'
 import getOsTokenConfig from '../getOsTokenConfig'
-import { constants, validateArgs } from '../../../../utils'
+import { constants, validateArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getMintedBalance from '../../../osToken/requests/getBalance'
 

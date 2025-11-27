@@ -1,5 +1,5 @@
 import graphql from '../../../graphql'
-import { apiUrls } from '../../../utils'
+import { apiUrls } from '../../../helpers'
 
 
 export const getStakewiseStats = (values: StakeWise.CommonParams) => {

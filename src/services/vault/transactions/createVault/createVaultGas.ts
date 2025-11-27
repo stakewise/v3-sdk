@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getGas } from '../../../../utils'
+import { getGas } from '../../../../helpers'
 import type { CreateVaultInput } from './types'
 import { getMetadataHashMock } from '../util'
 

@@ -1,4 +1,4 @@
-import { Network, configs } from '../../../utils'
+import { Network, configs } from '../../../helpers'
 import graphql from '../../../graphql'
 
 

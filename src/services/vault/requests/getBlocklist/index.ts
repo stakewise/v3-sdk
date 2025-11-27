@@ -1,7 +1,7 @@
 import type { BlocklistAccountsQueryVariables, BlocklistAccountsQueryPayload } from '../../../../graphql/subgraph/vault'
-import { apiUrls } from '../../../../utils'
 import graphql from '../../../../graphql'
 import { ModifiedBlocklist } from './types'
+import { apiUrls } from '../../../../helpers'
 import modifyBlocklist from './modifyBlocklist'
 import Util, { GetListVariablesInput } from '../../../utils'
 

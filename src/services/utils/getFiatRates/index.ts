@@ -1,5 +1,5 @@
 import graphql from '../../../graphql'
-import { configs, Network } from '../../../utils'
+import { configs, Network } from '../../../helpers'
 
 
 const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({

@@ -1,5 +1,5 @@
 import { isAddress } from 'ethers'
-import { validateArgs } from '../../utils'
+import { validateArgs } from '../../helpers'
 import { StakeWiseSubgraphGraph } from '../../types/graphql/subgraph'
 
 

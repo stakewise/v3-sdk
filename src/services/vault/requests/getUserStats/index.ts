@@ -1,4 +1,4 @@
-import { apiUrls, validateArgs, calculateUserStats } from '../../../../utils'
+import { apiUrls, validateArgs, calculateUserStats } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 

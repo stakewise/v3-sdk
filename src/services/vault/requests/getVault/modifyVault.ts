@@ -1,7 +1,7 @@
 import { formatEther, getAddress, MaxUint256 } from 'ethers'
 
 import type { ModifiedVault } from './types'
-import { Network, configs } from '../../../../utils'
+import { Network, configs } from '../../../../helpers'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 

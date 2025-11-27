@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getGas } from '../../../../utils'
+import { getGas } from '../../../../helpers'
 import type { ClaimRewardsInput } from './types'
 import { rewardSplitterMulticall } from '../../../../contracts'
 

@@ -1,7 +1,7 @@
 import { ZeroAddress } from 'ethers'
 
 import type { DepositInput } from './types'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 
 
 export const validate = (values: DepositInput) => {

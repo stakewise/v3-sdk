@@ -1,7 +1,4 @@
-import type { BaseInput } from '../../../utils'
-
-
-export type ClaimRewardsInput = BaseInput & {
+export type ClaimRewardsInput = StakeWise.BaseInput & {
   assets: bigint
   rewardSplitterAddress: string
 }

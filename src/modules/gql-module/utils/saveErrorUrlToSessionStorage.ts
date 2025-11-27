@@ -1,4 +1,4 @@
-import { constants } from '../../../utils'
+import { constants } from '../../../helpers'
 import localStorage from '../../local-storage'
 
 import type { ErrorRecord } from '../types'

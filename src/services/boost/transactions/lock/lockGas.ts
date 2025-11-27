@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { LockInput } from './types'
-import { getGas } from '../../../../utils'
+import { getGas } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 import upgradeLeverageStrategyGas from '../upgradeLeverageStrategy/upgradeLeverageStrategyGas'
 

@@ -1,6 +1,6 @@
 import graphql from '../../../../graphql'
 import modifyQueuePosition from './modifyQueuePosition'
-import { apiUrls, validateArgs } from '../../../../utils'
+import { apiUrls, validateArgs } from '../../../../helpers'
 import type { ParseBoostQueueOutput } from './modifyQueuePosition'
 
 

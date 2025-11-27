@@ -1,4 +1,4 @@
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import type { ClaimRewardsInput } from './types'
 import { rewardSplitterMulticall } from '../../../../contracts'
 import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'

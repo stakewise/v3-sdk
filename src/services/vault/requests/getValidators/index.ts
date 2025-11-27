@@ -1,5 +1,5 @@
 import type { ValidatorsQueryPayload, ValidatorsQueryVariables } from '../../../../graphql/backend/vault'
-import { apiUrls, validateArgs } from '../../../../utils'
+import { apiUrls, validateArgs } from '../../../../helpers'
 import type { ModifiedValidators } from './types'
 import modifyValidators from './modifyValidators'
 import graphql from '../../../../graphql'

@@ -1,4 +1,4 @@
-import { VaultType } from '../../../../utils'
+import { VaultType } from '../../../../helpers'
 
 
 export type GetVaultFactoryInput = StakeWise.CommonParams & {

@@ -19,7 +19,7 @@ import {
   DepositWithMintDiffAbi as DepositWithMintDiffType,
 } from './types'
 
-import { Network } from '../../utils'
+import { Network } from '../../helpers'
 import createContract from '../createContract'
 import { ModifiedVault } from '../../services/vault/requests/getVault/types'
 

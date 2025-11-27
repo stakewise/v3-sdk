@@ -1,6 +1,6 @@
 import type { WhitelistAccountsQueryVariables, WhitelistAccountsQueryPayload } from '../../../../graphql/subgraph/vault'
 import modifyWhitelist from './modifyWhitelist'
-import { apiUrls } from '../../../../utils'
+import { apiUrls } from '../../../../helpers'
 import { ModifiedWhitelist } from './types'
 import graphql from '../../../../graphql'
 import Utils from '../../../utils'

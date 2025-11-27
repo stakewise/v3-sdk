@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { UpgradeLeverageStrategyInput } from './types'
-import { getGas } from '../../../../utils'
+import { getGas } from '../../../../helpers'
 
 
 const upgradeLeverageStrategyGas = async (values: UpgradeLeverageStrategyInput) => {

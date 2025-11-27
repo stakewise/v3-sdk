@@ -1,8 +1,8 @@
 import './types/global'
-import { constants } from './utils'
+import { constants } from './helpers'
 
 
-export * from './utils/enums'
+export * from './helpers/enums'
 export { createContract } from './contracts'
 export { default as StakeWiseSDK } from './StakeWiseSDK'
 export { default as localStorage } from './modules/local-storage'
@@ -15,6 +15,6 @@ export {
   createProvider,
   mergeRewardsFiat,
   calculateUserStats,
-} from './utils'
+} from './helpers'
 
 export const chains = constants.chains

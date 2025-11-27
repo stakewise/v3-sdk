@@ -1,5 +1,5 @@
 import { Vault, Boost, RewardSplitter, DistributorRewards, OsToken, Utils } from './services'
-import { configs, createProvider } from './utils'
+import { configs, createProvider } from './helpers'
 import { createContracts } from './contracts'
 
 

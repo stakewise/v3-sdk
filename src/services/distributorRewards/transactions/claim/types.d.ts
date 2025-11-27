@@ -1,9 +1,8 @@
-import { BaseInput } from '../../../utils'
 import claimGas from './claimGas'
 import claimEncode from './claimEncode'
 
 
-export type ClaimInput = Omit<BaseInput, 'vaultAddress'> & {
+export type ClaimInput = Omit<StakeWise.BaseInput, 'vaultAddress'> & {
   proof: string[]
   tokens: string[]
   cumulativeAmounts: string[]

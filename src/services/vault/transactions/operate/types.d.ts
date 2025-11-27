@@ -9,10 +9,6 @@ import type { SetFeeRecipientParams } from '../util/params/getFeeRecipientParams
 import type { SetBlocklistManagerParams } from '../util/params/getBlocklistManagerParams'
 import type { SetValidatorsManagerParams } from '../util/params/getValidatorsManagerParams'
 
-type BaseInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
 
 type OperateCommonParams =
   SetWhitelisterParams
@@ -35,9 +31,9 @@ type OperateTransactionParams = Partial<
   & OperateCommonParams
 >
 
-export type OperateTransactionInput = BaseInput & OperateTransactionParams
+export type OperateTransactionInput = StakeWise.BaseInput & OperateTransactionParams
 
-export type OperateInput = BaseInput & OperateParams
+export type OperateInput = StakeWise.BaseInput & OperateParams
 
 export interface ExtractOperate {
   (values: StakeWise.ExtractInput<OperateInput>): Promise<StakeWise.TransactionHash>

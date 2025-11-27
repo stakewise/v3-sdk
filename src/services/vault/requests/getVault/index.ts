@@ -1,4 +1,4 @@
-import { apiUrls, validateArgs } from '../../../../utils'
+import { apiUrls, validateArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'

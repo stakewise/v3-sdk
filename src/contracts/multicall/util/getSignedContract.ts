@@ -1,5 +1,5 @@
 import { VoidSigner } from 'ethers'
-import { createProvider } from '../../../utils'
+import { createProvider } from '../../../helpers'
 import { MulticallRequestInput, ContractAbi } from '../types'
 
 

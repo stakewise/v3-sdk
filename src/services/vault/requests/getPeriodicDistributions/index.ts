@@ -1,5 +1,5 @@
 import type { PeriodicDistributionsQueryPayload } from '../../../../graphql/subgraph/vault'
-import { apiUrls, validateArgs } from '../../../../utils'
+import { apiUrls, validateArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 

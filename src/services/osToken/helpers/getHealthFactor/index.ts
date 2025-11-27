@@ -1,4 +1,4 @@
-import { OsTokenPositionHealth, BigDecimal, validateArgs, constants } from '../../../../utils'
+import { OsTokenPositionHealth, BigDecimal, validateArgs, constants } from '../../../../helpers'
 
 
 export type GetHealthFactorInput = {

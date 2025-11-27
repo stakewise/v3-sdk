@@ -1,5 +1,5 @@
 import graphql from '../../../../graphql'
-import { apiUrls, validateArgs } from '../../../../utils'
+import { apiUrls, validateArgs } from '../../../../helpers'
 
 import modifyLeverageStrategyData from '../../util/modifyLeverageStrategyData'
 

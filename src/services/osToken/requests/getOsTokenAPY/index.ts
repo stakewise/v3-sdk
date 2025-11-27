@@ -1,4 +1,4 @@
-import { apiUrls } from '../../../../utils'
+import { apiUrls } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 

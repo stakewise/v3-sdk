@@ -1,7 +1,4 @@
-import { BaseInput } from '../../../utils'
-
-
-export type CreateRewardSplitterInput = BaseInput
+export type CreateRewardSplitterInput = StakeWise.BaseInput
 
 export interface ExtractCreateRewardSplitter {
   (values: StakeWise.ExtractInput<CreateRewardSplitterInput>): Promise<StakeWise.TransactionHash>

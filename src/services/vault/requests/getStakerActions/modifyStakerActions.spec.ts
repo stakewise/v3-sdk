@@ -1,5 +1,5 @@
 import modifyStakerActions from './modifyStakerActions'
-import { Network, AllocatorActionType, configs } from '../../../../utils'
+import { Network, AllocatorActionType, configs } from '../../../../helpers'
 
 
 const network = Network.Mainnet

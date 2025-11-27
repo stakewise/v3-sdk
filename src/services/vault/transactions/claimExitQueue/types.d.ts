@@ -1,7 +1,4 @@
-import { BaseInput } from '../../../utils'
-
-
-export type ClaimExitQueueInput = BaseInput & {
+export type ClaimExitQueueInput = StakeWise.BaseInput & {
   positions: Awaited<ReturnType<StakeWise.Services.Vault['getExitQueuePositions']>>['positions']
 }
 

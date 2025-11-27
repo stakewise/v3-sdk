@@ -1,4 +1,4 @@
-import { OsTokenPositionHealth } from '../../../../utils'
+import { OsTokenPositionHealth } from '../../../../helpers'
 
 import getHealthFactor from './index'
 

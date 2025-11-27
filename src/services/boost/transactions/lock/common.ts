@@ -2,7 +2,7 @@ import { MaxUint256, ZeroAddress } from 'ethers'
 
 import Utils from '../../../utils'
 import type { LockInput } from './types'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../util'

@@ -1,4 +1,4 @@
-import { getGas } from '../../../../../utils'
+import { getGas } from '../../../../../helpers'
 import type { DepositInput } from '../types'
 import { commonLogic } from './common'
 

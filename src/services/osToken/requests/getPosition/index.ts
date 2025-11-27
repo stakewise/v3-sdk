@@ -1,6 +1,6 @@
 import getHealthFactor from '../../helpers/getHealthFactor'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { validateArgs } from '../../../../utils'
+import { validateArgs } from '../../../../helpers'
 
 
 export type GetOsTokenPositionInput = StakeWise.CommonParams & {
