@@ -19,9 +19,9 @@ import {
   DepositWithMintDiffAbi as DepositWithMintDiffType,
 } from './types'
 
-import { Network } from '../../utils'
+import { Network } from '../../helpers'
 import createContract from '../createContract'
-import { ModifiedVault } from '../../methods/vault/requests/getVault/types'
+import { ModifiedVault } from '../../services/vault/requests/getVault/types'
 
 
 type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate'>> & {

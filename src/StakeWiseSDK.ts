@@ -1,35 +1,20 @@
-import methods from './methods'
-import { createContracts, vaultMulticall, rewardSplitterMulticall } from './contracts'
+import { Vault, Boost, RewardSplitter, DistributorRewards, OsToken, Utils } from './services'
+import { configs, createProvider } from './helpers'
+import { createContracts } from './contracts'
 
-import {
-  getGas,
-  configs,
-  VaultType,
-  createProvider,
-  getVaultFactory,
-  getVaultVersion,
-} from './utils'
-
-
-type GetVaultFactoryInput = { vaultType?: VaultType, isErc20?: boolean }
-
-type VaultMulticallInput = Pick<Parameters<typeof vaultMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'>
-
-type RewardSplitterMulticallInput = Pick<Parameters<typeof rewardSplitterMulticall>[0], 'request' | 'userAddress' | 'vaultAddress'> & {
-  rewardSplitterAddress: string
-}
 
 class StakeWiseSDK {
-  readonly utils: StakeWise.Utils
   readonly config: StakeWise.Config
   readonly options: StakeWise.Options
   readonly provider: StakeWise.Provider
-  readonly vault: StakeWise.VaultMethods
-  readonly boost: StakeWise.BoostMethods
   readonly contracts: StakeWise.Contracts
-  readonly osToken: StakeWise.OsTokenMethods
-  readonly rewardSplitter: StakeWise.RewardSplitterMethods
-  readonly distributorRewards: StakeWise.DistributorRewardsMethods
+
+  readonly vault: StakeWise.Services.VaultService
+  readonly utils: StakeWise.Services.UtilsService
+  readonly boost: StakeWise.Services.BoostService
+  readonly osToken: StakeWise.Services.OsTokenService
+  readonly rewardSplitter: StakeWise.Services.RewardSplitterService
+  readonly distributorRewards: StakeWise.Services.DistributorRewardsService
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]
@@ -72,72 +57,19 @@ class StakeWiseSDK {
       this.config.api.backend = options.endpoints.api
     }
 
-    const argsForMethods = { options, contracts, provider }
+    const commonParams: StakeWise.CommonParams = {
+      contracts,
+      provider,
+      options,
+      config,
+    }
 
-    this.utils = methods.createUtils(argsForMethods)
-    this.vault = methods.createVaultMethods(argsForMethods)
-    this.boost = methods.createBoostMethods(argsForMethods)
-    this.osToken = methods.createOsTokenMethods(argsForMethods)
-    this.rewardSplitter = methods.createRewardSplitterMethods(argsForMethods)
-    this.distributorRewards = methods.createDistributorRewardsMethods(argsForMethods)
-  }
-
-  async vaultMulticall<T extends unknown>(values: VaultMulticallInput) {
-    const { userAddress, vaultAddress, request } = values
-
-    const { isBlocklist, isPrivate, version } = await this.vault.getVault({ vaultAddress })
-
-    const vaultContract = this.contracts.helpers.createVault({
-      options: {
-        isPrivate,
-        isBlocklist,
-        isDepositWithMint: version >= 3,
-        chainId: this.config.network.chainId,
-      },
-      vaultAddress,
-    })
-
-    return vaultMulticall<T>({
-      options: this.options,
-      vaultContract,
-      vaultAddress,
-      userAddress,
-      request,
-    })
-  }
-
-  getVaultFactory({ vaultType, isErc20 }: GetVaultFactoryInput) {
-    return getVaultFactory({
-      vaultType,
-      isErc20,
-      contracts: this.contracts,
-    })
-  }
-
-  rewardSplitterMulticall<T extends unknown>(values: RewardSplitterMulticallInput) {
-    const { userAddress, vaultAddress, rewardSplitterAddress, request } = values
-
-    return rewardSplitterMulticall<T>({
-      rewardSplitterContract: this.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
-      options: this.options,
-      vaultAddress,
-      userAddress,
-      request,
-    })
-  }
-
-  getGas(estimatedGas: bigint) {
-    return getGas({
-      provider: this.provider,
-      estimatedGas,
-    })
-  }
-
-  getVaultVersion(vaultAddress: string) {
-    return getVaultVersion({
-      contracts: this.contracts,
-      vaultAddress,
-    })
+    this.vault = new Vault(commonParams)
+    this.utils = new Utils(commonParams)
+    this.boost = new Boost(commonParams)
+    this.osToken = new OsToken(commonParams)
+    this.rewardSplitter = new RewardSplitter(commonParams)
+    this.distributorRewards = new DistributorRewards(commonParams)
   }
 
   get network() {

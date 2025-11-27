@@ -20,6 +20,7 @@ const syncDocsToken = process.env.SYNC_DOCS_TOKEN
 const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
 
 const changeTargetPath = (path: string) => path
+  .replace('services/', 'API/')
   .replace('methods/', 'API/')
   .replace('requests/', '')
   .replace('transactions/', '01-transactions/')

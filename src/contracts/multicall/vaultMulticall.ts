@@ -1,4 +1,4 @@
-import getVault from '../../methods/vault/requests/getVault'
+import getVault from '../../services/vault/requests/getVault'
 
 import {
   getHarvestArgs,
@@ -14,10 +14,9 @@ import type { MulticallRequestInput } from './types'
 
 type VaultContractAbi = ReturnType<StakeWise.Contracts['helpers']['createVault']>
 
-export type VaultMulticallBaseInput = {
+export type VaultMulticallBaseInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
   vaultContract: VaultContractAbi
 }
 
@@ -59,13 +58,10 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
-  const { isMetaVault } = await getVault({ options, vaultAddress })
+  const { isMetaVault } = await getVault(values)
 
   if (needHarvest && !isMetaVault) {
-    const harvestArgs = await getHarvestArgs({
-      options,
-      vaultAddress,
-    })
+    const harvestArgs = await getHarvestArgs(values)
 
     if (harvestArgs) {
       const updateStateParams = {

@@ -14,6 +14,7 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "isolatedModules": true,
+    "removeComments": false,
     "declarationDir": "dist",
     "resolveJsonModule": true,
     "moduleResolution": "node",

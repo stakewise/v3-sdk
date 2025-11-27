@@ -1,5 +1,5 @@
 import { VoidSigner } from 'ethers'
-import { createProvider } from '../../../utils'
+import { createProvider } from '../../../helpers'
 import { MulticallRequestInput, ContractAbi } from '../types'
 
 
@@ -10,8 +10,8 @@ type Input = {
   request: MulticallRequestInput
 }
 
-const getSignedContract = async (props: Input) => {
-  const { contract, userAddress, request, options } = props
+const getSignedContract = async (values: Input) => {
+  const { contract, userAddress, request, options } = values
   const { callStatic, transactionData } = request
 
   const withSigner = !callStatic && !transactionData

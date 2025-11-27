@@ -11,10 +11,9 @@ import type { RewardSplitterAbi } from '../types'
 import type { MulticallRequestInput } from './types'
 
 
-export type RewardSplitterMulticallBaseInput = {
+export type RewardSplitterMulticallBaseInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
-  options: StakeWise.Options
   rewardSplitterContract: RewardSplitterAbi
 }
 
@@ -35,10 +34,7 @@ const rewardSplitterMulticall = async <T extends unknown>(values: RewardSplitter
     request,
   })
 
-  const harvestArgs = await getHarvestArgs({
-    options,
-    vaultAddress,
-  })
+  const harvestArgs = await getHarvestArgs(values)
 
   if (harvestArgs) {
     multicallParams = [

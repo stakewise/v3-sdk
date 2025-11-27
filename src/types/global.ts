@@ -1,7 +1,13 @@
 import type { BrowserProvider, JsonRpcProvider, FallbackProvider, JsonRpcSigner, TransactionResponse } from 'ethers'
 
-import methods from '../methods'
-import { Network, configs } from '../utils'
+import type Vault from '../services/vault'
+import type Boost from '../services/boost'
+import type Utils from '../services/utils'
+import type OsToken from '../services/osToken'
+import type RewardSplitter from '../services/rewardSplitter'
+import type DistributorRewards from '../services/distributorRewards'
+
+import { Network, configs } from '../helpers'
 import { createContracts } from '../contracts'
 
 import type {
@@ -32,15 +38,53 @@ declare global {
 
   namespace StakeWise {
     type Config = typeof configs[Network]
+    type Contracts = ReturnType<typeof createContracts>
     type Provider = BrowserProvider | JsonRpcProvider | CustomFallbackProvider
 
-    type Contracts = ReturnType<typeof createContracts>
-    type Utils = ReturnType<typeof methods.createUtils>
-    type VaultMethods = ReturnType<typeof methods.createVaultMethods>
-    type BoostMethods = ReturnType<typeof methods.createBoostMethods>
-    type OsTokenMethods = ReturnType<typeof methods.createOsTokenMethods>
-    type RewardSplitterMethods = ReturnType<typeof methods.createRewardSplitterMethods>
-    type DistributorRewardsMethods = ReturnType<typeof methods.createDistributorRewardsMethods>
+    type Options = {
+      network: Network
+      provider?: Provider
+      endpoints?: {
+        api?: string
+        subgraph?: string | ReadonlyArray<string>
+        web3?: Web3Endpoints
+      }
+    }
+
+    namespace Services {
+      type VaultService = Vault
+      type BoostService = Boost
+      type UtilsService = Utils
+      type OsTokenService = OsToken
+      type RewardSplitterService = RewardSplitter
+      type DistributorRewardsService = DistributorRewards
+    }
+
+    type CommonParams = {
+      config: StakeWise.Config
+      options: StakeWise.Options
+      provider: StakeWise.Provider
+      contracts: StakeWise.Contracts
+    }
+
+    type ExtractInput<T> = Omit<T, keyof CommonParams>
+
+    type AnyTxMethod = {
+      (values: any): any
+      encode(values: any): any
+      estimateGas(values: any): any
+    }
+
+    type ExtractTxMethod<T extends AnyTxMethod> = {
+      (values: StakeWise.ExtractInput<Parameters<T>[0]>): ReturnType<T>
+      encode(values: StakeWise.ExtractInput<Parameters<T['encode']>[0]>): ReturnType<T['encode']>
+      estimateGas(values: StakeWise.ExtractInput<Parameters<T['estimateGas']>[0]>): ReturnType<T['estimateGas']>
+    }
+
+    type BaseInput = StakeWise.CommonParams & {
+      userAddress: string
+      vaultAddress: string
+    }
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {
@@ -54,16 +98,6 @@ declare global {
     }
 
     type Web3Endpoints = string | string[] | UrlWithHeaders[]
-
-    type Options = {
-      network: Network
-      provider?: Provider
-      endpoints?: {
-        api?: string
-        subgraph?: string | ReadonlyArray<string>
-        web3?: Web3Endpoints
-      }
-    }
 
     type TransactionData = {
       data: string

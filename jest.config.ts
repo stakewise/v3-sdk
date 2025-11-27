@@ -11,7 +11,7 @@ const config: Config = {
   testMatch: [ '**/*.spec.ts' ],
   collectCoverageFrom: [ 'src/**/*.ts' ],
   moduleFileExtensions: [ 'json', 'js', 'ts' ],
-  modulePathIgnorePatterns: [ '<rootDir>/src/utils' ],
+  modulePathIgnorePatterns: [ '<rootDir>/src/helpers' ],
   transform: {
     '\\.[jt]sx?$': 'ts-jest',
     '\\.graphql$': '@graphql-tools/jest-transform',
