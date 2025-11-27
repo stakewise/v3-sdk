@@ -5,7 +5,7 @@ export type SetDepositDataManagerInput = StakeWise.CommonParams & {
 }
 
 export interface ExtractSetDepositDataManager {
-  (values: StakeWise.ExtractInput<SetDepositDataManagerRootInput>): Promise<StakeWise.TransactionHash>
-  estimateGas: (values: StakeWise.ExtractInput<SetDepositDataManagerRootInput>) => Promise<bigint>
-  encode: (values: StakeWise.ExtractInput<SetDepositDataManagerRootInput>) => Promise<StakeWise.TransactionData>
+  (values: StakeWise.ExtractInput<SetDepositDataManagerInput>): Promise<StakeWise.TransactionHash>
+  estimateGas: (values: StakeWise.ExtractInput<SetDepositDataManagerInput>) => Promise<bigint>
+  encode: (values: StakeWise.ExtractInput<SetDepositDataManagerInput>) => Promise<StakeWise.TransactionData>
 }

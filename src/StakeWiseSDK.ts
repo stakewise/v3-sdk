@@ -9,12 +9,12 @@ class StakeWiseSDK {
   readonly provider: StakeWise.Provider
   readonly contracts: StakeWise.Contracts
 
-  readonly vault: StakeWise.Services.Vault
-  readonly utils: StakeWise.Services.Utils
-  readonly boost: StakeWise.Services.Boost
-  readonly osToken: StakeWise.Services.OsToken
-  readonly rewardSplitter: StakeWise.Services.RewardSplitter
-  readonly distributorRewards: StakeWise.Services.DistributorRewards
+  readonly vault: StakeWise.Services.VaultService
+  readonly utils: StakeWise.Services.UtilsService
+  readonly boost: StakeWise.Services.BoostService
+  readonly osToken: StakeWise.Services.OsTokenService
+  readonly rewardSplitter: StakeWise.Services.RewardSplitterService
+  readonly distributorRewards: StakeWise.Services.DistributorRewardsService
 
   constructor(options: StakeWise.Options) {
     const config = configs[options.network]

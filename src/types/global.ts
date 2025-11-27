@@ -1,11 +1,11 @@
 import type { BrowserProvider, JsonRpcProvider, FallbackProvider, JsonRpcSigner, TransactionResponse } from 'ethers'
 
-import VaultInstance from '../services/vault'
-import BoostInstance from '../services/boost'
-import UtilsInstance from '../services/utils'
-import OsTokenInstance from '../services/osToken'
-import RewardSplitterInstance from '../services/rewardSplitter'
-import DistributorRewardsInstance from '../services/distributorRewards'
+import type Vault from '../services/vault'
+import type Boost from '../services/boost'
+import type Utils from '../services/utils'
+import type OsToken from '../services/osToken'
+import type RewardSplitter from '../services/rewardSplitter'
+import type DistributorRewards from '../services/distributorRewards'
 
 import { Network, configs } from '../helpers'
 import { createContracts } from '../contracts'
@@ -52,12 +52,12 @@ declare global {
     }
 
     namespace Services {
-      type Vault = VaultInstance
-      type Boost = BoostInstance
-      type Utils = UtilsInstance
-      type OsToken = OsTokenInstance
-      type RewardSplitter = RewardSplitterInstance
-      type DistributorRewards = DistributorRewardsInstance
+      type VaultService = Vault
+      type BoostService = Boost
+      type UtilsService = Utils
+      type OsTokenService = OsToken
+      type RewardSplitterService = RewardSplitter
+      type DistributorRewardsService = DistributorRewards
     }
 
     type CommonParams = {

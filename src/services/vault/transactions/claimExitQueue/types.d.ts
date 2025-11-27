@@ -1,5 +1,5 @@
 export type ClaimExitQueueInput = StakeWise.BaseInput & {
-  positions: Awaited<ReturnType<StakeWise.Services.Vault['getExitQueuePositions']>>['positions']
+  positions: Awaited<ReturnType<StakeWise.Services.VaultService['getExitQueuePositions']>>['positions']
 }
 
 export interface ExtractClaimExitQueue {
