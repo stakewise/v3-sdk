@@ -21,7 +21,7 @@ This example demonstrates how to retrieve comprehensive user data from a specifi
 import { StakeWiseSDK, Network, AllocatorActionType } from '@stakewise/v3-sdk'
 
 
-const sdk = const sdk = new StakeWiseSDK({
+const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
 })
 
