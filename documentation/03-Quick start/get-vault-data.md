@@ -12,7 +12,7 @@ After creating a Vault, the first step is to retrieve its core data. In this exa
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
 
-const sdk = const sdk = new StakeWiseSDK({
+const sdk = new StakeWiseSDK({
   network: Network.Mainnet,
 })
 
