@@ -28,13 +28,7 @@ The SDK adds the `StakeWise` namespace to the global scope, from which you can a
 - **StakeWise.Contracts** - types for ethers contracts built into the SDK
 - **StakeWise.Provider** - supported provider type for SDK initialization
 - **StakeWise.ABI** - additional namespace containing types for all contracts based on their ABI
-- **StakeWise.Services** - additional namespace for accessing types of main SDK methods. Contains class descriptions for:
-  - Vault
-  - Boost
-  - Utils
-  - OsToken
-  - RewardSplitter
-  - DistributorRewards
+- **StakeWise.Services** - additional namespace for accessing types of main SDK methods. Contains class descriptions for: Vault, Boost, Utils, OsToken, RewardSplitter, DistributorRewards
 
 To get the return type of the `sdk.boost.getData` method, you can use two approaches:
 
