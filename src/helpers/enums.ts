@@ -6,10 +6,6 @@ export enum Network {
    * Network for mainnet testing
    */
   Hoodi = 560048,
-  /**
-   * Network for gnosis testing
-   */
-  Chiado = 10200,
 }
 
 export enum VaultType {

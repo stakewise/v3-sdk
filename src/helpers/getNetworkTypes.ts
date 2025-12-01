@@ -9,10 +9,7 @@ const getNetworkTypes = (options: StakeWise.Options) => {
     || network === Network.Hoodi
   )
 
-  const isGnosis = (
-    network === Network.Gnosis
-    || network === Network.Chiado
-  )
+  const isGnosis = network === Network.Gnosis
 
   return { isEthereum, isGnosis }
 }

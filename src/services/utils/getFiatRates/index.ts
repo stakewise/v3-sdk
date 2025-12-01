@@ -29,7 +29,7 @@ export const getFiatRates = (values: StakeWise.CommonParams) => {
 
       let assetUsd = Number(assetsUsdRate)
 
-      const isGnosis = [ Network.Gnosis, Network.Chiado ].includes(options.network)
+      const isGnosis = Network.Gnosis === options.network
 
       if (isGnosis) {
         assetUsd = await getGnoRate()
