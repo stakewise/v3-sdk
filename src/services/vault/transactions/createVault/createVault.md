@@ -6,7 +6,7 @@ slug: /vault/transactions/create
 #### Description:
 
 Create a vault. When the transaction is executed, one gwei of the deposit token must be stored in the vault to avoid [inflation attack](https://blog.openzeppelin.com/a-novel-defense-against-erc4626-inflation-attacks).
-Pay attention to chains where the deposit token is not a native token (such as Gnosis or Chiado).
+Pay attention to chains where the deposit token is not a native token such as Gnosis.
 On these chains before creating the vault, ensure that you call the `approve` function on the deposit token contract,
 allowing the vault factory address to spend one gwei.
 You can retrieve the vault factory contract using the helper function: `sdk.getVaultFactory({ vaultType: params.type, isErc20: params.isErc20 })`.

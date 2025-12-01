@@ -30,20 +30,6 @@ const hoodi = {
   isTestnet: true,
 } as const
 
-const chiado = {
-  id: 'chiado',
-  name: 'Chiado Testnet',
-  chainId: Network.Chiado,
-  hexadecimalChainId: '0x27D8',
-  blockExplorerUrl: 'https://gnosis-chiado.blockscout.com',
-  nativeCurrency: {
-    symbol: tokens.xdai,
-    name: tokens.xdai,
-    decimals: 18,
-  },
-  isTestnet: true,
-} as const
-
 const gnosis = {
   id: 'gnosis',
   name: 'Gnosis Chain',
@@ -61,7 +47,6 @@ const gnosis = {
 
 export default {
   mainnet,
-  chiado,
   gnosis,
   hoodi,
 }

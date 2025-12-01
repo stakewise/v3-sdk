@@ -35,7 +35,7 @@ type CreateContractsInput<T> = {
 }
 
 type Output<T extends Options> = Omit<
-  (T['chainId'] extends Network.Chiado | Network.Gnosis
+  (T['chainId'] extends Network.Gnosis
     ? DefaultVaultAbiType & GnosisVaultDiffType
     : DefaultVaultAbiType & MainnetVaultDiffType
   ) &
@@ -61,10 +61,7 @@ const createVaultContract = (provider: Provider) => (
   <T extends Options>(input: CreateContractsInput<T>): Output<T> => {
     const { vaultAddress, options } = input
 
-    const isGnosis = [
-      Network.Chiado,
-      Network.Gnosis,
-    ].includes(options?.chainId || Network.Mainnet)
+    const isGnosis = Network.Gnosis === (options?.chainId || Network.Mainnet)
 
     let baseAbi = isGnosis
       ? DefaultVaultAbi.concat(GnosisVaultDiffAbi)

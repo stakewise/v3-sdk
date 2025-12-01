@@ -23,10 +23,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
   validateArgs.address({ vaultAddress, userAddress })
   validateArgs.number({ dateFrom, dateTo })
 
-  const isGnosis = [
-    Network.Gnosis,
-    Network.Chiado,
-  ].includes(options.network)
+  const isGnosis = Network.Gnosis === options.network
 
   const subgraphUrl = apiUrls.getSubgraphqlUrl(options)
 

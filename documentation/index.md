@@ -29,7 +29,6 @@ The SDK currently supports:
 - **Ethereum Mainnet**
 - **Hoodi Testnet**
 - **Gnosis Network**
-- **Chiado Testnet**
 
 You can specify the target network when creating the SDK instance.
 
