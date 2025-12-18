@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { SetDepositDataRootInput } from './types'
-import { getGas, handleContractError } from '../../../../helpers'
+import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
 const setDepositDataRootGas = async (values: SetDepositDataRootInput) => {
@@ -11,7 +11,7 @@ const setDepositDataRootGas = async (values: SetDepositDataRootInput) => {
   const signer = await provider.getSigner(userAddress)
   const signedDepositDataRegistryContract = contract.connect(signer)
 
-  const estimatedGas = await handleContractError(
+  const estimatedGas = await wrapErrorHandler(
     signedDepositDataRegistryContract.setDepositDataRoot.estimateGas(vaultAddress, depositDataRoot),
     'gas'
   )

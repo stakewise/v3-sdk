@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { BurnInput } from './types'
-import { getGas, handleContractError } from '../../../../helpers'
+import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
 const burnGas = async (values: BurnInput) => {
@@ -8,7 +8,7 @@ const burnGas = async (values: BurnInput) => {
 
   const vaultContract = commonLogic(values)
 
-  const estimatedGas = await handleContractError(
+  const estimatedGas = await wrapErrorHandler(
     vaultContract.burnOsToken.estimateGas(shares, { from: userAddress }),
     'gas'
   )

@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import checkAccess from './checkAccess'
 import type { SetDepositDataRootInput } from './types'
-import { handleContractError } from '../../../../helpers'
+import { wrapErrorHandler } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 
 
@@ -22,7 +22,7 @@ const setDepositDataRoot = checkAccess<string>(async (values: SetDepositDataRoot
 
     const signedVaultContract = vaultContract.connect(signer)
 
-    const result = await handleContractError(
+    const result = await wrapErrorHandler(
       signedVaultContract.setValidatorsRoot(depositDataRoot),
       'transaction'
     )
@@ -33,7 +33,7 @@ const setDepositDataRoot = checkAccess<string>(async (values: SetDepositDataRoot
   const contract = commonLogic(values)
   const signedDepositDataRegistryContract = contract.connect(signer)
 
-  const result = await handleContractError(
+  const result = await wrapErrorHandler(
     signedDepositDataRegistryContract.setDepositDataRoot(vaultAddress, depositDataRoot),
     'transaction'
   )

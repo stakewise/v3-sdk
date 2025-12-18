@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import checkAccess from './checkAccess'
 import type { SetDepositDataManagerInput } from './types'
-import { handleContractError } from '../../../../helpers'
+import { wrapErrorHandler } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 
 
@@ -21,7 +21,7 @@ const setDepositDataManager = checkAccess<string>(async (values: SetDepositDataM
     })
     const signedContract = vaultContract.connect(signer)
 
-    const result = await handleContractError(
+    const result = await wrapErrorHandler(
       signedContract.setKeysManager(managerAddress),
       'transaction'
     )
@@ -32,7 +32,7 @@ const setDepositDataManager = checkAccess<string>(async (values: SetDepositDataM
   const contract = commonLogic(values)
   const signedContract = contract.connect(signer)
 
-  const result = await handleContractError(
+  const result = await wrapErrorHandler(
     signedContract.setDepositDataManager(vaultAddress, managerAddress),
     'transaction'
   )

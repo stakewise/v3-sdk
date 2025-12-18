@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { BurnInput } from './types'
-import { handleContractError } from '../../../../helpers'
+import { wrapErrorHandler } from '../../../../helpers'
 
 
 const burn = async (values: BurnInput) => {
@@ -11,7 +11,7 @@ const burn = async (values: BurnInput) => {
   const signer = await provider.getSigner(userAddress)
   const signedVaultContract = vaultContract.connect(signer)
 
-  const result = await handleContractError(
+  const result = await wrapErrorHandler(
     signedVaultContract.burnOsToken(shares),
     'transaction'
   )

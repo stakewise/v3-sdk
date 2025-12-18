@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { SetClaimerInput } from './types'
-import { handleContractError } from '../../../../helpers'
+import { wrapErrorHandler } from '../../../../helpers'
 
 
 const setClaimer = async (values: SetClaimerInput) => {
@@ -8,7 +8,7 @@ const { claimerAddress } = values
 
   const rewardSplitterContract = await commonLogic(values)
 
-  const result = await handleContractError(
+  const result = await wrapErrorHandler(
     rewardSplitterContract.setClaimer(claimerAddress),
     'transaction'
   )

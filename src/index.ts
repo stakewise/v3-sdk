@@ -14,8 +14,8 @@ export {
   getGas,
   createProvider,
   mergeRewardsFiat,
+  wrapErrorHandler,
   calculateUserStats,
-  handleContractError,
 } from './helpers'
 
 export const chains = constants.chains

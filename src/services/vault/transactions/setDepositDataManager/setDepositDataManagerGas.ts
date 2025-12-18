@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { getGas, handleContractError } from '../../../../helpers'
+import { getGas, wrapErrorHandler } from '../../../../helpers'
 import type { SetDepositDataManagerInput } from './types'
 
 
@@ -11,7 +11,7 @@ const setDepositDataManagerGas = async (values: SetDepositDataManagerInput) => {
   const signer = await provider.getSigner(userAddress)
   const signedContract = contract.connect(signer)
 
-  const estimatedGas = await handleContractError(
+  const estimatedGas = await wrapErrorHandler(
     signedContract.setDepositDataManager.estimateGas(vaultAddress, managerAddress),
     'transaction'
   )

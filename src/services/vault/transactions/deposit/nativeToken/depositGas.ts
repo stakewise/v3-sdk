@@ -1,4 +1,4 @@
-import { getGas, handleContractError } from '../../../../../helpers'
+import { getGas, wrapErrorHandler } from '../../../../../helpers'
 import type { DepositInput } from '../types'
 import { commonLogic } from './common'
 
@@ -14,13 +14,13 @@ const depositGas = async (values: DepositInput) => {
   let estimatedGas = 0n
 
   if (canHarvest) {
-    estimatedGas = await handleContractError(
+    estimatedGas = await wrapErrorHandler(
       signedContract.updateStateAndDeposit.estimateGas(...updateStateParams),
       'gas'
     )
   }
   else {
-    estimatedGas = await handleContractError(
+    estimatedGas = await wrapErrorHandler(
       signedContract.deposit.estimateGas(...baseParams),
       'gas'
     )

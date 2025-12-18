@@ -1,12 +1,12 @@
 import { commonLogic } from './common'
 import type { CreateRewardSplitterInput } from './types'
-import { handleContractError } from '../../../../helpers'
+import { wrapErrorHandler } from '../../../../helpers'
 
 
 const createRewardSplitter = async (values: CreateRewardSplitterInput) => {
   const rewardSplitterFactory = await commonLogic(values)
 
-  const result = await handleContractError(
+  const result = await wrapErrorHandler(
     rewardSplitterFactory.createRewardSplitter(values.vaultAddress),
     'transaction'
   )

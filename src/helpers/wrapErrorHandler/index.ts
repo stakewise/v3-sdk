@@ -8,7 +8,7 @@ const texts: Record<Type, string> = {
   gas: 'estimate gas failed',
 }
 
-const handleContractError = async <T extends unknown>(promise: Promise<T>, type: Type): Promise<T> => {
+const wrapErrorHandler = async <T extends unknown>(promise: Promise<T>, type: Type): Promise<T> => {
   try {
     const response = await promise
 
@@ -22,4 +22,4 @@ const handleContractError = async <T extends unknown>(promise: Promise<T>, type:
 }
 
 
-export default handleContractError
+export default wrapErrorHandler

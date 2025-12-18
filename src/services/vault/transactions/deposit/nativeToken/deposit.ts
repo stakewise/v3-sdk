@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { DepositInput } from '../types'
-import { handleContractError } from '../../../../../helpers'
+import { wrapErrorHandler } from '../../../../../helpers'
 
 
 const deposit = async (values: DepositInput) => {
@@ -12,7 +12,7 @@ const deposit = async (values: DepositInput) => {
   const signedContract = vaultContract.connect(signer)
 
   if (canHarvest) {
-    const response = await handleContractError(
+    const response = await wrapErrorHandler(
       signedContract.updateStateAndDeposit(...updateStateParams),
       'transaction'
     )
@@ -20,7 +20,7 @@ const deposit = async (values: DepositInput) => {
     return response.hash
   }
   else {
-    const response = await  handleContractError(
+    const response = await  wrapErrorHandler(
       signedContract.deposit(...baseParams),
       'transaction'
     )
