@@ -15,6 +15,7 @@ export {
   createProvider,
   mergeRewardsFiat,
   calculateUserStats,
+  handleContractError,
 } from './helpers'
 
 export const chains = constants.chains
