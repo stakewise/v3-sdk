@@ -14,6 +14,7 @@ export {
   getGas,
   createProvider,
   mergeRewardsFiat,
+  wrapErrorHandler,
   calculateUserStats,
 } from './helpers'
 

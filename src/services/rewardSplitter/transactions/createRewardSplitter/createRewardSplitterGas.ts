@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
-import { getGas } from '../../../../helpers'
 import type { CreateRewardSplitterInput } from './types'
+import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
 const createRewardSplitterGas = async (values: CreateRewardSplitterInput) => {
@@ -8,7 +8,10 @@ const createRewardSplitterGas = async (values: CreateRewardSplitterInput) => {
 
   const rewardSplitterFactory = await commonLogic(values)
 
-  const estimatedGas = await rewardSplitterFactory.createRewardSplitter.estimateGas(values.vaultAddress)
+  const estimatedGas = await wrapErrorHandler(
+    rewardSplitterFactory.createRewardSplitter.estimateGas(values.vaultAddress),
+    'gas'
+  )
 
   return getGas({ estimatedGas, provider })
 }
