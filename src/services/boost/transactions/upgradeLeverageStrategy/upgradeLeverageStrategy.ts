@@ -1,4 +1,5 @@
 import type { UpgradeLeverageStrategyInput } from './types'
+import { handleContractError } from '../../../../helpers'
 import { commonLogic } from './common'
 
 
@@ -10,7 +11,10 @@ const upgradeLeverageStrategy = async (values: UpgradeLeverageStrategyInput) => 
   const signer = await provider.getSigner(userAddress)
   const signedContract = leverageStrategyContract.connect(signer)
 
-  const result = await signedContract.upgradeProxy(vaultAddress)
+  const result = await handleContractError(
+    signedContract.upgradeProxy(vaultAddress),
+    'transaction'
+  )
 
   return result.hash
 }

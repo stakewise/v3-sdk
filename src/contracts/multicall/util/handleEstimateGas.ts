@@ -1,4 +1,5 @@
 import getMulticallCalls from './getMulticallCalls'
+import { handleContractError } from '../../../helpers'
 import { ContractAbi, MulticallParameter } from '../types'
 
 
@@ -16,10 +17,10 @@ const handleEstimateGas = async ({ contract, multicallParams }: Input) => {
     const { method, args } = multicallParams[0]
 
     // @ts-ignore: no types to describe
-    return contract[method].estimateGas(...args)
+    return handleContractError(contract[method].estimateGas(...args), 'gas')
   }
 
-  return contract.multicall.estimateGas(calls)
+  return handleContractError(contract.multicall.estimateGas(calls), 'gas')
 }
 
 

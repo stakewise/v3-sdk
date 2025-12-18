@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
-import { getGas } from '../../../../helpers'
-import type { CreateVaultInput } from './types'
 import { getMetadataHashMock } from '../util'
+import type { CreateVaultInput } from './types'
+import { getGas, handleContractError } from '../../../../helpers'
 
 
 const createVaultGas = async (values: CreateVaultInput) => {
@@ -14,7 +14,10 @@ const createVaultGas = async (values: CreateVaultInput) => {
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultFactory.connect(signer)
 
-  const estimatedGas = await signedContract.createVault.estimateGas(...params)
+  const estimatedGas = await handleContractError(
+    signedContract.createVault.estimateGas(...params),
+    'gas'
+  )
 
   return getGas({ estimatedGas, provider })
 }

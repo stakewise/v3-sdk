@@ -22,7 +22,7 @@ type RewardSplitterMulticallInput = RewardSplitterMulticallBaseInput & {
 }
 
 const rewardSplitterMulticall = async <T extends unknown>(values: RewardSplitterMulticallInput): Promise<T> => {
-  const { request, options, userAddress, vaultAddress, rewardSplitterContract } = values
+  const { request, options, userAddress, rewardSplitterContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
   let multicallParams = [ ...params ]
