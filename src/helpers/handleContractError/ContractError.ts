@@ -28,17 +28,17 @@ class ContractError extends Error {
     )
 
     if (data) {
-      const iface = new Interface(ErrorsAbi)
-      const result = iface.parseError(data)
+      try {
+        const iface = new Interface(ErrorsAbi)
+        const result = iface.parseError(data)
 
-      if (result?.name) {
-        name = result.name
-        message = `[${prefix || 'operation failed'}]:`
+        if (result?.name) {
+          name = result.name
+          message = `[${prefix || 'operation failed'}]:`
 
-        const transaction = error?.transaction
+          const transaction = error?.transaction
 
-        if (typeof transaction === 'object') {
-          try {
+          if (typeof transaction === 'object') {
             const data = {
               solidityError: name,
               to: transaction.to,
@@ -48,10 +48,10 @@ class ContractError extends Error {
 
             message = `${message} ${JSON.stringify(data, null, '\t')}`
           }
-          // eslint-disable-next-line no-empty
-          catch {}
         }
       }
+      // eslint-disable-next-line no-empty
+      catch {}
     }
 
     super(message)
