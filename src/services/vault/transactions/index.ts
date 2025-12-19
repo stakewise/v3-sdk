@@ -1,4 +1,4 @@
-import { getNetworkTypes } from '../../../helpers'
+import { getNetworkTypes, transactionWrapper } from '../../../helpers'
 
 import { createOperate, ExtractOperate } from './operate'
 import { multicall, VaultMulticallInput } from './multicall'
@@ -61,16 +61,19 @@ class VaultTransactions {
 
     const { isEthereum } = getNetworkTypes(params.options)
 
-    this.deposit = isEthereum
-      ? createNativeTokenDeposit(params)
-      : createOtherTokenDeposit(params)
+    this.deposit = transactionWrapper(
+      params,
+      isEthereum
+        ? createNativeTokenDeposit(params)
+        : createOtherTokenDeposit(params)
+    )
 
-    this.operate = createOperate(params)
-    this.withdraw = createWithdraw(params)
-    this.create = createVaultCreator(params)
-    this.claimExitQueue = createClaimExitQueue(params)
-    this.setDepositDataRoot = createSetDepositDataRoot(params)
-    this.setDepositDataManager = createSetDepositDataManager(params)
+    this.operate = transactionWrapper(params, createOperate(params))
+    this.withdraw = transactionWrapper(params, createWithdraw(params))
+    this.create = transactionWrapper(params, createVaultCreator(params))
+    this.claimExitQueue = transactionWrapper(params, createClaimExitQueue(params))
+    this.setDepositDataRoot = transactionWrapper(params, createSetDepositDataRoot(params))
+    this.setDepositDataManager = transactionWrapper(params, createSetDepositDataManager(params))
   }
 
   /**

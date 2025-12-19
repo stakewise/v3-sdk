@@ -1,3 +1,5 @@
+import { transactionWrapper } from '../../../helpers'
+
 import { createLock, ExtractLock } from './lock'
 import { createUnlock, ExtractUnlock } from './unlock'
 import { createClaimQueue, ExtractClaimQueue } from './claimQueue'
@@ -31,10 +33,10 @@ class BoostTransactions {
   public upgradeLeverageStrategy: ExtractUpgradeLeverageStrategy
 
   constructor(params: StakeWise.CommonParams) {
-    this.lock = createLock(params)
-    this.unlock = createUnlock(params)
-    this.claimQueue = createClaimQueue(params)
-    this.upgradeLeverageStrategy = createUpgradeLeverageStrategy(params)
+    this.lock = transactionWrapper(params, createLock(params))
+    this.unlock = transactionWrapper(params, createUnlock(params))
+    this.claimQueue = transactionWrapper(params, createClaimQueue(params))
+    this.upgradeLeverageStrategy = transactionWrapper(params, createUpgradeLeverageStrategy(params))
   }
 }
 
