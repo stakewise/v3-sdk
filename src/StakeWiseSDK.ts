@@ -23,23 +23,7 @@ class StakeWiseSDK {
       throw new Error('Provider or endpoints.web3 should be provided')
     }
 
-    const provider = options.provider || createProvider(options)
-    const originalGetSigner = provider.getSigner
-
-    provider.getSigner = async function (address?: string) {
-      const providerError = 'To send this transaction, please provide BrowserProvider to the StakeWiseSDK'
-
-      try {
-        const signer = await originalGetSigner.bind(this)(address)
-
-        return signer
-      }
-      catch (error) {
-        console.error('getSigner err:', error)
-        throw new Error(providerError)
-      }
-    }
-
+    const provider = createProvider(options)
     const contracts = createContracts({ provider, config })
 
     this.config = config
