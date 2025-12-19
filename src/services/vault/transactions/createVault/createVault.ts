@@ -1,6 +1,7 @@
 import { commonLogic } from './common'
 import { uploadMetadata } from '../util'
 import type { CreateVaultInput } from './types'
+import { wrapErrorHandler } from '../../../../helpers'
 
 
 const create = async (values: CreateVaultInput) => {
@@ -13,7 +14,10 @@ const create = async (values: CreateVaultInput) => {
   const signer = await provider.getSigner(userAddress)
   const signedContract = vaultFactory.connect(signer)
 
-  const response = await signedContract.createVault(...params)
+  const response = await wrapErrorHandler(
+    signedContract.createVault(...params),
+    'transaction'
+  )
 
   return response.hash
 }

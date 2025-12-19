@@ -44,7 +44,7 @@ const harvestCheckMethods = [
  * __but this method must be added to the whitelist__ inside the vaultMulticall method (harvestCheckMethods)
 */
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {
-  const { options, vaultAddress, userAddress, request, vaultContract } = values
+  const { options, userAddress, request, vaultContract } = values
   const { params, callStatic, estimateGas, transactionData } = request
 
   const contract = await getSignedContract({

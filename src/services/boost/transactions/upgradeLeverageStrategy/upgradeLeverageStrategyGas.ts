@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { UpgradeLeverageStrategyInput } from './types'
-import { getGas } from '../../../../helpers'
+import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
 const upgradeLeverageStrategyGas = async (values: UpgradeLeverageStrategyInput) => {
@@ -8,7 +8,10 @@ const upgradeLeverageStrategyGas = async (values: UpgradeLeverageStrategyInput) 
 
   const leverageStrategyContract = commonLogic(values)
 
-  const estimatedGas = await leverageStrategyContract.upgradeProxy.estimateGas(vaultAddress)
+  const estimatedGas = await wrapErrorHandler(
+    leverageStrategyContract.upgradeProxy.estimateGas(vaultAddress),
+    'gas'
+  )
 
   return getGas({ estimatedGas, provider })
 }

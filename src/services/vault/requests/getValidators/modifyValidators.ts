@@ -15,13 +15,13 @@ const modifyValidators = (input: ModifyValidatorsInput): ModifiedValidators => {
   const validators = data?.vaultValidators || []
 
   return validators.map((validator) => {
-    const { apy, createdAt, earned, publicKey } = validator
+    const { apy, createdAt, income, publicKey } = validator
 
     return {
       publicKey,
       apy: Number(apy).toFixed(2),
+      earned: formatEther(income),
       createdAt: new Date(createdAt).getTime(),
-      earned: formatEther(String(earned || 0)),
       link: `${configs[network].pages.beaconchain}/validator/${publicKey}`,
     }
   })
