@@ -1,3 +1,5 @@
+import { transactionWrapper } from '../../../helpers'
+
 import { createSetClaimer, ExtractSetClaimer } from './setClaimer'
 import { createClaimRewards, ExtractClaimRewards } from './claimRewards'
 import { createUpdateFeeRecipients, ExtractUpdateFeeRecipients } from './updateFeeRecipients'
@@ -35,10 +37,10 @@ class RewardSplitterTransactions {
   public create: ExtractCreateRewardSplitter
 
   constructor(params: StakeWise.CommonParams) {
-    this.setClaimer = createSetClaimer(params)
-    this.claimRewards = createClaimRewards(params)
-    this.create = createRewardSplitterCreator(params)
-    this.updateFeeRecipients = createUpdateFeeRecipients(params)
+    this.setClaimer = transactionWrapper(params, createSetClaimer(params))
+    this.claimRewards = transactionWrapper(params, createClaimRewards(params))
+    this.create = transactionWrapper(params, createRewardSplitterCreator(params))
+    this.updateFeeRecipients = transactionWrapper(params, createUpdateFeeRecipients(params))
   }
 }
 

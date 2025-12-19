@@ -1,3 +1,5 @@
+import { transactionWrapper } from '../../../helpers'
+
 import { createClaim, ExtractClaim } from './claim'
 
 
@@ -9,7 +11,7 @@ class DistributorRewardsTransactions {
   public claim: ExtractClaim
 
   constructor(params: StakeWise.CommonParams) {
-    this.claim = createClaim(params)
+    this.claim = transactionWrapper(params, createClaim(params))
   }
 }
 

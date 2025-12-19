@@ -1,3 +1,5 @@
+import { transactionWrapper } from '../../../helpers'
+
 import { createBurn, ExtractBurn } from './burn'
 import { createMint, ExtractMint } from './mint'
 
@@ -19,8 +21,8 @@ class OsTokenTransactions {
   public burn: ExtractBurn
 
   constructor(params: StakeWise.CommonParams) {
-    this.mint = createMint(params)
-    this.burn = createBurn(params)
+    this.mint = transactionWrapper(params, createMint(params))
+    this.burn = transactionWrapper(params, createBurn(params))
   }
 }
 
