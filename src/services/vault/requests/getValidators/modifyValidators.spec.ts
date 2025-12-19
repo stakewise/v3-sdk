@@ -11,7 +11,7 @@ describe('modifyValidators', () => {
       vaultValidators: [
         {
           apy: '5.50',
-          earned: '2',
+          income: '2000000000000000000',
           publicKey: 'testPublicKey',
           createdAt: '2023-05-05T12:00:00Z',
         },
@@ -23,7 +23,7 @@ describe('modifyValidators', () => {
       {
         apy: '5.50',
         createdAt: new Date('2023-05-05T12:00:00Z').getTime(),
-        earned: formatEther('2'),
+        earned: formatEther('2000000000000000000'),
         publicKey: 'testPublicKey',
         link: `${configs[mockNetwork].pages.beaconchain}/validator/testPublicKey`,
       },

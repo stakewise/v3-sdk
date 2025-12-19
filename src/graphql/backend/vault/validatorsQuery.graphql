@@ -10,7 +10,7 @@ query Validators(
     first: $first,
   ) {
     apy: apr
-    earned
+    income
     createdAt
     publicKey
   }
