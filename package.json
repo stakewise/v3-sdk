@@ -21,7 +21,7 @@
     "rollup": "rollup --config rollup.config.js",
     "check:version": "node ./scripts/checkVersion.js",
     "lint": "eslint ./src --ext .ts,.tsx,.js,.jsx",
-    "publish": "pnpm build && pnpm publish --tag=latest",
+    "release": "pnpm build && pnpm publish --tag=latest",
     "sync:docs": "tsx ./scripts/syncDocs/index.ts"
   },
   "files": [
