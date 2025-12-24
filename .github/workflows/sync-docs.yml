@@ -23,11 +23,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: '22'
-          cache: 'npm'
+          version: 10.25.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
 
       - name: Setup SSH key for docs repository
         uses: webfactory/ssh-agent@v0.9.0
@@ -36,10 +41,10 @@ jobs:
 
       - name: Install dependencies securely
         run: |
-          npm ci --ignore-scripts --audit false --fund false
-      
+          pnpm install --frozen-lockfile --ignore-scripts --audit false --fund false
+
       - name: Version check
-        run: npm run check:version
+        run: pnpm check:version
         continue-on-error: false
 
       - name: Run docs sync
@@ -48,4 +53,4 @@ jobs:
           DISCORD_USERS_JSON: ${{ secrets.DISCORD_USERS_JSON }}
           DISCORD_WEBHOOK_URL: ${{ secrets.SYNC_DOCS_DISCORD_WEBHOOK_URL }}
           COMMIT_AUTHOR: ${{ github.actor }}
-        run: npm run sync:docs
+        run: pnpm sync:docs

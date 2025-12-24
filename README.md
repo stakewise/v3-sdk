@@ -20,3 +20,4 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 
 
 [Read the docs](https://docs.stakewise.io/sdk/) for any further information.
+
