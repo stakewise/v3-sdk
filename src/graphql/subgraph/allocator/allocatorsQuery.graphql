@@ -5,6 +5,7 @@ query Allocators($address: Bytes!, $vaultAddress: String!) {
       vault: $vaultAddress
     }
   ) {
+    apy
     assets
     totalEarnedAssets
     totalStakeEarnedAssets

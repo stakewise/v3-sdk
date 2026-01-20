@@ -1,0 +1,13 @@
+query SubVaults(
+  $skip: Int!
+  $first: Int!
+  $where: SubVault_filter!
+) {
+  subVaults(
+    skip: $skip,
+    first: $first,
+    where: $where,
+  ) {
+    subVault
+  }
+}

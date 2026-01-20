@@ -1,6 +1,7 @@
 import {
   getVault, GetVaultInput,
   getUserApy, GetUserApyInput,
+  getSubVaults, GetSubVaultsInput,
   getWhitelist, GetWhitelistInput,
   getBlocklist, GetBlocklistInput,
   getUserStats, GetUserStatsInput,
@@ -182,6 +183,14 @@ class Vault extends VaultTransactions {
   */
   public getOsTokenConfig(values: StakeWise.ExtractInput<GetOsTokenConfigInput>) {
     return getOsTokenConfig({ ...this.params, ...values })
+  }
+
+  /**
+   * @description Returns the list of sub vaults.
+   * @see https://docs.stakewise.io/vault/requests/getsubvaults
+   */
+  public getSubVaults(values: StakeWise.ExtractInput<GetSubVaultsInput>) {
+    return getSubVaults({ ...this.params, ...values })
   }
 }
 
