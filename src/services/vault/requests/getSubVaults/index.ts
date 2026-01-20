@@ -43,7 +43,7 @@ const getSubVaults = async (input: GetSubVaultsInput): Promise<OutputSubVault[]>
         },
       } as SubVaultsQueryVariables['where'],
     },
-    modifyResult:(data: SubVaultsQueryPayload) => data.subVaults.map((item => item.subVault)),
+    modifyResult:(data: SubVaultsQueryPayload) => data.subVaults.map(((vault) => vault.subVault)),
   })
 
   const results = await Promise.all(
