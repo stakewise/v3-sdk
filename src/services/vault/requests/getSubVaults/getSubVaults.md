@@ -35,7 +35,7 @@ type Output = {
 | `displayName`               | Name of vault |
 | `stakingAssets`               | The amount of assets staking in the sub-vault. |
 | `exitingAssets`               | The amount of assets exiting the sub-vault. |
-| `apy`               | The sub-vaul average weekly APY |
+| `apy`               | The sub-vault average weekly APY |
 
 #### Example:
 
