@@ -71,6 +71,7 @@ const getSubVaults = async (input: GetSubVaultsInput): Promise<OutputSubVault[]>
 
         getExitQueuePositions({
           ...commonParams,
+          isClaimed: false,
           vaultAddress: vaultId,
           userAddress: metaVaultId,
         }),
