@@ -20,7 +20,7 @@ const handleMulticall = async ({ contract, multicallParams }: Input) => {
     const { method, args } = multicallParams[0]
 
     // @ts-ignore: no types to describe
-    const estimatedGas = await contract[method].estimateGas(...args)
+    const estimatedGas = await wrapErrorHandler<bigint>(contract[method].estimateGas(...args), 'transaction')
     const gasLimit = estimatedGas * 110n / 100n
 
     // @ts-ignore: no types to describe
