@@ -19,6 +19,7 @@ query Vault($address: ID!) {
     mevEscrow
     tokenName
     isGenesis
+    canHarvest
     feePercent
     isMetaVault
     totalAssets

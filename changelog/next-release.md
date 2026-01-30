@@ -9,6 +9,7 @@
 #### Add output field:
 ```ts
 type Output = {
+  canHarvest: boolen
   exitingAssets: string
   exitingTickets: string
 }

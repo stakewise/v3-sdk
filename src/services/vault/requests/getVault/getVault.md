@@ -27,6 +27,7 @@ type Output = {
   isPrivate: boolean
   isGenesis: boolean
   vaultAdmin: string
+  canHarvest: boolean
   totalAssets: string
   performance: number
   isMetaVault: boolean
@@ -85,6 +86,7 @@ type Output = {
 | `tokenName`                 | ERC20 token name |
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
+| `canHarvest`               | Defines whether the vault can harvest new rewards |
 | `allocatorMaxBoostApy`      | The average max boost APY earned in this vault by the allocator |
 | `description`               | Description of vault |
 | `whitelist`                 | List of authorized users for deposits |
