@@ -147,7 +147,7 @@ export const createContracts = (input: CreateContractsInput) => {
       createVault,
       multicallContract,
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
-      createErc20: (address: string) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, provider),
+      createErc20: (address: string, customProvider?: Provider) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, customProvider || provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
