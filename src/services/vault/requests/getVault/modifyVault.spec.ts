@@ -33,6 +33,8 @@ describe('modifyVault', () => {
       blocklistCount: '0',
       whitelistCount: '0',
       totalAssets: '150000000000',
+      exitingTickets: '150000000000',
+      exitingAssets: '150000000000',
       capacity: '1000000000000000',
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
@@ -79,6 +81,8 @@ describe('modifyVault', () => {
       createdAt: 1693395816000,
       displayName: 'Mock Vault',
       totalAssets: '0.00000015',
+      exitingTickets: '0.00000015',
+      exitingAssets: '0.00000015',
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
       osTokenConfig: {

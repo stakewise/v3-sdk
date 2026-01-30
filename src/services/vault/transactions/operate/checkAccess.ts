@@ -12,8 +12,8 @@ type Action<Input, Output> = (values: Input) => Promise<Output>
 const checkAccess = <Output>(action: Action<Input, Output>) => (
   async (values: Input) => {
     const {
-      blocklist, whitelist, whitelistManager, feeRecipient, feePercent,
-      blocklistManager, metadataIpfsHash, validatorsManager, admin,
+      blocklist, whitelist, whitelistManager, feeRecipient, feePercent, subVaultAddress,
+      blocklistManager, metadataIpfsHash, validatorsManager, admin, ejectSubVaultAddress, rejectMetaSubVaultAddress,
     } = values
 
     try {
@@ -26,10 +26,13 @@ const checkAccess = <Output>(action: Action<Input, Output>) => (
         admin
         || feePercent
         || feeRecipient
+        || subVaultAddress
         || whitelistManager
         || blocklistManager
         || metadataIpfsHash
         || validatorsManager
+        || ejectSubVaultAddress
+        || rejectMetaSubVaultAddress
       )
       const isWhitelistManager = Boolean(whitelist)
       const isBlocklistManager = Boolean(blocklist)
