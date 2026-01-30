@@ -24,6 +24,9 @@ Updates the vault by authorized personnel such as the vault admin, whitelistMana
 | vaultAddress              | `string`                                     | **Yes**  | -                    | The address of the vault |
 | admin                     | `string`                                     | **No**   | -                    | Changing the vault administrator |
 | feePercent                | `number`                                     | **No**   | Admin                | Changing fee percent charged by the vault |
+| subVaultAddress           | `string`                                     | **No**   | Admin                | Add a new sub-vault  |
+| ejectSubVaultAddress      | `string`                                     | **No**   | Admin                | Start ejecting a sub-vault  |
+| rejectMetaSubVaultAddress | `string`                                     | **No**   | Admin or DAO         | Cancel pending meta sub-vault   |
 
 #### Example:
 
@@ -38,9 +41,12 @@ const params = {
   displayName: '...',
   description: '...',
   feeRecipient: '0x...',
+  subVaultAddress: '0x...',
   blocklistManager: '0x...',
   whitelistManager: '0x...',
   validatorsManager: '0x...',
+  ejectSubVaultAddress: '0x...',
+  rejectMetaSubVaultAddress: '0x...',
 }
 
 // Data to update the vault by vault keys manager.

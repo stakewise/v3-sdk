@@ -3,11 +3,13 @@ import BlocklistVaultDiffAbi from './BlocklistVaultDiffAbi.json'
 import PrivateVaultDiffAbi from './PrivateVaultDiffAbi.json'
 import MainnetVaultDiffAbi from './MainnetVaultDiffAbi.json'
 import GnosisVaultDiffAbi from './GnosisVaultDiffAbi.json'
+import MetaVaultDiffAbi from './MetaVaultDiffAbi.json'
 import DefaultVaultAbi from './DefaultVaultAbi.json'
 
 
 export {
   DefaultVaultAbi,
+  MetaVaultDiffAbi,
   GnosisVaultDiffAbi,
   MainnetVaultDiffAbi,
   PrivateVaultDiffAbi,

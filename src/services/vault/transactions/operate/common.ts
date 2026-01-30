@@ -9,8 +9,11 @@ import {
   getBlocklistParams,
   getWhitelistParams,
   getFeePercentParams,
+  getAddSubVaultParams,
   getWhitelisterParams,
   getFeeRecipientParams,
+  getEjectSubVaultParams,
+  getRejectSubVaultParams,
   getBlocklistManagerParams,
   getValidatorsManagerParams,
 } from '../util'
@@ -19,8 +22,8 @@ import {
 export const commonLogic = async (values: OperateTransactionInput) => {
   const {
     blocklistManager, metadataIpfsHash, admin, feePercent,
-    blocklist, whitelist, whitelistManager, feeRecipient,
-    options, contracts, userAddress, vaultAddress, provider, validatorsManager,
+    blocklist, whitelist, whitelistManager, feeRecipient, subVaultAddress, ejectSubVaultAddress,
+    options, contracts, userAddress, vaultAddress, provider, validatorsManager, rejectMetaSubVaultAddress,
   } = values
 
   validateArgs.address({ vaultAddress, userAddress })
@@ -28,12 +31,14 @@ export const commonLogic = async (values: OperateTransactionInput) => {
   const chainId = options.network
   const isPrivate = Boolean(whitelist?.length || whitelistManager)
   const isBlocklist = Boolean(blocklist?.length || blocklistManager)
+  const isMetaVault = Boolean(subVaultAddress || ejectSubVaultAddress || rejectMetaSubVaultAddress)
 
   const vaultContract = contracts.helpers.createVault({
     vaultAddress,
     options: {
       chainId,
       isPrivate,
+      isMetaVault,
       isBlocklist,
     },
   })
@@ -122,6 +127,24 @@ export const commonLogic = async (values: OperateTransactionInput) => {
     const adminParams = getAdminParams({ ...baseInput, admin })
 
     params.push(...adminParams)
+  }
+
+  if (subVaultAddress) {
+    const addSubVaultParams = getAddSubVaultParams({ ...baseInput, subVaultAddress })
+
+    params.push(...addSubVaultParams)
+  }
+
+  if (ejectSubVaultAddress) {
+    const ejectSubVaultParams = getEjectSubVaultParams({ ...baseInput, ejectSubVaultAddress })
+
+    params.push(...ejectSubVaultParams)
+  }
+
+  if (rejectMetaSubVaultAddress) {
+    const rejectSubVaultParams = getRejectSubVaultParams({ ...baseInput, rejectMetaSubVaultAddress })
+
+    params.push(...rejectSubVaultParams)
   }
 
   return {

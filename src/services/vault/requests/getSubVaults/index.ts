@@ -8,6 +8,7 @@ import graphql from '../../../../graphql'
 
 
 export type GetSubVaultsInput = StakeWise.CommonParams & {
+  search?: string
   skip: SubVaultsQueryVariables['skip']
   limit: SubVaultsQueryVariables['first']
   vaultAddress: SubVaultsQueryVariables['where']['metaVault']
@@ -23,25 +24,29 @@ type OutputSubVault = {
 }
 
 const getSubVaults = async (input: GetSubVaultsInput): Promise<OutputSubVault[]> => {
-  const { skip, limit, vaultAddress, ...commonParams } = input
+  const { skip, limit, search, vaultAddress, ...commonParams } = input
 
   validateArgs.address({ vaultAddress })
   validateArgs.number({ skip, limit })
 
+  if (typeof search !== 'undefined') {
+    validateArgs.string({ search })
+  }
+
   const url = apiUrls.getSubgraphqlUrl(commonParams.options)
 
   const metaVaultId = vaultAddress.toLowerCase()
+
+  const where = search
+    ? { metaVault_: { id: metaVaultId }, subVault_contains: search.toLowerCase() }
+    : { metaVault_: { id: metaVaultId } }
 
   const subVaults = await graphql.subgraph.vault.fetchSubVaultsQuery({
     url,
     variables: {
       skip,
       first: limit,
-      where: {
-        metaVault_: {
-          id: metaVaultId,
-        },
-      } as SubVaultsQueryVariables['where'],
+      where: where as SubVaultsQueryVariables['where'],
     },
     modifyResult:(data: SubVaultsQueryPayload) => data.subVaults.map(((vault) => vault.subVault)),
   })
