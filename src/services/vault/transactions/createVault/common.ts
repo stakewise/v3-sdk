@@ -23,7 +23,10 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
     ...values,
     isErc20: Boolean(vaultToken),
     vaultType: type,
-  })
+  }) as typeof isMetaVault extends true
+    ? StakeWise.ABI.MetaVaultFactory
+    : StakeWise.ABI.VaultFactory
+
 
   validateArgs.address({ userAddress })
   validateCreateVaultArgs.vaultType(type)
@@ -59,7 +62,6 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
 
   return {
     vaultFactory,
-    isMetaVault,
     params,
   }
 }

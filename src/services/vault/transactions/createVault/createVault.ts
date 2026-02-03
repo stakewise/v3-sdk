@@ -9,13 +9,11 @@ const create = async (values: CreateVaultInput) => {
   const { provider, userAddress } = rest
 
   const metadataIpfsHash = await uploadMetadata(values)
-  const { vaultFactory, params, isMetaVault } = await commonLogic({ metadataIpfsHash, ...rest })
+  const { vaultFactory, params } = await commonLogic({ metadataIpfsHash, ...rest })
 
   const signer = await provider.getSigner(userAddress)
 
-  const signedContract = vaultFactory.connect(signer) as typeof isMetaVault extends true
-    ? StakeWise.ABI.MetaVaultFactory
-    : StakeWise.ABI.VaultFactory
+  const signedContract = vaultFactory.connect(signer)
 
   const response = await wrapErrorHandler(
     signedContract.createVault(...params),
