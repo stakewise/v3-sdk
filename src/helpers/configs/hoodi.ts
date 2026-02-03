@@ -43,8 +43,14 @@ export default {
 
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
+
+      metavault: '0x3C97239F12A94b914361F41B51869218a16c2026',
+      erc20Metavault: '0x94E1adDa4f5ca28aA2549aA9e18D89E3184F8b70',
+      privateMetavault: '0xe914Cfb2EB9e2d208b19b3E280A3096479491eAd',
+      erc20PrivateMetavault: '0x6ba3d8DF1ECa6201cc30D5D2E58294B23DAFF221',
     },
     special: {
+      balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
       stakeCalculator: '0xaE9A192Ed2030444eB9323C592F1b85801EA0Ec3',
       leverageStrategy: '0x154628AC72533aad39aBdcaE2055Dced0b4Eef4D',
       leverageStrategyV2: '0xe382BD0c48A7dd435bE911e0f663cbCAa94AF965',
