@@ -43,8 +43,14 @@ export default {
 
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
+
+      metavault: ZeroAddress,
+      erc20Metavault: ZeroAddress,
+      privateMetavault: ZeroAddress,
+      erc20PrivateMetavault: ZeroAddress,
     },
     special: {
+      balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
       stakeCalculator: '0x2A415b65207049AC7481BF69ff9fc1B3Def97c9A',
       leverageStrategy: ZeroAddress,
       leverageStrategyV2: ZeroAddress,

@@ -14,6 +14,7 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   StakeCalculatorAbi,
+  MetaVaultFactoryAbi,
   LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
@@ -46,6 +47,13 @@ const getVaultFactory = (provider: Provider, address: string) => createContract<
   VaultFactoryAbi,
   provider
 )
+
+const getMetaVaultFactory = (provider: Provider, address: string) => createContract<StakeWise.ABI.MetaVaultFactory>(
+  address,
+  MetaVaultFactoryAbi,
+  provider
+)
+
 
 const getVaultsRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.VaultsRegistry>(
   config.addresses.base.vaultsRegistry,
@@ -180,6 +188,12 @@ export const createContracts = (input: CreateContractsInput) => {
 
       blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20BlocklistVault: getVaultFactory(provider, config.addresses.factories.erc20BlocklistVault),
+
+      metavault: getMetaVaultFactory(provider, config.addresses.factories.metavault),
+      erc20Metavault: getMetaVaultFactory(provider, config.addresses.factories.erc20Metavault),
+
+      privateMetavault: getMetaVaultFactory(provider, config.addresses.factories.privateMetavault),
+      erc20PrivateMetavault: getMetaVaultFactory(provider, config.addresses.factories.erc20PrivateMetavault),
     },
     special: {
       stakeCalculator: getStakeCalculator(provider, config),
