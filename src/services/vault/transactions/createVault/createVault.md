@@ -6,24 +6,30 @@ slug: /vault/transactions/create
 #### Description:
 
 Create a vault. When the transaction is executed, one gwei of the deposit token must be stored in the vault to avoid [inflation attack](https://blog.openzeppelin.com/a-novel-defense-against-erc4626-inflation-attacks).
+
 Pay attention to chains where the deposit token is not a native token such as Gnosis.
 On these chains before creating the vault, ensure that you call the `approve` function on the deposit token contract,
 allowing the vault factory address to spend one gwei.
+
 You can retrieve the vault factory contract using the helper function: `sdk.getVaultFactory({ vaultType: params.type, isErc20: params.isErc20 })`.
+
+**Important**: When creating a metavault on Gnosis, only the default vault type is supported. ERC20 tokens and private vaults are not available. Additionally, all metavaults do not support the `isOwnMevEscrow` parameter.
+
+
 
 #### Arguments:
 
 | Name           | Type                               | Required | Description                                                                                                                                                |
 |----------------|------------------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| userAddress    | `string`                           | **Yes**  | The address of the user initiating the action. This address will become the vault admin                                                                    |
+| userAddress    | `string`                           | **Yes**  | The address of the user initiating the action. This address will become the vault admin |
 | type           | `VaultType`                        | **No**   | Allowed vault types: Default, Private and Blocklist. Available vault types can be found in the `enum VaultType` which you can be imported from the library |
-| vaultToken     | `{ name: string, symbol: string }` | **No**   | If provided, the vault will be created with its own ERC20 token                                                                                            |
-| capacity       | `bigint`                           | **No**   | If provided, should be defined in gwei. By default, capacity is `MaxUint256`; the minimum allowed capacity is `parseEther('32')`                           |
-| keysManagerFee | `number`                           | **No**   | If provided, should be between `0` and `100`, inclusive with a maximum of two decimal digits allowed (e.g., `15.35`). By default, the fee is `0`           |
-| isOwnMevEscrow | `boolean`                          | **No**   | Defines whether to send block rewards to the Smoothing Pool (`false`) or keep them only to your Vault (`true`). By default, this value is `false`          |
-| image          | `string`                           | **No**   | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)                                                                   |  
-| displayName    | `string`                           | **No**   | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)                                                                           |  
-| description    | `string`                           | **No**   | The vault description (will be uploaded to IPFS; maximum size is 1000 characters)                                                                          |  
+| vaultToken     | `{ name: string, symbol: string }` | **No**   | If provided, the vault will be created with its own ERC20 token |
+| capacity       | `bigint`                           | **No**   | If provided, should be defined in gwei. By default, capacity is `MaxUint256`; the minimum allowed capacity is `parseEther('32')`|
+| keysManagerFee | `number`                           | **No**   | If provided, should be between `0` and `100`, inclusive with a maximum of two decimal digits allowed (e.g., `15.35`). By default, the fee is `0`|
+| isOwnMevEscrow | `boolean`                          | **No**   | Defines whether to send block rewards to the Smoothing Pool (`false`) or keep them only to your Vault (`true`). By default, this value is `false`. **Note**: This parameter is not supported for metavaults|
+| image          | `string`                           | **No**   | The vault image in base64 string format (will be uploaded to IPFS; maximum size is 1 MB)|  
+| displayName    | `string`                           | **No**   | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)|  
+| description    | `string`                           | **No**   | The vault description (will be uploaded to IPFS; maximum size is 1000 characters)|  
 
 #### Example:
 
