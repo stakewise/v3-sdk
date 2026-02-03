@@ -22,6 +22,7 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
   const vaultFactory = getVaultFactory({
     ...values,
     isErc20: Boolean(vaultToken),
+    vaultType: type,
   })
 
   validateArgs.address({ userAddress })
@@ -45,10 +46,7 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
     validateCreateVaultArgs.keysManagerFee(keysManagerFee)
   }
 
-  let encodedParams = getEncodeBytes({
-    ...values,
-    isMetaVault,
-  })
+  const encodedParams = getEncodeBytes({ ...values, isMetaVault })
 
   const params: [ string, boolean, PayableOverrides ] = isMainnet
     ? [ encodedParams, isOwnMevEscrow, { value: constants.blockchain.gwei } ]

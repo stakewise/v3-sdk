@@ -1,5 +1,6 @@
 import { AbiCoder, MaxUint256 } from 'ethers'
 
+import { configs } from '../../../../../helpers'
 import type { CreateVaultTransactionInput } from '../types'
 
 
@@ -11,6 +12,7 @@ type EncodeBytesInput = Pick<CreateVaultTransactionInput,
   | 'metadataIpfsHash'
 > & {
   isMetaVault: boolean
+  options: StakeWise.Options
 }
 
 type GetTupleInput = Array<{
@@ -49,7 +51,7 @@ const _getTuple = (values: GetTupleInput) => {
 }
 
 const getEncodeBytes = (values: EncodeBytesInput) => {
-  const { vaultToken , keysManagerFee, capacity, metadataIpfsHash, isMetaVault } = values
+  const { options, vaultToken, keysManagerFee, capacity, metadataIpfsHash, isMetaVault } = values
 
   const defaultAbiCoder = AbiCoder.defaultAbiCoder()
 
@@ -66,8 +68,7 @@ const getEncodeBytes = (values: EncodeBytesInput) => {
   if (isMetaVault) {
     encodedParams.push({
       type: 'curator',
-      // https://docs.stakewise.io/contracts/networks/Mainnet
-      value: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
+      value: configs[options.network].addresses.special.balancedCurator,
     })
   }
 
