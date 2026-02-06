@@ -44,8 +44,11 @@ type Output = {
   isSmoothingPool: boolean
   tokenName: string | null
   whitelistManager: string
+  whitelistManager: string
   blocklistManager: string
+  ejectingSubVault: string
   depositDataManager: string
+  pendingMetaSubVault: string
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
@@ -86,6 +89,8 @@ type Output = {
 | `tokenName`                 | ERC20 token name |
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
+| `pendingMetaSubVault`       | The address of the meta vault that is pending to join as a sub vault |
+| `ejectingSubVault`          | The address of the sub vault currently being ejected (for meta vaults) |
 | `canHarvest`               | Defines whether the vault can harvest new rewards |
 | `allocatorMaxBoostApy`      | The average max boost APY earned in this vault by the allocator |
 | `description`               | Description of vault |

@@ -38,8 +38,10 @@ query Vault($address: ID!) {
     depositDataRoot
     isCollateralized
     blocklistManager
+    ejectingSubVault
     validatorsManager
     depositDataManager
+    pendingMetaSubVault
     allocatorMaxBoostApy
     lastFeeUpdateTimestamp
   }

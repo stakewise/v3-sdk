@@ -12,6 +12,8 @@ type Output = {
   canHarvest: boolen
   exitingAssets: string
   exitingTickets: string
+  ejectingSubVault: string
+  pendingMetaSubVault: string
 }
 ```
 
