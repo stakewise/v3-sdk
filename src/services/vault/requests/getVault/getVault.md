@@ -47,6 +47,7 @@ type Output = {
   whitelistManager: string
   blocklistManager: string
   ejectingSubVault: string
+  subVaultsRegistry: string
   depositDataManager: string
   pendingMetaSubVault: string
   tokenSymbol: string | null
@@ -101,6 +102,7 @@ type Output = {
 | `lastFeePercent`               | The vault last fee percent |
 | `exitingAssets`               | The total number of assets that are exiting (in V2 vaults) |
 | `exitingTickets`               | The total number of tickets that are exiting (in V2 vaults) |
+| `subVaultsRegistry`               | The address of the SubVaultsRegistry contract (for meta vaults v4+ on Gnosis, v6+ on mainnet/hoodi) |
 | `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 
 #### Example:

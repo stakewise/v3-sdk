@@ -40,6 +40,7 @@ query Vault($address: ID!) {
     blocklistManager
     ejectingSubVault
     validatorsManager
+    subVaultsRegistry
     depositDataManager
     pendingMetaSubVault
     allocatorMaxBoostApy

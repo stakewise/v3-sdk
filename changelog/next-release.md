@@ -1,6 +1,9 @@
 ## Added methods
 
 - [sdk.vault.getSubVaults](https://docs.stakewise.io/vault/requests/getsubvaults)
+- [sdk.vault.addSubVault](https://docs.stakewise.io/vault/transactions/addsubvault)
+- [sdk.vault.rejectSubVault](https://docs.stakewise.io/vault/transactions/rejectsubvault)
+- [sdk.vault.ejectSubVault](https://docs.stakewise.io/vault/transactions/ejectsubvault)
 
 ## Modified methods
 
@@ -13,17 +16,7 @@ type Output = {
   exitingAssets: string
   exitingTickets: string
   ejectingSubVault: string
+  subVaultsRegistry: string
   pendingMetaSubVault: string
-}
-```
-
-### 2. [signSDK.vault.operate](https://docs.stakewise.io/vault/transactions/operate)
-
-#### Add new params field to update sub-vault addresses:
-```ts
-type Output = {
-  subVaultAddress: string
-  ejectSubVaultAddress: string
-  rejectMetaSubVaultAddress: string
 }
 ```

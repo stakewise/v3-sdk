@@ -7,7 +7,7 @@ export default {
   network: constants.chains.hoodi,
   api: {
     backend: 'https://hoodi-api.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod',
+    subgraph: 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
   },
   pages: {
     beaconchain: 'https://hoodi.beaconcha.in/',

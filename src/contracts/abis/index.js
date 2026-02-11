@@ -3,6 +3,7 @@ import VestingEscrowFactoryAbi from './VestingEscrowFactoryAbi.json'
 import MintTokenControllerAbi from './MintTokenControllerAbi.json'
 import MerkleDistributorV2Abi from './MerkleDistributorV2Abi.json'
 import DepositDataRegistryAbi from './DepositDataRegistryAbi.json'
+import SubVaultsRegistryAbi from './SubVaultsRegistryAbi.json'
 import MintTokenConfigV1Abi from './MintTokenConfigV1Abi.json'
 import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import LeverageStrategyAbi from './LeverageStrategyAbi.json'
@@ -28,6 +29,7 @@ export {
   MintTokenControllerAbi,
   MerkleDistributorV2Abi,
   DepositDataRegistryAbi,
+  SubVaultsRegistryAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
   LeverageStrategyAbi,
