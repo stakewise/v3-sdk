@@ -4,6 +4,9 @@ import { createOperate, ExtractOperate } from './operate'
 import { multicall, VaultMulticallInput } from './multicall'
 import { createWithdraw, ExtractWithdraw } from './withdraw'
 import { createVaultCreator, ExtractCreateVault } from './createVault'
+import { createAddSubVault, ExtractAddSubVaultInput } from './addSubVault'
+import { createRejectSubVault, ExtractRejectSubVaultInput } from './rejectSubVault'
+import { createEjectSubVault, ExtractEjectSubVaultInput } from './ejectSubVault'
 import { createClaimExitQueue, ExtractClaimExitQueue } from './claimExitQueue'
 import { createSetDepositDataRoot, ExtractSetDepositDataRoot } from './setDepositDataRoot'
 import { createNativeTokenDeposit, createOtherTokenDeposit, ExtractDeposit } from './deposit'
@@ -56,6 +59,24 @@ class VaultTransactions {
   */
   public setDepositDataManager: ExtractSetDepositDataManager
 
+  /**
+   * @description Adding new sub-vault. Supports only in metaVault.
+   * @see https://docs.stakewise.io/vault/transactions/addsubvault
+   */
+  public addSubVault: ExtractAddSubVaultInput
+
+  /**
+   * @description Rejecting a sub-vault. Supports only in metaVault.
+   * @see https://docs.stakewise.io/vault/transactions/rejectsubvault
+   */
+  public rejectSubVault: ExtractRejectSubVaultInput
+
+  /**
+   * @description Ejecting a sub-vault. Supports only in metaVault.
+   * @see https://docs.stakewise.io/vault/transactions/ejectsubvault
+   */
+  public ejectSubVault: ExtractEjectSubVaultInput
+
   constructor(params: StakeWise.CommonParams) {
     this.params = params
 
@@ -71,6 +92,9 @@ class VaultTransactions {
     this.operate = transactionWrapper(params, createOperate(params))
     this.withdraw = transactionWrapper(params, createWithdraw(params))
     this.create = transactionWrapper(params, createVaultCreator(params))
+    this.addSubVault = transactionWrapper(params, createAddSubVault(params))
+    this.rejectSubVault = transactionWrapper(params, createRejectSubVault(params))
+    this.ejectSubVault = transactionWrapper(params, createEjectSubVault(params))
     this.claimExitQueue = transactionWrapper(params, createClaimExitQueue(params))
     this.setDepositDataRoot = transactionWrapper(params, createSetDepositDataRoot(params))
     this.setDepositDataManager = transactionWrapper(params, createSetDepositDataManager(params))

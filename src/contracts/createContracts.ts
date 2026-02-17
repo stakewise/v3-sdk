@@ -18,6 +18,7 @@ import {
   LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  SubVaultsRegistryAbi,
   DepositDataRegistryAbi,
   MerkleDistributorV2Abi,
   MintTokenControllerAbi,
@@ -116,6 +117,12 @@ const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) =>
   provider
 )
 
+const getSubVaultsRegistry = (provider: Provider, address: string) => createContract<StakeWise.ABI.SubVaultsRegistry>(
+  address,
+  SubVaultsRegistryAbi,
+  provider
+)
+
 const getMerkleDistributorV2 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MerkleDistributorV2>(
   config.addresses.special.merkleDistributorV2,
   MerkleDistributorV2Abi,
@@ -174,6 +181,7 @@ export const createContracts = (input: CreateContractsInput) => {
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),
+      subVaultsRegistry: (address: string) => getSubVaultsRegistry(provider, address),
     },
     tokens: {
       mintToken: getMintToken(provider, config),
