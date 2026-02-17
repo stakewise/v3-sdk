@@ -1,14 +1,11 @@
 import type { SetAdminParams } from '../util/params/getAdminParams'
 import type { UploadMetadataInput } from '../util/metadata/uploadMetadata'
 import type { SetMetadataParams } from '../util/params/getMetadataParams'
-import type { AddSubVaultParams } from '../util/params/getAddSubVaultParams'
 import type { SetFeePercentParams } from '../util/params/getFeePercentParams'
 import type { UpdateBlocklistParams } from '../util/params/getBlocklistParams'
 import type { UpdateWhitelistParams } from '../util/params/getWhitelistParams'
 import type { SetWhitelisterParams } from '../util/params/getWhitelisterParams'
 import type { SetFeeRecipientParams } from '../util/params/getFeeRecipientParams'
-import type { EjectMetaSubVaultParams } from '../util/params/getEjectSubVaultParams'
-import type { RejectMetaSubVaultParams } from '../util/params/getRejectSubVaultParams'
 import type { SetBlocklistManagerParams } from '../util/params/getBlocklistManagerParams'
 import type { SetValidatorsManagerParams } from '../util/params/getValidatorsManagerParams'
 
@@ -16,13 +13,10 @@ import type { SetValidatorsManagerParams } from '../util/params/getValidatorsMan
 type OperateCommonParams =
   SetWhitelisterParams
   & SetAdminParams
-  & AddSubVaultParams
   & SetFeePercentParams
   & SetFeeRecipientParams
   & UpdateBlocklistParams
   & UpdateWhitelistParams
-  & EjectMetaSubVaultParams
-  & RejectMetaSubVaultParams
   & SetBlocklistManagerParams
   & SetValidatorsManagerParams
 

@@ -11,7 +11,7 @@
   "extensions": {
     "endpoints": {
       "Subgraph GraphQL": {
-        "url": "https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod",
+        "url": "https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage",
         "headers": {
           "user-agent": "JS GraphQL"
         },

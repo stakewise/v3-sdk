@@ -3,7 +3,6 @@ import type { Provider } from 'ethers'
 
 import {
   DefaultVaultAbi,
-  MetaVaultDiffAbi,
   GnosisVaultDiffAbi,
   MainnetVaultDiffAbi,
   PrivateVaultDiffAbi,
@@ -13,7 +12,6 @@ import {
 
 import {
   DefaultVaultAbi as DefaultVaultType,
-  MetaVaultDiffAbi as MetaVaultDiffType,
   GnosisVaultDiffAbi as GnosisVaultDiffType,
   MainnetVaultDiffAbi as MainnetVaultDiffType,
   PrivateVaultDiffAbi as PrivateVaultDiffType,
@@ -26,7 +24,7 @@ import createContract from '../createContract'
 import { ModifiedVault } from '../../services/vault/requests/getVault/types'
 
 
-type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate' | 'isMetaVault'>> & {
+type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate'>> & {
   chainId?: Network
   isDepositWithMint?: boolean
 }
@@ -52,11 +50,7 @@ type Output<T extends Options> = Omit<
   (T['isDepositWithMint'] extends true
     ? DepositWithMintDiffType
     : object
-  ) &
-  (T['isMetaVault'] extends true
-    ? MetaVaultDiffType
-    : object
-    ),
+  ),
   'connect'
 > & {
   // overwrite, since each abi returns itself
@@ -83,10 +77,6 @@ const createVaultContract = (provider: Provider) => (
 
     if (options?.isDepositWithMint) {
       baseAbi = baseAbi.concat(DepositWithMintDiffAbi)
-    }
-
-    if (options?.isMetaVault) {
-      baseAbi = baseAbi.concat(MetaVaultDiffAbi)
     }
 
     return createContract(vaultAddress, baseAbi, provider) as Output<T> & {
