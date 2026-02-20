@@ -2,7 +2,6 @@ export type AddSubVaultInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
   subVaultAddress: string
-  subVaultsRegistryAddress: string
 }
 
 export interface ExtractAddSubVaultInput {

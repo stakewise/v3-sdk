@@ -9,7 +9,7 @@ const rejectSubVault = checkAccess<string>(async (values: RejectSubVaultInput) =
 
   const signer = await provider.getSigner(userAddress)
 
-  const contract = commonLogic(values)
+  const contract = await commonLogic(values)
   const signedContract = contract.connect(signer)
 
   const result = await wrapErrorHandler(
