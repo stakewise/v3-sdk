@@ -9,7 +9,7 @@ const addSubVault = checkAccess<string>(async (values: AddSubVaultInput) => {
 
   const signer = await provider.getSigner(userAddress)
 
-  const contract = commonLogic(values)
+  const contract = await commonLogic(values)
   const signedContract = contract.connect(signer)
 
   const result = await wrapErrorHandler(

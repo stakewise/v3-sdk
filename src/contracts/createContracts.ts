@@ -116,12 +116,6 @@ const getDepositDataRegistry = (provider: Provider, config: StakeWise.Config) =>
   provider
 )
 
-const getSubVaultsRegistry = (provider: Provider, address: string) => createContract<StakeWise.ABI.SubVaultsRegistry>(
-  address,
-  SubVaultsRegistryAbi,
-  provider
-)
-
 const getMerkleDistributorV2 = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.MerkleDistributorV2>(
   config.addresses.special.merkleDistributorV2,
   MerkleDistributorV2Abi,
@@ -166,6 +160,7 @@ export const createContracts = (input: CreateContractsInput) => {
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
+      createSubVaultsRegistry: (address: string) => createContract<StakeWise.ABI.SubVaultsRegistry>(address, SubVaultsRegistryAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),
     },
@@ -180,7 +175,6 @@ export const createContracts = (input: CreateContractsInput) => {
       depositDataRegistry: getDepositDataRegistry(provider, config),
       mintTokenController: getMintTokenController(provider, config),
       rewardSplitterFactory: getRewardSplitterFactory(provider, config),
-      subVaultsRegistry: (address: string) => getSubVaultsRegistry(provider, address),
     },
     tokens: {
       mintToken: getMintToken(provider, config),

@@ -14,13 +14,11 @@ Ejecting a sub-vault from the vault registry.
 | subVaultAddress | `string` | **Yes**  | The sub-vault address to eject  |
 | userAddress    | `string` | **Yes**  | The user address          |
 | vaultAddress   | `string` | **Yes**  | The address of the vault  |
-| subVaultsRegistryAddress   | `string` | **Yes**  | The sub-vault registry address  |
 
 #### Example:
 
 ```ts
 const params = {
-  subVaultsRegistryAddress: '0x...',
   subVaultAddress: '0x...',
   vaultAddress: '0x...',
   userAddress: '0x...',

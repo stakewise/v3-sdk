@@ -3,7 +3,7 @@ import type { AddSubVaultInput } from './types'
 
 
 const addSubVaultEncode = async (values: AddSubVaultInput) => {
-  const contract = commonLogic(values)
+  const contract = await commonLogic(values)
 
   return contract.addSubVault.populateTransaction(values.subVaultAddress)
 }
