@@ -2,7 +2,6 @@ export type RejectSubVaultInput = StakeWise.CommonParams & {
   userAddress: string
   vaultAddress: string
   subVaultAddress: string
-  subVaultsRegistryAddress: string
 }
 
 export interface ExtractRejectSubVaultInput {

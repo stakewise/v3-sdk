@@ -7,6 +7,7 @@ export default {
   network: constants.chains.hoodi,
   api: {
     backend: 'https://hoodi-api.stakewise.io/graphql',
+    // TODO change (+ change .graphqlconfig)
     subgraph: 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
   },
   pages: {

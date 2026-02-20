@@ -1,11 +1,14 @@
 import { EjectSubVaultInput } from './types'
+import getVault from '../../requests/getVault'
 import { validateArgs } from '../../../../helpers'
 
 
-export const commonLogic = (values: EjectSubVaultInput) => {
-  const { vaultAddress, subVaultsRegistryAddress, subVaultAddress, userAddress } = values
+export const commonLogic = async (values: EjectSubVaultInput) => {
+  const { vaultAddress, subVaultAddress, userAddress } = values
 
-  validateArgs.address({ vaultAddress, userAddress, subVaultsRegistryAddress, subVaultAddress })
+  validateArgs.address({ vaultAddress, userAddress, subVaultAddress })
 
-  return values.contracts.base.subVaultsRegistry(subVaultsRegistryAddress)
+  const { subVaultsRegistry } = await getVault(values)
+
+  return values.contracts.helpers.createSubVaultsRegistry(subVaultsRegistry)
 }
