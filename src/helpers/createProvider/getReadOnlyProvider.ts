@@ -1,13 +1,18 @@
 import { JsonRpcProvider, FallbackProvider } from 'ethers'
 
+import { Network } from '../enums'
 import getFetchRequest from './getFetchRequest'
 
 
-const getReadOnlyProvider = (options: StakeWise.Options) => {
-  const { network } = options
+type GetReadOnlyProviderInput = {
+  network: Network
+  rpc: StakeWise.Web3Endpoints
+}
 
-  const urls = options.endpoints?.web3 as string | string[]
-  const arrayUrls = typeof urls === 'string' ? [ urls ] : urls
+const getReadOnlyProvider = (values: GetReadOnlyProviderInput) => {
+  const { network, rpc } = values
+
+  const arrayUrls = typeof rpc === 'string' ? [ rpc ] : rpc
 
   if (arrayUrls.length === 1) {
     const fetchRequest = getFetchRequest(arrayUrls[0])
