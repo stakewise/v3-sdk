@@ -1,12 +1,21 @@
+import { Network } from '../enums'
 import getReadOnlyProvider from './getReadOnlyProvider'
 
 
-const createProvider = (options: StakeWise.Options) => {
-  if (options.provider) {
-    return options.provider
+type CreateProviderInput = {
+  network: Network
+  rpc: StakeWise.Web3Endpoints
+  provider?: StakeWise.Provider
+}
+
+const createProvider = (values: CreateProviderInput) => {
+  const { network, rpc, provider } = values
+
+  if (provider) {
+    return provider
   }
 
-  const createdProvider = getReadOnlyProvider(options)
+  const createdProvider = getReadOnlyProvider({ network, rpc })
   const originalGetSigner = createdProvider.getSigner
 
   createdProvider.getSigner = async function (address?: string) {

@@ -44,10 +44,10 @@ declare global {
     type Options = {
       network: Network
       provider?: Provider
-      endpoints?: {
+      endpoints: {
         api?: string
         subgraph?: string | ReadonlyArray<string>
-        web3?: Web3Endpoints
+        web3: Web3Endpoints
       }
     }
 
