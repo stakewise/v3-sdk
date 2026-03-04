@@ -23,7 +23,11 @@ const getSignedContract = async (values: Input) => {
       signer = await options.provider.getSigner(userAddress)
     }
     else {
-      const library = createProvider(options)
+      const library = createProvider({
+        rpc: options.endpoints.web3,
+        provider: options.provider,
+        network: options.network,
+      })
 
       signer = new VoidSigner(userAddress, library)
     }

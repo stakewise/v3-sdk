@@ -23,7 +23,12 @@ class StakeWiseSDK {
       throw new Error('Provider or endpoints.web3 should be provided')
     }
 
-    const provider = createProvider(options)
+    const provider = createProvider({
+      network: options.network,
+      provider: options.provider,
+      rpc: options.endpoints.web3,
+    })
+
     const contracts = createContracts({ provider, config })
 
     this.config = config

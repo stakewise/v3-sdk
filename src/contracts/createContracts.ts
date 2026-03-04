@@ -25,6 +25,7 @@ import {
 } from './abis'
 
 import commonMulticall from './multicall/commonMulticall'
+import createErc20Contract from './createErc20Contract'
 import createContract from './createContract'
 import { createVaultContract } from './vault'
 
@@ -146,8 +147,8 @@ export const createContracts = (input: CreateContractsInput) => {
     helpers: {
       createVault,
       multicallContract,
+      createErc20: (address: string) => createErc20Contract(address, provider),
       createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
-      createErc20: (address: string, customProvider?: Provider) => createContract<StakeWise.ABI.Erc20Token>(address, Erc20Abi, customProvider || provider),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
