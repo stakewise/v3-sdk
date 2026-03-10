@@ -4,6 +4,7 @@
 - [sdk.vault.addSubVault](https://docs.stakewise.io/vault/transactions/addsubvault)
 - [sdk.vault.rejectSubVault](https://docs.stakewise.io/vault/transactions/rejectsubvault)
 - [sdk.vault.ejectSubVault](https://docs.stakewise.io/vault/transactions/ejectsubvault)
+- [sdk.vault.updateState](https://docs.stakewise.io/vault/transactions/updatestate)
 
 ## Modified methods
 

@@ -1,12 +1,12 @@
 import { commonLogic } from './common'
-import checkAccess from './checkAccess'
+import { checkAccess } from '../util'
 import type { SetDepositDataManagerInput } from './types'
 import { wrapErrorHandler } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 
 
-const setDepositDataManager = checkAccess<string>(async (values: SetDepositDataManagerInput) => {
-  const { provider, userAddress, managerAddress, vaultAddress, contracts, options } = values
+const setDepositDataManager = checkAccess<SetDepositDataManagerInput>(async (values) => {
+  const { provider, userAddress, managerAddress, vaultAddress, contracts } = values
 
   const signer = await provider.getSigner(userAddress)
 
@@ -15,9 +15,6 @@ const setDepositDataManager = checkAccess<string>(async (values: SetDepositDataM
   if (isV1Version) {
     const vaultContract = contracts.helpers.createVault({
       vaultAddress,
-      options: {
-        chainId: options.network,
-      },
     })
     const signedContract = vaultContract.connect(signer)
 
