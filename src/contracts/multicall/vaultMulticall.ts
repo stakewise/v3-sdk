@@ -1,5 +1,3 @@
-import getVault from '../../services/vault/requests/getVault'
-
 import {
   getHarvestArgs,
   handleMulticall,
@@ -58,9 +56,7 @@ const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): P
 
   const needHarvest = params.some(({ method }) => harvestCheckMethods.includes(method))
 
-  const { isMetaVault } = await getVault(values)
-
-  if (needHarvest && !isMetaVault) {
+  if (needHarvest) {
     const harvestArgs = await getHarvestArgs(values)
 
     if (harvestArgs) {
