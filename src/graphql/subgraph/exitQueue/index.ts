@@ -1,2 +1,2 @@
-export { fetchExitQueueQuery } from './exitQueueQuery.graphql'
-export type { ExitQueueQueryPayload, ExitQueueQueryVariables } from './exitQueueQuery.graphql'
+export { fetchExitQueueQuery } from './exitQueueQuery.graphql.ts'
+export type { ExitQueueQueryPayload, ExitQueueQueryVariables } from './exitQueueQuery.graphql.ts'

@@ -71,7 +71,7 @@ const getFragmentContent = (tsFilePath: string) => {
     .replace(/\.graphql\.ts$/, '')
 
   const fragmentImports = fragments
-    .map((fragment) => `import { ${fragment} } from './${fragment.replace(/Fragment/, '')}.graphql'`)
+    .map((fragment) => `import { ${fragment} } from './${fragment.replace(/Fragment/, '')}.graphql.ts'`)
     .join('\n')
 
   return {
@@ -107,7 +107,7 @@ const getFileExports = (queryName: string) => {
   const isQuery = /Query/.test(queryName)
   const isMutation = /Mutation/.test(queryName)
   const isFragment = !isQuery && !isMutation
-  const fileName = `${string.decapitalize(queryName)}.graphql`
+  const fileName = `${string.decapitalize(queryName)}.graphql.ts`
 
   if (isFragment) {
     return [

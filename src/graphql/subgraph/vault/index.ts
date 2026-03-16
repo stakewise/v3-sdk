@@ -1,26 +1,26 @@
-export { fetchVaultQuery } from './vaultQuery.graphql'
-export type { VaultQueryPayload, VaultQueryVariables } from './vaultQuery.graphql'
+export { fetchVaultQuery } from './vaultQuery.graphql.ts'
+export type { VaultQueryPayload, VaultQueryVariables } from './vaultQuery.graphql.ts'
 
-export { fetchUserApyQuery } from './userApyQuery.graphql'
-export type { UserApyQueryPayload, UserApyQueryVariables } from './userApyQuery.graphql'
+export { fetchUserApyQuery } from './userApyQuery.graphql.ts'
+export type { UserApyQueryPayload, UserApyQueryVariables } from './userApyQuery.graphql.ts'
 
-export { fetchVaultStatsQuery } from './vaultStatsQuery.graphql'
-export type { VaultStatsQueryPayload, VaultStatsQueryVariables } from './vaultStatsQuery.graphql'
+export { fetchVaultStatsQuery } from './vaultStatsQuery.graphql.ts'
+export type { VaultStatsQueryPayload, VaultStatsQueryVariables } from './vaultStatsQuery.graphql.ts'
 
-export { fetchUserRewardsQuery } from './userRewardsQuery.graphql'
-export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql'
+export { fetchUserRewardsQuery } from './userRewardsQuery.graphql.ts'
+export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql.ts'
 
-export { fetchHarvestParamsQuery } from './harvestParamsQuery.graphql'
-export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './harvestParamsQuery.graphql'
+export { fetchHarvestParamsQuery } from './harvestParamsQuery.graphql.ts'
+export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './harvestParamsQuery.graphql.ts'
 
-export { fetchWhitelistAccountsQuery } from './whitelistAccountsQuery.graphql'
-export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } from './whitelistAccountsQuery.graphql'
+export { fetchWhitelistAccountsQuery } from './whitelistAccountsQuery.graphql.ts'
+export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } from './whitelistAccountsQuery.graphql.ts'
 
-export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql'
-export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql'
+export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql.ts'
+export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql.ts'
 
-export { fetchVaultOsTokenConfigQuery } from './vaultOsTokenConfigQuery.graphql'
-export type { VaultOsTokenConfigQueryPayload, VaultOsTokenConfigQueryVariables } from './vaultOsTokenConfigQuery.graphql'
+export { fetchVaultOsTokenConfigQuery } from './vaultOsTokenConfigQuery.graphql.ts'
+export type { VaultOsTokenConfigQueryPayload, VaultOsTokenConfigQueryVariables } from './vaultOsTokenConfigQuery.graphql.ts'
 
-export { fetchPeriodicDistributionsQuery } from './periodicDistributionsQuery.graphql'
-export type { PeriodicDistributionsQueryPayload, PeriodicDistributionsQueryVariables } from './periodicDistributionsQuery.graphql'
+export { fetchPeriodicDistributionsQuery } from './periodicDistributionsQuery.graphql.ts'
+export type { PeriodicDistributionsQueryPayload, PeriodicDistributionsQueryVariables } from './periodicDistributionsQuery.graphql.ts'

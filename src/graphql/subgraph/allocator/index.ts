@@ -1,2 +1,2 @@
-export { fetchAllocatorsQuery } from './allocatorsQuery.graphql'
-export type { AllocatorsQueryPayload, AllocatorsQueryVariables } from './allocatorsQuery.graphql'
+export { fetchAllocatorsQuery } from './allocatorsQuery.graphql.ts'
+export type { AllocatorsQueryPayload, AllocatorsQueryVariables } from './allocatorsQuery.graphql.ts'

@@ -1,5 +1,5 @@
-export { fetchValidatorsQuery } from './validatorsQuery.graphql'
-export type { ValidatorsQueryPayload, ValidatorsQueryVariables } from './validatorsQuery.graphql'
+export { fetchValidatorsQuery } from './validatorsQuery.graphql.ts'
+export type { ValidatorsQueryPayload, ValidatorsQueryVariables } from './validatorsQuery.graphql.ts'
 
-export { submitUploadMetadataMutation } from './uploadMetadataMutation.graphql'
-export type { UploadMetadataMutationPayload, UploadMetadataMutationVariables } from './uploadMetadataMutation.graphql'
+export { submitUploadMetadataMutation } from './uploadMetadataMutation.graphql.ts'
+export type { UploadMetadataMutationPayload, UploadMetadataMutationVariables } from './uploadMetadataMutation.graphql.ts'
