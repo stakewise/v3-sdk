@@ -1,10 +1,10 @@
 import { commonLogic } from './common'
-import checkAccess from './checkAccess'
+import { checkAccess } from '../util'
 import type { AddSubVaultInput } from './types'
 import { wrapErrorHandler } from '../../../../helpers'
 
 
-const addSubVault = checkAccess<string>(async (values: AddSubVaultInput) => {
+const addSubVault = checkAccess<AddSubVaultInput>(async (values) => {
   const { provider, userAddress, subVaultAddress } = values
 
   const signer = await provider.getSigner(userAddress)

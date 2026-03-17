@@ -5,12 +5,13 @@ import { multicall, VaultMulticallInput } from './multicall'
 import { createWithdraw, ExtractWithdraw } from './withdraw'
 import { createVaultCreator, ExtractCreateVault } from './createVault'
 import { createAddSubVault, ExtractAddSubVaultInput } from './addSubVault'
-import { createRejectSubVault, ExtractRejectSubVaultInput } from './rejectSubVault'
-import { createEjectSubVault, ExtractEjectSubVaultInput } from './ejectSubVault'
+import { createUpdateState, ExtractUpdateStateInput } from './updateState'
 import { createClaimExitQueue, ExtractClaimExitQueue } from './claimExitQueue'
+import { createEjectSubVault, ExtractEjectSubVaultInput } from './ejectSubVault'
+import { createRejectSubVault, ExtractRejectSubVaultInput } from './rejectSubVault'
 import { createSetDepositDataRoot, ExtractSetDepositDataRoot } from './setDepositDataRoot'
-import { createNativeTokenDeposit, createOtherTokenDeposit, ExtractDeposit } from './deposit'
 import { createSetDepositDataManager, ExtractSetDepositDataManager } from './setDepositDataManager'
+import { createNativeTokenDeposit, createOtherTokenDeposit, ExtractDeposit } from './deposit'
 
 
 class VaultTransactions {
@@ -77,6 +78,12 @@ class VaultTransactions {
    */
   public ejectSubVault: ExtractEjectSubVaultInput
 
+  /**
+   * @description Update a vault state.
+   * @see https://docs.stakewise.io/vault/transactions/updatestate
+   */
+  public updateState: ExtractUpdateStateInput
+
   constructor(params: StakeWise.CommonParams) {
     this.params = params
 
@@ -92,6 +99,7 @@ class VaultTransactions {
     this.operate = transactionWrapper(params, createOperate(params))
     this.withdraw = transactionWrapper(params, createWithdraw(params))
     this.create = transactionWrapper(params, createVaultCreator(params))
+    this.updateState = transactionWrapper(params, createUpdateState(params))
     this.addSubVault = transactionWrapper(params, createAddSubVault(params))
     this.rejectSubVault = transactionWrapper(params, createRejectSubVault(params))
     this.ejectSubVault = transactionWrapper(params, createEjectSubVault(params))

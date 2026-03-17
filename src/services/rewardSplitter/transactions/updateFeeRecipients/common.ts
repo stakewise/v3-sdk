@@ -4,7 +4,6 @@ import Vault from '../../../vault'
 import { validateArgs } from '../../../../helpers'
 import { rewardSplitterMulticall } from '../../../../contracts'
 import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
-import { checkAdminAccess } from '../../../vault/transactions/util'
 import type { FeeRecipient, UpdateFeeRecipientsInput } from './types'
 
 
@@ -27,7 +26,7 @@ const validateList = (values: Record<string, FeeRecipient[]>, withEmptyCheck?: b
 
 export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   const {
-    contracts, userAddress, vaultAddress, options,
+    contracts, userAddress, vaultAddress,
     rewardSplitterAddress, feeRecipients,
   } = values
 
@@ -39,8 +38,6 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   if (oldFeeRecipients) {
     validateList({ oldFeeRecipients }, false)
   }
-
-  await checkAdminAccess(values)
 
   const baseMulticall: RewardSplitterMulticallBaseInput = {
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),

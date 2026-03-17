@@ -6,12 +6,14 @@ type Input = StakeWise.CommonParams & {
   vaultAddress: string
 }
 
-type Output = Promise<Omit<HarvestParamsQueryPayload['harvestParams'], 'canHarvest'> | null>
+export type HarvestArgs = Omit<HarvestParamsQueryPayload['harvestParams'], 'canHarvest' | 'isMetaVault'>
+
+type Output = Promise<HarvestArgs | null>
 
 const getHarvestArgs = async (values: Input): Output => {
-  const { params, canHarvest } = await getHarvestParams(values)
+  const { params, canHarvest, isMetaVault } = await getHarvestParams(values)
 
-  if (canHarvest) {
+  if (canHarvest && !isMetaVault) {
     return params
   }
 

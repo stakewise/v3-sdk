@@ -149,7 +149,7 @@ type CreateContractsInput = {
 export const createContracts = (input: CreateContractsInput) => {
   const { provider, config } = input
 
-  const createVault = createVaultContract(provider)
+  const createVault = createVaultContract(provider, config)
   const multicallContract = getMulticall(provider, config)
 
   return {

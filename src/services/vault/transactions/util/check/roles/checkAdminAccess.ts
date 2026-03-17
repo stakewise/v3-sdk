@@ -1,4 +1,4 @@
-import type { CheckInput } from './types'
+import type { CheckInput } from '../types'
 
 
 const checkAdminAccess = async ({ userAddress, vaultAddress, contracts }: CheckInput) => {
