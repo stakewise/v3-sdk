@@ -2,6 +2,7 @@
 id: burn-os-token
 title: Burn osToken
 sidebar_position: 5
+description: Burn osETH tokens in a StakeWise vault using the SDK — monitor osToken position health and execute burn transactions safely.
 ---
 
 # Burn osToken

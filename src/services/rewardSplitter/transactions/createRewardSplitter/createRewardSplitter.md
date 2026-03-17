@@ -1,6 +1,7 @@
 ---
 id: create
 slug: /rewardSplitter/transactions/createrewardsplitter
+description: Use the StakeWise SDK createRewardSplitter method to deploy a contract that distributes vault rewards among fee recipients.
 ---
 
 ### `create`

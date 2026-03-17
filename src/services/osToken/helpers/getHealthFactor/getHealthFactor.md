@@ -1,6 +1,7 @@
 ---
 id: getHealthFactor
 slug: /osToken/helpers/gethealthfactor
+description: Use the StakeWise SDK getHealthFactor helper to assess the health of an osToken position relative to liquidation thresholds.
 ---
 
 #### Description:

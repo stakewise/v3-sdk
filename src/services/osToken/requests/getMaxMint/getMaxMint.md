@@ -2,6 +2,7 @@
 id: getMaxMint
 title: getMaxMint
 slug: /osToken/requests/getmaxmint
+description: "StakeWise SDK getMaxMint method (deprecated): returns the maximum number of osToken shares available for minting."
 ---
 
 # Deprecated!

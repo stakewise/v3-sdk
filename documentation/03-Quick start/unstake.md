@@ -2,6 +2,7 @@
 id: unstake-example
 title: Unstake
 sidebar_position: 3
+description: Unstake deposits from a StakeWise vault using the SDK — withdraw staked assets, handle osToken burns, and track exit queue positions.
 ---
 
 # Unstake

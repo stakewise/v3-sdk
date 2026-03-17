@@ -1,6 +1,7 @@
 ---
 id: getTransactions
 slug: /utils/gettransactions
+description: Use the StakeWise SDK getTransactions utility to verify that a transaction has been indexed by the subgraph.
 ---
 
 #### Description:

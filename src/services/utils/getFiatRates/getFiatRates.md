@@ -1,6 +1,7 @@
 ---
 id: getFiatRates
 slug: /utils/getfiatrates
+description: Use the StakeWise SDK getFiatRates utility to retrieve current fiat exchange rates (USD, EUR, GBP, CNY, JPY, KRW, AUD).
 ---
 
 #### Description:

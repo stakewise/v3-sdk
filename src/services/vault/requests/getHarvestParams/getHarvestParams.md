@@ -1,6 +1,7 @@
 ---
 id: getHarvestParams
 slug: /vault/requests/getharvestparams
+description: Use the StakeWise SDK getHarvestParams method to fetch the parameters needed to update vault state and harvest rewards.
 ---
 
 #### Description:

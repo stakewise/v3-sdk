@@ -1,6 +1,7 @@
 ---
 id: setDepositDataRoot
 slug: /vault/transactions/setdepositdataroot
+description: Use the StakeWise SDK setDepositDataRoot method to set the validators merkle tree root for v2+ vaults.
 ---
 
 #### Description:

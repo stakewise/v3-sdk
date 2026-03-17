@@ -1,6 +1,7 @@
 ---
 id: claimExitQueue
 slug: /vault/transactions/claimexitqueue
+description: Use the StakeWise SDK claimExitQueue method to withdraw exited assets from the vault exit queue for a specific user.
 ---
 
 #### Description:

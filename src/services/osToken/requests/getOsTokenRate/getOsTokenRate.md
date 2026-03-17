@@ -1,6 +1,7 @@
 ---
 id: getRate
 slug: /osToken/requests/getostokenrate
+description: Use the StakeWise SDK getOsTokenRate method to get the current ETH to osToken exchange rate for conversions.
 ---
 
 #### Description:
