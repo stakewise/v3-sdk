@@ -1,6 +1,6 @@
 ---
 id: deposit
-slug: /vault/transactions/deposit
+slug: sdk/api/vault/transactions/deposit
 description: Use the StakeWise SDK deposit method to stake assets into a vault. Includes arguments, example code, and encoding support.
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: getMaxMint
 title: getMaxMint
-slug: /osToken/requests/getmaxmint
+slug: sdk/api/osToken/requests/getmaxmint
 description: "StakeWise SDK getMaxMint method (deprecated): returns the maximum number of osToken shares available for minting."
 ---
 
@@ -16,9 +16,9 @@ Maximum number of **shares** for minting
 | Name         | Type     | Required | Description                                                  |
 |--------------|----------|----------|--------------------------------------------------------------|
 | vaultAddress | `string` | **Yes**  | The address of the vault                                     |
-| ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
-| stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
-| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)     |
+| ltvPercent   | `bigint` | **Yes**  | [sdk.vault.getVault](/sdk/api/vault/requests/getvault)               |
+| stakedAssets | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/sdk/api/vault/requests/getstakebalance) |
+| mintedAssets | `bigint` | **Yes**  | [sdk.osToken.getPosition](/sdk/api/osToken/requests/getposition)     |
 
 #### Returns:
 

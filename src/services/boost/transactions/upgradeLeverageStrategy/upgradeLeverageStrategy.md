@@ -1,6 +1,6 @@
 ---
 id: upgradeLeverageStrategy
-slug: /boost/transactions/upgradeleveragestrategy
+slug: sdk/api/boost/transactions/upgradeleveragestrategy
 description: Use the StakeWise SDK upgradeLeverageStrategy method to upgrade the leverage strategy contract for a vault's boost system.
 ---
 

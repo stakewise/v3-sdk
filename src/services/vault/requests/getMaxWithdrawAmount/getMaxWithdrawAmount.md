@@ -1,6 +1,6 @@
 ---
 id: getMaxWithdrawAmount
-slug: /vault/requests/getmaxwithdrawamount
+slug: sdk/api/vault/requests/getmaxwithdrawamount
 description: Use the StakeWise SDK getMaxWithdrawAmount method to calculate the maximum amount a user can withdraw from a vault.
 ---
 

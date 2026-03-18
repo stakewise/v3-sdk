@@ -1,6 +1,6 @@
 ---
 id: getRewards
-slug: /distributorRewards/requests/getrewards
+slug: sdk/api/distributorRewards/requests/getrewards
 description: Use the StakeWise SDK distributorRewards getRewards method to fetch currently claimable distributor reward tokens for a user.
 ---
 
@@ -28,10 +28,10 @@ type Output =
 
 | Name                | Description                                                                                                                  |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------|
-| `proof`             | The Merkle tree proof. Used in [sdk.distributorRewards.claim](/distributorRewards/transactions/claim)                        |
-| `tokens`            | An array of addresses of the tokens. Used in [sdk.distributorRewards.claim](/distributorRewards/transactions/claim)          |
+| `proof`             | The Merkle tree proof. Used in [sdk.distributorRewards.claim](/sdk/api/distributorRewards/transactions/claim)                        |
+| `tokens`            | An array of addresses of the tokens. Used in [sdk.distributorRewards.claim](/sdk/api/distributorRewards/transactions/claim)          |
 | `unclaimedAmounts`  | An array of unclaimed amounts of the tokens. A claim is available if at least one amount in the array is greater than zero.  |
-| `cumulativeAmounts` | An array of cumulative amounts of the tokens. Used in [sdk.distributorRewards.claim](/distributorRewards/transactions/claim) |
+| `cumulativeAmounts` | An array of cumulative amounts of the tokens. Used in [sdk.distributorRewards.claim](/sdk/api/distributorRewards/transactions/claim) |
 
 #### Example:
 

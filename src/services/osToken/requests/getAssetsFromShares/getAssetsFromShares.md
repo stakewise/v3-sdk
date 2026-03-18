@@ -1,6 +1,6 @@
 ---
 id: getAssetsFromShares
-slug: /osToken/requests/getassetsfromshares
+slug: sdk/api/osToken/requests/getassetsfromshares
 description: Use the StakeWise SDK getAssetsFromShares method to convert an osToken share amount to its equivalent ETH value.
 ---
 

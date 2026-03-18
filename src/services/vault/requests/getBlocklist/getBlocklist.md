@@ -1,6 +1,6 @@
 ---
 id: getBlocklist
-slug: /vault/requests/getblocklist
+slug: sdk/api/vault/requests/getblocklist
 description: Use the StakeWise SDK getBlocklist method to fetch the list of blocked addresses for blocklisted vaults.
 ---
 
