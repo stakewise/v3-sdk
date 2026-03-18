@@ -2,6 +2,7 @@
 id: overview
 title: Overview
 sidebar_position: 0
+description: StakeWise V3 SDK overview for TypeScript developers — vault management, staking transactions, and blockchain data queries.
 ---
 
 # Overview

@@ -1,6 +1,7 @@
 ---
 id: lock
 slug: /boost/transactions/lock
+description: Use the StakeWise SDK boost lock method to boost osToken APY through leverage staking with a vault's strategy proxy.
 ---
 
 #### Description:

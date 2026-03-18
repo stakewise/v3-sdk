@@ -1,6 +1,7 @@
 ---
 id: create
 slug: /distributorRewards/transactions/claim
+description: Use the StakeWise SDK distributorRewards claim method to claim token rewards from the merkle distributor V2 contract.
 ---
 
 ### `claim`

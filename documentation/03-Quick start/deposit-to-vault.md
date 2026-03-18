@@ -2,6 +2,7 @@
 id: deposit-to-vault
 title: Deposit to vault
 sidebar_position: 2
+description: Deposit ETH into a StakeWise vault using the SDK — client-side browser wallet and backend custodial wallet integration examples.
 ---
 
 # Deposit to vault

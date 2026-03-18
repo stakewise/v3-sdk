@@ -1,6 +1,7 @@
 ---
 id: operate
 slug: /vault/transactions/operate
+description: Use the StakeWise SDK operate method to update vault settings such as whitelist, blocklist, validators manager, and metadata.
 ---
 
 #### Description:

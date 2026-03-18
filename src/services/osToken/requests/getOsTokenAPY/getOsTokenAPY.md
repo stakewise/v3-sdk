@@ -1,6 +1,7 @@
 ---
 id: getAPY
 slug: /osToken/requests/getostokenapy
+description: Use the StakeWise SDK getOsTokenAPY method to retrieve the current annual percentage yield and fee for osToken.
 ---
 
 #### Description:

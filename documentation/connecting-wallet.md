@@ -2,6 +2,7 @@
 id: connecting
 title: Connecting a Wallet
 sidebar_position: 2
+description: Connect wallets to the StakeWise SDK using EIP-1193 providers — MetaMask, WalletConnect, Coinbase, Safe, Binance, and Wagmi integration.
 ---
 
 # Connecting a Wallet

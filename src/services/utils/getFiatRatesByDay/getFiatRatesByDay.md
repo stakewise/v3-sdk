@@ -1,6 +1,7 @@
 ---
 id: getFiatRatesByDay
 slug: /utils/getfiatratesbyday
+description: Use the StakeWise SDK getFiatRatesByDay utility to retrieve historical daily fiat exchange rates for a date range.
 ---
 
 #### Description:

@@ -1,6 +1,7 @@
 ---
 id: getStakeBalance
 slug: /vault/requests/getstakebalance
+description: Use the StakeWise SDK getStakeBalance method to retrieve a user's staked balance and related data in a specific vault.
 ---
 
 #### Description:

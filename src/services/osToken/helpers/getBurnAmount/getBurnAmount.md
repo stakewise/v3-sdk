@@ -2,6 +2,7 @@
 id: getBurnAmount
 title: getBurnAmount
 slug: /osToken/helpers/getburnamount
+description: "StakeWise SDK getBurnAmount helper (deprecated): calculates how many osTokens to burn to fully withdraw your deposit."
 ---
 
 # Deprecated!

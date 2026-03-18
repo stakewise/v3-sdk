@@ -2,6 +2,7 @@
 id: getPosition
 title: getPosition
 slug: /osToken/requests/getposition
+description: "StakeWise SDK getPosition method (deprecated): retrieves user osToken position data including minted assets and health factor."
 ---
 
 # Deprecated!

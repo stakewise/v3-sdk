@@ -1,6 +1,7 @@
 ---
 id: getRewards
 slug: /distributorRewards/requests/getrewards
+description: Use the StakeWise SDK distributorRewards getRewards method to fetch currently claimable distributor reward tokens for a user.
 ---
 
 #### Description:
