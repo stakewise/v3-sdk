@@ -1,6 +1,6 @@
 ---
 id: getPermitSignature
-slug: sdk/api/utils/getpermitsignature
+slug: /sdk/api/utils/getpermitsignature
 description: Use the StakeWise SDK getPermitSignature utility to generate an ERC20 permit signature for gasless token approvals.
 ---
 

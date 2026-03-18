@@ -1,6 +1,6 @@
 ---
 id: getVaultFactory
-slug: sdk/api/vault/requests/getvaultfactory
+slug: /sdk/api/vault/requests/getvaultfactory
 description: Use the StakeWise SDK getVaultFactory method to get the vault factory contract address needed for vault creation.
 ---
 

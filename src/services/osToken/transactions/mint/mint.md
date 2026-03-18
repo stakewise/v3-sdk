@@ -1,6 +1,6 @@
 ---
 id: mint
-slug: sdk/api/osToken/transactions/mint
+slug: /sdk/api/osToken/transactions/mint
 description: Use the StakeWise SDK osToken mint method to mint osTokens based on your vault deposit, with health factor checks.
 ---
 

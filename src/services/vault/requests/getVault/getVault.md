@@ -1,6 +1,6 @@
 ---
 id: getVault
-slug: sdk/api/vault/requests/getvault
+slug: /sdk/api/vault/requests/getvault
 description: Use the StakeWise SDK getVault method to retrieve master data for a vault including APY, TVL, and configuration details.
 ---
 

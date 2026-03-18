@@ -1,6 +1,6 @@
 ---
 id: burn
-slug: sdk/api/osToken/transactions/burn
+slug: /sdk/api/osToken/transactions/burn
 description: Use the StakeWise SDK osToken burn method to burn osTokens and reduce your minted position in a vault.
 ---
 

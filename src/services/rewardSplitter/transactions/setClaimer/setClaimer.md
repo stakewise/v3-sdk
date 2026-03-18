@@ -1,6 +1,6 @@
 ---
 id: setClaimer
-slug: sdk/api/rewardSplitter/transactions/setclaimer
+slug: /sdk/api/rewardSplitter/transactions/setclaimer
 description: Use the StakeWise SDK setClaimer method to authorize an address to claim vault fees on behalf of reward splitter shareholders.
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: getPosition
 title: getPosition
-slug: sdk/api/osToken/requests/getposition
+slug: /sdk/api/osToken/requests/getposition
 description: "StakeWise SDK getPosition method (deprecated): retrieves user osToken position data including minted assets and health factor."
 ---
 

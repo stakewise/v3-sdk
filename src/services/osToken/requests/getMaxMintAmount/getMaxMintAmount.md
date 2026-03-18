@@ -1,6 +1,6 @@
 ---
 id: getMaxMintAmount
-slug: sdk/api/osToken/requests/getmaxmintamount
+slug: /sdk/api/osToken/requests/getmaxmintamount
 description: Use the StakeWise SDK getMaxMintAmount method to calculate the maximum number of osToken shares a user can mint.
 ---
 

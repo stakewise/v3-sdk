@@ -1,6 +1,6 @@
 ---
 id: getStakewiseStats
-slug: sdk/api/utils/getstakewisestats
+slug: /sdk/api/utils/getstakewisestats
 description: Use the StakeWise SDK getStakewiseStats utility to fetch protocol-wide statistics including TVL, user count, and total rewards.
 ---
 

@@ -1,6 +1,6 @@
 ---
 id: getExitQueuePositions
-slug: sdk/api/vault/requests/getexitqueuepositions
+slug: /sdk/api/vault/requests/getexitqueuepositions
 description: Use the StakeWise SDK getExitQueuePositions method to retrieve the withdrawal queue positions for a specific user.
 ---
 

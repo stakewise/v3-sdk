@@ -1,6 +1,6 @@
 ---
 id: getWhitelist
-slug: sdk/api/vault/requests/getwhitelist
+slug: /sdk/api/vault/requests/getwhitelist
 description: Use the StakeWise SDK getWhitelist method to fetch the list of whitelisted addresses eligible to stake in private vaults.
 ---
 

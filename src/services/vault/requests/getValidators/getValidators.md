@@ -1,6 +1,6 @@
 ---
 id: getValidators
-slug: sdk/api/vault/requests/getvalidators
+slug: /sdk/api/vault/requests/getvalidators
 description: Use the StakeWise SDK getValidators method to retrieve the list of running validators for a specific vault.
 ---
 
