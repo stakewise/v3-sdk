@@ -1,7 +1,7 @@
 ---
 id: getMaxWithdraw
 title: getMaxWithdraw
-slug: sdk/api/vault/requests/getmaxwithdraw
+slug: /sdk/api/vault/requests/getmaxwithdraw
 description: "StakeWise SDK getMaxWithdraw method (deprecated): calculates the maximum withdrawal amount based on staked and minted assets."
 ---
 

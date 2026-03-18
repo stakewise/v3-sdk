@@ -1,6 +1,6 @@
 ---
 id: updateFeeRecipients
-slug: sdk/api/rewardSplitter/transactions/updatefeerecipients
+slug: /sdk/api/rewardSplitter/transactions/updatefeerecipients
 description: Use the StakeWise SDK updateFeeRecipients method to modify reward splitter fee recipients and their share proportions.
 ---
 

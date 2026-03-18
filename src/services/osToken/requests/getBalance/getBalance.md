@@ -1,6 +1,6 @@
 ---
 id: getBalance
-slug: sdk/api/osToken/requests/getbalance
+slug: /sdk/api/osToken/requests/getbalance
 description: Use the StakeWise SDK osToken getBalance method to retrieve a user's osToken balance for a specific vault.
 ---
 

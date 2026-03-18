@@ -1,6 +1,6 @@
 ---
 id: claimQueue
-slug: sdk/api/boost/transactions/claimqueue
+slug: /sdk/api/boost/transactions/claimqueue
 description: Use the StakeWise SDK boost claimQueue method to claim assets from the unboost queue after unlocking osTokens.
 ---
 

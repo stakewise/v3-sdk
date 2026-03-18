@@ -1,6 +1,6 @@
 ---
 id: getRewardSplitters
-slug: sdk/api/vault/requests/getrewardsplitters
+slug: /sdk/api/vault/requests/getrewardsplitters
 description: Use the StakeWise SDK getRewardSplitters method to fetch reward splitter contracts that distribute vault rewards among recipients.
 ---
 

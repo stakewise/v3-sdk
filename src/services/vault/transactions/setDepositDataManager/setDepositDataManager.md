@@ -1,6 +1,6 @@
 ---
 id: setDepositDataManager
-slug: sdk/api/vault/transactions/setdepositdatamanager
+slug: /sdk/api/vault/transactions/setdepositdatamanager
 description: Use the StakeWise SDK setDepositDataManager method to assign a deposit data manager to v2+ vaults.
 ---
 

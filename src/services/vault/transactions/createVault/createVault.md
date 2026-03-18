@@ -1,6 +1,6 @@
 ---
 id: create
-slug: sdk/api/vault/transactions/create
+slug: /sdk/api/vault/transactions/create
 description: Use the StakeWise SDK createVault method to deploy a new staking vault with custom configuration, fees, and metadata.
 ---
 
