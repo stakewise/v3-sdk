@@ -39,9 +39,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SYNC_DOCS_SSH_KEY }}
 
-      - name: Install dependencies securely
+      - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile --ignore-scripts --audit false --fund false
+          pnpm install
 
       - name: Version check
         run: pnpm check:version

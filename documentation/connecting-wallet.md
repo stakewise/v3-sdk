@@ -226,3 +226,4 @@ const setupEventHandlers = (provider: EIP1193Provider) => {
 
 setupEventHandlers(eip1193Provider)
 ```
+
