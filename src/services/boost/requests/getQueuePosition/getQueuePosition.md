@@ -1,6 +1,7 @@
 ---
 id: getQueuePosition
 slug: /boost/requests/getqueueposition
+description: Use the StakeWise SDK boost getQueuePosition method to retrieve unlock queue position data for a user's boosted osTokens.
 ---
 
 #### Description:

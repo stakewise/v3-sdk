@@ -2,6 +2,7 @@
 id: unboost-os-token
 title: Unboost osToken
 sidebar_position: 7
+description: Exit a leveraged boost position with the StakeWise SDK — repay Aave debt, unlock osToken collateral, and track the withdrawal queue.
 ---
 
 # Unboost osToken

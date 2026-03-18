@@ -1,6 +1,7 @@
 ---
 id: unlock
 slug: /boost/transactions/unlock
+description: Use the StakeWise SDK boost unlock method to unboost previously boosted osTokens by specifying a percentage to release.
 ---
 
 #### Description:

@@ -2,6 +2,7 @@
 id: get-user-data
 title: Get user data
 sidebar_position: 1
+description: Query user staking data from StakeWise vaults — balances, osToken positions, boost amounts, APY, exit queues, and action history.
 ---
 
 # Get user data
