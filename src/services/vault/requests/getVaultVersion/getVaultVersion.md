@@ -1,6 +1,6 @@
 ---
 id: getVaultVersion
-slug: /vault/requests/getvaultversion
+slug: sdk/api/vault/requests/getvaultversion
 description: Use the StakeWise SDK getVaultVersion method to retrieve the current version number of a specific vault contract.
 ---
 

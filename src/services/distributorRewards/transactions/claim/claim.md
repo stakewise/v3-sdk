@@ -1,6 +1,6 @@
 ---
 id: create
-slug: /distributorRewards/transactions/claim
+slug: sdk/api/distributorRewards/transactions/claim
 description: Use the StakeWise SDK distributorRewards claim method to claim token rewards from the merkle distributor V2 contract.
 ---
 
@@ -15,9 +15,9 @@ Claims rewards from the merkle distributor V2 contract.
 | Name              | Type       | Required | Description                                                                                                                            |
 |-------------------|------------|----------|----------------------------------------------------------------------------------------------------------------------------------------|
 | userAddress       | `string`   | **Yes**  | The address of the user initiating the action. This address will become the owner of the reward splitter and must be the vault admin   |
-| proof             | `string[]` | **Yes**  | The Merkle tree proof. Get it from [sdk.distributorRewards.getRewards](/distributorRewards/requests/getrewards)                        |
-| tokens            | `string[]` | **Yes**  | An array of addresses of the tokens. Get it from [sdk.distributorRewards.getRewards](/distributorRewards/requests/getrewards)          |
-| cumulativeAmounts | `string[]` | **Yes**  | An array of cumulative amounts of the tokens. Get it from [sdk.distributorRewards.getRewards](/distributorRewards/requests/getrewards) |
+| proof             | `string[]` | **Yes**  | The Merkle tree proof. Get it from [sdk.distributorRewards.getRewards](/sdk/api/distributorRewards/requests/getrewards)                        |
+| tokens            | `string[]` | **Yes**  | An array of addresses of the tokens. Get it from [sdk.distributorRewards.getRewards](/sdk/api/distributorRewards/requests/getrewards)          |
+| cumulativeAmounts | `string[]` | **Yes**  | An array of cumulative amounts of the tokens. Get it from [sdk.distributorRewards.getRewards](/sdk/api/distributorRewards/requests/getrewards) |
 
 #### Example:
 

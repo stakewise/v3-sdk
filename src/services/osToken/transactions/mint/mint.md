@@ -1,13 +1,13 @@
 ---
 id: mint
-slug: /osToken/transactions/mint
+slug: sdk/api/osToken/transactions/mint
 description: Use the StakeWise SDK osToken mint method to mint osTokens based on your vault deposit, with health factor checks.
 ---
 
 #### Description:
 
 Getting osToken. The amount of token you can get depends on the user's current deposit in the vault.
-Use data from methods [sdk.osToken.getMaxMint](/osToken/requests/getmaxmint) and [sdk.osToken.getHealthFactor](/osToken/helpers/gethealthfactor) to block a call to mint() if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction would make the position unhealthy
+Use data from methods [sdk.osToken.getMaxMint](/sdk/api/osToken/requests/getmaxmint) and [sdk.osToken.getHealthFactor](/sdk/api/osToken/helpers/gethealthfactor) to block a call to mint() if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction would make the position unhealthy
 
 #### Arguments:
 

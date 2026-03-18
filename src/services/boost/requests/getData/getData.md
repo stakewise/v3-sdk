@@ -1,6 +1,6 @@
 ---
 id: getData
-slug: /boost/requests/getdata
+slug: sdk/api/boost/requests/getdata
 description: Use the StakeWise SDK boost getData method to retrieve boost and leverage strategy data for a vault user.
 ---
 

@@ -1,6 +1,6 @@
 ---
 id: getUserApy
-slug: /vault/requests/getuserapy
+slug: sdk/api/vault/requests/getuserapy
 description: Use the StakeWise SDK getUserApy method to get a user's current APY in a vault, accounting for minting and boost.
 ---
 

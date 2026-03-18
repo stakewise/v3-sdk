@@ -1,6 +1,6 @@
 ---
 id: getUserRewards
-slug: /vault/requests/getuserrewards
+slug: sdk/api/vault/requests/getuserrewards
 description: Use the StakeWise SDK getUserRewards method to fetch daily staking rewards for a user within a specified date range.
 ---
 

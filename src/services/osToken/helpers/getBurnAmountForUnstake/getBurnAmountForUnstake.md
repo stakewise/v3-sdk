@@ -1,6 +1,6 @@
 ---
 id: getBurnAmountForUnstake
-slug: /osToken/helpers/getburnamountforunstake
+slug: sdk/api/osToken/helpers/getburnamountforunstake
 description: Use the StakeWise SDK getBurnAmountForUnstake helper to calculate osTokens that must be burned to enable full unstaking.
 ---
 

@@ -1,6 +1,6 @@
 ---
 id: getStakerActions
-slug: /vault/requests/getstakeractions
+slug: sdk/api/vault/requests/getstakeractions
 description: Use the StakeWise SDK getStakerActions method to fetch a paginated list of user interactions and events for a vault.
 ---
 

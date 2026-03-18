@@ -1,6 +1,6 @@
 ---
 id: getVault
-slug: /vault/requests/getvault
+slug: sdk/api/vault/requests/getvault
 description: Use the StakeWise SDK getVault method to retrieve master data for a vault including APY, TVL, and configuration details.
 ---
 
@@ -75,8 +75,8 @@ type Output = {
 | `whitelistManager`          | Whitelist manager |
 | `vaultAddress`              | Address of vault |
 | `mevRecipient`              | Validator fee recipient |
-| `whitelistCount`            | Number of addresses in the [whitelist](/vault/requests/getwhitelist) |
-| `blocklistCount`            | Number of addresses in the [blocklist](/vault/requests/getblocklist) |
+| `whitelistCount`            | Number of addresses in the [whitelist](/sdk/api/vault/requests/getwhitelist) |
+| `blocklistCount`            | Number of addresses in the [blocklist](/sdk/api/vault/requests/getblocklist) |
 | `imageUrl`                  | Link for vault logo |
 | `blocklistManager`          | Blocklist manager |
 | `depositDataManager`        | Keys manager address |

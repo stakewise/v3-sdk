@@ -1,6 +1,6 @@
 ---
 id: unlock
-slug: /boost/transactions/unlock
+slug: sdk/api/boost/transactions/unlock
 description: Use the StakeWise SDK boost unlock method to unboost previously boosted osTokens by specifying a percentage to release.
 ---
 
@@ -15,7 +15,7 @@ Unboost your boosted osToken
 | percent              | `number`   | **Yes**  | The percent to unboost (100 at max)                 |
 | userAddress          | `string`   | **Yes**  | The user address                                    |
 | vaultAddress         | `string`   | **Yes**  | The address of the vault where the osTokens boosted |
-| leverageStrategyData | `LeverageStrategyData` | **No**  | Leverage strategy data from [sdk.boost.getLeverageStrategyData](/boost/requests/getleveragestrategydata). If not provided, it will be fetched automatically during the transaction |
+| leverageStrategyData | `LeverageStrategyData` | **No**  | Leverage strategy data from [sdk.boost.getLeverageStrategyData](/sdk/api/boost/requests/getleveragestrategydata). If not provided, it will be fetched automatically during the transaction |
 
 ```ts
 type LeverageStrategyData = {
