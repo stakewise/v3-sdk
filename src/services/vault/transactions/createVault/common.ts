@@ -1,19 +1,40 @@
-import { AbiCoder, MaxUint256 } from 'ethers'
 import type { CreateVaultTransactionInput } from './types'
-import validateCreateVaultArgs from './validateCreateVaultArgs'
+import getVaultFactory from '../../requests/getVaultFactory'
+import { validateCreateVaultArgs, getEncodeBytes } from './helpers'
 import { PayableOverrides } from '../../../../contracts/types/common'
 import { constants, Network, validateArgs, VaultType } from '../../../../helpers'
 
 
 export const commonLogic = async (values: CreateVaultTransactionInput) => {
   const {
-    type = VaultType.Default, vaultToken, capacity, keysManagerFee, isOwnMevEscrow = false, metadataIpfsHash = '',
-    contracts, userAddress, options,
+    options,
+    capacity,
+    vaultToken,
+    userAddress,
+    keysManagerFee,
+    isOwnMevEscrow = false,
+    type = VaultType.Default,
   } = values
+
+  const isMainnet = [ Network.Mainnet, Network.Hoodi ].includes(options.network)
+  const isMetaVault = [ VaultType.MetaVault, VaultType.PrivateMetaVault ].includes(type)
+
+  const vaultFactory = getVaultFactory({
+    ...values,
+    isErc20: Boolean(vaultToken),
+    vaultType: type,
+  }) as typeof isMetaVault extends true
+    ? StakeWise.ABI.MetaVaultFactory
+    : StakeWise.ABI.VaultFactory
+
 
   validateArgs.address({ userAddress })
   validateCreateVaultArgs.vaultType(type)
-  validateCreateVaultArgs.mevEscrow(isOwnMevEscrow)
+  validateCreateVaultArgs.metaVault({ type, vaultToken, isMainnet, isOwnMevEscrow })
+
+  if (!isMetaVault) {
+    validateCreateVaultArgs.mevEscrow(isOwnMevEscrow)
+  }
 
   if (vaultToken) {
     validateCreateVaultArgs.vaultToken(vaultToken)
@@ -28,41 +49,16 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
     validateCreateVaultArgs.keysManagerFee(keysManagerFee)
   }
 
-  const vaultFactories = vaultToken ? {
-    [VaultType.Default]: contracts.factories.erc20Vault,
-    [VaultType.Private]: contracts.factories.erc20PrivateVault,
-    [VaultType.Blocklist]: contracts.factories.erc20BlocklistVault,
-  } : {
-    [VaultType.Default]: contracts.factories.vault,
-    [VaultType.Private]: contracts.factories.privateVault,
-    [VaultType.Blocklist]: contracts.factories.blocklistVault,
-  }
+  const encodedParams = getEncodeBytes({ ...values, isMetaVault })
 
-  const vaultFactory = vaultFactories[type]
-  const defaultAbiCoder = AbiCoder.defaultAbiCoder()
-
-  const formattedParams = {
-    feePercent: (keysManagerFee || 0) * 100,
-    capacity: capacity || MaxUint256,
-    symbol: vaultToken?.symbol,
-    name: vaultToken?.name,
-  }
-
-  const encodedParams = vaultToken
-    ? defaultAbiCoder.encode(
-      [ 'tuple(uint256 capacity, uint16 feePercent, string name, string symbol, string metadataIpfsHash)' ],
-      [ [ formattedParams.capacity, formattedParams.feePercent, formattedParams.name, formattedParams.symbol, metadataIpfsHash ] ]
-    )
-    : defaultAbiCoder.encode(
-      [ 'tuple(uint256 capacity, uint16 feePercent, string metadataIpfsHash)' ],
-      [ [ formattedParams.capacity, formattedParams.feePercent, metadataIpfsHash ] ]
-    )
-
-  const isStakeNativeToken = [ Network.Mainnet, Network.Hoodi ].includes(options.network)
-
-  const params: [ string, boolean, PayableOverrides ] = isStakeNativeToken
+  const params: [ string, boolean, PayableOverrides ] = isMainnet
     ? [ encodedParams, isOwnMevEscrow, { value: constants.blockchain.gwei } ]
     : [ encodedParams, isOwnMevEscrow, {} ]
+
+  if (isMetaVault) {
+    // MetaVault does not support isOwnMevEscrow
+    params.splice(1, 1)
+  }
 
   return {
     vaultFactory,

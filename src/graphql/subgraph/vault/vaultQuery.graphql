@@ -19,6 +19,7 @@ query Vault($address: ID!) {
     mevEscrow
     tokenName
     isGenesis
+    canHarvest
     feePercent
     isMetaVault
     totalAssets
@@ -29,14 +30,19 @@ query Vault($address: ID!) {
     tokenSymbol
     feeRecipient
     queuedShares
+    exitingAssets
     lastFeePercent
     blocklistCount
     whitelistCount
+    exitingTickets
     depositDataRoot
     isCollateralized
     blocklistManager
+    ejectingSubVault
     validatorsManager
+    subVaultsRegistry
     depositDataManager
+    pendingMetaSubVault
     allocatorMaxBoostApy
     lastFeeUpdateTimestamp
   }

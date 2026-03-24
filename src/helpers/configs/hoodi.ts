@@ -7,7 +7,8 @@ export default {
   network: constants.chains.hoodi,
   api: {
     backend: 'https://hoodi-api.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod',
+    // TODO change (+ change .graphqlconfig)
+    subgraph: 'https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
   },
   pages: {
     beaconchain: 'https://hoodi.beaconcha.in/',
@@ -43,8 +44,15 @@ export default {
 
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
+
+      metavault: '0x721C63fc53C432FC0feA4e0775e7ABFd29983347',
+      erc20Metavault: '0x0aca1A126d0636bf74086DD077b47366a1353D4D',
+
+      privateMetavault: '0xa11f61D2687993CF29B6aEb8f9EFb3147F34Dbb6',
+      erc20PrivateMetavault: '0xCCf6D110181330fB8b62de8FA37fd0a905665376',
     },
     special: {
+      balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
       stakeCalculator: '0xaE9A192Ed2030444eB9323C592F1b85801EA0Ec3',
       leverageStrategy: '0x154628AC72533aad39aBdcaE2055Dced0b4Eef4D',
       leverageStrategyV2: '0xe382BD0c48A7dd435bE911e0f663cbCAa94AF965',

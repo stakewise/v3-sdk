@@ -7,7 +7,7 @@ import type { VaultMulticallBaseInput } from '../../../../../contracts'
 
 
 export const commonLogic = (values: DepositInput) => {
-  const { options, contracts, vaultAddress, userAddress, referrerAddress = ZeroAddress, assets } = values
+  const { contracts, vaultAddress, userAddress, referrerAddress = ZeroAddress, assets } = values
 
   validate(values)
 
@@ -19,7 +19,6 @@ export const commonLogic = (values: DepositInput) => {
   ]
 
   const vaultContract = contracts.helpers.createVault({
-    options: { chainId: options.network },
     vaultAddress,
   })
 

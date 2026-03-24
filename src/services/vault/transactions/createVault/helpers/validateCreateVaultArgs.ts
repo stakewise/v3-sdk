@@ -1,5 +1,7 @@
 import { MaxUint256 } from 'ethers'
-import { VaultType, constants } from '../../../../helpers'
+
+import { CreateVaultCommonInput } from '../types'
+import { VaultType, constants } from '../../../../../helpers'
 
 
 const capacity = (value: bigint) => {
@@ -26,7 +28,7 @@ const vaultType = (value: VaultType) => {
   }
 }
 
-const vaultToken = (vaultToken: { name: string, symbol: string }) => {
+const vaultToken = (vaultToken: CreateVaultCommonInput['vaultToken']) => {
   if (typeof vaultToken !== 'object') {
     throw new Error(`The "vaultToken" argument must be an object`)
   }
@@ -65,9 +67,41 @@ const keysManagerFee = (value: number) => {
   }
 }
 
+type GnosisMetaVaultInput = Pick<CreateVaultCommonInput, 'vaultToken' | 'isOwnMevEscrow' | 'type'> & {
+  isMainnet: boolean
+}
+
+const metaVault = (values: GnosisMetaVaultInput) => {
+  const { type, vaultToken, isMainnet, isOwnMevEscrow } = values
+
+  const isMetaVault = [
+    VaultType.MetaVault,
+    VaultType.PrivateMetaVault,
+  ].includes(type as VaultType)
+
+  if (isMetaVault) {
+    return
+  }
+
+  if (isOwnMevEscrow) {
+    throw new Error('MetaVault does not support the "isOwnMevEscrow" parameter.')
+  }
+
+  if (!isMainnet) {
+    if (vaultToken) {
+      throw new Error('MetaVault does not support the ERC20 token on gnosis chain.')
+    }
+
+    if (type === VaultType.PrivateMetaVault) {
+      throw new Error('Gnosis chain does not support private MetaVault.')
+    }
+  }
+}
+
 
 export default {
   capacity,
+  metaVault,
   mevEscrow,
   vaultType,
   vaultToken,
