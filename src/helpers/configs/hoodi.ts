@@ -8,7 +8,7 @@ export default {
   api: {
     backend: 'https://hoodi-api.stakewise.io/graphql',
     // TODO change (+ change .graphqlconfig)
-    subgraph: 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
+    subgraph: 'https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
   },
   pages: {
     beaconchain: 'https://hoodi.beaconcha.in/',

@@ -8,8 +8,8 @@ export default {
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
     subgraph: [
-      'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
-      'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
+      'https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
+      'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
     ],
   },
   pages: {
