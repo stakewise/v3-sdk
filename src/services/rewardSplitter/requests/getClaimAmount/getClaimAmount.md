@@ -1,6 +1,7 @@
 ---
 id: getClaimAmount
-slug: /rewardSplitter/requests/getclaimamount
+slug: /sdk/api/rewardSplitter/requests/getclaimamount
+description: Use the StakeWise SDK getClaimAmount method to calculate claimable assets from active and inactive reward splitters.
 ---
 
 #### Description:

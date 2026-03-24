@@ -1,6 +1,7 @@
 ---
 id: getHealthFactor
-slug: /osToken/helpers/gethealthfactor
+slug: /sdk/api/osToken/helpers/gethealthfactor
+description: Use the StakeWise SDK getHealthFactor helper to assess the health of an osToken position relative to liquidation thresholds.
 ---
 
 #### Description:
@@ -10,9 +11,9 @@ Get the health of the position
 #### Arguments:
 | Name             | Type     | Required | Description                                          |
 |------------------|----------|----------|------------------------------------------------------|
-| liqThresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
-| mintedAssets     | `bigint` | **Yes**  | [sdk.osToken.getPosition](/osToken/requests/getposition)              |
-| stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
+| liqThresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/sdk/api/vault/requests/getvault)               |
+| mintedAssets     | `bigint` | **Yes**  | [sdk.osToken.getPosition](/sdk/api/osToken/requests/getposition)              |
+| stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/sdk/api/vault/requests/getstakebalance) |
 
 #### Returns:
 

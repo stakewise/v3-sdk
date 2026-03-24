@@ -1,6 +1,7 @@
 ---
 id: getLeverageStrategyProxy
-slug: /boost/requests/getleveragestrategyproxy
+slug: /sdk/api/boost/requests/getleveragestrategyproxy
+description: Use the StakeWise SDK getLeverageStrategyProxy method to get the leverage strategy proxy contract address for boosting.
 ---
 
 #### Description:

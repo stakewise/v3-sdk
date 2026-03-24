@@ -2,6 +2,7 @@
 id: boost-os-token
 title: Boost osToken
 sidebar_position: 6
+description: Boost staking rewards with StakeWise SDK — leverage osTokens as Aave collateral to amplify your vault staking position.
 ---
 
 # Boost osToken

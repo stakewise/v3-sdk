@@ -2,6 +2,7 @@
 id: installation-setup
 title: Installation and Setup
 sidebar_position: 1
+description: Install the StakeWise V3 SDK via npm or yarn, configure GraphQL loaders for Webpack, Next.js, or Vite, and create an SDK instance.
 ---
 
 ## Installation

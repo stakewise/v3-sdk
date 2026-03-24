@@ -2,6 +2,7 @@
 id: get-vault-data
 title: Get vault data
 sidebar_position: 0
+description: Fetch StakeWise vault data using the SDK — retrieve vault details, stats charts, validators, whitelist, and blocklist information.
 ---
 
 # Get vault data

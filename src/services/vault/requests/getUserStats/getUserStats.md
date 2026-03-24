@@ -1,6 +1,7 @@
 ---
 id: getUserStats
-slug: /vault/requests/getuserstats
+slug: /sdk/api/vault/requests/getuserstats
+description: Use the StakeWise SDK getUserStats method to retrieve user stats for a vault, useful for building performance charts.
 ---
 
 #### Description:

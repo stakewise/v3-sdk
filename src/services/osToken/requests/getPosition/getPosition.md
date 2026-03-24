@@ -1,7 +1,8 @@
 ---
 id: getPosition
 title: getPosition
-slug: /osToken/requests/getposition
+slug: /sdk/api/osToken/requests/getposition
+description: "StakeWise SDK getPosition method (deprecated): retrieves user osToken position data including minted assets and health factor."
 ---
 
 # Deprecated!
@@ -14,8 +15,8 @@ User position data
 #### Arguments:
 | Name             | Type     | Required | Description                                                  |
 |------------------|----------|----------|--------------------------------------------------------------|
-| liqThresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/vault/requests/getvault)               |
-| stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/vault/requests/getstakebalance) |
+| liqThresholdPercent | `bigint` | **Yes**  | [sdk.vault.getVault](/sdk/api/vault/requests/getvault)               |
+| stakedAssets     | `bigint` | **Yes**  | [sdk.vault.getStakeBalance](/sdk/api/vault/requests/getstakebalance) |
 | userAddress      | `string` | **Yes**  | The user address                                             |
 | vaultAddress     | `string` | **Yes**  | The address of the vault                                     |
 
@@ -39,7 +40,7 @@ type Output = {
 |----------------------|-----------------------------------------------------------------|
 | `minted.shares`      | Balance                                                         |
 | `minted.assets`      | Balance in ETH                                                  |
-| `healthFactor`       | [sdk.osToken.getHealthFactor](/osToken/helpers/gethealthfactor) |
+| `healthFactor`       | [sdk.osToken.getHealthFactor](/sdk/api/osToken/helpers/gethealthfactor) |
 | `protocolFeePercent` | Usage fee percent                                               |
 
 #### Example:

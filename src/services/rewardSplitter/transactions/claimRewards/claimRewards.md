@@ -1,6 +1,7 @@
 ---
 id: claimRewards
-slug: /rewardSplitter/transactions/claimrewards
+slug: /sdk/api/rewardSplitter/transactions/claimrewards
+description: Use the StakeWise SDK rewardSplitter claimRewards method to claim accumulated rewards from a reward splitter contract.
 ---
 
 #### Description:

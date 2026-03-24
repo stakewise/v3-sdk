@@ -1,6 +1,7 @@
 ---
 id: getVaultStats
-slug: /vault/requests/getvaultstats
+slug: /sdk/api/vault/requests/getvaultstats
+description: Use the StakeWise SDK getVaultStats method to fetch vault performance statistics over time for building charts.
 ---
 
 #### Description:

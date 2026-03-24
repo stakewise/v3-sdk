@@ -1,6 +1,7 @@
 ---
 id: withdraw
-slug: /vault/transactions/withdraw
+slug: /sdk/api/vault/transactions/withdraw
+description: Use the StakeWise SDK withdraw method to unstake and withdraw funds from a vault, with health factor validation.
 ---
 
 #### Description:

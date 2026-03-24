@@ -1,6 +1,7 @@
 ---
 id: updateFeeRecipients
-slug: /rewardSplitter/transactions/updatefeerecipients
+slug: /sdk/api/rewardSplitter/transactions/updatefeerecipients
+description: Use the StakeWise SDK updateFeeRecipients method to modify reward splitter fee recipients and their share proportions.
 ---
 
 #### Description:
@@ -17,7 +18,7 @@ Please note that only the vault admin, who is also the owner of the reward split
 | vaultAddress          | `string`                                     | **Yes**  | The address of the vault                                                                                                                                                                                                                                                                                   |
 | rewardSplitterAddress | `string`                                     | **Yes**  | The address of the reward splitter                                                                                                                                                                                                                                                                         |
 | feeRecipients         | `Array<{ address: string, shares: bigint }>` | **Yes**  | The list of the vault fee recipients with their addresses and shares amount. For simplicity, we suggest setting the amount as a percentage converted to a BigInt value. For example, for 100% shares: `parseEther('100')`                                                                                  |
-| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](/vault/requests/getrewardsplitters) action |
+| oldFeeRecipients      | `Array<{ address: string, shares: bigint }>` | **No**   | The current list of the vault fee recipients that will be updated within this action. It is needed to calculate how many shares will be added or removed from each fee recipient. If not provided, it will be requested from the [sdk.vault.getRewardSplitters](/sdk/api/vault/requests/getrewardsplitters) action |
 
 #### Example:
 

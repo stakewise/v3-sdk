@@ -1,6 +1,7 @@
 ---
 id: getPeriodicDistributions
-slug: /vault/requests/getperiodicdistributions
+slug: /sdk/api/vault/requests/getperiodicdistributions
+description: Use the StakeWise SDK getPeriodicDistributions method to fetch periodic distribution data for additional vault incentives.
 ---
 
 #### Description:

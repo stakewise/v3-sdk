@@ -1,6 +1,7 @@
 ---
 id: getLeverageStrategyData
-slug: /boost/requests/getleveragestrategydata
+slug: /sdk/api/boost/requests/getleveragestrategydata
+description: Use the StakeWise SDK getLeverageStrategyData method to check the leverage strategy version and upgrade status.
 ---
 
 #### Description:
