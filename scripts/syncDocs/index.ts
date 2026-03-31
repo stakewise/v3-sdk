@@ -1,11 +1,11 @@
 import path from 'path'
 import fs from 'fs-extra'
 import { glob } from 'glob'
+import { execSync } from 'child_process'
 import simpleGit from 'simple-git'
 
 import log from './log'
 import createPullRequest from './createPullRequest'
-import sendDiscordNotification from './sendDiscordNotification'
 
 
 const branchName = 'sync-sdk'
@@ -15,9 +15,32 @@ const docsRepoPath = `${process.cwd()}/docs`
 const documentationPath = `${process.cwd()}/documentation`
 const docsRepoUrl = 'git@github.com:stakewise/stakewise-docs.git'
 
-const commitAuthor = process.env.COMMIT_AUTHOR || 'unknown'
-const syncDocsToken = process.env.SYNC_DOCS_TOKEN
-const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
+const getGitUserName = () => {
+  try {
+    return execSync('git config user.name', { encoding: 'utf-8' }).trim()
+  }
+  catch {
+    return 'unknown'
+  }
+}
+
+const getGitHubToken = () => {
+  try {
+    const output = execSync(
+      'echo "protocol=https\nhost=github.com" | git credential fill',
+      { encoding: 'utf-8', shell: '/bin/sh' },
+    )
+    const match = output.match(/password=(.+)/)
+
+    return match?.[1]?.trim()
+  }
+  catch {
+    return undefined
+  }
+}
+
+const commitAuthor = getGitUserName()
+const syncDocsToken = getGitHubToken()
 
 const changeTargetPath = (path: string) => path
   .replace('services/', 'API/')
@@ -36,6 +59,11 @@ const changeTargetPath = (path: string) => path
   let git = simpleGit()
 
   log.info('🤖 Start of documentation synchronization...')
+
+  if (!syncDocsToken) {
+    log.error('GitHub token not found. Make sure your git credentials for github.com are configured.')
+    process.exit(1)
+  }
 
   try {
     const isExist = await fs.pathExists(docsRepoPath)
@@ -103,11 +131,7 @@ const changeTargetPath = (path: string) => path
 
     log.success('Files are copied')
 
-    await git
-      .addConfig('user.name', 'github-actions[bot]')
-      .addConfig('user.email', 'github-actions[bot]@users.noreply.github.com')
-
-    log.success(`GitHub Commit signer is set.`)
+    log.info(`👤 Commit author: ${commitAuthor}`)
 
     await git.add('.')
 
@@ -122,7 +146,7 @@ const changeTargetPath = (path: string) => path
 
     log.success(`Changes are pushed to '${branchName}' branch.`)
 
-    const prData = await createPullRequest({
+    await createPullRequest({
       authToken: syncDocsToken,
       repo: 'stakewise-docs',
       owner: 'stakewise',
@@ -130,16 +154,13 @@ const changeTargetPath = (path: string) => path
       branchName,
       title,
     })
-
-    await sendDiscordNotification({
-      discordWebhookUrl,
-      author: commitAuthor,
-      prUrl: prData.html_url,
-      filesCount: filesCount,
-    })
   }
   catch (error) {
     log.error(`${error}`)
     process.exit(1)
-  } 
+  }
+  finally {
+    await fs.remove(docsRepoPath)
+    log.success('🧹 Cloned docs repository has been cleaned up.')
+  }
 })()
