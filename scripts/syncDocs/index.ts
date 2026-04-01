@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs-extra'
 import { glob } from 'glob'
-import { execSync } from 'child_process'
 import simpleGit from 'simple-git'
 import { execSync } from 'child_process'
 
@@ -155,13 +154,13 @@ const changeTargetPath = (path: string) => path
       branchName,
       title,
     })
-
-    await fs.remove(docsRepoPath)
-    log.success('🧹 Cloned docs repository has been cleaned up.')
   }
   catch (error) {
     log.error(`${error}`)
-    await fs.remove(docsRepoPath)
     process.exit(1)
+  }
+  finally {
+    await fs.remove(docsRepoPath)
+    log.success('🧹 Cloned docs repository has been cleaned up.')
   }
 })()
