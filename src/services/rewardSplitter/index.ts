@@ -13,7 +13,7 @@ class RewardSplitter extends RewardSplitterTransactions {
 
   /**
    * @description Calculates the amount of assets that the user can claim from the reward splitter.
-   * @see https://docs.stakewise.io/rewardSplitter/requests/getclaimamount
+   * @see https://docs.stakewise.io/sdk/api/rewardSplitter/requests/getclaimamount
    */
   public getClaimAmount(values: StakeWise.ExtractInput<GetClaimAmountInput>) {
     return getClaimAmount({ ...this.params, ...values })

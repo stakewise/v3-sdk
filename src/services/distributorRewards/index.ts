@@ -12,7 +12,7 @@ class DistributorRewards extends DistributorRewardsTransactions {
 
   /**
    * @description Returns the set of distributor rewards tokens that are currently claimable.
-   * @see https://docs.stakewise.io/distributorRewards/requests/getrewards
+   * @see https://docs.stakewise.io/sdk/api/distributorRewards/requests/getrewards
    */
   public getRewards(values: StakeWise.ExtractInput<GetRewardsInput>) {
     return getRewards({ ...this.params, ...values })

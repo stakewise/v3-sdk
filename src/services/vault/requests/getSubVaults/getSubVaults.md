@@ -1,6 +1,6 @@
 ---
 id: getSubVaults
-slug: /vault/requests/getsubvaults
+slug: /sdk/api/vault/requests/getsubvaults
 ---
 
 #### Description:

@@ -1,6 +1,6 @@
 ---
 id: rejectSubVault
-slug: /vault/transactions/rejectsubvault
+slug: /sdk/api/vault/transactions/rejectsubvault
 ---
 
 #### Description:

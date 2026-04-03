@@ -1,3 +1,4 @@
 sh ./scripts/pre-push.sh
+sh ./scripts/checkDocsLinks.sh
 
 npm run lint

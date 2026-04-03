@@ -12,8 +12,9 @@ SLUGS=$(grep -r "^slug:" src --include="*.md" 2>/dev/null \
   | tr '[:upper:]' '[:lower:]' \
   | sort -u)
 
-URLS=$(grep -roh "https://docs\.stakewise\.io/[^\"' )\`>]*" src \
-  --include="*.ts" --include="*.tsx" \
+URLS=$(grep -roh "https://docs\.stakewise\.io/[^\"' )\`>]*" . \
+  --include="*.ts" --include="*.tsx" --include="*.md" --include="*.mdx" \
+  --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=docs --exclude-dir=dist \
   2>/dev/null \
   | sed -E 's/\\n$//' \
   | sed -E 's/[.,;)]+$//' \

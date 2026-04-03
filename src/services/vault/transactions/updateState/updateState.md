@@ -1,6 +1,6 @@
 ---
 id: updateState
-slug: /vault/transactions/updatestate
+slug: /sdk/api/vault/transactions/updatestate
 ---
 
 #### Description:

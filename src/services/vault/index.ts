@@ -34,7 +34,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Returns the master data of the vault.
-   * @see https://docs.stakewise.io/vault/requests/getvault
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getvault
   */
   public getVault(values: StakeWise.ExtractInput<GetVaultInput>) {
     return getVault({ ...this.params, ...values })
@@ -42,7 +42,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Necessary to update the vault state.
-   * @see https://docs.stakewise.io/vault/requests/getharvestparams
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getharvestparams
   */
   public getHarvestParams(values: StakeWise.ExtractInput<GetHarvestParamsInput>) {
     return getHarvestParams({ ...this.params, ...values })
@@ -50,7 +50,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Getting user's exit queue positions.
-   * @see https://docs.stakewise.io/vault/requests/getexitqueuepositions
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getexitqueuepositions
   */
   public getExitQueuePositions(values: StakeWise.ExtractInput<GetExitQueuePositionsInput>) {
     return getExitQueuePositions({ ...this.params, ...values })
@@ -58,7 +58,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Fetch the list of created reward splitters.
-   * @see https://docs.stakewise.io/vault/requests/getrewardsplitters
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getrewardsplitters
   */
   public getRewardSplitters(values: StakeWise.ExtractInput<GetRewardSplittersInput>) {
     return getRewardSplitters({ ...this.params, ...values })
@@ -66,7 +66,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Get a list of interactions with the vault.
-   * @see https://docs.stakewise.io/vault/requests/getstakeractions
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getstakeractions
   */
   public getStakerActions(values: StakeWise.ExtractInput<GetStakerActionsInput>) {
     return getStakerActions({ ...this.params, ...values })
@@ -74,7 +74,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Getting user's balance in the vault.
-   * @see https://docs.stakewise.io/vault/requests/getstakebalance
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getstakebalance
   */
   public getStakeBalance(values: StakeWise.ExtractInput<GetStakeBalanceInput>) {
     return getStakeBalance({ ...this.params, ...values })
@@ -82,7 +82,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Daily rewards for the user.
-   * @see https://docs.stakewise.io/vault/requests/getuserrewards
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getuserrewards
   */
   public getUserRewards(values: StakeWise.ExtractInput<GetUserRewardsInput>) {
     return getUserRewards({ ...this.params, ...values })
@@ -91,7 +91,7 @@ class Vault extends VaultTransactions {
   /**
    * @description How much a user can withdraw. Deprecated.
    * @deprecated Use new getMaxWithdrawAmount method
-   * @see https://docs.stakewise.io/vault/requests/getmaxwithdraw
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getmaxwithdraw
   */
   public getMaxWithdraw(values: StakeWise.ExtractInput<GetMaxWithdrawInput>) {
     return getMaxWithdraw({ ...this.params, ...values })
@@ -99,7 +99,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Getting the vault current version.
-   * @see https://docs.stakewise.io/vault/requests/getvaultversion
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getvaultversion
   */
   public getVaultVersion(values: StakeWise.ExtractInput<GetVaultVersionInput>) {
     return getVaultVersion({ ...this.params, ...values })
@@ -107,7 +107,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Getting the factory to vault creation.
-   * @see https://docs.stakewise.io/vault/requests/getvaultfactory
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getvaultfactory
   */
   public getVaultFactory(values: StakeWise.ExtractInput<GetVaultFactoryInput>) {
     return getVaultFactory({ ...this.params, ...values })
@@ -115,7 +115,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description How much a user can withdraw.
-   * @see https://docs.stakewise.io/vault/requests/getmaxwithdrawamount
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getmaxwithdrawamount
   */
   public getMaxWithdrawAmount(values: StakeWise.ExtractInput<GetMaxWithdrawAmountInput>) {
     return getMaxWithdrawAmount({ ...this.params, ...values })
@@ -123,7 +123,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Returns the running vault validators.
-   * @see https://docs.stakewise.io/vault/requests/getvalidators
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getvalidators
   */
   public getValidators(values: StakeWise.ExtractInput<GetValidatorsInput>) {
     return getValidators({ ...this.params, ...values })
@@ -131,7 +131,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Fetch the whitelist for private vaults.
-   * @see https://docs.stakewise.io/vault/requests/getwhitelist
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getwhitelist
   */
   public getWhitelist(values: StakeWise.ExtractInput<GetWhitelistInput>) {
     return getWhitelist({ ...this.params, ...values })
@@ -139,7 +139,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Fetch the blocklist for blocklisted vaults.
-   * @see https://docs.stakewise.io/vault/requests/getblocklist
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getblocklist
   */
   public getBlocklist(values: StakeWise.ExtractInput<GetBlocklistInput>) {
     return getBlocklist({ ...this.params, ...values })
@@ -147,7 +147,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Returns the vault stats collection.
-   * @see https://docs.stakewise.io/vault/requests/getvaultstats
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getvaultstats
   */
   public getVaultStats(values: StakeWise.ExtractInput<GetVaultStatsInput>) {
     return getVaultStats({ ...this.params, ...values })
@@ -155,7 +155,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Returns the user stats collection.
-   * @see https://docs.stakewise.io/vault/requests/getuserstats
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getuserstats
   */
   public getUserStats(values: StakeWise.ExtractInput<GetUserStatsInput>) {
     return getUserStats({ ...this.params, ...values })
@@ -163,7 +163,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Get the current APY of the user.
-   * @see https://docs.stakewise.io/vault/requests/getuserapy
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getuserapy
   */
   public getUserApy(values: StakeWise.ExtractInput<GetUserApyInput>) {
     return getUserApy({ ...this.params, ...values })
@@ -171,7 +171,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Getting the periodic distribution of additional incentives.
-   * @see https://docs.stakewise.io/vault/requests/getperiodicdistributions
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getperiodicdistributions
   */
   public getPeriodicDistributions(values: StakeWise.ExtractInput<GetPeriodicDistributionsInput>) {
     return getPeriodicDistributions({ ...this.params, ...values })
@@ -179,7 +179,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Returns osToken collateral parameters.
-   * @see https://docs.stakewise.io/vault/requests/getostokenconfig
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getostokenconfig
   */
   public getOsTokenConfig(values: StakeWise.ExtractInput<GetOsTokenConfigInput>) {
     return getOsTokenConfig({ ...this.params, ...values })
@@ -187,7 +187,7 @@ class Vault extends VaultTransactions {
 
   /**
    * @description Returns the list of sub vaults.
-   * @see https://docs.stakewise.io/vault/requests/getsubvaults
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getsubvaults
    */
   public getSubVaults(values: StakeWise.ExtractInput<GetSubVaultsInput>) {
     return getSubVaults({ ...this.params, ...values })

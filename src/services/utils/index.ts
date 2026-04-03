@@ -17,7 +17,7 @@ class Utils {
 
   /**
    * @description Returns the USD, EUR, GBP, CNY, JPY, KRW, AUD, SWISE exchange rates for the current network asset
-   * @see https://docs.stakewise.io/utils/getfiatrates
+   * @see https://docs.stakewise.io/sdk/api/utils/getfiatrates
   */
   public getFiatRates() {
     return getFiatRates(this.params)
@@ -25,7 +25,7 @@ class Utils {
 
   /**
    * @description TVL statistics, number of users, rewards earned
-   * @see https://docs.stakewise.io/utils/getstakewisestats
+   * @see https://docs.stakewise.io/sdk/api/utils/getstakewisestats
   */
   public getStakewiseStats() {
     return getStakewiseStats(this.params)
@@ -33,7 +33,7 @@ class Utils {
 
   /**
    * @description Retrieving a transaction to verify that the data went into the subgraph after the transaction
-   * @see https://docs.stakewise.io/utils/gettransactions
+   * @see https://docs.stakewise.io/sdk/api/utils/gettransactions
   */
   public getTransactions(values: StakeWise.ExtractInput<GetTransactionsInput>) {
     return getTransactions({ ...this.params, ...values })
@@ -41,7 +41,7 @@ class Utils {
 
   /**
    * @description Get fiat data by day
-   * @see https://docs.stakewise.io/utils/getfiatratesbyday
+   * @see https://docs.stakewise.io/sdk/api/utils/getfiatratesbyday
   */
   public getFiatRatesByDay(values: StakeWise.ExtractInput<GetFiatRatesByDayInput>) {
     return getFiatRatesByDay({ ...this.params, ...values })
@@ -49,7 +49,7 @@ class Utils {
 
   /**
    * @description Get permit signature (used in leverage staking).
-   * @see https://docs.stakewise.io/utils/getpermitsignature
+   * @see https://docs.stakewise.io/sdk/api/utils/getpermitsignature
   */
   public getPermitSignature(values: StakeWise.ExtractInput<GetPermitSignatureInput>) {
     return getPermitSignature({ ...this.params, ...values })

@@ -1,6 +1,6 @@
 ---
 id: addSubVault
-slug: /vault/transactions/addsubvault
+slug: /sdk/api/vault/transactions/addsubvault
 ---
 
 #### Description:
