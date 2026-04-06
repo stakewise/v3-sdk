@@ -1,6 +1,6 @@
 ---
 id: getOsTokenConfig
-slug: /sdk/api/vault/getostokenconfig
+slug: /sdk/api/vault/requests/getostokenconfig
 description: Use the StakeWise SDK getOsTokenConfig method to retrieve osToken collateral parameters like LTV and liquidation threshold.
 ---
 

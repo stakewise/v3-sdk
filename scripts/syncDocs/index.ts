@@ -1,3 +1,4 @@
+import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import { glob } from 'glob'
@@ -11,9 +12,9 @@ import createPullRequest from './createPullRequest'
 const branchName = 'sync-sdk'
 
 const srcPath = `${process.cwd()}/src`
-const docsRepoPath = `${process.cwd()}/docs`
 const documentationPath = `${process.cwd()}/documentation`
 const docsRepoUrl = 'git@github.com:stakewise/stakewise-docs.git'
+const docsRepoPath = path.join(os.tmpdir(), 'stakewise-docs-sync')
 
 const getGitUserName = () => {
   try {
@@ -56,8 +57,6 @@ const changeTargetPath = (path: string) => path
   .replace(/([^/]+)\/\1\.md$/, '$1.md')
 
 ;(async () => {
-  let git = simpleGit()
-
   log.info('🤖 Start of documentation synchronization...')
 
   if (!syncDocsToken) {
@@ -69,14 +68,14 @@ const changeTargetPath = (path: string) => path
     const isExist = await fs.pathExists(docsRepoPath)
 
     if (isExist) {
-      await fs.emptyDir(docsRepoPath)
+      await fs.remove(docsRepoPath)
       log.info(`🧹 Old docs folder has been deleted.`)
     }
 
-    await git.clone(docsRepoUrl, docsRepoPath)
+    await simpleGit().clone(docsRepoUrl, docsRepoPath)
     log.success('The documentation repository has been cloned.')
 
-    git = simpleGit(docsRepoPath)
+    const git = simpleGit(docsRepoPath)
 
     const apiFiles = await glob(['**/*.md', '**/*.mdx'], {
       cwd: srcPath
@@ -127,7 +126,7 @@ const changeTargetPath = (path: string) => path
 
       await fs.ensureDir(path.dirname(targetFile))
       await fs.copy(sourceFile, targetFile)
-    } 
+    }
 
     log.success('Files are copied')
 

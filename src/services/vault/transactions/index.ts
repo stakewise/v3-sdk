@@ -15,44 +15,44 @@ class VaultTransactions {
 
   /**
    * @description Deposit (stake) in a vault.
-   * @see https://docs.stakewise.io/vault/transactions/deposit
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/deposit
   */
   public deposit: ExtractDeposit
 
   /**
    * @description Withdrawal of funds from a vault.
-   * @see https://docs.stakewise.io/vault/transactions/withdraw
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/withdraw
   */
   public withdraw: ExtractWithdraw
 
   /**
    * @description Create vault.
-   * @see https://docs.stakewise.io/vault/transactions/create
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/create
   */
   public create: ExtractCreateVault
 
   /**
    * @description Updates the vault by authorized personnel such as the vault admin, whitelist manager,
    * blocklist manager, validators manager, or deposit-data manager.
-   * @see https://docs.stakewise.io/vault/transactions/operate
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/operate
   */
   public operate: ExtractOperate
 
   /**
    * @description Claim user's exit queue.
-   * @see https://docs.stakewise.io/vault/transactions/claimexitqueue
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/claimexitqueue
   */
   public claimExitQueue: ExtractClaimExitQueue
 
   /**
    * @description Adding root validators to vault. Supports only vault v2.
-   * @see https://docs.stakewise.io/vault/transactions/setdepositdataroot
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/setdepositdataroot
   */
   public setDepositDataRoot: ExtractSetDepositDataRoot
 
   /**
    * @description Adding deposit data manager. Supports only vault v2.
-   * @see https://docs.stakewise.io/vault/transactions/setdepositdatamanager
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/setdepositdatamanager
   */
   public setDepositDataManager: ExtractSetDepositDataManager
 
@@ -78,7 +78,6 @@ class VaultTransactions {
 
   /**
    * @description Assistant function for custom multi-query requests to the vault.
-   * @see https://docs.stakewise.io/vault/transactions/multicall
   */
   public multicall<T>(values: StakeWise.ExtractInput<VaultMulticallInput>) {
     return multicall<T>({ ...this.params, ...values })
