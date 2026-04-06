@@ -8,7 +8,7 @@ if [ -n "$MD_FILES" ]; then
     if grep -q "^slug:" "$file" 2>/dev/null; then
       printf '\n\033[30;43m                                                          \033[0m\n'
       printf '\033[30;43m  ⚠️  SDK docs were changed! ⚠️  Don'\''t forget to run:      \033[0m\n'
-      printf '\033[30;43m     pnpm check:docLinks                                    \033[0m\n'
+      printf '\033[30;43m     pnpm sync:docs                                  \033[0m\n'
       printf '\033[30;43m                                                          \033[0m\n\n'
       break
     fi
