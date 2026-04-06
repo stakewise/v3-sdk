@@ -37,7 +37,7 @@ const fetchSitemap = () => {
   })
 }
 
-const getSlugs = () => {
+const getSdkApiSlugs = () => {
   try {
     const output = execSync(
       `grep -r "^slug:" ${srcDir} --include="*.md"`,
@@ -48,6 +48,7 @@ const getSlugs = () => {
       .split('\n')
       .filter(Boolean)
       .map((line) => line.replace(/.*slug:\s*/, '').trim().toLowerCase())
+      .filter((slug) => slug.startsWith('/sdk/api/'))
   }
   catch {
     return []
@@ -68,7 +69,7 @@ const getUrls = () => {
     return [ ...new Set(
       output
         .split('\n')
-        .map((url) => url.replace(/\\n$/, '').replace(/[.,;)]+$/, ''))
+        .map((url) => url.replace(/[.,;)]+$/, ''))
         .filter((url) => url && url !== docsUrl && url !== `${docsUrl}/`)
     )]
   }
@@ -86,34 +87,25 @@ const checkDocLinks = async () => {
     return
   }
 
-  const slugs = getSlugs()
+  const slugs = getSdkApiSlugs()
   const broken = []
-  const otherUrls = []
 
-  // SDK links — check against local slugs
+  let sitemap = null
+
   for (const url of urls) {
-    const urlPath = url.replace(docsUrl, '').toLowerCase()
+    const urlPath = url.replace(docsUrl, '').replace(/\/$/, '').toLowerCase()
 
-    if (urlPath.startsWith('/sdk/api/')) {
-      if (!slugs.includes(urlPath)) {
-        broken.push(url)
-      }
+    if (slugs.includes(urlPath)) {
+      continue
     }
-    else {
-      otherUrls.push(url)
+
+    // Not found in local slugs — check against live sitemap
+    if (!sitemap) {
+      sitemap = await fetchSitemap()
     }
-  }
 
-  // Other links — check against live sitemap
-  if (otherUrls.length) {
-    const sitemap = await fetchSitemap()
-
-    for (const url of otherUrls) {
-      const normalized = url.replace(/\/$/, '').toLowerCase()
-
-      if (!sitemap.includes(normalized)) {
-        broken.push(url)
-      }
+    if (!sitemap.includes(`${docsUrl}${urlPath}`)) {
+      broken.push(url)
     }
   }
 
@@ -125,24 +117,11 @@ const checkDocLinks = async () => {
 
   console.log('✅ All docs links are valid.')
 
-  // Warn if staged md files have slug changes
+  // Warn if staged md files were changed
   try {
-    const stagedFiles = execSync('git diff --cached --name-only -- "src/**/*.md"', { encoding: 'utf-8' })
-      .split('\n')
-      .filter(Boolean)
+    const stagedMd = execSync('git diff --cached --name-only -- "src/**/*.md" "documentation/**/*.md"', { encoding: 'utf-8' }).trim()
 
-    const hasSlugChanges = stagedFiles.some((file) => {
-      try {
-        execSync(`grep -q "^slug:" "${file}"`, { stdio: 'pipe' })
-
-        return true
-      }
-      catch {
-        return false
-      }
-    })
-
-    if (hasSlugChanges) {
+    if (stagedMd) {
       const warn = (text) => console.log(`\x1b[33m${text}\x1b[0m`)
 
       console.log()
