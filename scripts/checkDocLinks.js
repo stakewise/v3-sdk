@@ -40,7 +40,7 @@ const fetchSitemap = () => {
 const getSdkApiSlugs = () => {
   try {
     const output = execSync(
-      `grep -r "^slug:" ${srcDir} --include="*.md"`,
+      `grep -r "^slug:" "${srcDir}" --include="*.md"`,
       { encoding: 'utf-8' }
     )
 
@@ -60,7 +60,7 @@ const getUrls = () => {
 
   try {
     const output = execSync(
-      `grep -roh "https://docs\\.stakewise\\.io/[^\\"' )\\\`>]*" ${rootDir} `
+      `grep -roh "https://docs\\.stakewise\\.io/[^\\"' )\\\`>]*" "${rootDir}" `
       + '--include="*.ts" --include="*.tsx" --include="*.md" --include="*.mdx" '
       + '--exclude-dir=node_modules',
       { encoding: 'utf-8' }
@@ -93,7 +93,7 @@ const checkDocLinks = async () => {
   let sitemap = null
 
   for (const url of urls) {
-    const urlPath = url.replace(docsUrl, '').replace(/\/$/, '').toLowerCase()
+    const urlPath = url.replace(docsUrl, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase()
 
     if (slugs.includes(urlPath)) {
       continue
