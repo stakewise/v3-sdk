@@ -1,18 +1,4 @@
 sh ./scripts/pre-push.sh
 pnpm run check:docLinks
 
-# Warn if md files with slug were changed
-MD_FILES=$(git diff --cached --name-only -- 'src/**/*.md' 2>/dev/null || echo "")
-if [ -n "$MD_FILES" ]; then
-  for file in $MD_FILES; do
-    if grep -q "^slug:" "$file" 2>/dev/null; then
-      printf '\n\033[30;43m                                                          \033[0m\n'
-      printf '\033[30;43m  ⚠️  SDK docs were changed! ⚠️  Don'\''t forget to run:      \033[0m\n'
-      printf '\033[30;43m     pnpm sync:docs                                  \033[0m\n'
-      printf '\033[30;43m                                                          \033[0m\n\n'
-      break
-    fi
-  done
-fi
-
 pnpm run lint

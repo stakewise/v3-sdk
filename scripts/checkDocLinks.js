@@ -124,6 +124,33 @@ const checkDocLinks = async () => {
   }
 
   console.log('✅ All docs links are valid.')
+
+  // Warn if staged md files have slug changes
+  try {
+    const stagedFiles = execSync('git diff --cached --name-only -- "src/**/*.md"', { encoding: 'utf-8' })
+      .split('\n')
+      .filter(Boolean)
+
+    const hasSlugChanges = stagedFiles.some((file) => {
+      try {
+        execSync(`grep -q "^slug:" "${file}"`, { stdio: 'pipe' })
+
+        return true
+      }
+      catch {
+        return false
+      }
+    })
+
+    if (hasSlugChanges) {
+      const warn = (text) => console.log(`\x1b[33m${text}\x1b[0m`)
+
+      console.log()
+      warn('⚠️SDK docs were changed! ⚠️')
+      warn("Don't forget to run: pnpm sync:docs")
+    }
+  }
+  catch {}
 }
 
 checkDocLinks()
