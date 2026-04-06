@@ -44,11 +44,20 @@ const getSdkApiSlugs = () => {
       { encoding: 'utf-8' }
     )
 
-    return output
+    const slugs = output
       .split('\n')
       .filter(Boolean)
       .map((line) => line.replace(/.*slug:\s*/, '').trim().toLowerCase())
-      .filter((slug) => slug.startsWith('/sdk/api/'))
+
+    const brokenSlugs = slugs.filter((slug) => !slug.startsWith('/'))
+
+    if (brokenSlugs.length) {
+      console.log('🚫 Slugs must start with /:')
+      brokenSlugs.forEach((slug) => console.log(`${slug}`))
+      process.exit(1)
+    }
+
+    return slugs.filter((slug) => slug.startsWith('/sdk/api/'))
   }
   catch {
     return []
