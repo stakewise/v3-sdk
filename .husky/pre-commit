@@ -1,5 +1,5 @@
 sh ./scripts/pre-push.sh
-npm run check:docLinks
+pnpm run check:docLinks
 
 # Warn if md files with slug were changed
 MD_FILES=$(git diff --cached --name-only -- 'src/**/*.md' 2>/dev/null || echo "")
@@ -15,4 +15,4 @@ if [ -n "$MD_FILES" ]; then
   done
 fi
 
-npm run lint
+pnpm run lint
