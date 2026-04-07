@@ -47,7 +47,7 @@ const getSdkApiSlugs = () => {
     const slugs = output
       .split('\n')
       .filter(Boolean)
-      .map((line) => line.replace(/.*slug:\s*/, '').trim().toLowerCase())
+      .map((line) => line.replace(/.*slug:\s*/, '').trim().replace(/\/$/, '').toLowerCase())
 
     const brokenSlugs = slugs.filter((slug) => !slug.startsWith('/'))
 

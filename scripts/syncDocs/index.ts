@@ -82,7 +82,7 @@ const changeTargetPath = (path: string) => path
       cwd: srcPath
     })
 
-    const documentationFiles = await glob(['**/*.md', '**/*.mdx'], {
+    const documentationFiles = await glob(['**/*.md', '**/*.mdx', '**/_category_.json'], {
       cwd: documentationPath
     })
 
