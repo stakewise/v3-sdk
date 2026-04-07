@@ -10,13 +10,13 @@ class OsTokenTransactions {
    * Use data from methods osToken.getMaxMint and osToken.getHealthFactor to block a call to mint()
    * if the number of shares is greater than what getMaxMint returns or if the number of osToken after the transaction
    * would make the position unhealthy
-   * @see https://docs.stakewise.io/osToken/transactions/mint
+   * @see https://docs.stakewise.io/sdk/api/osToken/transactions/mint
   */
   public mint: ExtractMint
 
   /**
    * @description Burns your osToken
-   * @see https://docs.stakewise.io/osToken/transactions/burn
+   * @see https://docs.stakewise.io/sdk/api/osToken/transactions/burn
   */
   public burn: ExtractBurn
 

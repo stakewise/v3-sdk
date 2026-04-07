@@ -82,7 +82,7 @@ const changeTargetPath = (path: string) => path
       cwd: srcPath
     })
 
-    const documentationFiles = await glob(['**/*.md', '**/*.mdx'], {
+    const documentationFiles = await glob(['**/*.md', '**/*.mdx', '**/_category_.json'], {
       cwd: documentationPath
     })
 
@@ -127,7 +127,7 @@ const changeTargetPath = (path: string) => path
 
       await fs.ensureDir(path.dirname(targetFile))
       await fs.copy(sourceFile, targetFile)
-    } 
+    }
 
     log.success('Files are copied')
 
@@ -154,13 +154,13 @@ const changeTargetPath = (path: string) => path
       branchName,
       title,
     })
+
+    await fs.remove(docsRepoPath)
+    log.success('🧹 Cloned docs repository has been cleaned up.')
   }
   catch (error) {
     log.error(`${error}`)
-    process.exit(1)
-  }
-  finally {
     await fs.remove(docsRepoPath)
-    log.success('🧹 Cloned docs repository has been cleaned up.')
+    process.exit(1)
   }
 })()
