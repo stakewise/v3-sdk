@@ -1,6 +1,6 @@
 ---
 id: ejectSubVault
-slug: /vault/transactions/ejectsubvault
+slug: /sdk/api/vault/transactions/ejectsubvault
 ---
 
 #### Description:

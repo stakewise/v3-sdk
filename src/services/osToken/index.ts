@@ -45,7 +45,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Current osToken APY.
-   * @see https://docs.stakewise.io/osToken/requests/getostokenapy
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getostokenapy
   */
   public getAPY() {
     return getAPY(this.params)
@@ -53,7 +53,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Current osToken rate.
-   * @see https://docs.stakewise.io/osToken/requests/getostokenrate
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getostokenrate
   */
   public getRate() {
     return getRate(this.params)
@@ -62,7 +62,7 @@ class OsToken extends OsTokenTransactions {
   /**
    * @description Maximum number of **shares** for minting.
    * @deprecated Use new getMaxMintAmount method.
-   * @see https://docs.stakewise.io/osToken/requests/getmaxmint
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getmaxmint
   */
   public getMaxMint(values: StakeWise.ExtractInput<GetMaxMintInput>) {
     return getMaxMint({ ...this.params, ...values })
@@ -70,7 +70,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Maximum number of **shares** for minting.
-   * @see https://docs.stakewise.io/osToken/requests/getmaxmintamount
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getmaxmintamount
   */
   public getMaxMintAmount(values: StakeWise.ExtractInput<GetMaxMintAmountInput>) {
     return getMaxMintAmount({ ...this.params, ...values })
@@ -79,7 +79,7 @@ class OsToken extends OsTokenTransactions {
   /**
    * @description User position data
    * @deprecated Use osToken.getHealthFactor and osToken.getBalance
-   * @see https://docs.stakewise.io/osToken/requests/getposition
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getposition
   */
   public getPosition(values: StakeWise.ExtractInput<GetOsTokenPositionInput>) {
     return getPosition({ ...this.params, ...values })
@@ -87,7 +87,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description User osToken balance
-   * @see https://docs.stakewise.io/osToken/helpers/getbalance
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getbalance
   */
   public getBalance(values: StakeWise.ExtractInput<GetOsTokenBalanceInput>) {
     return getBalance({ ...this.params, ...values })
@@ -95,7 +95,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Convert ETH (assets) → osToken (shares)
-   * @see https://docs.stakewise.io/osToken/requests/getsharesfromassets
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getsharesfromassets
   */
   public getSharesFromAssets(values: StakeWise.ExtractInput<GetSharesFromAssetsInput>) {
     return getSharesFromAssets({ ...this.params, ...values })
@@ -103,7 +103,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Convert osToken (shares) → ETH (assets)
-   * @see https://docs.stakewise.io/osToken/requests/getassetsfromshares
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getassetsfromshares
   */
   public getAssetsFromShares(values: StakeWise.ExtractInput<GetAssetsFromSharesInput>) {
     return getAssetsFromShares({ ...this.params, ...values })
@@ -112,7 +112,7 @@ class OsToken extends OsTokenTransactions {
   /**
    * @description How many osToken burn do you need to make to withdraw all deposit.
    * @deprecated use new getBurnAmountForUnstake method
-   * @see https://docs.stakewise.io/osToken/helpers/getburnamount
+   * @see https://docs.stakewise.io/sdk/api/osToken/helpers/getburnamount
   */
   public getBurnAmount(values: StakeWise.ExtractInput<GetBurnAmountInput>) {
     return getBurnAmount({ ...this.params, ...values })
@@ -120,7 +120,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Returns the amount of osToken to burn for full unstake.
-   * @see https://docs.stakewise.io/osToken/helpers/getburnamountforunstake
+   * @see https://docs.stakewise.io/sdk/api/osToken/helpers/getburnamountforunstake
   */
   public getBurnAmountForUnstake(values: StakeWise.ExtractInput<GetBurnAmountForUnstakeInput>) {
     return getBurnAmountForUnstake({ ...this.params, ...values })
@@ -128,7 +128,7 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * @description Get the health of osETH position
-   * @see https://docs.stakewise.io/osToken/helpers/gethealthfactor
+   * @see https://docs.stakewise.io/sdk/api/osToken/helpers/gethealthfactor
   */
   public getHealthFactor(values: StakeWise.ExtractInput<GetHealthFactorInput>) {
     return getHealthFactor({ ...this.params, ...values })

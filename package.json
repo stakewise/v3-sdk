@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,6 +20,7 @@
     "graphql": "graphql-codegen && tsx ./scripts/generateGraphqlExports/index.ts",
     "rollup": "rollup --config rollup.config.js",
     "check:version": "node ./scripts/checkVersion.js",
+    "check:docLinks": "node ./scripts/checkDocLinks.js",
     "lint": "eslint ./src --ext .ts,.tsx,.js,.jsx",
     "release": "pnpm build && pnpm publish --tag=latest",
     "sync:docs": "tsx ./scripts/syncDocs/index.ts"

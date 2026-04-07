@@ -10,20 +10,20 @@ class RewardSplitterTransactions {
   /**
    * @description Allows the reward splitter owner to set a claimer
    * that can claim vault fees on behalf of the shareholders.
-   * @see https://docs.stakewise.io/rewardSplitter/transactions/setclaimer
+   * @see https://docs.stakewise.io/sdk/api/rewardSplitter/transactions/setclaimer
    */
   public setClaimer: ExtractSetClaimer
 
   /**
    * @description Claims rewards from the reward splitter contract.
-   * @see https://docs.stakewise.io/rewardSplitter/transactions/claimrewards
+   * @see https://docs.stakewise.io/sdk/api/rewardSplitter/transactions/claimrewards
    */
   public claimRewards: ExtractClaimRewards
 
   /**
    * @description Updates the reward splitter fee recipients and predefined fee splitting proportions.
    * Please note that only the vault admin, who is also the owner of the reward splitter, is permitted to perform this action.
-   * @see https://docs.stakewise.io/rewardSplitter/transactions/updatefeerecipients
+   * @see https://docs.stakewise.io/sdk/api/rewardSplitter/transactions/updatefeerecipients
   */
   public updateFeeRecipients: ExtractUpdateFeeRecipients
 
@@ -32,7 +32,7 @@ class RewardSplitterTransactions {
    * recipients in predefined proportions. Subsequently, the address of the created reward splitter
    * must be added to the vault as a fee recipient in order to utilize it. Please note that only vault
    * admin is permitted to perform this action.
-   * @see https://docs.stakewise.io/rewardSplitter/transactions/createrewardsplitter
+   * @see https://docs.stakewise.io/sdk/api/rewardSplitter/transactions/createrewardsplitter
   */
   public create: ExtractCreateRewardSplitter
 
