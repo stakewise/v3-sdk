@@ -154,13 +154,13 @@ const changeTargetPath = (path: string) => path
       branchName,
       title,
     })
+
+    await fs.remove(docsRepoPath)
+    log.success('🧹 Cloned docs repository has been cleaned up.')
   }
   catch (error) {
     log.error(`${error}`)
-    process.exit(1)
-  }
-  finally {
     await fs.remove(docsRepoPath)
-    log.success('🧹 Cloned docs repository has been cleaned up.')
+    process.exit(1)
   }
 })()
