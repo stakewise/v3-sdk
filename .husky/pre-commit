@@ -1,4 +1,3 @@
 sh ./scripts/pre-push.sh
 pnpm run check:docLinks
-
 pnpm run lint
