@@ -1,5 +1,5 @@
 query exitQueue($where: ExitRequest_filter) {
-  exitRequests(where: $where) {
+  exitRequests(where: $where, first: 1000) {
     receiver
     isClaimed
     timestamp

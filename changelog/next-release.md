@@ -13,7 +13,7 @@
 #### Add output field:
 ```ts
 type Output = {
-  canHarvest: boolen
+  canHarvest: boolean
   exitingAssets: string
   exitingTickets: string
   ejectingSubVault: string
