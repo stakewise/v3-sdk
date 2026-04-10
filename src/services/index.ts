@@ -1,3 +1,6 @@
+import './assertCancellable'
+
+
 export { default as Vault } from './vault'
 export { default as Boost } from './boost'
 export { default as Utils } from './utils'
