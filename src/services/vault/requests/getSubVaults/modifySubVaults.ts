@@ -11,7 +11,7 @@ type ModifiedSubVault = {
 }
 
 const modifySubVaults = (data: SubVaultsQueryPayload): ModifiedSubVault[] => {
-  return data.vaults.map((subVault) => {
+  return data.subVaults.map(({ subVault }) => {
     const { id, imageUrl, displayName, allocators, exitRequests } = subVault
 
     const [ allocator ] = allocators

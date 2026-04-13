@@ -1,4 +1,4 @@
-import type { SubVaultsQueryVariables } from '../../../../graphql/subgraph/vault'
+import type { SubVaultsQueryVariables, SubVaultsQueryPayload } from '../../../../graphql/subgraph/vault'
 import { apiUrls, validateArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
@@ -17,12 +17,15 @@ const getSubVaults = (input: GetSubVaultsInput) => {
   validateArgs.address({ vaultAddress })
   validateArgs.number({ skip, limit })
 
+  const metaVaultId = vaultAddress.toLowerCase()
+
   return graphql.subgraph.vault.fetchSubVaultsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       skip,
       first: limit,
-      metaVaultAddress: vaultAddress.toLowerCase(),
+      where: { metaVault: metaVaultId } as SubVaultsQueryVariables['where'],
+      metaVaultAddress: metaVaultId,
     },
     modifyResult: modifySubVaults,
   })
