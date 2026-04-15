@@ -11,7 +11,7 @@
   "extensions": {
     "endpoints": {
       "Subgraph GraphQL": {
-        "url": "https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/stage",
+        "url": "https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/prod",
         "headers": {
           "user-agent": "JS GraphQL"
         },
