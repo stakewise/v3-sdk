@@ -13,7 +13,7 @@ export type GetMaxWithdrawAmountInput = StakeWise.CommonParams & {
 
 const min = parseEther('0.00001')
 
-const getMaxWithdraw = async (values: GetMaxWithdrawAmountInput) => {
+const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   const { contracts, vaultAddress } = values
 
   validateArgs.address({ vaultAddress })
@@ -43,4 +43,4 @@ const getMaxWithdraw = async (values: GetMaxWithdrawAmountInput) => {
 }
 
 
-export default wrapAbortPromise<GetMaxWithdrawAmountInput, bigint>(getMaxWithdraw)
+export default wrapAbortPromise<GetMaxWithdrawAmountInput, bigint>(getMaxWithdrawAmount)
