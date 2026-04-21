@@ -30,7 +30,7 @@ export type ParseExitRequestsOutput = {
   requests: OutputExitRequest[]
 }
 
-const modifyExitRequests = async (values: ParseExitRequestsInput): Promise<ParseExitRequestsOutput> => {
+const modifyExitRequests = (values: ParseExitRequestsInput): ParseExitRequestsOutput => {
   const { exitRequests } = values
 
   if (!exitRequests.length) {

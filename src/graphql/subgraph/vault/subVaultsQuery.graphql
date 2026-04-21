@@ -2,12 +2,24 @@ query SubVaults(
   $skip: Int!
   $first: Int!
   $where: SubVault_filter!
+  $metaVaultAddress: Bytes!
 ) {
   subVaults(
-    skip: $skip,
-    first: $first,
-    where: $where,
+    skip: $skip
+    first: $first
+    where: $where
   ) {
-    subVault
+    subVault {
+      id
+      imageUrl
+      displayName
+      allocators(where: { address: $metaVaultAddress }) {
+        apy
+        assets
+      }
+      exitRequests(where: { receiver: $metaVaultAddress, isClaimed: false }) {
+        totalAssets
+      }
+    }
   }
 }

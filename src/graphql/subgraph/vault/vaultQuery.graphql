@@ -22,6 +22,7 @@ query Vault($address: ID!) {
     canHarvest
     feePercent
     isMetaVault
+    subVaultsCount
     totalAssets
     isBlocklist
     displayName

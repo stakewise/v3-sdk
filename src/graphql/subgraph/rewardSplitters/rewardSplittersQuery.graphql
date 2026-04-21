@@ -5,7 +5,7 @@ query RewardSplitters($where: RewardSplitter_filter!) {
     version
     claimer
     totalShares
-    shareHolders(orderBy: shares, orderDirection: desc, where: { shares_gt: 0 }) {
+    shareHolders(orderBy: shares, orderDirection: desc, first: 1000, where: { shares_gt: 0 }) {
       id
       shares
       address
