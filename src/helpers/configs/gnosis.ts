@@ -44,7 +44,7 @@ export default {
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
 
-      metavault: ZeroAddress,
+      metavault: '0x75E6f7640137c128c91dE4Ee62F6f30b542e5f1B',
       erc20Metavault: ZeroAddress,
       privateMetavault: ZeroAddress,
       erc20PrivateMetavault: ZeroAddress,

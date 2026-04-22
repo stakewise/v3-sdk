@@ -45,11 +45,11 @@ export default {
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
 
-      metavault: '0x721C63fc53C432FC0feA4e0775e7ABFd29983347',
-      erc20Metavault: '0x0aca1A126d0636bf74086DD077b47366a1353D4D',
+      metavault: '0xFC10dB96A7724Fa3Efb47C5304b29d3C01004b47',
+      erc20Metavault: '0xd21e8401c2DBbb180C621E8B3B22a842Ea73e487',
 
-      privateMetavault: '0xa11f61D2687993CF29B6aEb8f9EFb3147F34Dbb6',
-      erc20PrivateMetavault: '0xCCf6D110181330fB8b62de8FA37fd0a905665376',
+      privateMetavault: '0xD13BB2fD02fA060Dc82c439724dC9c4bc59957B7',
+      erc20PrivateMetavault: '0xAc31856e2A81B9Af8b83424817C3bc0770F40a01',
     },
     special: {
       balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',

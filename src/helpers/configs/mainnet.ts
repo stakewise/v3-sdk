@@ -47,10 +47,11 @@ export default {
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
 
-      metavault: ZeroAddress,
-      erc20Metavault: ZeroAddress,
-      privateMetavault: ZeroAddress,
-      erc20PrivateMetavault: ZeroAddress,
+      metavault: '0x76D90928645065b4D4212eE62ce1ba8f90718f14',
+      erc20Metavault: '0x4E3dE90882B3d10D067b8954909D4A4b0Bb390D0',
+
+      privateMetavault: '0x1e86e620567bb877F5ED13607A1a7B7DBcb6BE66',
+      erc20PrivateMetavault: '0xE14FA9bBdb7813025309f71DdC0FA8fAae1B9141',
     },
     special: {
       balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
