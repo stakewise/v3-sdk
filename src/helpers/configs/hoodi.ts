@@ -34,6 +34,10 @@ export default {
       depositDataRegistry: '0x93a3f880E07B27dacA6Ef2d3C23E77DBd6294487',
       mintTokenController: '0x140Fc69Eabd77fFF91d9852B612B2323256f7Ac1',
       rewardSplitterFactory: '0xd12Df8543e0522CCbF12d231e822B7264c634775',
+      curator: {
+        v1: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
+        v2: '0x59EdC6edA87885e4A3e2beb9B55AF535a363b306',
+      },
     },
     factories: {
       vault: '0x7A8cbBf690084E43De778173cfAcf7313c9122DD',
@@ -52,7 +56,6 @@ export default {
       erc20PrivateMetavault: '0xAc31856e2A81B9Af8b83424817C3bc0770F40a01',
     },
     special: {
-      balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
       stakeCalculator: '0xaE9A192Ed2030444eB9323C592F1b85801EA0Ec3',
       leverageStrategy: '0x154628AC72533aad39aBdcaE2055Dced0b4Eef4D',
       leverageStrategyV2: '0xe382BD0c48A7dd435bE911e0f663cbCAa94AF965',
