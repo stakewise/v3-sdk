@@ -1,4 +1,4 @@
-import { AbiCoder, MaxUint256 } from 'ethers'
+import { AbiCoder, MaxUint256, getAddress } from 'ethers'
 
 import { configs } from '../../../../../helpers'
 import type { CreateVaultTransactionInput } from '../types'
@@ -68,7 +68,7 @@ const getEncodeBytes = (values: EncodeBytesInput) => {
   if (isMetaVault) {
     encodedParams.push({
       type: 'curator',
-      value: configs[options.network].addresses.special.balancedCurator,
+      value: configs[options.network].addresses.base.curator.v2,
     })
   }
 

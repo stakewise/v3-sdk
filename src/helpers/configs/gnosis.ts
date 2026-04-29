@@ -33,6 +33,10 @@ export default {
       depositDataRegistry: '0x58e16621B5c0786D6667D2d54E28A20940269E16',
       mintTokenController: '0x60B2053d7f2a0bBa70fe6CDd88FB47b579B9179a',
       rewardSplitterFactory: '0xd12Df8543e0522CCbF12d231e822B7264c634775',
+      curator: {
+        v1: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
+        v2: '0x5dd9e7e355509Bd5d29018D0Af4927251d82Ab9E',
+      },
     },
     factories: {
       vault: '0x7A8cbBf690084E43De778173cfAcf7313c9122DD',
