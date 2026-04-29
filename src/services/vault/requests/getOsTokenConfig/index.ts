@@ -6,7 +6,7 @@ export type GetOsTokenConfigInput = StakeWise.CommonParams & {
   vaultAddress: string
 }
 
-const getOsTokenConfig = async (input: GetOsTokenConfigInput) => {
+const getOsTokenConfig = (input: GetOsTokenConfigInput) => {
   const { options, vaultAddress } = input
 
   validateArgs.address({ vaultAddress })

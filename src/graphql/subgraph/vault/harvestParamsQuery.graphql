@@ -3,6 +3,7 @@ query HarvestParams($address: ID!) {
     proof
     canHarvest
     rewardsRoot
+    isMetaVault
     reward: proofReward
     unlockedMevReward: proofUnlockedMevReward
   }

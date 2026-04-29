@@ -1,7 +1,6 @@
 import graphql from '../../../../graphql'
 import { apiUrls, validateArgs } from '../../../../helpers'
 import modifyExitRequests from './modifyExitRequests'
-import type { ParseExitRequestsOutput } from './modifyExitRequests'
 
 
 export type GetExitQueuePositionsInput = StakeWise.CommonParams & {
@@ -10,7 +9,7 @@ export type GetExitQueuePositionsInput = StakeWise.CommonParams & {
   isClaimed?: boolean
 }
 
-const getExitQueuePositions = async (input: GetExitQueuePositionsInput): Promise<ParseExitRequestsOutput> => {
+const getExitQueuePositions = (input: GetExitQueuePositionsInput) => {
   const { options, vaultAddress, userAddress, isClaimed } = input
 
   validateArgs.address({ vaultAddress, userAddress })

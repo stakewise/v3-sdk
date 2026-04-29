@@ -7,7 +7,8 @@ export default {
   network: constants.chains.hoodi,
   api: {
     backend: 'https://hoodi-api.stakewise.io/graphql',
-    subgraph: 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod',
+    // TODO change (+ change .graphqlconfig)
+    subgraph: 'https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
   },
   pages: {
     beaconchain: 'https://hoodi.beaconcha.in/',
@@ -33,6 +34,10 @@ export default {
       depositDataRegistry: '0x93a3f880E07B27dacA6Ef2d3C23E77DBd6294487',
       mintTokenController: '0x140Fc69Eabd77fFF91d9852B612B2323256f7Ac1',
       rewardSplitterFactory: '0xd12Df8543e0522CCbF12d231e822B7264c634775',
+      curator: {
+        v1: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
+        v2: '0x59EdC6edA87885e4A3e2beb9B55AF535a363b306',
+      },
     },
     factories: {
       vault: '0x7A8cbBf690084E43De778173cfAcf7313c9122DD',
@@ -43,6 +48,12 @@ export default {
 
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
+
+      metavault: '0xFC10dB96A7724Fa3Efb47C5304b29d3C01004b47',
+      erc20Metavault: '0xd21e8401c2DBbb180C621E8B3B22a842Ea73e487',
+
+      privateMetavault: '0xD13BB2fD02fA060Dc82c439724dC9c4bc59957B7',
+      erc20PrivateMetavault: '0xAc31856e2A81B9Af8b83424817C3bc0770F40a01',
     },
     special: {
       stakeCalculator: '0xaE9A192Ed2030444eB9323C592F1b85801EA0Ec3',

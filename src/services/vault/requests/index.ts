@@ -40,6 +40,9 @@ export type { GetValidatorsInput } from './getValidators'
 export { default as getVaultStats } from './getVaultStats'
 export type { GetVaultStatsInput } from './getVaultStats'
 
+export { default as getSubVaults } from './getSubVaults'
+export type { GetSubVaultsInput } from './getSubVaults'
+
 export { default as getWhitelist } from './getWhitelist'
 export type { GetWhitelistInput } from './getWhitelist'
 

@@ -11,8 +11,7 @@ import {
 } from './abis'
 
 import {
-  DefaultVaultAbi as DefaultVaultAbiType,
-  GnosisVaultDiffAbi as GnosisVaultDiffType,
+  DefaultVaultAbi as DefaultVaultType,
   MainnetVaultDiffAbi as MainnetVaultDiffType,
   PrivateVaultDiffAbi as PrivateVaultDiffType,
   BlocklistVaultDiffAbi as BlocklistVaultDiffType,
@@ -25,7 +24,6 @@ import { ModifiedVault } from '../../services/vault/requests/getVault/types'
 
 
 type Options = Partial<Pick<ModifiedVault, 'isBlocklist' | 'isPrivate'>> & {
-  chainId?: Network
   isDepositWithMint?: boolean
 }
 
@@ -34,34 +32,24 @@ type CreateContractsInput<T> = {
   options?: T
 }
 
-type Output<T extends Options> = Omit<
-  (T['chainId'] extends Network.Gnosis
-    ? DefaultVaultAbiType & GnosisVaultDiffType
-    : DefaultVaultAbiType & MainnetVaultDiffType
-  ) &
-  (T['isBlocklist'] extends true
-    ? BlocklistVaultDiffType
-    : object
-  ) &
-  (T['isPrivate'] extends true
-    ? PrivateVaultDiffType
-    : object
-  ) &
-  (T['isDepositWithMint'] extends true
-    ? DepositWithMintDiffType
-    : object
-  ),
-  'connect'
-> & {
+type VaultType<T extends Options> = (
+  DefaultVaultType
+  & MainnetVaultDiffType
+  & (T['isBlocklist'] extends true ? BlocklistVaultDiffType : object)
+  & (T['isPrivate'] extends true ? PrivateVaultDiffType : object)
+  & (T['isDepositWithMint'] extends true ? DepositWithMintDiffType : object)
+)
+
+type Output<T extends Options> = Omit<VaultType<T>, 'connect'> & {
   // overwrite, since each abi returns itself
   connect: (signer: any) => Output<T>
 }
 
-const createVaultContract = (provider: Provider) => (
+const createVaultContract = (provider: Provider, config: StakeWise.Config) => (
   <T extends Options>(input: CreateContractsInput<T>): Output<T> => {
     const { vaultAddress, options } = input
 
-    const isGnosis = Network.Gnosis === (options?.chainId || Network.Mainnet)
+    const isGnosis = config.network.chainId === Network.Gnosis
 
     let baseAbi = isGnosis
       ? DefaultVaultAbi.concat(GnosisVaultDiffAbi)

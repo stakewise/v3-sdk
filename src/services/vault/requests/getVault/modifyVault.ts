@@ -31,12 +31,17 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     totalAssets,
     whitelister,
     feeRecipient,
+    exitingAssets,
     osTokenConfig,
     blocklistCount,
     lastFeePercent,
     whitelistCount,
+    exitingTickets,
+    ejectingSubVault,
     validatorsManager,
+    subVaultsRegistry,
     depositDataManager,
+    pendingMetaSubVault,
     allocatorMaxBoostApy,
     ...rest
   } = vault
@@ -57,10 +62,15 @@ const modifyVault = (input: ModifyVaultInput): ModifiedVault => {
     feeRecipient: getAddress(feeRecipient),
     blocklistCount: Number(blocklistCount),
     whitelistCount: Number(whitelistCount),
+    exitingAssets: formatEther(exitingAssets),
+    exitingTickets: formatEther(exitingTickets),
     allocatorMaxBoostApy: Number(allocatorMaxBoostApy),
     whitelistManager: whitelister ? getAddress(whitelister) : '',
+    ejectingSubVault: ejectingSubVault ? getAddress(ejectingSubVault) : '',
     validatorsManager: validatorsManager ? getAddress(validatorsManager) : '',
+    subVaultsRegistry: subVaultsRegistry ? getAddress(subVaultsRegistry) : '',
     depositDataManager: depositDataManager ? getAddress(depositDataManager) : '',
+    pendingMetaSubVault: pendingMetaSubVault ? getAddress(pendingMetaSubVault) : '',
     blocklistManager: vault.blocklistManager ? getAddress(vault.blocklistManager) : '',
     mevRecipient: mevEscrow
       ? getAddress(mevEscrow)
