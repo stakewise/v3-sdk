@@ -1,7 +1,7 @@
 ---
 id: sdk-reference
 title: SDK Reference
-sidebar_position: 2
+sidebar_position: 3
 description: StakeWise SDK reference for network configuration, global TypeScript types, contract access, and built-in ethers helpers.
 ---
 
