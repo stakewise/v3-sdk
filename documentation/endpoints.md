@@ -21,70 +21,36 @@ The RPC endpoint is the JSON-RPC URL of an Ethereum node for the selected networ
 
 ## API Endpoint
 
-GraphQL endpoint of the StakeWise backend. One per network.
+GraphQL endpoint of the StakeWise backend.
 
-### `Mainnet`
-
-```
-https://mainnet-api.stakewise.io/graphql
-```
-
-### `Gnosis`
-
-```
-https://gnosis-api.stakewise.io/graphql
-```
-
-### `Hoodi`
-
-```
-https://hoodi-api.stakewise.io/graphql
-```
+| Network | Endpoint |
+|---------|----------|
+| **Mainnet** | `https://mainnet-api.stakewise.io/graphql` |
+| **Gnosis** | `https://gnosis-api.stakewise.io/graphql` |
+| **Hoodi** | `https://hoodi-api.stakewise.io/graphql` |
 
 ---
 
 ## Subgraph Endpoint
 
-GraphQL endpoint of the StakeWise subgraph. One per network. Use the **`prod`** endpoint for production environments. The **`stage`** endpoint mirrors the production schema but tracks the staging deployment — use it only when reproducing issues against a non-production environment.
+GraphQL endpoint of the StakeWise subgraph.
 
-### `Mainnet`
+### Production
 
-**Production**
+Use the **`prod`** endpoint for production environments.
 
-```
-https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/prod
-```
+| Network | Endpoint |
+|---------|----------|
+| **Mainnet** | `https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/prod` |
+| **Gnosis** | `https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod` |
+| **Hoodi** | `https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod` |
 
-**Stage**
+### Stage
 
-```
-https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/stage
-```
+Mirrors the production schema but tracks the staging deployment — use it only when reproducing issues against a non-production environment.
 
-### `Gnosis`
-
-**Production**
-
-```
-https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod
-```
-
-**Stage**
-
-```
-https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/stage
-```
-
-### `Hoodi`
-
-**Production**
-
-```
-https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod
-```
-
-**Stage**
-
-```
-https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage
-```
+| Network | Endpoint |
+|---------|----------|
+| **Mainnet** | `https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/stage` |
+| **Gnosis** | `https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/stage` |
+| **Hoodi** | `https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage` |
