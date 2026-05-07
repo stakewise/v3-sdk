@@ -1,4 +1,4 @@
-import { isAddress } from 'ethers'
+import { isAddress, isHexString } from 'ethers'
 
 
 const image = (value: string) => {
@@ -24,6 +24,14 @@ const address = (values: Record<string, string>) => {
   Object.keys(values).forEach((key) => {
     if (!isAddress(values[key])) {
       throw new Error(`The "${key}" argument must be a valid address`)
+    }
+  })
+}
+
+const hash = (values: Record<string, string>) => {
+  Object.keys(values).forEach((key) => {
+    if (!isHexString(values[key], 32)) {
+      throw new Error(`The "${key}" argument must be a valid 32-byte hex hash (0x + 64 hex chars)`)
     }
   })
 }
@@ -82,6 +90,7 @@ const maxLength = (values: Record<string, { value: string, length: number }>) =>
 
 
 export default {
+  hash,
   image,
   array,
   object,
