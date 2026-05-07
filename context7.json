@@ -5,9 +5,8 @@
   "url": "https://context7.com/stakewise/v3-sdk",
   "public_key": "pk_wpaUy9UwJWjviJip1LFYx",
   "branch": "context7",
-  "folders": ["documentation"],
+  "folders": ["documentation", "src/services"],
   "excludeFolders": [
-    "src",
     "scripts",
     "dist",
     "node_modules",
@@ -16,16 +15,26 @@
   ],
   "excludeFiles": [
     "_category_.json",
-    "README.md"
+    "README.md",
+    "package.json",
+    "tsconfig.json",
+    "pnpm-lock.yaml",
+    "rollup.config.js",
+    "jest.config.ts",
+    "codegen.ts",
+    "hardhat.config.js",
+    "eslint.config.mjs",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "rules": [
-    "Init: `new StakeWiseSDK({ network, provider })` for read+write (ethers.BrowserProvider), or `{ network, endpoints: { web3 } }` for read-only.",
-    "After every write (deposit/withdraw/mint/burn/lock/unlock/create), `await sdk.utils.waitForSubgraph({ hash })` before refetching. Subgraph lags blocks.",
-    "Writes: default `sdk.<svc>.<method>(args)` sends, `.encode(args)` returns `{data,to,value}` for multisig, `.estimateGas(args)` returns bigint. Exception: `sdk.vault.multicall<T>` has no `.encode`/`.estimateGas`.",
+    "Init: `new StakeWiseSDK({ network, provider })` for read+write, or `{ network, endpoints: { web3: rpcUrl } }` for read-only.",
+    "After every write, `await sdk.utils.waitForSubgraph({ hash })` before refetching reads. Subgraph indexing lags transaction confirmation.",
+    "Writes have 3 forms: default sends a tx, `.encode(args)` returns `{data,to,value}` for multisig, `.estimateGas(args)` returns bigint. `sdk.vault.multicall<T>` lacks `.encode`/`.estimateGas`.",
     "`Network.Mainnet=1` (osETH), `Network.Gnosis=100` (osGNO), `Network.Hoodi=560048`. SDK instances are immutable per network; recreate to switch.",
     "V3 uses `osToken` (osETH/osGNO). `sETH2`/`rETH2` are V2, never reference in V3 code.",
     "Reads return `AbortPromise<T>`; call `.abort()` to cancel. `.then`/`.catch` are silently suppressed after abort.",
-    "Contracts outside `sdk.contracts`: `sdk.utils.createContract<T>(address, abi)`, pre-attached to `sdk.provider`.",
+    "Contracts outside `sdk.contracts`: import top-level `createContract<T>(address, abi, sdk.provider)` from `@stakewise/v3-sdk`.",
     "Batch independent reads with `Promise.all` / `AbortPromise.all`. Never parallelise writes; wallets serialise signing."
   ],
   "previousVersions": []
