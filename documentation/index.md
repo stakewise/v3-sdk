@@ -42,7 +42,7 @@ const sdk = new StakeWiseSDK({
 })
 ```
 
-> SDK instances are immutable per network. To switch networks at runtime, construct a new instance - see the [network switching guide](./02-fundamentals/network-switching.md).
+> SDK instances are immutable per network. To switch networks at runtime, construct a new instance.
 
 ---
 

@@ -56,63 +56,6 @@ You can make calls to the built-in ethers contracts if needed. To access contrac
 
 For a standard ERC20 contract at any address, use `sdk.contracts.helpers.createErc20(tokenAddress)`.
 
-## Arbitrary Contracts via top-level `createContract`
-
-For contracts not part of the default `sdk.contracts` namespace, import the top-level `createContract` helper. Pass `sdk.provider` to reuse the SDK's RPC configuration, or any other ethers provider:
-
-```typescript
-import { createContract, StakeWiseSDK, Network } from '@stakewise/v3-sdk'
-
-const sdk = new StakeWiseSDK({
-  network: Network.Mainnet,
-  endpoints: { web3: 'https://main-rpc.io' },
-})
-
-const aggregatorAbi = [
-  'function latestAnswer() view returns (int256)',
-] as const
-
-type ChainlinkOracle = {
-  latestAnswer(): Promise<bigint>
-}
-
-const oracle = createContract<ChainlinkOracle>(
-  '0xChainlinkETHUSDFeedAddress',
-  aggregatorAbi,
-  sdk.provider,
-)
-
-const ethUsd = await oracle.latestAnswer()
-```
-
-## Subgraph Indexing via `sdk.utils.waitForSubgraph`
-
-The subgraph indexes blocks asynchronously, so any read method called immediately after a write returns stale data. After every write transaction, await `sdk.utils.waitForSubgraph(txHash)` before refetching:
-
-```typescript
-import { parseEther } from 'ethers'
-import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
-
-const sdk = new StakeWiseSDK({
-  network: Network.Mainnet,
-  provider: browserProvider,
-})
-
-const txHash = await sdk.vault.deposit({
-  vaultAddress,
-  userAddress,
-  assets: parseEther('1.0'),
-  referrerAddress: '0x0000000000000000000000000000000000000000',
-})
-
-await sdk.utils.waitForSubgraph({ hash: txHash })
-
-// Now safe to refetch - subgraph reflects the deposit
-const stake = await sdk.vault.getStakeBalance({ vaultAddress, userAddress })
-```
-
-See [Subgraph indexing](./02-fundamentals/subgraph-indexing.md) for the canonical post-write flow and React cancellation pattern.
-
 ## Error Handling and Transaction Debugging
 
 Each SDK method validates the arguments passed to it before execution and throws an error if any argument is invalid. For example, if you attempt to send a transaction without providing a provider during SDK initialization, an error will be thrown.
