@@ -2,7 +2,7 @@
 id: deposit-to-vault
 title: Deposit to vault
 sidebar_position: 2
-description: Deposit ETH into a StakeWise vault using the SDK — client-side browser wallet and backend custodial wallet integration examples.
+description: Deposit ETH into a StakeWise vault using the SDK - client-side browser wallet and backend custodial wallet integration examples.
 ---
 
 # Deposit to vault
@@ -48,6 +48,8 @@ const deposit = async (values: Input) => {
     const hash = await sdk.vault.deposit(params)
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)
@@ -95,6 +97,8 @@ const deposit = async (values: Input) => {
     const { hash } = await yourSigningService.sendTransaction()
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)

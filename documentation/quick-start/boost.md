@@ -2,7 +2,7 @@
 id: boost-os-token
 title: Boost osToken
 sidebar_position: 6
-description: Boost staking rewards with StakeWise SDK — leverage osTokens as Aave collateral to amplify your vault staking position.
+description: Boost staking rewards with StakeWise SDK - leverage osTokens as Aave collateral to amplify your vault staking position.
 ---
 
 # Boost osToken
@@ -70,6 +70,8 @@ const boost = async (values: Input) => {
         const { hash } = await signedContract.approve(permitAddress, shares)
 
         await sdk.provider.waitForTransaction(hash)
+
+        await sdk.utils.waitForSubgraph({ hash })
       }
       else {
         // Use gasless permit for EOAs
@@ -98,6 +100,8 @@ const boost = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)

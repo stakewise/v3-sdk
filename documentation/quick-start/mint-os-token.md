@@ -2,7 +2,7 @@
 id: mint-os-token
 title: Mint osToken
 sidebar_position: 4
-description: Mint osETH tokens against your StakeWise vault stake using the SDK — check max mintable amounts and execute minting transactions.
+description: Mint osETH tokens against your StakeWise vault stake using the SDK - check max mintable amounts and execute minting transactions.
 ---
 
 # Mint osToken
@@ -57,6 +57,8 @@ const mint = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)

@@ -2,7 +2,7 @@
 id: unstake-example
 title: Unstake
 sidebar_position: 3
-description: Unstake deposits from a StakeWise vault using the SDK — withdraw staked assets, handle osToken burns, and track exit queue positions.
+description: Unstake deposits from a StakeWise vault using the SDK - withdraw staked assets, handle osToken burns, and track exit queue positions.
 ---
 
 # Unstake
@@ -64,6 +64,8 @@ const unstake = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
 
     const positions = await sdk.vault.getExitQueuePositions({ userAddress, vaultAddress })
 

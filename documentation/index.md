@@ -2,14 +2,14 @@
 id: overview
 title: Overview
 sidebar_position: 0
-description: StakeWise V3 SDK overview for TypeScript developers — vault management, staking transactions, and blockchain data queries.
+description: StakeWise V3 SDK overview for TypeScript developers - vault management, staking transactions, and blockchain data queries.
 ---
 
 # Overview
 
 The SDK provides an API for interacting with a **Vault**, allowing you to create and manage vaults, fetch user balances for stakers, and send blockchain transactions related to the vault. With this SDK, you can easily build and integrate your own vault interface.
 
-The SDK is written in **TypeScript** and is designed to remain lightweight — we carefully avoid adding unnecessary dependencies.  
+The SDK is written in **TypeScript** and is designed to remain lightweight - we carefully avoid adding unnecessary dependencies.  
 To use the SDK, you must have the **ethers** library installed, version **6.14.3 or higher**.
 
 The SDK retrieves data from both **subgraphs** and **on-chain smart contracts**, and it can also **send transactions** if you pass a provider instance connected to the user's wallet.
@@ -25,13 +25,24 @@ The SDK retrieves data from both **subgraphs** and **on-chain smart contracts**,
 
 ## Supported Networks
 
-The SDK currently supports:
+| Network | `Network` enum | Chain ID | Native asset | osToken symbol |
+|---|---|---|---|---|
+| Ethereum Mainnet | `Network.Mainnet` | `1` | ETH | osETH |
+| Gnosis | `Network.Gnosis` | `100` | xDAI | osGNO |
+| Hoodi Testnet | `Network.Hoodi` | `560048` | ETH | osETH |
 
-- **Ethereum Mainnet**
-- **Hoodi Testnet**
-- **Gnosis Network**
+You specify the target network when creating the SDK instance:
 
-You can specify the target network when creating the SDK instance.
+```typescript
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: { web3: 'https://main-rpc.io' },
+})
+```
+
+> SDK instances are immutable per network. To switch networks at runtime, construct a new instance - see the [network switching guide](./02-fundamentals/network-switching.md).
 
 ---
 
@@ -71,7 +82,7 @@ const sdk = new StakeWiseSDK({
 
 ## Transaction Flexibility
 
-The SDK supports both **client-side** (browser wallet) and **backend** (custodial) transaction execution. Each write method provides three execution patterns:
+The SDK supports both **client-side** (browser wallet) and **backend** (custodial) transaction execution. Each write method provides three execution patterns (with one exception - see below):
 
 | Method | Description | Use Case |
 |--------|-------------|----------|
@@ -79,13 +90,15 @@ The SDK supports both **client-side** (browser wallet) and **backend** (custodia
 | `sdk.vault.method.encode(...)` | Returns encoded calldata | Custom transaction building & custodial wallets |
 | `sdk.vault.method.estimateGas(...)` | Estimates gas costs | cost calculation |
 
+> **Exception:** `sdk.vault.multicall<T>(values)` is a plain function with no `.encode` / `.estimateGas` siblings. It batches several vault operations into a single transaction and returns `Promise<T>` where `T` is a user-typed tuple of per-operation results.
+
 ---
 
 ## Aborting Data Requests
 
 Most data-fetching methods in the SDK return a **promise-like object** that includes built-in control methods such as `abort()`.
 
-This allows you to safely cancel network requests that are no longer relevant — for example, when a user changes a filter or input before the previous request completes.
+This allows you to safely cancel network requests that are no longer relevant - for example, when a user changes a filter or input before the previous request completes.
 
 When `abort()` is called, the ongoing network request is **canceled**, and the associated promise will **not resolve or reject**.  
 If the request has already finished, calling `abort()` has **no effect**.

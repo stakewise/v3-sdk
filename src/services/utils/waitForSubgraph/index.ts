@@ -5,20 +5,10 @@ import AbortPromise from '../../../modules/gql-module/abortPromise'
 
 export type WaitForSubgraphInput = StakeWise.CommonParams & {
   hash: string
-  pollDelay?: number
-  maxAttempts?: number
 }
 
 export const waitForSubgraph = (input: WaitForSubgraphInput): AbortPromise<void> => {
-  const {
-    hash,
-    pollDelay = 1000,
-    maxAttempts = 10,
-    config,
-    options,
-    provider,
-    contracts,
-  } = input
+  const { hash, config, options, provider, contracts } = input
 
   validateArgs.hash({ hash })
 
@@ -33,7 +23,7 @@ export const waitForSubgraph = (input: WaitForSubgraphInput): AbortPromise<void>
       return transactions.length
     }
     catch (error) {
-      if (attempt < maxAttempts) {
+      if (attempt < 10) {
         await new Promise((resolve) => setTimeout(resolve, attempt * 100))
 
         return fetchCount(attempt + 1)
@@ -51,7 +41,7 @@ export const waitForSubgraph = (input: WaitForSubgraphInput): AbortPromise<void>
     const count = await fetchCount()
 
     if (!count) {
-      await new Promise((resolve) => setTimeout(resolve, pollDelay))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
       return poll()
     }
