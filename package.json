@@ -10,6 +10,10 @@
   "module": "dist/index.esm.js",
   "description": "StakeWise v3 SDK",
   "homepage": "https://github.com/stakewise/v3-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stakewise/v3-sdk.git"
+  },
   "scripts": {
     "test": "jest --clearCache && jest --all",
     "prepare": "husky && pnpm typechain && pnpm graphql && pnpm check:version",
