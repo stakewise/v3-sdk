@@ -2,13 +2,13 @@
 id: custom-contracts
 title: Call arbitrary contracts
 sidebar_position: 5
-description: Use the top-level createContract helper from @stakewise/v3-sdk to interact with any Ethereum contract not part of the default sdk.contracts namespace. Pass address, ABI, and a provider to get a typed ethers Contract.
+description: Interact with any StakeWise V3-compatible contract not yet integrated into the SDK's default StakeWise.Contracts namespace. Pass the contract address, ABI, and sdk.provider (which carries the SDK's network configuration and RPC endpoints) to createContract from @stakewise/v3-sdk to get a typed ethers Contract bound to the same chain as the SDK instance.
 ---
 
 # Call arbitrary contracts
 
 
-The SDK exposes `sdk.contracts` with built-ins (Keeper, RewardSplitter, MintTokenController, etc.). For any other contract (Chainlink oracle, partner protocol, freshly deployed periphery contract) use the top-level `createContract` helper exported from `@stakewise/v3-sdk`.
+The default `StakeWise.Contracts` namespace, exposed at `sdk.contracts`, ships with built-ins (Keeper, RewardSplitter, MintTokenController, etc.). For any contract that is not yet integrated there — a freshly deployed StakeWise V3-compatible contract, a Chainlink oracle, a partner protocol — use the top-level `createContract` helper exported from `@stakewise/v3-sdk`. Pass the contract address, its ABI, and `sdk.provider` (which carries the SDK's network configuration and fallback RPC endpoints) to get a typed ethers `Contract` bound to the same chain as the SDK instance.
 
 ## Read from a Chainlink oracle
 
