@@ -19,9 +19,11 @@ You can access the current configuration in one of the following ways:
 The configuration contains the following data:
 
 - **network** - data about the current network
-- **api** - GraphQL URLs for data retrieval
+- **api** - GraphQL endpoints for data retrieval. `subgraph` is an array of subgraph URLs: the first one is the primary endpoint, and if a query against it fails the SDK automatically retries against the next URL in the array. `backend` is the StakeWise backend API URL
 - **addresses** - addresses of main contracts operating in the network
 - **tokens** - token symbols for the current network
+
+Override either at init time via `endpoints.subgraph` (string or array) and `endpoints.api`.
 
 ## Global Types
 
