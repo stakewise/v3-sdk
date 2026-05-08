@@ -54,7 +54,7 @@ const params = {
 // Send transaction
 const hash = await sdk.vault.create(params)
 
-// Wait for the transaction to be mined and the subgraph to index it
+// Wait for the transaction to be confirmed and indexed
 await sdk.provider.waitForTransaction(hash)
 await sdk.utils.waitForSubgraph({ hash })
 
@@ -79,7 +79,7 @@ const hash = await sdk.vault.create({
   displayName: 'Private vault',
 })
 
-// Wait for the transaction to be mined and the subgraph to index it
+// Wait for the transaction to be confirmed and indexed
 await sdk.provider.waitForTransaction(hash)
 await sdk.utils.waitForSubgraph({ hash })
 ```
@@ -116,7 +116,7 @@ const hash = await sdk.vault.create({
   displayName: 'Gnosis ERC20 vault',
 })
 
-// Wait for the transaction to be mined and the subgraph to index it
+// Wait for the transaction to be confirmed and indexed
 await sdk.provider.waitForTransaction(hash)
 await sdk.utils.waitForSubgraph({ hash })
 ```

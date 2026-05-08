@@ -55,7 +55,7 @@ const params = {
 // Send transaction
 const hash = await sdk.boost.lock(params)
 
-// Wait for the transaction to be mined and the subgraph to index it
+// Wait for the transaction to be confirmed and indexed
 await sdk.provider.waitForTransaction(hash)
 await sdk.utils.waitForSubgraph({ hash })
 
