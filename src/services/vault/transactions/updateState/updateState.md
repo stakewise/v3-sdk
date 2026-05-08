@@ -25,6 +25,13 @@ const params = {
 // Send transaction
 // Will return empty string if updateState is not required
 const hash = await sdk.vault.updateState(params)
+
+if (hash) {
+  // Wait for the transaction to be confirmed and indexed
+  await sdk.provider.waitForTransaction(hash)
+  await sdk.utils.waitForSubgraph({ hash })
+}
+
 // When you sign transactions on the backend (for custodians)
 // Will return empty object if updateState is not required
 const { data, to } = await sdk.vault.updateState.encode(params)

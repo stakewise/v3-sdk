@@ -34,6 +34,19 @@ Three access models, set at creation time via the `type` argument of `sdk.vault.
 
 Orthogonal to that, the optional `vaultToken: { name, symbol }` argument turns the vault into an **ERC20 vault** that issues a transferable share token. Omit it for a non-ERC20 vault where shares are tracked internally.
 
+## Meta vaults and sub-vaults
+
+A **meta vault** is a vault that does not run validators directly — instead it holds a registry of **sub-vaults** and aggregates their staking activity. Stakers deposit once into the meta vault; the meta vault routes the assets across its sub-vaults. The meta vault admin (the **curator**) controls which sub-vaults are part of the registry.
+
+Lifecycle methods:
+
+- **`sdk.vault.addSubVault({ vaultAddress, subVaultAddress, userAddress })`** — propose a new sub-vault for the meta vault registry.
+- **`sdk.vault.rejectSubVault({...})`** — remove a proposed sub-vault before it becomes active.
+- **`sdk.vault.ejectSubVault({...})`** — remove an active sub-vault from the registry.
+- **`sdk.vault.getSubVaults({ vaultAddress, limit, skip })`** — list sub-vaults of a meta vault with paging, returning per-vault APY, staking and exiting assets.
+
+On Gnosis, meta vaults only support `VaultType.Default`. ERC20 share tokens, private vaults, and the per-vault `isOwnMevEscrow` option are not available for meta vaults on Gnosis.
+
 ## What is osToken (osETH / osGNO)?
 
 **osToken** is the StakeWise liquid staking token: **osETH** on Ethereum Mainnet and Hoodi, **osGNO** on Gnosis. Stakers mint osToken against their vault deposit, keeping the underlying stake productive while gaining a transferable, redeemable token. The osToken ERC20 address lives at `sdk.config.addresses.tokens.mintToken`.
@@ -77,7 +90,7 @@ A **reward splitter** is a contract that distributes a vault's rewards across mu
 
 ## Harvest (vault state update)
 
-Before deposits, mints, or other state-dependent reads can use the latest validator rewards, the vault must be **harvested** — its on-chain state updated with the latest oracle proof. The SDK provides `sdk.vault.getHarvestParams` to fetch the proof and `canHarvest` flag, and `sdk.vault.operate` to submit the state update transaction. Most user-facing flows do not need to call this manually; the deposit/withdraw paths handle it transparently.
+Before deposits, mints, or other state-dependent reads can use the latest validator rewards, the vault must be **harvested** — its on-chain state updated with the latest oracle proof. The SDK provides `sdk.vault.getHarvestParams` to fetch the proof and `canHarvest` flag, and `sdk.vault.updateState` to submit the state update transaction (returns an empty hash if the vault is already up to date). Most user-facing flows do not need to call this manually; the deposit/withdraw paths handle it transparently.
 
 ## Subgraph indexing
 

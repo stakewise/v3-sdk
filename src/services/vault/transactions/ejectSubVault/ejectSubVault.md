@@ -26,6 +26,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.vault.ejectSubVault(params)
+
+// Wait for the transaction to be confirmed and indexed
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.vault.ejectSubVault.encode(params)
 // Get an approximate gas per transaction
