@@ -24,7 +24,7 @@ const sdk = new StakeWiseSDK({
 const vault = await sdk.vault.getVault({ vaultAddress: '0xVaultAddress' })
 ```
 
-## Vault types
+## What are the vault types?
 
 Three access models, set at creation time via the `type` argument of `sdk.vault.create`:
 
@@ -34,7 +34,7 @@ Three access models, set at creation time via the `type` argument of `sdk.vault.
 
 Orthogonal to that, the optional `vaultToken: { name, symbol }` argument turns the vault into an **ERC20 vault** that issues a transferable share token. Omit it for a non-ERC20 vault where shares are tracked internally.
 
-## Meta vaults and sub-vaults
+## What are meta vaults and sub-vaults?
 
 A **meta vault** is a vault that does not run validators directly - instead it holds a registry of **sub-vaults** and aggregates their staking activity. Stakers deposit once into the meta vault; the meta vault routes the assets across its sub-vaults. The meta vault admin (the **curator**) controls which sub-vaults are part of the registry.
 
@@ -67,7 +67,7 @@ const totalSupply = await osToken.totalSupply()
 
 osToken redemption is at the protocol exchange rate - instant if unbonded assets are available in the vault, otherwise the vault exits validators to fulfill the request.
 
-## Health factor
+## What is the osToken health factor?
 
 When a user mints osToken against their stake, the position has a **health factor** that reflects the LTV ratio against the vault's liquidation threshold. Use `sdk.osToken.getHealthFactor` before minting to avoid unhealthy positions; the result is one of `OsTokenPositionHealth.Healthy / Moderate / Risky / Unhealthy`.
 
@@ -77,22 +77,22 @@ When a user mints osToken against their stake, the position has a **health facto
 
 The strategy keeps near-perfect collateral correlation (osETH against ETH, osGNO against GNO), so liquidation risk is bounded by the protocol's redemption guarantee.
 
-## MEV escrow vs Smoothing Pool
+## What is the difference between MEV escrow and Smoothing Pool?
 
 When creating a vault, `isOwnMevEscrow` decides where block rewards go:
 
 - **`false` (default)** - rewards flow to the **Smoothing Pool**, a network-wide MEV pool that distributes proportionally across all participating vaults. Reduces variance.
 - **`true`** - the vault has its **own MEV escrow** contract. The vault keeps its own MEV rewards but bears the variance.
 
-## Reward splitter
+## What is a reward splitter?
 
 A **reward splitter** is a contract that distributes a vault's rewards across multiple recipients in fixed proportions. The vault admin deploys one with `sdk.rewardSplitter.createRewardSplitter`, configures shares with `updateFeeRecipients`, and recipients claim with `claimRewards`. List existing splitters for a vault with `sdk.vault.getRewardSplitters`.
 
-## Harvest (vault state update)
+## What is harvest and how to update vault state?
 
 Before deposits, mints, or other state-dependent reads can use the latest validator rewards, the vault must be **harvested** - its on-chain state updated with the latest oracle proof. The SDK provides `sdk.vault.getHarvestParams` to fetch the proof and `canHarvest` flag, and `sdk.vault.updateState` to submit the state update transaction (returns an empty hash if the vault is already up to date). Most user-facing flows do not need to call this manually; the deposit/withdraw paths handle it transparently.
 
-## Subgraph indexing
+## How to wait for subgraph indexing after a transaction?
 
 Every write transaction (`deposit`, `withdraw`, `mint`, `burn`, `lock`, `unlock`, `createVault`, ...) updates the StakeWise subgraph asynchronously. Always wait for the subgraph to catch up before refetching read methods, otherwise data is stale:
 
