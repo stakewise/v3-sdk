@@ -28,22 +28,22 @@ const vault = await sdk.vault.getVault({ vaultAddress: '0xVaultAddress' })
 
 Three access models, set at creation time via the `type` argument of `sdk.vault.create`:
 
-- **`VaultType.Default`** — open to any depositor.
-- **`VaultType.Private`** — restricted to a whitelist managed by the vault admin (`sdk.vault.getWhitelist`, whitelist write methods).
-- **`VaultType.Blocklist`** — open to anyone except blocked addresses (`sdk.vault.getBlocklist`).
+- **`VaultType.Default`** - open to any depositor.
+- **`VaultType.Private`** - restricted to a whitelist managed by the vault admin (`sdk.vault.getWhitelist`, whitelist write methods).
+- **`VaultType.Blocklist`** - open to anyone except blocked addresses (`sdk.vault.getBlocklist`).
 
 Orthogonal to that, the optional `vaultToken: { name, symbol }` argument turns the vault into an **ERC20 vault** that issues a transferable share token. Omit it for a non-ERC20 vault where shares are tracked internally.
 
 ## Meta vaults and sub-vaults
 
-A **meta vault** is a vault that does not run validators directly — instead it holds a registry of **sub-vaults** and aggregates their staking activity. Stakers deposit once into the meta vault; the meta vault routes the assets across its sub-vaults. The meta vault admin (the **curator**) controls which sub-vaults are part of the registry.
+A **meta vault** is a vault that does not run validators directly - instead it holds a registry of **sub-vaults** and aggregates their staking activity. Stakers deposit once into the meta vault; the meta vault routes the assets across its sub-vaults. The meta vault admin (the **curator**) controls which sub-vaults are part of the registry.
 
 Lifecycle methods:
 
-- **`sdk.vault.addSubVault({ vaultAddress, subVaultAddress, userAddress })`** — propose a new sub-vault for the meta vault registry.
-- **`sdk.vault.rejectSubVault({...})`** — remove a proposed sub-vault before it becomes active.
-- **`sdk.vault.ejectSubVault({...})`** — remove an active sub-vault from the registry.
-- **`sdk.vault.getSubVaults({ vaultAddress, limit, skip })`** — list sub-vaults of a meta vault with paging, returning per-vault APY, staking and exiting assets.
+- **`sdk.vault.addSubVault({ vaultAddress, subVaultAddress, userAddress })`** - propose a new sub-vault for the meta vault registry.
+- **`sdk.vault.rejectSubVault({...})`** - remove a proposed sub-vault before it becomes active.
+- **`sdk.vault.ejectSubVault({...})`** - remove an active sub-vault from the registry.
+- **`sdk.vault.getSubVaults({ vaultAddress, limit, skip })`** - list sub-vaults of a meta vault with paging, returning per-vault APY, staking and exiting assets.
 
 On Gnosis, meta vaults only support `VaultType.Default`. ERC20 share tokens, private vaults, and the per-vault `isOwnMevEscrow` option are not available for meta vaults on Gnosis.
 
@@ -65,7 +65,7 @@ const osToken = sdk.contracts.helpers.createErc20(osTokenAddress)
 const totalSupply = await osToken.totalSupply()
 ```
 
-osToken redemption is at the protocol exchange rate — instant if unbonded assets are available in the vault, otherwise the vault exits validators to fulfill the request.
+osToken redemption is at the protocol exchange rate - instant if unbonded assets are available in the vault, otherwise the vault exits validators to fulfill the request.
 
 ## Health factor
 
@@ -81,8 +81,8 @@ The strategy keeps near-perfect collateral correlation (osETH against ETH, osGNO
 
 When creating a vault, `isOwnMevEscrow` decides where block rewards go:
 
-- **`false` (default)** — rewards flow to the **Smoothing Pool**, a network-wide MEV pool that distributes proportionally across all participating vaults. Reduces variance.
-- **`true`** — the vault has its **own MEV escrow** contract. The vault keeps its own MEV rewards but bears the variance.
+- **`false` (default)** - rewards flow to the **Smoothing Pool**, a network-wide MEV pool that distributes proportionally across all participating vaults. Reduces variance.
+- **`true`** - the vault has its **own MEV escrow** contract. The vault keeps its own MEV rewards but bears the variance.
 
 ## Reward splitter
 
@@ -90,7 +90,7 @@ A **reward splitter** is a contract that distributes a vault's rewards across mu
 
 ## Harvest (vault state update)
 
-Before deposits, mints, or other state-dependent reads can use the latest validator rewards, the vault must be **harvested** — its on-chain state updated with the latest oracle proof. The SDK provides `sdk.vault.getHarvestParams` to fetch the proof and `canHarvest` flag, and `sdk.vault.updateState` to submit the state update transaction (returns an empty hash if the vault is already up to date). Most user-facing flows do not need to call this manually; the deposit/withdraw paths handle it transparently.
+Before deposits, mints, or other state-dependent reads can use the latest validator rewards, the vault must be **harvested** - its on-chain state updated with the latest oracle proof. The SDK provides `sdk.vault.getHarvestParams` to fetch the proof and `canHarvest` flag, and `sdk.vault.updateState` to submit the state update transaction (returns an empty hash if the vault is already up to date). Most user-facing flows do not need to call this manually; the deposit/withdraw paths handle it transparently.
 
 ## Subgraph indexing
 

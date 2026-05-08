@@ -8,7 +8,7 @@ description: Interact with any StakeWise V3-compatible contract not yet integrat
 # Call arbitrary contracts
 
 
-The default `StakeWise.Contracts` namespace, exposed at `sdk.contracts`, ships with built-ins (Keeper, RewardSplitter, MintTokenController, etc.). For any contract that is not yet integrated there — a freshly deployed StakeWise V3-compatible contract, a Chainlink oracle, a partner protocol — use the top-level `createContract` helper exported from `@stakewise/v3-sdk`. Pass the contract address, its ABI, and `sdk.provider` (which carries the SDK's network configuration and fallback RPC endpoints) to get a typed ethers `Contract` bound to the same chain as the SDK instance.
+The default `StakeWise.Contracts` namespace, exposed at `sdk.contracts`, ships with built-ins (Keeper, RewardSplitter, MintTokenController, etc.). For any contract that is not yet integrated there - a freshly deployed StakeWise V3-compatible contract, a Chainlink oracle, a partner protocol - use the top-level `createContract` helper exported from `@stakewise/v3-sdk`. Pass the contract address, its ABI, and `sdk.provider` (which carries the SDK's network configuration and fallback RPC endpoints) to get a typed ethers `Contract` bound to the same chain as the SDK instance.
 
 ## Interact with a StakeWise V3-compatible contract not in the default namespace
 

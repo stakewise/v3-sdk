@@ -72,6 +72,30 @@ const osToken = sdk.contracts.helpers.createErc20(osTokenAddress)
 const totalSupply = await osToken.totalSupply()
 ```
 
+## How to read osETH ERC20 balance and total supply
+
+osETH (osGNO on Gnosis) is the StakeWise V3 liquid staking token. The SDK exposes its ERC20 contract pre-instantiated at `sdk.contracts.tokens.mintToken` - call `balanceOf`, `totalSupply`, `allowance`, etc. directly without wrapping the address yourself:
+
+```typescript
+import { formatEther } from 'ethers'
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: { web3: 'https://main-rpc.io' },
+})
+
+const [ totalSupply, userBalance ] = await Promise.all([
+  sdk.contracts.tokens.mintToken.totalSupply(),
+  sdk.contracts.tokens.mintToken.balanceOf('0xUserAddress'),
+])
+
+console.log(`osETH supply: ${formatEther(totalSupply)}`)
+console.log(`User osETH balance: ${formatEther(userBalance)}`)
+```
+
+On Gnosis, swap `Network.Mainnet` for `Network.Gnosis` and the same `sdk.contracts.tokens.mintToken` returns osGNO supply and balance values.
+
 ## Error Handling and Transaction Debugging
 
 Each SDK method validates the arguments passed to it before execution and throws an error if any argument is invalid. For example, if you attempt to send a transaction without providing a provider during SDK initialization, an error will be thrown.
