@@ -6,13 +6,11 @@ description: Use the StakeWise SDK createVault method to deploy a new staking va
 
 #### Description:
 
-Create a vault. When the transaction is executed, one gwei of the deposit token must be stored in the vault to avoid [inflation attack](https://blog.openzeppelin.com/a-novel-defense-against-erc4626-inflation-attacks).
+Create a StakeWise V3 vault. The optional `vaultToken: { name, symbol }` argument toggles between an **ERC20 vault** (vault mints a transferable share token) and a **non-ERC20 vault** (shares tracked internally). The `type` argument selects `Default`, `Private`, or `Blocklist` access. The two combine into six factories; the SDK picks the right one automatically.
 
-Pay attention to chains where the deposit token is not a native token such as Gnosis.
-On these chains before creating the vault, ensure that you call the `approve` function on the deposit token contract,
-allowing the vault factory address to spend one gwei.
-
-You can retrieve the vault factory contract using the helper function: `sdk.getVaultFactory({ vaultType: params.type, isErc20: params.isErc20 })`.
+When the transaction is executed, one gwei of the deposit token must be stored in the vault to avoid [inflation attack](https://blog.openzeppelin.com/a-novel-defense-against-erc4626-inflation-attacks).
+On Mainnet and Hoodi the deposit token is the native asset (ETH) and the SDK attaches the 1 gwei automatically.
+On Gnosis the deposit token is GNO, so before calling `sdk.vault.create` you must call `approve` on GNO to allow the vault factory to spend 1 gwei. Retrieve the factory address with `sdk.vault.getVaultFactory({ vaultType: params.type, isErc20: Boolean(params.vaultToken) })`.
 
 **Important**: When creating a metavault on Gnosis, only the default vault type is supported. ERC20 tokens and private vaults are not available. Additionally, all metavaults do not support the `isOwnMevEscrow` parameter.
 
@@ -32,9 +30,12 @@ You can retrieve the vault factory contract using the helper function: `sdk.getV
 | displayName    | `string`                           | **No**   | The vault display name (will be uploaded to IPFS; maximum size is 30 characters)|  
 | description    | `string`                           | **No**   | The vault description (will be uploaded to IPFS; maximum size is 1000 characters)|  
 
-#### Example:
+#### Example: ERC20 vault on Mainnet
 
 ```ts
+import { MaxUint256 } from 'ethers'
+import { VaultType } from '@stakewise/v3-sdk'
+
 const params = {
   userAddress: '0x...',
   type: VaultType.Default,
@@ -50,11 +51,72 @@ const params = {
   description: 'Example description',
 }
 
-// Transaction example
-// Send transaction to create a vault
+// Send transaction
 const hash = await sdk.vault.create(params)
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
-const { data, to, value } = await sdk.vault.deposit.encode(params)
+const { data, to, value } = await sdk.vault.create.encode(params)
 // Get an approximate gas per transaction
-const gas = await sdk.vault.deposit.estimateGas(params)
+const gas = await sdk.vault.create.estimateGas(params)
+```
+
+#### Example: non-ERC20 Private vault
+
+Omit `vaultToken` to deploy a non-ERC20 vault and switch `type` to restrict access:
+
+```ts
+import { VaultType } from '@stakewise/v3-sdk'
+
+const hash = await sdk.vault.create({
+  userAddress: '0x...',
+  type: VaultType.Private,
+  isOwnMevEscrow: false,
+  keysManagerFee: 5,
+  displayName: 'Private vault',
+})
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+```
+
+#### Example: ERC20 vault on Gnosis (with GNO approve)
+
+On Gnosis the 1 gwei security deposit is GNO, not native xDAI. Approve the vault factory before `sdk.vault.create`:
+
+```ts
+import { MaxUint256 } from 'ethers'
+import { VaultType } from '@stakewise/v3-sdk'
+
+const userAddress = '0x...'
+const isErc20 = true
+
+const factoryAddress = await sdk.vault.getVaultFactory({
+  vaultType: VaultType.Default,
+  isErc20,
+})
+
+const depositTokenAddress = sdk.config.addresses.tokens.depositToken
+const gno = sdk.contracts.helpers.createErc20(depositTokenAddress)
+const signer = await sdk.provider.getSigner(userAddress)
+
+const approveTx = await gno.connect(signer).approve(factoryAddress, MaxUint256)
+await approveTx.wait()
+
+const hash = await sdk.vault.create({
+  userAddress,
+  type: VaultType.Default,
+  vaultToken: { name: 'Gnosis Vault Share', symbol: 'GVS' },
+  isOwnMevEscrow: false,
+  keysManagerFee: 5,
+  displayName: 'Gnosis ERC20 vault',
+})
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
 ```

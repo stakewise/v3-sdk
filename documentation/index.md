@@ -33,7 +33,7 @@ The SDK retrieves data from both **subgraphs** and **on-chain smart contracts**,
 
 You specify the target network when creating the SDK instance:
 
-```typescript
+```ts
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
 const sdk = new StakeWiseSDK({
@@ -57,7 +57,7 @@ You can provide endpoints in several formats:
 *   An array of objects to include custom headers (e.g., for authenticated RPC endpoints).
 
 
-```typescript
+```ts
 import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
 
 const sdk = new StakeWiseSDK({

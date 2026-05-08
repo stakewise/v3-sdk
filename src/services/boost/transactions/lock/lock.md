@@ -54,6 +54,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.boost.lock(params)
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 // `lockTxData` will always be returned, while `approveTxData` will only be returned for MultiSig e.g. Safe Wallet
 // if there isn’t enough osToken allowance, otherwise it will be null

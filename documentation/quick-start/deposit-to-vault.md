@@ -9,7 +9,7 @@ description: Deposit ETH into a StakeWise vault using the SDK - client-side brow
 
 This guide demonstrates two different approaches for depositing into a vault:
 
-### 1. Client-Side (Browser Wallet)
+## How to deposit from a browser wallet
 
 Use this method when users connect their non-custodial wallet (like MetaMask) directly in the browser.
 
@@ -64,7 +64,7 @@ deposit({
 ```
 ---
 
-### 2. Backend-Side (Custodial Wallet)
+## How to deposit from a backend or custodial wallet
 
 Use this method when you manage private keys on your backend server.
 

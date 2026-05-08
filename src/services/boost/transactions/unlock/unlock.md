@@ -41,6 +41,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.boost.unlock(params)
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 // `lockTxData` will always be returned, while `upgradeLeverageStrategyTxData` will be returned if the leverage strategy contract upgrade is required
 const { lockTxData, upgradeLeverageStrategyTxData } = await sdk.boost.unlock.encode(params)

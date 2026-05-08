@@ -40,6 +40,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.distributorRewards.claim(params)
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.distributorRewards.claim.encode(params)
 // Get an approximate gas per transaction

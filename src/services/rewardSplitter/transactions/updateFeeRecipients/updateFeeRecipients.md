@@ -55,6 +55,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.rewardSplitter.updateFeeRecipients(params)
+
+// Wait for the transaction to be mined and the subgraph to index it
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.rewardSplitter.updateFeeRecipients.encode(params)
 // Get an approximate gas per transaction
