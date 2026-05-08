@@ -44,6 +44,14 @@ jobs:
             exit 1
           fi
 
+      - name: Verify tag is on main
+        run: |
+          git fetch origin main --depth=1
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tag $GITHUB_REF_NAME points to commit $GITHUB_SHA which is not on main branch"
+            exit 1
+          fi
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
