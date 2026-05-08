@@ -26,13 +26,15 @@ const vault = await sdk.vault.getVault({ vaultAddress: '0xVaultAddress' })
 
 ## What are the vault types?
 
-Three access models, set at creation time via the `type` argument of `sdk.vault.create`:
+Five vault types, set at creation time via the `type` argument of `sdk.vault.create`:
 
-- **`VaultType.Default`** - open to any depositor.
-- **`VaultType.Private`** - restricted to a whitelist managed by the vault admin (`sdk.vault.getWhitelist`, whitelist write methods).
-- **`VaultType.Blocklist`** - open to anyone except blocked addresses (`sdk.vault.getBlocklist`).
+- **`VaultType.Default`** - regular vault open to any depositor.
+- **`VaultType.Private`** - regular vault restricted to a whitelist managed by the vault admin (`sdk.vault.getWhitelist`, whitelist write methods).
+- **`VaultType.Blocklist`** - regular vault open to anyone except blocked addresses (`sdk.vault.getBlocklist`).
+- **`VaultType.MetaVault`** - meta vault that does not run validators directly and routes deposits across a registry of sub-vaults. Open to any depositor.
+- **`VaultType.PrivateMetaVault`** - meta vault restricted to a whitelist (Mainnet and Hoodi only, not supported on Gnosis).
 
-Orthogonal to that, the optional `vaultToken: { name, symbol }` argument turns the vault into an **ERC20 vault** that issues a transferable share token. Omit it for a non-ERC20 vault where shares are tracked internally.
+Orthogonal to that, the optional `vaultToken: { name, symbol }` argument turns a regular vault into an **ERC20 vault** that issues a transferable share token. Omit it for a non-ERC20 vault where shares are tracked internally. Meta vaults do not support ERC20 share tokens on Gnosis.
 
 ## What are meta vaults and sub-vaults?
 
@@ -45,7 +47,9 @@ Lifecycle methods:
 - **`sdk.vault.ejectSubVault({...})`** - remove an active sub-vault from the registry.
 - **`sdk.vault.getSubVaults({ vaultAddress, limit, skip })`** - list sub-vaults of a meta vault with paging, returning per-vault APY, staking and exiting assets.
 
-On Gnosis, meta vaults only support `VaultType.Default`. ERC20 share tokens, private vaults, and the per-vault `isOwnMevEscrow` option are not available for meta vaults on Gnosis.
+Before calling `addSubVault`, pre-check the sub-vault's access flags via `sdk.vault.getVault({ vaultAddress: subVaultAddress })`: if the sub-vault is private (`isPrivate: true`), the meta vault address must be on the sub-vault's whitelist; if the sub-vault has a blocklist (`isBlocklist: true`), the meta vault must not be on it. The sub-vault itself must not be a meta vault (`isMetaVault: false`), nesting is not supported.
+
+Use `VaultType.MetaVault` (or `VaultType.PrivateMetaVault` on Mainnet/Hoodi) when calling `sdk.vault.create` to deploy a meta vault. Meta vaults never support `isOwnMevEscrow`. On Gnosis, meta vaults additionally cannot use the `vaultToken` ERC20 share token, and `VaultType.PrivateMetaVault` is not supported at all.
 
 ## What is osToken (osETH / osGNO)?
 

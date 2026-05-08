@@ -8,6 +8,12 @@ description: Use the StakeWise SDK operate method to update vault settings such 
 
 Updates the vault by authorized personnel such as the vault admin, whitelistManager, blocklist manager, validators manager.
 
+#### Constraints
+
+- **One access mode per call.** The vault is either Private (whitelist) or Blocklist, never both. Passing `whitelist` / `whitelistManager` together with `blocklist` / `blocklistManager` in the same call throws an error before sending the transaction. Update one mode at a time.
+- **700-address chunk limit.** `whitelist` and `blocklist` arrays are capped at 700 entries per call. Larger lists must be split across multiple sequential transactions; the SDK throws before sending if the limit is exceeded.
+- **No vault-type pre-check.** The SDK does not verify that the target vault matches the access mode you are updating. Calling `whitelist` updates on a Default vault reverts at execution. Pre-check the vault type with `sdk.vault.getVault({ vaultAddress })` (`isPrivate`, `isBlocklist`) before calling `operate`.
+
 #### Arguments:
 
 | Name                      | Type                                         | Required | Access               | Description                |  
