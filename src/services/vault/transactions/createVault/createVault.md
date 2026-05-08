@@ -6,13 +6,15 @@ description: Use the StakeWise SDK createVault method to deploy a new staking va
 
 #### Description:
 
-Create a StakeWise V3 vault. The optional `vaultToken: { name, symbol }` argument toggles between an **ERC20 vault** (vault mints a transferable share token) and a **non-ERC20 vault** (shares tracked internally). The `type` argument selects `Default`, `Private`, or `Blocklist` access. The two combine into six factories; the SDK picks the right one automatically.
+How to deploy a StakeWise V3 vault: call `sdk.vault.create({ userAddress, type, ... })` on a write-capable SDK (browser wallet or backend signer). The simplest case is `VaultType.Default` with no `vaultToken`, no `capacity`, no `keysManagerFee` - the SDK applies sensible defaults and the returned hash points at a fully working open vault.
+
+The optional `vaultToken: { name, symbol }` argument toggles between an **ERC20 vault** (vault mints a transferable share token) and a **non-ERC20 vault** (shares tracked internally). The `type` argument selects `Default`, `Private`, `Blocklist`, `MetaVault`, or `PrivateMetaVault` access. Regular vault types combine with the ERC20 toggle into six factories; meta vault types add their own factories. The SDK picks the right factory automatically.
 
 When the transaction is executed, one gwei of the deposit token must be stored in the vault to avoid [inflation attack](https://blog.openzeppelin.com/a-novel-defense-against-erc4626-inflation-attacks).
 On Mainnet and Hoodi the deposit token is the native asset (ETH) and the SDK attaches the 1 gwei automatically.
 On Gnosis the deposit token is GNO, so before calling `sdk.vault.create` you must call `approve` on GNO to allow the vault factory to spend 1 gwei. Retrieve the factory address with `sdk.vault.getVaultFactory({ vaultType: params.type, isErc20: Boolean(params.vaultToken) })`.
 
-**Important**: When creating a metavault on Gnosis, only the default vault type is supported. ERC20 tokens and private vaults are not available. Additionally, all metavaults do not support the `isOwnMevEscrow` parameter.
+**Important**: When creating a meta vault on Gnosis, only `VaultType.MetaVault` is supported (open access). `VaultType.PrivateMetaVault` is Mainnet and Hoodi only. ERC20 share tokens (`vaultToken`) are not available for meta vaults on Gnosis. All meta vaults reject the `isOwnMevEscrow` parameter on every chain.
 
 
 
