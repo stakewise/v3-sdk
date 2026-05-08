@@ -1,6 +1,7 @@
 ---
 id: addSubVault
 slug: /sdk/api/vault/transactions/addsubvault
+description: Use the StakeWise SDK addSubVault method to add a sub-vault to a StakeWise V3 meta vault registry on Mainnet, Hoodi, or Gnosis. Called by the meta vault curator to extend the registry of underlying vaults receiving routed deposits.
 ---
 
 #### Description:

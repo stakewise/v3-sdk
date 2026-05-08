@@ -1,6 +1,7 @@
 ---
 id: ejectSubVault
 slug: /sdk/api/vault/transactions/ejectsubvault
+description: Use the StakeWise SDK ejectSubVault method to remove an active sub-vault from a StakeWise V3 meta vault registry. Called by the meta vault curator to drop an in-use sub-vault from the registry.
 ---
 
 #### Description:

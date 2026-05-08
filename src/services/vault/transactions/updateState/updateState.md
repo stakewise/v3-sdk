@@ -1,6 +1,7 @@
 ---
 id: updateState
 slug: /sdk/api/vault/transactions/updatestate
+description: Use the StakeWise SDK updateState method to update the on-chain state of a StakeWise V3 vault before reading state-dependent data or sending a follow-up transaction. Returns an empty hash when the vault is already up to date.
 ---
 
 #### Description:

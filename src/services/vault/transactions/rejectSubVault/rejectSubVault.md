@@ -1,6 +1,7 @@
 ---
 id: rejectSubVault
 slug: /sdk/api/vault/transactions/rejectsubvault
+description: Use the StakeWise SDK rejectSubVault method to reject a proposed sub-vault from a StakeWise V3 meta vault registry before it becomes active. Called by the meta vault curator to discard a pending sub-vault proposal.
 ---
 
 #### Description:
