@@ -10,6 +10,37 @@ description: Interact with any StakeWise V3-compatible contract not yet integrat
 
 The default `StakeWise.Contracts` namespace, exposed at `sdk.contracts`, ships with built-ins (Keeper, RewardSplitter, MintTokenController, etc.). For any contract that is not yet integrated there — a freshly deployed StakeWise V3-compatible contract, a Chainlink oracle, a partner protocol — use the top-level `createContract` helper exported from `@stakewise/v3-sdk`. Pass the contract address, its ABI, and `sdk.provider` (which carries the SDK's network configuration and fallback RPC endpoints) to get a typed ethers `Contract` bound to the same chain as the SDK instance.
 
+## Interact with a StakeWise V3-compatible contract not in the default namespace
+
+Suppose a new StakeWise V3-compatible contract is deployed and is not yet integrated into the SDK's default `StakeWise.Contracts`. To interact with it, reuse the SDK's provider and configuration via `createContract`:
+
+```typescript
+import { createContract, StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: { web3: 'https://main-rpc.io' },
+})
+
+const customAbi = [
+  'function getValue() view returns (uint256)',
+] as const
+
+type CustomContract = {
+  getValue(): Promise<bigint>
+}
+
+const custom = createContract<CustomContract>(
+  '0xCustomContractAddress',
+  customAbi,
+  sdk.provider,
+)
+
+const value = await custom.getValue()
+```
+
+`sdk.provider` carries the network the SDK was initialized for and any fallback RPC endpoints, so the custom contract talks to the same chain (Mainnet, Hoodi, or Gnosis) as the rest of the SDK calls.
+
 ## Read from a Chainlink oracle
 
 ```typescript
