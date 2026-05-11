@@ -2,12 +2,16 @@
 id: unstake-example
 title: Unstake
 sidebar_position: 3
-description: Unstake deposits from a StakeWise vault using the SDK — withdraw staked assets, handle osToken burns, and track exit queue positions.
+description: Unstake deposits from a StakeWise vault using the SDK - withdraw staked assets, handle osToken burns, and track exit queue positions.
 ---
 
 # Unstake
 
 This guide outlines the implementation approach for unstaking user deposits.
+
+## How to unstake from a StakeWise V3 vault
+
+To unstake (withdraw) user assets from a vault, fetch the current stake balance and the maximum withdrawable amount, check whether any osToken must be burned first via `getBurnAmountForUnstake`, then call `sdk.vault.withdraw`. The withdrawal lands in the vault's exit queue, which you can read with `sdk.vault.getExitQueuePositions` after the subgraph has indexed the transaction.
 
 ```ts
 import { BrowserProvider, parseEther, formatEther } from 'ethers'
@@ -64,6 +68,8 @@ const unstake = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
 
     const positions = await sdk.vault.getExitQueuePositions({ userAddress, vaultAddress })
 

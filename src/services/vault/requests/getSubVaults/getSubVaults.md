@@ -1,6 +1,7 @@
 ---
 id: getSubVaults
 slug: /sdk/api/vault/requests/getsubvaults
+description: Use the StakeWise SDK getSubVaults method to list sub-vaults of a StakeWise V3 meta vault with paging support. Returns per-vault APY, display name, image URL, staking and exiting assets.
 ---
 
 #### Description:

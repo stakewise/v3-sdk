@@ -1,6 +1,7 @@
 ---
 id: ejectSubVault
 slug: /sdk/api/vault/transactions/ejectsubvault
+description: Use the StakeWise SDK ejectSubVault method to remove an active sub-vault from a StakeWise V3 meta vault registry. Called by the meta vault curator to drop an in-use sub-vault from the registry.
 ---
 
 #### Description:
@@ -26,6 +27,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.vault.ejectSubVault(params)
+
+// Wait for the transaction to be confirmed and indexed
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.vault.ejectSubVault.encode(params)
 // Get an approximate gas per transaction

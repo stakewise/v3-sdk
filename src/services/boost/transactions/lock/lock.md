@@ -17,7 +17,7 @@ Boost your osToken apy using leverage staking
 | vaultAddress    | `string`       | **Yes**  | The address of the vault that will mint osTokens for leverage staking                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | boostAddress    | `string`       | **Yes**  | The address of the strategy proxy using the [sdk.boost.getLeverageStrategyProxy](/sdk/api/boost/requests/getleveragestrategyproxy) method                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | referrerAddress | `string`       | **No**   | The address of the referrer                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| permitParams    | `PermitParams` | **No**   | The permit signature is required if there isn’t enough osToken allowance for the strategy proxy contract.<br /><br />**For MultiSig**<br />The permit signature is not necessary for Multi Sig (e.g. Safe Wallet), as it should use `sdk.contracts.mintToken.approve(boostAddress, MaxUint256)` instead of a permit call to set up osToken allowance. This will be called in the action if needed.<br /><br />**For other wallets**<br />The permit signature is optional since it will be obtained automatically using the [utils.getPermitSignature](/sdk/api/utils/getpermitsignature) method. |
+| permitParams    | `PermitParams` | **No**   | The permit signature is required if there isn’t enough osToken allowance for the strategy proxy contract.<br /><br />**For MultiSig**<br />The permit signature is not necessary for Multi Sig (e.g. Safe Wallet), as it should use `sdk.contracts.tokens.mintToken.approve(boostAddress, MaxUint256)` instead of a permit call to set up osToken allowance. This will be called in the action if needed.<br /><br />**For other wallets**<br />The permit signature is optional since it will be obtained automatically using the [utils.getPermitSignature](/sdk/api/utils/getpermitsignature) method. |
 | leverageStrategyData | `LeverageStrategyData` | **No**  | Leverage strategy data from [sdk.boost.getLeverageStrategyData](/sdk/api/boost/requests/getleveragestrategydata). If not provided, it will be fetched automatically during the transaction |
 
 ```ts
@@ -54,6 +54,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.boost.lock(params)
+
+// Wait for the transaction to be confirmed and indexed
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 // `lockTxData` will always be returned, while `approveTxData` will only be returned for MultiSig e.g. Safe Wallet
 // if there isn’t enough osToken allowance, otherwise it will be null

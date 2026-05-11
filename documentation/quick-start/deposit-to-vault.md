@@ -2,14 +2,14 @@
 id: deposit-to-vault
 title: Deposit to vault
 sidebar_position: 2
-description: Deposit ETH into a StakeWise vault using the SDK — client-side browser wallet and backend custodial wallet integration examples.
+description: Deposit ETH into a StakeWise vault using the SDK - client-side browser wallet and backend custodial wallet integration examples.
 ---
 
 # Deposit to vault
 
 This guide demonstrates two different approaches for depositing into a vault:
 
-### 1. Client-Side (Browser Wallet)
+## How to deposit from a browser wallet
 
 Use this method when users connect their non-custodial wallet (like MetaMask) directly in the browser.
 
@@ -48,6 +48,8 @@ const deposit = async (values: Input) => {
     const hash = await sdk.vault.deposit(params)
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)
@@ -62,7 +64,7 @@ deposit({
 ```
 ---
 
-### 2. Backend-Side (Custodial Wallet)
+## How to deposit from a backend or custodial wallet
 
 Use this method when you manage private keys on your backend server.
 
@@ -95,6 +97,8 @@ const deposit = async (values: Input) => {
     const { hash } = await yourSigningService.sendTransaction()
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)

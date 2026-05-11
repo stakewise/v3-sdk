@@ -1,6 +1,7 @@
 ---
 id: rejectSubVault
 slug: /sdk/api/vault/transactions/rejectsubvault
+description: Use the StakeWise SDK rejectSubVault method to reject a proposed sub-vault from a StakeWise V3 meta vault registry before it becomes active. Called by the meta vault curator to discard a pending sub-vault proposal.
 ---
 
 #### Description:
@@ -26,6 +27,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.vault.rejectSubVault(params)
+
+// Wait for the transaction to be confirmed and indexed
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 const { data, to } = await sdk.vault.rejectSubVault.encode(params)
 // Get an approximate gas per transaction

@@ -1,5 +1,6 @@
 import { getFiatRates } from './getFiatRates'
 import { getStakewiseStats } from './getStakewiseStats'
+import { waitForSubgraph, WaitForSubgraphInput } from './waitForSubgraph'
 import { getTransactions, GetTransactionsInput  } from './getTransactions'
 import { getListVariables, GetListVariablesInput } from './getListVariables'
 import { getFiatRatesByDay, GetFiatRatesByDayInput } from './getFiatRatesByDay'
@@ -37,6 +38,14 @@ class Utils {
   */
   public getTransactions(values: StakeWise.ExtractInput<GetTransactionsInput>) {
     return getTransactions({ ...this.params, ...values })
+  }
+
+  /**
+   * @description Polls the subgraph until a transaction with the given hash is indexed. Required after every write before refetching reads.
+   * @see https://docs.stakewise.io/sdk/api/utils/waitforsubgraph
+  */
+  public waitForSubgraph(values: StakeWise.ExtractInput<WaitForSubgraphInput>) {
+    return waitForSubgraph({ ...this.params, ...values })
   }
 
   /**

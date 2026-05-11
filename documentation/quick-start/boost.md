@@ -2,12 +2,16 @@
 id: boost-os-token
 title: Boost osToken
 sidebar_position: 6
-description: Boost staking rewards with StakeWise SDK — leverage osTokens as Aave collateral to amplify your vault staking position.
+description: Boost staking rewards with StakeWise SDK - leverage osTokens as Aave collateral to amplify your vault staking position.
 ---
 
 # Boost osToken
 
 StakeWise Boost enhances staking rewards by leveraging your osTokens as collateral to borrow additional assets from Aave. The borrowed funds are then restaked, creating a compounding effect that amplifies your staking position.
+
+## How to lock osToken into the Boost leverage strategy
+
+To boost a user's osToken position, look up the leverage strategy proxy with `sdk.boost.getLeverageStrategyProxy`, ensure the proxy has osToken allowance (via permit signature for EOAs or `approve` for multisig wallets), then call `sdk.boost.lock`. The full flow below covers both wallet types.
 
 ```ts
 import { BrowserProvider, parseEther } from 'ethers'
@@ -70,6 +74,8 @@ const boost = async (values: Input) => {
         const { hash } = await signedContract.approve(permitAddress, shares)
 
         await sdk.provider.waitForTransaction(hash)
+
+        await sdk.utils.waitForSubgraph({ hash })
       }
       else {
         // Use gasless permit for EOAs
@@ -98,6 +104,8 @@ const boost = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)

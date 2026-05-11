@@ -1,0 +1,112 @@
+---
+id: concepts
+title: Core concepts
+sidebar_position: 0
+description: Conceptual overview of StakeWise V3 building blocks - vaults, osToken (osETH/osGNO), Boost leverage staking, MEV escrow vs Smoothing Pool, reward splitter, and the harvest workflow. Maps each concept to the SDK methods that interact with it.
+---
+
+# Core concepts
+
+Short primer on the StakeWise V3 building blocks the SDK exposes. Each section maps the concept to the relevant SDK call.
+
+## What is a Vault?
+
+A **vault** is an on-chain contract that pools staked assets (ETH on Mainnet/Hoodi, GNO on Gnosis), runs validators against them, and tracks each staker's share. Anyone can deploy and manage their own vault. The SDK fetches vault state with `sdk.vault.getVault({ vaultAddress })` and creates new vaults with `sdk.vault.create({...})`.
+
+```ts
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: { web3: 'https://main-rpc.io' },
+})
+
+const vault = await sdk.vault.getVault({ vaultAddress: '0xVaultAddress' })
+```
+
+## What are the vault types?
+
+Five vault types, set at creation time via the `type` argument of `sdk.vault.create`:
+
+- **`VaultType.Default`** - regular vault open to any depositor.
+- **`VaultType.Private`** - regular vault restricted to a whitelist managed by the vault admin (`sdk.vault.getWhitelist`, whitelist write methods).
+- **`VaultType.Blocklist`** - regular vault open to anyone except blocked addresses (`sdk.vault.getBlocklist`).
+- **`VaultType.MetaVault`** - meta vault that does not run validators directly and routes deposits across a registry of sub-vaults. Open to any depositor.
+- **`VaultType.PrivateMetaVault`** - meta vault restricted to a whitelist (Mainnet and Hoodi only, not supported on Gnosis).
+
+Orthogonal to that, the optional `vaultToken: { name, symbol }` argument turns a regular vault into an **ERC20 vault** that issues a transferable share token. Omit it for a non-ERC20 vault where shares are tracked internally. Meta vaults do not support ERC20 share tokens on Gnosis.
+
+## What are meta vaults and sub-vaults?
+
+A **meta vault** is a vault that does not run validators directly - instead it holds a registry of **sub-vaults** and aggregates their staking activity. Stakers deposit once into the meta vault; the meta vault routes the assets across its sub-vaults. The meta vault admin (the **curator**) controls which sub-vaults are part of the registry.
+
+Lifecycle methods:
+
+- **`sdk.vault.addSubVault({ vaultAddress, subVaultAddress, userAddress })`** - propose a new sub-vault for the meta vault registry.
+- **`sdk.vault.rejectSubVault({...})`** - remove a proposed sub-vault before it becomes active.
+- **`sdk.vault.ejectSubVault({...})`** - remove an active sub-vault from the registry.
+- **`sdk.vault.getSubVaults({ vaultAddress, limit, skip })`** - list sub-vaults of a meta vault with paging, returning per-vault APY, staking and exiting assets.
+
+Before calling `addSubVault`, pre-check the sub-vault's access flags via `sdk.vault.getVault({ vaultAddress: subVaultAddress })`: if the sub-vault is private (`isPrivate: true`), the meta vault address must be on the sub-vault's whitelist; if the sub-vault has a blocklist (`isBlocklist: true`), the meta vault must not be on it. The sub-vault itself must not be a meta vault (`isMetaVault: false`), nesting is not supported.
+
+Use `VaultType.MetaVault` (or `VaultType.PrivateMetaVault` on Mainnet/Hoodi) when calling `sdk.vault.create` to deploy a meta vault. Meta vaults never support `isOwnMevEscrow`. On Gnosis, meta vaults additionally cannot use the `vaultToken` ERC20 share token, and `VaultType.PrivateMetaVault` is not supported at all.
+
+## What is osToken (osETH / osGNO)?
+
+**osToken** is the StakeWise liquid staking token: **osETH** on Ethereum Mainnet and Hoodi, **osGNO** on Gnosis. Stakers mint osToken against their vault deposit, keeping the underlying stake productive while gaining a transferable, redeemable token. The osToken ERC20 address lives at `sdk.config.addresses.tokens.mintToken`.
+
+```ts
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({
+  network: Network.Mainnet,
+  endpoints: { web3: 'https://main-rpc.io' },
+})
+
+const apy = await sdk.osToken.getAPY()
+const osTokenAddress = sdk.config.addresses.tokens.mintToken
+const osToken = sdk.contracts.helpers.createErc20(osTokenAddress)
+const totalSupply = await osToken.totalSupply()
+```
+
+osToken redemption is at the protocol exchange rate - instant if unbonded assets are available in the vault, otherwise the vault exits validators to fulfill the request.
+
+## What is the osToken health factor?
+
+When a user mints osToken against their stake, the position has a **health factor** that reflects the LTV ratio against the vault's liquidation threshold. Use `sdk.osToken.getHealthFactor` before minting to avoid unhealthy positions; the result is one of `OsTokenPositionHealth.Healthy / Moderate / Risky / Unhealthy`.
+
+## What is Boost?
+
+**StakeWise Boost** is a leverage strategy: users mint osToken against their vault stake, then re-stake the borrowed value in a loop to amplify yield. The SDK exposes the strategy proxy address via `sdk.boost.getLeverageStrategyProxy` and the lock/unlock transactions via `sdk.boost.lock` / `sdk.boost.unlock`. Position state comes from `sdk.boost.getData`.
+
+The strategy keeps near-perfect collateral correlation (osETH against ETH, osGNO against GNO), so liquidation risk is bounded by the protocol's redemption guarantee.
+
+## What is the difference between MEV escrow and Smoothing Pool?
+
+When creating a vault, `isOwnMevEscrow` decides where block rewards go:
+
+- **`false` (default)** - rewards flow to the **Smoothing Pool**, a network-wide MEV pool that distributes proportionally across all participating vaults. Reduces variance.
+- **`true`** - the vault has its **own MEV escrow** contract. The vault keeps its own MEV rewards but bears the variance.
+
+## What is a reward splitter?
+
+A **reward splitter** is a contract that distributes a vault's rewards across multiple recipients in fixed proportions. The vault admin deploys one with `sdk.rewardSplitter.createRewardSplitter`, configures shares with `updateFeeRecipients`, and recipients claim with `claimRewards`. List existing splitters for a vault with `sdk.vault.getRewardSplitters`.
+
+## What is harvest and how to update vault state?
+
+Before deposits, mints, or other state-dependent reads can use the latest validator rewards, the vault must be **harvested** - its on-chain state updated with the latest oracle proof. The SDK provides `sdk.vault.getHarvestParams` to fetch the proof and `canHarvest` flag, and `sdk.vault.updateState` to submit the state update transaction (returns an empty hash if the vault is already up to date). Most user-facing flows do not need to call this manually; the deposit/withdraw paths handle it transparently.
+
+## How to wait for subgraph indexing after a transaction?
+
+Every write transaction (`deposit`, `withdraw`, `mint`, `burn`, `lock`, `unlock`, `createVault`, ...) updates the StakeWise subgraph asynchronously. Always wait for the subgraph to catch up before refetching read methods, otherwise data is stale:
+
+```ts
+import { StakeWiseSDK, Network } from '@stakewise/v3-sdk'
+
+const sdk = new StakeWiseSDK({ network: Network.Mainnet, endpoints: { web3: 'https://main-rpc.io' } })
+
+const hash = await sdk.vault.deposit({ vaultAddress: '0x...', userAddress: '0x...', assets: 1n })
+
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+```

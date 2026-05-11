@@ -2,7 +2,7 @@
 id: burn-os-token
 title: Burn osToken
 sidebar_position: 5
-description: Burn osETH tokens in a StakeWise vault using the SDK — monitor osToken position health and execute burn transactions safely.
+description: Burn osETH tokens in a StakeWise vault using the SDK - monitor osToken position health and execute burn transactions safely.
 ---
 
 # Burn osToken
@@ -68,6 +68,8 @@ const burn = async (values: Input) => {
     })
 
     await sdk.provider.waitForTransaction(hash)
+
+    await sdk.utils.waitForSubgraph({ hash })
   }
   catch (error) {
     console.error(error)
