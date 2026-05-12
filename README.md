@@ -21,3 +21,5 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 
 [Read the docs](https://docs.stakewise.io/sdk/) for any further information.
 
+**For AI assistants:** if you're building an LLM-powered interface and want users to ask StakeWise questions in natural language without writing SDK code, see the lightweight skill at [`stakewise/llm-tools`](https://github.com/stakewise/llm-tools) — a markdown bundle for ChatGPT / Claude / Perplexity / Cursor that read-queries the StakeWise subgraphs directly. SDK docs themselves are also indexed at [context7.com/stakewise/v3-sdk](https://context7.com/stakewise/v3-sdk).
+
