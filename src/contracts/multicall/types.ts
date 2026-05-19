@@ -13,4 +13,8 @@ export type MulticallRequestInput = {
   transactionData?: boolean
 }
 
-export type ContractAbi = ReturnType<StakeWise.Contracts['helpers']['createVault']> | RewardSplitterAbi | EigenPodOwnerAbi | LeverageStrategyAbi
+export type ContractAbi =
+  | ReturnType<StakeWise.Contracts['helpers']['createVault']>
+  | RewardSplitterAbi
+  | EigenPodOwnerAbi
+  | LeverageStrategyAbi
