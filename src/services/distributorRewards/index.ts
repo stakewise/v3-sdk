@@ -1,4 +1,4 @@
-import { getRewards, GetRewardsInput } from './requests'
+import { getRewards, GetRewardsInput, getDistributorClaimedAmount, GetDistributorClaimedAmountInput } from './requests'
 import DistributorRewardsTransactions from './transactions'
 
 
@@ -16,6 +16,14 @@ class DistributorRewards extends DistributorRewardsTransactions {
    */
   public getRewards(values: StakeWise.ExtractInput<GetRewardsInput>) {
     return getRewards({ ...this.params, ...values })
+  }
+
+  /**
+   * @description Returns the cumulative claimed amount for a distributor claim record by its id.
+   * @see https://docs.stakewise.io/sdk/api/distributorRewards/requests/getdistributorclaimedamount
+   */
+  public getDistributorClaimedAmount(values: StakeWise.ExtractInput<GetDistributorClaimedAmountInput>) {
+    return getDistributorClaimedAmount({ ...this.params, ...values })
   }
 }
 
