@@ -54,7 +54,6 @@ export default {
       erc20PrivateMetavault: ZeroAddress,
     },
     special: {
-      balancedCurator: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
       stakeCalculator: '0x2A415b65207049AC7481BF69ff9fc1B3Def97c9A',
       leverageStrategy: ZeroAddress,
       leverageStrategyV2: ZeroAddress,

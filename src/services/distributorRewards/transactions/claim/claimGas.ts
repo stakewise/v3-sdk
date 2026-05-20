@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
-import { getGas } from '../../../../helpers'
 import type { ClaimInput } from './types'
+import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
 const claimGas = async (values: ClaimInput) => {
@@ -8,7 +8,10 @@ const claimGas = async (values: ClaimInput) => {
 
   const { merkleDistributorV2, params } = await commonLogic(values)
 
-  const estimatedGas = await merkleDistributorV2.claim.estimateGas(...params)
+  const estimatedGas = await wrapErrorHandler(
+    merkleDistributorV2.claim.estimateGas(...params),
+    'gas'
+  )
 
   return getGas({ estimatedGas, provider })
 }
