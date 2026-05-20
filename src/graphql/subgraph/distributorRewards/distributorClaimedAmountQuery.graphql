@@ -1,0 +1,5 @@
+query distributorClaimedAmount($id: ID!) {
+  distributorClaimedAmount(id: $id) {
+    cumulativeClaimedAmount
+  }
+}

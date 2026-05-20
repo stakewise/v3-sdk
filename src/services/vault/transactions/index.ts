@@ -3,6 +3,7 @@ import { getNetworkTypes, transactionWrapper } from '../../../helpers'
 import { createOperate, ExtractOperate } from './operate'
 import { multicall, VaultMulticallInput } from './multicall'
 import { createWithdraw, ExtractWithdraw } from './withdraw'
+import { createRescueAssets, ExtractRescueAssets } from './rescueAssets'
 import { createVaultCreator, ExtractCreateVault } from './createVault'
 import { createAddSubVault, ExtractAddSubVaultInput } from './addSubVault'
 import { createUpdateState, ExtractUpdateStateInput } from './updateState'
@@ -84,6 +85,12 @@ class VaultTransactions {
    */
   public updateState: ExtractUpdateStateInput
 
+  /**
+   * @description Rescue assets stuck in the vault. Only the vault admin can call it.
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/rescueassets
+   */
+  public rescueAssets: ExtractRescueAssets
+
   constructor(params: StakeWise.CommonParams) {
     this.params = params
 
@@ -101,6 +108,7 @@ class VaultTransactions {
     this.create = transactionWrapper(params, createVaultCreator(params))
     this.updateState = transactionWrapper(params, createUpdateState(params))
     this.addSubVault = transactionWrapper(params, createAddSubVault(params))
+    this.rescueAssets = transactionWrapper(params, createRescueAssets(params))
     this.rejectSubVault = transactionWrapper(params, createRejectSubVault(params))
     this.ejectSubVault = transactionWrapper(params, createEjectSubVault(params))
     this.claimExitQueue = transactionWrapper(params, createClaimExitQueue(params))
