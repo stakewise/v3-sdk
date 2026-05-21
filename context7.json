@@ -4,7 +4,7 @@
   "description": "Official TypeScript SDK for StakeWise V3 liquid staking on Ethereum and Gnosis. Typed access to vaults, osToken (osETH/osGNO), boost leverage, rewards via subgraph and on-chain calls.",
   "url": "https://context7.com/stakewise/v3-sdk",
   "public_key": "pk_wpaUy9UwJWjviJip1LFYx",
-  "branch": "sub-vaults",
+  "branch": "main",
   "folders": ["documentation", "src/services"],
   "excludeFolders": [
     "scripts",
