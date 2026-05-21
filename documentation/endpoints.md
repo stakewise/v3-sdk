@@ -64,6 +64,14 @@ Use the **`prod`** endpoint for production environments.
 | **Gnosis** | `https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod` |
 | **Hoodi** | `https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod` |
 
+#### Fallback
+
+| Network | Endpoint |
+|---------|----------|
+| **Mainnet** | `https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/prod` |
+| **Gnosis** | `https://graphs-replica.stakewise.io/gnosis/subgraphs/name/stakewise/prod` |
+| **Hoodi** | `https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/prod` |
+
 ### Stage
 
 Mirrors the production schema but tracks the staging deployment - use it only when reproducing issues against a non-production environment.
@@ -73,3 +81,11 @@ Mirrors the production schema but tracks the staging deployment - use it only wh
 | **Mainnet** | `https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/stage` |
 | **Gnosis** | `https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/stage` |
 | **Hoodi** | `https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage` |
+
+#### Fallback
+
+| Network | Endpoint |
+|---------|----------|
+| **Mainnet** | `https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/stage` |
+| **Gnosis** | `https://graphs-replica.stakewise.io/gnosis/subgraphs/name/stakewise/stage` |
+| **Hoodi** | `https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/stage` |

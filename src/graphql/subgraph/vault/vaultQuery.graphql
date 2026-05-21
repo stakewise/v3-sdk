@@ -33,6 +33,7 @@ query Vault($address: ID!) {
     queuedShares
     exitingAssets
     lastFeePercent
+    subVaultsCount
     blocklistCount
     whitelistCount
     exitingTickets
@@ -40,6 +41,7 @@ query Vault($address: ID!) {
     isCollateralized
     blocklistManager
     ejectingSubVault
+    subVaultsCurator
     validatorsManager
     subVaultsRegistry
     depositDataManager
