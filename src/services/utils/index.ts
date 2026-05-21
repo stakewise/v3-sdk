@@ -1,5 +1,6 @@
 import { getFiatRates } from './getFiatRates'
 import { getStakewiseStats } from './getStakewiseStats'
+import { waitForSubgraph, WaitForSubgraphInput } from './waitForSubgraph'
 import { getTransactions, GetTransactionsInput  } from './getTransactions'
 import { getListVariables, GetListVariablesInput } from './getListVariables'
 import { getFiatRatesByDay, GetFiatRatesByDayInput } from './getFiatRatesByDay'
@@ -40,6 +41,14 @@ class Utils {
   }
 
   /**
+   * @description Polls the subgraph until a transaction with the given hash is indexed. Required after every write before refetching reads.
+   * @see https://docs.stakewise.io/sdk/api/utils/waitforsubgraph
+  */
+  public waitForSubgraph(values: StakeWise.ExtractInput<WaitForSubgraphInput>) {
+    return waitForSubgraph({ ...this.params, ...values })
+  }
+
+  /**
    * @description Get fiat data by day
    * @see https://docs.stakewise.io/sdk/api/utils/getfiatratesbyday
   */
@@ -55,14 +64,23 @@ class Utils {
     return getPermitSignature({ ...this.params, ...values })
   }
 
+  /**
+   * @description Estimate gas for a custom vault multicall (auto-injects `updateState` when needed).
+  */
   public getVaultMulticallGas(values: StakeWise.ExtractInput<GetVaultMulticallGas>) {
     return getVaultMulticallGas({ ...this.params, ...values })
   }
 
+  /**
+   * @description Build `{ skip, limit, orderBy, orderDirection }` variables for paginated subgraph list queries.
+  */
   public getListVariables<T>(values: StakeWise.ExtractInput<GetListVariablesInput>) {
     return getListVariables<T>({ ...this.params, ...values })
   }
 
+  /**
+   * @description Get encoded calldata (`{ data, to }`) for a custom vault multicall — for custodial signing flows.
+  */
   public getVaultMulticallEncode(values: StakeWise.ExtractInput<GetVaultMulticallEncodeInput>) {
     return getVaultMulticallEncode({ ...this.params, ...values })
   }

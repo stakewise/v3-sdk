@@ -7,7 +7,7 @@ export type VaultMulticallInput = Pick<Parameters<
 > & StakeWise.CommonParams
 
 export const multicall = async <T extends unknown>(values: VaultMulticallInput) => {
-    const { vaultAddress, request, contracts, config } = values
+    const { vaultAddress, request, contracts } = values
 
     const { isBlocklist, isPrivate, version } = await getVault(values)
 
@@ -16,7 +16,6 @@ export const multicall = async <T extends unknown>(values: VaultMulticallInput) 
         isPrivate,
         isBlocklist,
         isDepositWithMint: version >= 3,
-        chainId: config.network.chainId,
       },
       vaultAddress,
     })

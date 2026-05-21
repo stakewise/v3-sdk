@@ -1,5 +1,5 @@
-import getVaultVersion from '../../../requests/getVaultVersion'
-import type { CheckInput } from './types'
+import getVaultVersion from '../../../../requests/getVaultVersion'
+import type { CheckInput } from '../types'
 
 
 const checkDepositDataManagerAccess = async (values: CheckInput) => {

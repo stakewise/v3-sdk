@@ -17,27 +17,6 @@ yarn add @stakewise/v3-sdk
 
 ---
 
-## GraphQL Loader Setup
-
-The SDK includes `.graphql` queries. If your build tool does not natively support importing `.graphql` files, you’ll need to install and configure a corresponding plugin.
-
-### `Webpack Configuration`
-
-```ts
-// webpack.config.js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(graphql|gql)$/,
-        exclude: /node_modules/,
-        loader: 'graphql-tag/loader'
-      }
-    ]
-  }
-}
-```
-
 ### `Next.js Configuration`
 
 ```ts

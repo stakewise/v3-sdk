@@ -39,6 +39,11 @@ const params = {
 
 // Send transaction
 const hash = await sdk.boost.claimQueue(params)
+
+// Wait for the transaction to be confirmed and indexed
+await sdk.provider.waitForTransaction(hash)
+await sdk.utils.waitForSubgraph({ hash })
+
 // When you sign transactions on the backend (for custodians)
 const { data, to, value } = await sdk.boost.claimQueue.encode(params)
 // Get an approximate gas per transaction

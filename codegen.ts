@@ -2,8 +2,8 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 import { Network } from './src/helpers/enums'
 import configs from './src/helpers/configs'
 
-
-let network: Network = Network.Mainnet
+// TODO change
+let network: Network = Network.Hoodi
 
 if (process.env.NETWORK === 'mainnet') {
   network = Network.Mainnet

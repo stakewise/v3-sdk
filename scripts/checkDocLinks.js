@@ -71,7 +71,7 @@ const getUrls = () => {
     const output = execSync(
       `grep -roh "https://docs\\.stakewise\\.io/[^\\"' )\\\`>]*" "${rootDir}" `
       + '--include="*.ts" --include="*.tsx" --include="*.md" --include="*.mdx" '
-      + '--exclude-dir=node_modules',
+      + '--exclude-dir=node_modules --exclude-dir=dist',
       { encoding: 'utf-8' }
     )
 

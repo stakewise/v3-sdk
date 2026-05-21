@@ -17,6 +17,7 @@ describe('modifyVault', () => {
       isGenesis: true,
       isMetaVault: false,
       isBlocklist: false,
+      canHarvest: false,
       version: '1',
       performance: '10',
       tokenSymbol: 'mTKN',
@@ -33,6 +34,8 @@ describe('modifyVault', () => {
       blocklistCount: '0',
       whitelistCount: '0',
       totalAssets: '150000000000',
+      exitingTickets: '150000000000',
+      exitingAssets: '150000000000',
       capacity: '1000000000000000',
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
@@ -42,9 +45,12 @@ describe('modifyVault', () => {
       mevEscrow: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       whitelister: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       feeRecipient: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      ejectingSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      subVaultsRegistry: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      pendingMetaSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       osTokenConfig: {
         ltvPercent: '0',
         liqThresholdPercent: '0',
@@ -65,6 +71,7 @@ describe('modifyVault', () => {
       isGenesis: true,
       isMetaVault: false,
       isBlocklist: false,
+      canHarvest: false,
       blocklistCount: 0,
       whitelistCount: 0,
       capacity: '0.001',
@@ -79,6 +86,8 @@ describe('modifyVault', () => {
       createdAt: 1693395816000,
       displayName: 'Mock Vault',
       totalAssets: '0.00000015',
+      exitingTickets: '0.00000015',
+      exitingAssets: '0.00000015',
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
       osTokenConfig: {
@@ -92,7 +101,10 @@ describe('modifyVault', () => {
       whitelistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       blocklistManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       validatorsManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      subVaultsRegistry: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      ejectingSubVault: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      pendingMetaSubVault: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
     }
 
     const result = modifyVault({

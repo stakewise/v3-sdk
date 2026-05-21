@@ -1,3 +1,6 @@
+import { wrapAbortPromise } from '../../../../modules/gql-module'
+
+
 export type GetVaultVersionInput = StakeWise.CommonParams & {
   vaultAddress: string
 }
@@ -24,4 +27,4 @@ const getVaultVersion = async (values: GetVaultVersionInput) => {
 }
 
 
-export default getVaultVersion
+export default wrapAbortPromise(getVaultVersion)

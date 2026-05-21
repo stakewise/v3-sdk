@@ -2,7 +2,7 @@
 id: connecting
 title: Connecting a Wallet
 sidebar_position: 2
-description: Connect wallets to the StakeWise SDK using EIP-1193 providers — MetaMask, WalletConnect, Coinbase, Safe, Binance, and Wagmi integration.
+description: Connect wallets to the StakeWise SDK using EIP-1193 providers - MetaMask, WalletConnect, Coinbase, Safe, Binance, and Wagmi integration.
 ---
 
 # Connecting a Wallet
@@ -29,7 +29,7 @@ interface Eip1193Provider {
 ## Wallet Connection Types
 
 Different wallets implement the EIP-1193 provider in different ways.  
-The most common type is **injected wallets** — wallets that automatically inject a provider into the global `window` object under the `window.ethereum` property. This type of connection is used by wallets that are provided in the form of browsers or browser extensions, the most popular of which is **MetaMask**.
+The most common type is **injected wallets** - wallets that automatically inject a provider into the global `window` object under the `window.ethereum` property. This type of connection is used by wallets that are provided in the form of browsers or browser extensions, the most popular of which is **MetaMask**.
 
 This is the simplest connection method and works out of the box for most browser wallets.
 

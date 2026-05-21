@@ -1,22 +1,37 @@
 import { commonLogic } from './common'
 import type { SetDepositDataRootInput } from './types'
+import getVaultVersion from '../../requests/getVaultVersion'
 import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
 const setDepositDataRootGas = async (values: SetDepositDataRootInput) => {
-  const { provider, userAddress, vaultAddress, depositDataRoot } = values
-
-  const contract = commonLogic(values)
+  const { provider, userAddress, vaultAddress, depositDataRoot, contracts } = values
 
   const signer = await provider.getSigner(userAddress)
-  const signedDepositDataRegistryContract = contract.connect(signer)
+
+  const { isV1Version } = await getVaultVersion(values)
+
+  if (isV1Version) {
+    const vaultContract = contracts.helpers.createVault({ vaultAddress })
+    const signedContract = vaultContract.connect(signer)
+
+    const estimatedGas = await wrapErrorHandler(
+      signedContract.setValidatorsRoot.estimateGas(depositDataRoot),
+      'gas'
+    )
+
+    return getGas({ estimatedGas, provider })
+  }
+
+  const contract = commonLogic(values)
+  const signedContract = contract.connect(signer)
 
   const estimatedGas = await wrapErrorHandler(
-    signedDepositDataRegistryContract.setDepositDataRoot.estimateGas(vaultAddress, depositDataRoot),
+    signedContract.setDepositDataRoot.estimateGas(vaultAddress, depositDataRoot),
     'gas'
   )
 
-  return getGas({ estimatedGas, provider: values.provider })
+  return getGas({ estimatedGas, provider })
 }
 
 

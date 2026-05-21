@@ -28,6 +28,7 @@ type Output = {
   isPrivate: boolean
   isGenesis: boolean
   vaultAdmin: string
+  canHarvest: boolean
   totalAssets: string
   performance: number
   isMetaVault: boolean
@@ -35,15 +36,21 @@ type Output = {
   vaultAddress: string
   mevRecipient: string
   queuedShares: string
+  exitingAssets: string
   whitelistCount: number
   lastFeePercent: number
   blocklistCount: number
+  exitingTickets: string
   imageUrl: string | null
   isSmoothingPool: boolean
   tokenName: string | null
   whitelistManager: string
+  whitelistManager: string
   blocklistManager: string
+  ejectingSubVault: string
+  subVaultsRegistry: string
   depositDataManager: string
+  pendingMetaSubVault: string
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
@@ -84,6 +91,9 @@ type Output = {
 | `tokenName`                 | ERC20 token name |
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
+| `pendingMetaSubVault`       | The address of the meta vault that is pending to join as a sub vault |
+| `ejectingSubVault`          | The address of the sub vault currently being ejected (for meta vaults) |
+| `canHarvest`               | Defines whether the vault can harvest new rewards |
 | `allocatorMaxBoostApy`      | The average max boost APY earned in this vault by the allocator |
 | `description`               | Description of vault |
 | `whitelist`                 | List of authorized users for deposits |
@@ -91,6 +101,9 @@ type Output = {
 | `performance`               | Vault performance indicator (percent) |
 | `lastFeeUpdateTimestamp`               | The timestamp of the last fee update |
 | `lastFeePercent`               | The vault last fee percent |
+| `exitingAssets`               | The total number of assets that are exiting (in V2 vaults) |
+| `exitingTickets`               | The total number of tickets that are exiting (in V2 vaults) |
+| `subVaultsRegistry`               | The address of the SubVaultsRegistry contract (for meta vaults v4+ on Gnosis, v6+ on mainnet/hoodi) |
 | `osTokenConfig`             | contains the ltvPercent, which is the percentage used to calculate how much a user can mint in OsToken shares, and thresholdPercent, which is the liquidation threshold percentage used to calculate the health factor for the OsToken position |
 
 #### Example:
@@ -98,3 +111,4 @@ type Output = {
 ```ts
 await sdk.vault.getVault({ vaultAddress: '0x...' })
 ```
+# test

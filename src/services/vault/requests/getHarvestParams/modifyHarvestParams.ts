@@ -2,10 +2,11 @@ import { HarvestParamsQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 const modifyHarvestParams = (data: HarvestParamsQueryPayload) => {
-  const { canHarvest, ...params } = data.harvestParams || {} as HarvestParamsQueryPayload['harvestParams']
+  const { canHarvest, isMetaVault, ...params } = data.harvestParams || {} as HarvestParamsQueryPayload['harvestParams']
 
   return {
     canHarvest,
+    isMetaVault,
     params: {
       proof: params.proof || [],
       reward: params.reward || '0',

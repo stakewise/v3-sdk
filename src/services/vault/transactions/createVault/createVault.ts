@@ -12,6 +12,7 @@ const create = async (values: CreateVaultInput) => {
   const { vaultFactory, params } = await commonLogic({ metadataIpfsHash, ...rest })
 
   const signer = await provider.getSigner(userAddress)
+
   const signedContract = vaultFactory.connect(signer)
 
   const response = await wrapErrorHandler(

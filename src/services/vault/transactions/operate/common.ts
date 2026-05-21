@@ -25,14 +25,12 @@ export const commonLogic = async (values: OperateTransactionInput) => {
 
   validateArgs.address({ vaultAddress, userAddress })
 
-  const chainId = options.network
   const isPrivate = Boolean(whitelist?.length || whitelistManager)
   const isBlocklist = Boolean(blocklist?.length || blocklistManager)
 
   const vaultContract = contracts.helpers.createVault({
     vaultAddress,
     options: {
-      chainId,
       isPrivate,
       isBlocklist,
     },

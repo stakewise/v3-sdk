@@ -1,9 +1,10 @@
 import { commonLogic } from './common'
 import type { CreateRewardSplitterInput } from './types'
 import { wrapErrorHandler } from '../../../../helpers'
+import { checkAccess } from '../../../vault/transactions/util'
 
 
-const createRewardSplitter = async (values: CreateRewardSplitterInput) => {
+const createRewardSplitter = checkAccess<CreateRewardSplitterInput>(async (values) => {
   const rewardSplitterFactory = await commonLogic(values)
 
   const result = await wrapErrorHandler(
@@ -12,7 +13,7 @@ const createRewardSplitter = async (values: CreateRewardSplitterInput) => {
   )
 
   return result.hash
-}
+})
 
 
 export default createRewardSplitter

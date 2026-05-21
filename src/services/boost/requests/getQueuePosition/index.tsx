@@ -11,7 +11,7 @@ export type GetQueuePositionInput = StakeWise.CommonParams & {
 
 export type Output = ParseBoostQueueOutput
 
-const getQueuePosition = async (input: GetQueuePositionInput): Promise<ParseBoostQueueOutput> => {
+const getQueuePosition = (input: GetQueuePositionInput) => {
   const { options, vaultAddress, userAddress } = input
 
   validateArgs.address({ vaultAddress, userAddress })

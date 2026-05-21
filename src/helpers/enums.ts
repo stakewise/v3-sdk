@@ -12,6 +12,8 @@ export enum VaultType {
   Default = 'Default',
   Private = 'Private',
   Blocklist = 'Blocklist',
+  MetaVault = 'MetaVault',
+  PrivateMetaVault = 'PrivateMetaVault',
 }
 
 export enum AllocatorActionType {

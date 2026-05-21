@@ -14,9 +14,11 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   StakeCalculatorAbi,
+  MetaVaultFactoryAbi,
   LeverageStrategyAbi,
   MintTokenConfigV1Abi,
   MintTokenConfigV2Abi,
+  SubVaultsRegistryAbi,
   DepositDataRegistryAbi,
   MerkleDistributorV2Abi,
   MintTokenControllerAbi,
@@ -47,6 +49,13 @@ const getVaultFactory = (provider: Provider, address: string) => createContract<
   VaultFactoryAbi,
   provider
 )
+
+const getMetaVaultFactory = (provider: Provider, address: string) => createContract<StakeWise.ABI.MetaVaultFactory>(
+  address,
+  MetaVaultFactoryAbi,
+  provider
+)
+
 
 const getVaultsRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.VaultsRegistry>(
   config.addresses.base.vaultsRegistry,
@@ -140,7 +149,7 @@ type CreateContractsInput = {
 export const createContracts = (input: CreateContractsInput) => {
   const { provider, config } = input
 
-  const createVault = createVaultContract(provider)
+  const createVault = createVaultContract(provider, config)
   const multicallContract = getMulticall(provider, config)
 
   return {
@@ -152,6 +161,7 @@ export const createContracts = (input: CreateContractsInput) => {
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
+      createSubVaultsRegistry: (address: string) => createContract<StakeWise.ABI.SubVaultsRegistry>(address, SubVaultsRegistryAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),
     },
@@ -181,6 +191,12 @@ export const createContracts = (input: CreateContractsInput) => {
 
       blocklistVault: getVaultFactory(provider, config.addresses.factories.blocklistVault),
       erc20BlocklistVault: getVaultFactory(provider, config.addresses.factories.erc20BlocklistVault),
+
+      metavault: getMetaVaultFactory(provider, config.addresses.factories.metavault),
+      erc20Metavault: getMetaVaultFactory(provider, config.addresses.factories.erc20Metavault),
+
+      privateMetavault: getMetaVaultFactory(provider, config.addresses.factories.privateMetavault),
+      erc20PrivateMetavault: getMetaVaultFactory(provider, config.addresses.factories.erc20PrivateMetavault),
     },
     special: {
       stakeCalculator: getStakeCalculator(provider, config),

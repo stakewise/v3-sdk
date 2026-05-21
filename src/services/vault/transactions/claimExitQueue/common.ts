@@ -13,7 +13,7 @@ const validatePositions = (positions: ClaimExitQueueInput['positions']) => {
 }
 
 export const commonLogic = (values: ClaimExitQueueInput) => {
-  const { contracts, positions, vaultAddress, userAddress } = values
+  const { contracts, positions, vaultAddress } = values
 
   validatePositions(positions)
 

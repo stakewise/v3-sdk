@@ -8,8 +8,8 @@ export default {
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
     subgraph: [
-      'https://graphs.stakewise.io/mainnet-a/subgraphs/name/stakewise/prod',
-      'https://graphs.stakewise.io/mainnet-b/subgraphs/name/stakewise/prod',
+      'https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
+      'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
     ],
   },
   pages: {
@@ -36,6 +36,10 @@ export default {
       depositDataRegistry: '0x75AB6DdCe07556639333d3Df1eaa684F5735223e',
       mintTokenController: '0x2A261e60FB14586B474C208b1B7AC6D0f5000306',
       rewardSplitterFactory: '0xd12Df8543e0522CCbF12d231e822B7264c634775',
+      curator: {
+        v1: '0xD30E7e4bDbd396cfBe72Ad2f4856769C54eA6b0b',
+        v2: '0xe01351f866C118FbD04d222f9262A470F1d44d90',
+      },
     },
     factories: {
       vault: '0x7A8cbBf690084E43De778173cfAcf7313c9122DD',
@@ -46,6 +50,12 @@ export default {
 
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
+
+      metavault: '0x76D90928645065b4D4212eE62ce1ba8f90718f14',
+      erc20Metavault: '0x4E3dE90882B3d10D067b8954909D4A4b0Bb390D0',
+
+      privateMetavault: '0x1e86e620567bb877F5ED13607A1a7B7DBcb6BE66',
+      erc20PrivateMetavault: '0xE14FA9bBdb7813025309f71DdC0FA8fAae1B9141',
     },
     special: {
       stakeCalculator: '0x75c57bd50A3EB7291Da3429956D3566E0153A38f',
