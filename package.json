@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "4.2.4",
+  "version": "4.2.5",
   "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,16 +10,19 @@
   "module": "dist/index.esm.js",
   "description": "StakeWise v3 SDK",
   "homepage": "https://github.com/stakewise/v3-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stakewise/v3-sdk.git"
+  },
   "scripts": {
     "test": "jest --clearCache && jest --all",
-    "prepare": "husky && pnpm typechain && pnpm graphql && pnpm check:version",
+    "prepare": "husky && pnpm typechain && pnpm graphql",
     "build": "pnpm test && pnpm prepare && rm -rf ./dist && pnpm rollup",
     "typechain:vault": "typechain --target ethers-v6 --out-dir src/contracts/vault/types 'src/contracts/vault/abis/*.json'",
     "typechain:base": "typechain --target ethers-v6 --out-dir src/contracts/types 'src/contracts/abis/*.json'",
     "typechain": "pnpm typechain:base && pnpm typechain:vault",
     "graphql": "graphql-codegen && tsx ./scripts/generateGraphqlExports/index.ts",
     "rollup": "rollup --config rollup.config.js",
-    "check:version": "node ./scripts/checkVersion.js",
     "check:docLinks": "node ./scripts/checkDocLinks.js",
     "lint": "eslint ./src --ext .ts,.tsx,.js,.jsx",
     "release": "pnpm build && pnpm publish --tag=latest",
