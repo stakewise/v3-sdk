@@ -1,0 +1,68 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions: {}
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    environment:
+      name: npm-publish
+      url: https://www.npmjs.com/package/@stakewise/v3-sdk
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: 10.25.0
+
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          cache: pnpm
+          node-version: '24.12.0'
+          registry-url: 'https://registry.npmjs.org'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Verify tag matches package.json version
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$GITHUB_REF_NAME" != "$PKG_VERSION" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Verify tag is on main
+        run: |
+          git fetch origin main --depth=1
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::Tag $GITHUB_REF_NAME points to commit $GITHUB_SHA which is not on main branch"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate typechain & graphql artifacts
+        run: pnpm typechain && pnpm graphql
+
+      - name: Run unit tests
+        run: pnpm test
+
+      - name: Build
+        run: rm -rf ./dist && pnpm rollup
+
+      - name: Publish to npm with provenance
+        run: npm publish --provenance --access public --ignore-scripts --tag latest
