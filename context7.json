@@ -38,4 +38,6 @@
     "Batch independent reads with `Promise.all` / `AbortPromise.all`. Never parallelise writes; wallets serialise signing."
   ],
   "previousVersions": []
+  "url": "https://context7.com/stakewise/v3-sdk",
+  "public_key": "pk_wpaUy9UwJWjviJip1LFYx"
 }
