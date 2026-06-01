@@ -19,5 +19,6 @@ type Output = {
   ejectingSubVault: string
   subVaultsRegistry: string
   pendingMetaSubVault: string
+  isStateUpdateRequired: boolean
 }
 ```
