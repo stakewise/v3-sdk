@@ -110,7 +110,7 @@ export const commonLogic = async (values: OperateTransactionInput) => {
     params.push(...validatorsManagerParams)
   }
 
-  if (feePercent) {
+  if (typeof feePercent !== 'undefined') {
     const feePercentParams = getFeePercentParams({ ...baseInput, feePercent })
 
     params.push(...feePercentParams)
