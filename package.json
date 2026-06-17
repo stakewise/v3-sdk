@@ -70,8 +70,8 @@
     "@types/fs-extra": "11.0.4",
     "@types/jest": "29.5.14",
     "@types/rollup-plugin-peer-deps-external": "2.2.5",
-    "@typescript-eslint/eslint-plugin": "8.33.0",
-    "@typescript-eslint/parser": "8.33.0",
+    "@typescript-eslint/eslint-plugin": "8.61.1",
+    "@typescript-eslint/parser": "8.61.1",
     "core-js": "3.42.0",
     "eslint": "9.27.0",
     "eslint-import-resolver-typescript": "4.4.2",
@@ -91,11 +91,11 @@
     "rollup-plugin-dts": "6.2.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "simple-git": "3.28.0",
-    "ts-jest": "29.3.4",
+    "ts-jest": "29.4.11",
     "ts-node": "10.9.2",
     "tsx": "4.19.4",
     "typechain": "8.3.2",
-    "typescript": "5.8.3"
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "bignumber.js": "9.3.0"
