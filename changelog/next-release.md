@@ -21,3 +21,13 @@ type Output = {
   pendingMetaSubVault: string
 }
 ```
+
+### 2. [sdk.vault.getUserRewards](https://docs.stakewise.io/sdk/api/vault/requests/getuserrewards)
+
+#### Add output fields:
+```ts
+type Output = {
+  dailyStakeRewards: number
+  dailyBoostRewards: number
+}
+```

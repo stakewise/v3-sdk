@@ -10,6 +10,8 @@ type Input = {
 type Reward = {
   timestamp: string
   earnedAssets: string
+  stakeEarnedAssets?: string
+  boostEarnedAssets?: string
 }
 
 export type MergedReward = {
@@ -22,27 +24,41 @@ export type MergedReward = {
   dailyRewardsJpy: number
   dailyRewardsKrw: number
   dailyRewardsAud: number
+  dailyStakeRewards: number
+  dailyBoostRewards: number
+}
+
+type AggregatedReward = {
+  earned: bigint
+  stake: bigint
+  boost: bigint
 }
 
 const mergeRewardsFiat = (values: Input): MergedReward[] => {
   const { fiatRates, rewards } = values
 
-  const mergedStats = rewards.reduce<Record<string, bigint>>((acc, item) => {
-    const { timestamp, earnedAssets } = item
+  const mergedStats = rewards.reduce<Record<string, AggregatedReward>>((acc, item) => {
+    const { timestamp, earnedAssets, stakeEarnedAssets, boostEarnedAssets } = item
 
-    acc[timestamp] = acc[timestamp]
-      ? acc[timestamp] + BigInt(earnedAssets)
-      : BigInt(earnedAssets)
+    const current = acc[timestamp] || { earned: 0n, stake: 0n, boost: 0n }
+
+    acc[timestamp] = {
+      earned: current.earned + BigInt(earnedAssets),
+      stake: current.stake + BigInt(stakeEarnedAssets || 0),
+      boost: current.boost + BigInt(boostEarnedAssets || 0),
+    }
 
     return acc
   }, {})
 
   const result = Object.entries(mergedStats)
     .map((reward, index) => {
-      const [ timestamp, earnedAssets ] = reward
+      const [ timestamp, aggregated ] = reward
 
       const milliseconds = Number(timestamp) / 1_000
-      const assets = Number(formatEther(earnedAssets))
+      const assets = Number(formatEther(aggregated.earned))
+      const stakeAssets = Number(formatEther(aggregated.stake))
+      const boostAssets = Number(formatEther(aggregated.boost))
 
       if (!fiatRates[index]) {
         return {
@@ -55,6 +71,8 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
           dailyRewardsKrw: 0,
           dailyRewardsAud: 0,
           dailyRewards: assets,
+          dailyStakeRewards: stakeAssets,
+          dailyBoostRewards: boostAssets,
         }
       }
 
@@ -83,6 +101,8 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
       return {
         date: milliseconds,
         dailyRewards: assets,
+        dailyStakeRewards: stakeAssets,
+        dailyBoostRewards: boostAssets,
         dailyRewardsUsd: usdResult || 0,
         dailyRewardsEur: usdResult * USD.EUR || 0,
         dailyRewardsGbp: usdResult * USD.GBP || 0,
