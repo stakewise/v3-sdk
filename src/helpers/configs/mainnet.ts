@@ -51,11 +51,11 @@ export default {
       blocklistVault: '0x608d8Ca6916b96edf63Dd429e62Fe1366ae6f3B5',
       erc20BlocklistVault: '0x39c6eef5f955bcC280966504bc5c82F2394Fa368',
 
-      metavault: '0xaEAea3606d90440a31672454b8047ac685e2e779',
-      erc20Metavault: '0x085cFebDF4146cC5b700dC532cf20Ad4070C41ce',
+      metavault: '0xE51eE4200510498d5964627B25FE7D4685CB858c',
+      erc20Metavault: '0xCd191DfDF52ae7aa2B1AD7B4a6A9D4d4FFB837B5',
 
-      privateMetavault: '0xAb12C5DdC098d31c7e1ce83c90620a20C2Dc9988',
-      erc20PrivateMetavault: '0x5D35A99337D9884BbF268EA9100c4E7D6190B627',
+      privateMetavault: '0x42427acFf6DdC93f73Fcb53d1a03AA26A292bA1A',
+      erc20PrivateMetavault: '0x8f347eb308707DC1FA1acCF3ea889CF554b6B8A5',
     },
     special: {
       stakeCalculator: '0x75c57bd50A3EB7291Da3429956D3566E0153A38f',
