@@ -1,16 +1,20 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import { z } from 'zod'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 
-export type GetStakeBalanceInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  userAddress: schema.ethAddress,
+  vaultAddress: schema.ethAddress,
+})
+
+export type GetStakeBalanceInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getStakeBalance = (values: GetStakeBalanceInput) => {
   const { options, vaultAddress, userAddress } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  parseArgs(validateSchema, values)
 
   return graphql.subgraph.allocator.fetchAllocatorsQuery({
     url: apiUrls.getSubgraphqlUrl(options),

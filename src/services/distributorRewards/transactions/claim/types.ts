@@ -1,12 +1,7 @@
-import claimGas from './claimGas'
-import claimEncode from './claimEncode'
+import type { ClaimArgs } from './validate'
 
 
-export type ClaimInput = Omit<StakeWise.BaseInput, 'vaultAddress'> & {
-  proof: string[]
-  tokens: string[]
-  cumulativeAmounts: string[]
-}
+export type ClaimInput = Omit<StakeWise.BaseInput, 'vaultAddress'> & ClaimArgs
 
 export interface ExtractClaim {
   (values: StakeWise.ExtractInput<ClaimInput>): Promise<StakeWise.TransactionHash>

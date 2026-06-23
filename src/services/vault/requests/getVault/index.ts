@@ -1,8 +1,14 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import { z } from 'zod'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 import { ModifiedVault } from './types'
 import modifyVault from './modifyVault'
 
+
+const validateSchema = z.object({
+  vaultAddress: schema.ethAddress,
+})
 
 export type GetVaultInput = StakeWise.CommonParams & {
   vaultAddress: string
@@ -12,7 +18,7 @@ export type GetVaultInput = StakeWise.CommonParams & {
 const getVault = (input: GetVaultInput) => {
   const { options, vaultAddress, withTime } = input
 
-  validateArgs.address({ vaultAddress })
+  parseArgs(validateSchema, input)
 
   return graphql.subgraph.vault.fetchVaultQuery<ModifiedVault>({
     url: apiUrls.getSubgraphqlUrl(options),

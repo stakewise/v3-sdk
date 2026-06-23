@@ -1,15 +1,19 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import { z } from 'zod'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import { fetchRewardSplittersQuery } from '../../../../graphql/subgraph/rewardSplitters'
 import type { RewardSplittersQueryVariables } from '../../../../graphql/subgraph/rewardSplitters'
 
 import modifyRewardSplitters from './modifyRewardSplitters'
 
 
-export type GetRewardSplittersInput = StakeWise.CommonParams & {
-  id?: string
-  owner?: string
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  vaultAddress: schema.ethAddress,
+  owner: schema.ethAddress.optional(),
+  id: schema.ethAddress.optional(),
+})
+
+export type GetRewardSplittersInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getRewardSplitters = (input: GetRewardSplittersInput) => {
   const { id, owner, vaultAddress, options } = input
@@ -18,21 +22,17 @@ const getRewardSplitters = (input: GetRewardSplittersInput) => {
     throw new Error('You must pass either ID or OWNER to get a response')
   }
 
-  validateArgs.address({ vaultAddress })
+  parseArgs(validateSchema, input)
 
   const where = {
     vault: vaultAddress.toLowerCase(),
   } as RewardSplittersQueryVariables['where']
 
   if (typeof owner !== 'undefined') {
-    validateArgs.address({ owner })
-
     where.owner = owner.toLowerCase()
   }
 
   if (typeof id !== 'undefined') {
-    validateArgs.address({ id })
-
     where.id = id.toLowerCase()
   }
 

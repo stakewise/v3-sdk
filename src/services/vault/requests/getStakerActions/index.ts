@@ -1,9 +1,18 @@
+import { z } from 'zod'
+
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
-import { AllocatorActionType, apiUrls, validateArgs } from '../../../../helpers'
+import { AllocatorActionType, apiUrls, schema, parseArgs } from '../../../../helpers'
 import modifyStakerActions from './modifyStakerActions'
 import { ModifiedStakerActions } from './types'
 import graphql from '../../../../graphql'
 
+
+const validateSchema = z.object({
+  skip: schema.number,
+  limit: schema.number,
+  vaultAddress: schema.ethAddress,
+  userAddress: schema.ethAddress.optional(),
+})
 
 export type GetStakerActionsInput = StakeWise.CommonParams & {
   userAddress?: string
@@ -16,12 +25,7 @@ export type GetStakerActionsInput = StakeWise.CommonParams & {
 const getStakerActions = (input: GetStakerActionsInput) => {
   const { options, skip, limit, types, vaultAddress, userAddress } = input
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.number({ skip, limit })
-
-  if (userAddress) {
-    validateArgs.address({ userAddress })
-  }
+  parseArgs(validateSchema, input)
 
   if (types) {
     if (!Array.isArray(types)) {
