@@ -8,12 +8,10 @@ import modifyVault from './modifyVault'
 
 const validateSchema = z.object({
   vaultAddress: schema.ethAddress,
+  withTime: schema.boolean.optional(),
 })
 
-export type GetVaultInput = StakeWise.CommonParams & {
-  vaultAddress: string
-  withTime?: boolean
-}
+export type GetVaultInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getVault = (input: GetVaultInput) => {
   const { options, vaultAddress, withTime } = input
