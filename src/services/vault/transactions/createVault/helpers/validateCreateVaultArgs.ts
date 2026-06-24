@@ -25,62 +25,43 @@ const schema = z.object({
   const type = values.type as VaultType
   const isMetaVault = [ VaultType.MetaVault, VaultType.PrivateMetaVault ].includes(type)
 
+  const addIssue = (message: string, field?: string) => ctx.addIssue({
+    code: 'custom',
+    message,
+    path: field ? [ field ] : undefined,
+  })
+
   if (!isAddress(userAddress)) {
-    ctx.addIssue({
-      code: 'custom',
-      path: [ 'userAddress' ],
-      message: 'must be a valid address',
-    })
+    addIssue('must be a valid address', 'userAddress')
   }
 
   if (!vaultTypes.includes(type)) {
-    ctx.addIssue({
-      code: 'custom',
-      path: [ 'type' ],
-      message: `must be one of the following: ${vaultTypes.join(', ')}`,
-    })
+    addIssue(`must be one of the following: ${vaultTypes.join(', ')}`, 'type')
   }
 
   if (!isMetaVault) {
     if (isOwnMevEscrow) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'MetaVault does not support the "isOwnMevEscrow" parameter.',
-      })
+      addIssue('MetaVault does not support the "isOwnMevEscrow" parameter.')
     }
 
     if (!isMainnet) {
       if (vaultToken) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'MetaVault does not support the ERC20 token on gnosis chain.',
-        })
+        addIssue('MetaVault does not support the ERC20 token on gnosis chain.')
       }
 
       if (type === VaultType.PrivateMetaVault) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Gnosis chain does not support private MetaVault.',
-        })
+        addIssue('Gnosis chain does not support private MetaVault.')
       }
     }
 
     if (typeof isOwnMevEscrow !== 'boolean') {
-      ctx.addIssue({
-        code: 'custom',
-        path: [ 'isOwnMevEscrow' ],
-        message: 'must be of boolean type',
-      })
+      addIssue('must be of boolean type', 'isOwnMevEscrow')
     }
   }
 
   if (vaultToken) {
     if (typeof vaultToken !== 'object') {
-      ctx.addIssue({
-        code: 'custom',
-        path: [ 'vaultToken' ],
-        message: 'must be an object',
-      })
+      addIssue('must be an object', 'vaultToken')
     }
     else {
       const token = vaultToken as Record<string, unknown>
@@ -91,10 +72,7 @@ const schema = z.object({
       if (missingParams.length) {
         const args = missingParams.map((key) => `"vaultToken.${key}"`).join(', ')
 
-        ctx.addIssue({
-          code: 'custom',
-          message: `The ${args} ${argWord} must be a string`,
-        })
+        addIssue(`The ${args} ${argWord} must be a string`)
       }
 
       const emptyParams = Object.keys(token).filter((key) => !token[key])
@@ -102,37 +80,22 @@ const schema = z.object({
       if (emptyParams.length) {
         const args = emptyParams.map((key) => `"vaultToken.${key}"`).join(', ')
 
-        ctx.addIssue({
-          code: 'custom',
-          message: `The ${args} ${argWord} must be not empty string`,
-        })
+        addIssue(`The ${args} ${argWord} must be not empty string`)
       }
     }
   }
 
   if (capacity) {
     if (typeof capacity !== 'bigint') {
-      ctx.addIssue({
-        code: 'custom',
-        path: [ 'capacity' ],
-        message: 'must be of type bigint',
-      })
+      addIssue('must be of type bigint', 'capacity')
     }
     else {
       if (capacity < constants.blockchain.amount32) {
-        ctx.addIssue({
-          code: 'custom',
-          path: [ 'capacity' ],
-          message: `must be at least ${constants.blockchain.amount32}`,
-        })
+        addIssue(`must be at least ${constants.blockchain.amount32}`, 'capacity')
       }
 
       if (capacity > MaxUint256) {
-        ctx.addIssue({
-          code: 'custom',
-          path: [ 'capacity' ],
-          message: `must be at most ${MaxUint256}`,
-        })
+        addIssue(`must be at most ${MaxUint256}`, 'capacity')
       }
     }
   }
@@ -141,29 +104,17 @@ const schema = z.object({
     const fee = keysManagerFee as number
 
     if (fee < 0) {
-      ctx.addIssue({
-        code: 'custom',
-        path: [ 'keysManagerFee' ],
-        message: 'must be at least 0',
-      })
+      addIssue('must be at least 0', 'keysManagerFee')
     }
 
     if (fee > 100) {
-      ctx.addIssue({
-        code: 'custom',
-        path: [ 'keysManagerFee' ],
-        message: 'must be at most 100',
-      })
+      addIssue('must be at most 100', 'keysManagerFee')
     }
 
     const decimals = fee.toString().split('.')[1]?.length
 
     if (decimals && decimals > 2) {
-      ctx.addIssue({
-        code: 'custom',
-        path: [ 'keysManagerFee' ],
-        message: 'must have at most two decimal places',
-      })
+      addIssue('must have at most two decimal places', 'keysManagerFee')
     }
   }
 })
