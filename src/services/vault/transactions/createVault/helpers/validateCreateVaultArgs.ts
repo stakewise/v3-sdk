@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { MaxUint256, isAddress } from 'ethers'
+import { MaxUint256 } from 'ethers'
 
 import { CreateVaultTransactionInput } from '../types'
-import { VaultType, constants, parseArgs } from '../../../../../helpers'
+import { VaultType, constants, parseArgs, schema } from '../../../../../helpers'
 
 
 type ValidateInput = CreateVaultTransactionInput & {
@@ -10,19 +10,20 @@ type ValidateInput = CreateVaultTransactionInput & {
 }
 
 const vaultTypes = Object.values(VaultType)
+const vaultTypeError = `must be one of the following: ${vaultTypes.join(', ')}`
 
-const schema = z.object({
-  type: z.unknown(),
-  capacity: z.unknown(),
-  isMainnet: z.unknown(),
-  vaultToken: z.unknown(),
-  userAddress: z.unknown(),
-  keysManagerFee: z.unknown(),
-  isOwnMevEscrow: z.unknown(),
+const createVaultSchema = z.object({
+  isMainnet: schema.boolean,
+  userAddress: schema.ethAddress,
+  capacity: schema.bigint.optional(),
+  vaultToken: z.unknown().optional(),
+  keysManagerFee: schema.number.optional(),
+  isOwnMevEscrow: schema.boolean.optional(),
+  type: z.enum(VaultType, { error: vaultTypeError }),
 }).superRefine((values, ctx) => {
-  const { userAddress, capacity, keysManagerFee, vaultToken, isMainnet, isOwnMevEscrow } = values
+  const { capacity, keysManagerFee, vaultToken, isMainnet, isOwnMevEscrow } = values
 
-  const type = values.type as VaultType
+  const { type } = values
   const isMetaVault = [ VaultType.MetaVault, VaultType.PrivateMetaVault ].includes(type)
 
   const addIssue = (message: string, field?: string) => ctx.addIssue({
@@ -30,14 +31,6 @@ const schema = z.object({
     message,
     path: field ? [ field ] : undefined,
   })
-
-  if (!isAddress(userAddress)) {
-    addIssue('must be a valid address', 'userAddress')
-  }
-
-  if (!vaultTypes.includes(type)) {
-    addIssue(`must be one of the following: ${vaultTypes.join(', ')}`, 'type')
-  }
 
   if (!isMetaVault) {
     if (isOwnMevEscrow) {
@@ -52,10 +45,6 @@ const schema = z.object({
       if (type === VaultType.PrivateMetaVault) {
         addIssue('Gnosis chain does not support private MetaVault.')
       }
-    }
-
-    if (typeof isOwnMevEscrow !== 'boolean') {
-      addIssue('must be of boolean type', 'isOwnMevEscrow')
     }
   }
 
@@ -86,32 +75,25 @@ const schema = z.object({
   }
 
   if (capacity) {
-    if (typeof capacity !== 'bigint') {
-      addIssue('must be of type bigint', 'capacity')
+    if (capacity < constants.blockchain.amount32) {
+      addIssue(`must be at least ${constants.blockchain.amount32}`, 'capacity')
     }
-    else {
-      if (capacity < constants.blockchain.amount32) {
-        addIssue(`must be at least ${constants.blockchain.amount32}`, 'capacity')
-      }
 
-      if (capacity > MaxUint256) {
-        addIssue(`must be at most ${MaxUint256}`, 'capacity')
-      }
+    if (capacity > MaxUint256) {
+      addIssue(`must be at most ${MaxUint256}`, 'capacity')
     }
   }
 
   if (keysManagerFee) {
-    const fee = keysManagerFee as number
-
-    if (fee < 0) {
+    if (keysManagerFee < 0) {
       addIssue('must be at least 0', 'keysManagerFee')
     }
 
-    if (fee > 100) {
+    if (keysManagerFee > 100) {
       addIssue('must be at most 100', 'keysManagerFee')
     }
 
-    const decimals = fee.toString().split('.')[1]?.length
+    const decimals = keysManagerFee.toString().split('.')[1]?.length
 
     if (decimals && decimals > 2) {
       addIssue('must have at most two decimal places', 'keysManagerFee')
@@ -120,7 +102,7 @@ const schema = z.object({
 })
 
 const validateCreateVaultArgs = (values: ValidateInput) => {
-  parseArgs(schema, values)
+  parseArgs(createVaultSchema, values)
 }
 
 
