@@ -9,6 +9,7 @@ const bigint = z.bigint({ error: 'must be of type bigint' })
 const ethAddress = z.string().refine(isAddress, 'must be a valid address')
 const hash = z.string().refine((value) => isHexString(value, 32), 'must be a valid 32-byte hex hash (0x + 64 hex chars)')
 
+const ethAddressLower = ethAddress.toLowerCase()
 
 export const parseArgs = <Schema extends z.ZodType>(schema: Schema, input: unknown): z.infer<Schema> => {
   const result = schema.safeParse(input)
@@ -29,4 +30,5 @@ export default {
   number,
   boolean,
   ethAddress,
+  ethAddressLower,
 }

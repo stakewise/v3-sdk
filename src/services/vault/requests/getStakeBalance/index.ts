@@ -5,22 +5,22 @@ import graphql from '../../../../graphql'
 
 
 const validateSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
+  userAddress: schema.ethAddressLower,
+  vaultAddress: schema.ethAddressLower,
 })
 
 export type GetStakeBalanceInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getStakeBalance = (values: GetStakeBalanceInput) => {
-  const { options, vaultAddress, userAddress } = values
+  const { options } = values
 
-  parseArgs(validateSchema, values)
+  const { userAddress, vaultAddress } = parseArgs(validateSchema, values)
 
   return graphql.subgraph.allocator.fetchAllocatorsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      address: userAddress.toLowerCase(),
-      vaultAddress: vaultAddress.toLowerCase(),
+      vaultAddress,
+      address: userAddress,
     },
     modifyResult: (data) => ({
       assets: BigInt(data?.allocators?.[0]?.assets || 0),

@@ -10,8 +10,8 @@ import graphql from '../../../../graphql'
 const validateSchema = z.object({
   skip: schema.number,
   limit: schema.number,
-  vaultAddress: schema.ethAddress,
-  userAddress: schema.ethAddress.optional(),
+  vaultAddress: schema.ethAddressLower,
+  userAddress: schema.ethAddressLower.optional(),
 })
 
 export type GetStakerActionsInput = StakeWise.CommonParams & {
@@ -23,9 +23,9 @@ export type GetStakerActionsInput = StakeWise.CommonParams & {
 }
 
 const getStakerActions = (input: GetStakerActionsInput) => {
-  const { options, skip, limit, types, vaultAddress, userAddress } = input
+  const { options, types } = input
 
-  parseArgs(validateSchema, input)
+  const { skip, limit, vaultAddress, userAddress } = parseArgs(validateSchema, input)
 
   if (types) {
     if (!Array.isArray(types)) {
@@ -48,8 +48,8 @@ const getStakerActions = (input: GetStakerActionsInput) => {
       first: limit,
       where: {
         actionType_in: types,
-        vault_: { id: vaultAddress.toLowerCase() },
-        address: userAddress ? userAddress.toLowerCase() : undefined,
+        address: userAddress,
+        vault_: { id: vaultAddress },
       } as AllocatorActionsQueryVariables['where'],
     },
     modifyResult: (data: AllocatorActionsQueryPayload) => modifyStakerActions({ data, network: options.network }),

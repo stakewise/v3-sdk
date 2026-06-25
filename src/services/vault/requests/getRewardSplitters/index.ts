@@ -8,32 +8,32 @@ import modifyRewardSplitters from './modifyRewardSplitters'
 
 
 const validateSchema = z.object({
-  vaultAddress: schema.ethAddress,
-  owner: schema.ethAddress.optional(),
-  id: schema.ethAddress.optional(),
+  vaultAddress: schema.ethAddressLower,
+  id: schema.ethAddressLower.optional(),
+  owner: schema.ethAddressLower.optional(),
 })
 
 export type GetRewardSplittersInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getRewardSplitters = (input: GetRewardSplittersInput) => {
-  const { id, owner, vaultAddress, options } = input
+  const { options } = input
 
-  if (!id && !owner) {
+  if (!input.id && !input.owner) {
     throw new Error('You must pass either ID or OWNER to get a response')
   }
 
-  parseArgs(validateSchema, input)
+  const { id, owner, vaultAddress } = parseArgs(validateSchema, input)
 
   const where = {
-    vault: vaultAddress.toLowerCase(),
+    vault: vaultAddress,
   } as RewardSplittersQueryVariables['where']
 
   if (typeof owner !== 'undefined') {
-    where.owner = owner.toLowerCase()
+    where.owner = owner
   }
 
   if (typeof id !== 'undefined') {
-    where.id = id.toLowerCase()
+    where.id = id
   }
 
   return fetchRewardSplittersQuery({
