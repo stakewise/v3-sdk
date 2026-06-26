@@ -1,23 +1,25 @@
+import * as z from 'zod/mini'
 import { parseEther } from 'ethers'
 
-import { constants, validateArgs } from '../../../../helpers'
+import { constants, schema, parseArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
-export type GetMaxWithdrawInput = StakeWise.CommonParams & {
-  ltvPercent: bigint
-  mintedAssets: bigint
-  stakedAssets: bigint
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  ltvPercent: schema.bigint,
+  mintedAssets: schema.bigint,
+  stakedAssets: schema.bigint,
+  vaultAddress: schema.ethAddress,
+})
+
+export type GetMaxWithdrawInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const min = parseEther('0.00001')
 
 const getMaxWithdraw = async (values: GetMaxWithdrawInput) => {
-  const { contracts, mintedAssets, stakedAssets, ltvPercent, vaultAddress } = values
+  const { contracts, mintedAssets, stakedAssets, ltvPercent } = values
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.bigint({ mintedAssets, stakedAssets, ltvPercent })
+  parseArgs(validateSchema, values)
 
   if (!mintedAssets) {
     return stakedAssets

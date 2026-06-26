@@ -1,20 +1,24 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import * as z from 'zod/mini'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 
-export type GetOsTokenConfigInput = StakeWise.CommonParams & {
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  vaultAddress: schema.ethAddressLower,
+})
+
+export type GetOsTokenConfigInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getOsTokenConfig = (input: GetOsTokenConfigInput) => {
-  const { options, vaultAddress } = input
+  const { options } = input
 
-  validateArgs.address({ vaultAddress })
+  const { vaultAddress } = parseArgs(validateSchema, input)
 
   return graphql.subgraph.vault.fetchVaultOsTokenConfigQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      address: vaultAddress.toLowerCase(),
+      address: vaultAddress,
     },
     modifyResult: (data) => data.vault.osTokenConfig,
   })

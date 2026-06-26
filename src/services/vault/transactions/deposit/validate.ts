@@ -1,12 +1,6 @@
-import { ZeroAddress } from 'ethers'
+import { parseArgs } from '../../../../helpers'
 
-import type { DepositInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { depositSchema } from './types'
 
 
-export const validate = (values: DepositInput) => {
-  const { userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
-
-  validateArgs.bigint({ assets })
-  validateArgs.address({ userAddress, vaultAddress, referrerAddress })
-}
+export const validate = (values: unknown) => parseArgs(depositSchema, values)

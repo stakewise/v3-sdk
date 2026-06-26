@@ -1,22 +1,26 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import * as z from 'zod/mini'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 
-export type GetUserApyInput = StakeWise.CommonParams & {
-  vaultAddress: string
-  userAddress: string
-}
+const validateSchema = z.object({
+  vaultAddress: schema.ethAddressLower,
+  userAddress: schema.ethAddressLower,
+})
+
+export type GetUserApyInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getUserApy = (input: GetUserApyInput) => {
-  const { options, vaultAddress, userAddress } = input
+  const { options } = input
 
-  validateArgs.address({ vaultAddress })
+  const { vaultAddress, userAddress } = parseArgs(validateSchema, input)
 
   return graphql.subgraph.vault.fetchUserApyQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      userAddress: userAddress.toLowerCase(),
-      vaultAddress: vaultAddress.toLowerCase(),
+      userAddress,
+      vaultAddress,
     },
     modifyResult: (data) => Number(data.allocators[0]?.apy || 0),
   })

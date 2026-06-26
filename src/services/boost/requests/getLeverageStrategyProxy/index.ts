@@ -1,16 +1,20 @@
-import { validateArgs } from '../../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 
-export type GetLeverageStrategyProxyInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  userAddress: schema.ethAddress,
+  vaultAddress: schema.ethAddress,
+})
+
+export type GetLeverageStrategyProxyInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getLeverageStrategyProxy = (values: GetLeverageStrategyProxyInput) => {
   const { contracts, userAddress, vaultAddress } = values
 
-  validateArgs.address({ userAddress, vaultAddress })
+  parseArgs(validateSchema, values)
 
   return contracts.special.leverageStrategyV2.getStrategyProxy(vaultAddress, userAddress)
 }

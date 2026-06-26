@@ -1,21 +1,25 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import * as z from 'zod/mini'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import modifyRewards from './modifyRewards'
 import graphql from '../../../../graphql'
 
 
-export type GetRewardsInput = StakeWise.CommonParams & {
-  userAddress: string
-}
+const validateSchema = z.object({
+  userAddress: schema.ethAddressLower,
+})
+
+export type GetRewardsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getRewards = (input: GetRewardsInput) => {
-  const { userAddress, options } = input
+  const { options } = input
 
-  validateArgs.address({ userAddress })
+  const { userAddress } = parseArgs(validateSchema, input)
 
   return graphql.subgraph.distributorRewards.fetchDistributorRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      address: userAddress.toLowerCase(),
+      address: userAddress,
     },
     modifyResult: modifyRewards,
   })

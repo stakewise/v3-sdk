@@ -1,21 +1,25 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
+import * as z from 'zod/mini'
+
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
 import modifyHarvestParams from './modifyHarvestParams'
 
 
-export type GetHarvestParamsInput = StakeWise.CommonParams & {
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  vaultAddress: schema.ethAddressLower,
+})
+
+export type GetHarvestParamsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getHarvestParams = (values: GetHarvestParamsInput) => {
-  const { options, vaultAddress } = values
+  const { options } = values
 
-  validateArgs.address({ vaultAddress })
+  const { vaultAddress } = parseArgs(validateSchema, values)
 
   return graphql.subgraph.vault.fetchHarvestParamsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      address: vaultAddress.toLowerCase(),
+      address: vaultAddress,
     },
     modifyResult: modifyHarvestParams,
   })

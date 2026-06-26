@@ -1,23 +1,27 @@
+import * as z from 'zod/mini'
+
 import graphql from '../../../../graphql'
-import { apiUrls, validateArgs } from '../../../../helpers'
+import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import modifyLeverageStrategyData from '../../helpers/modifyLeverageStrategyData'
 
 
-export type GetLeverageStrategyDataInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  userAddress: schema.ethAddressLower,
+  vaultAddress: schema.ethAddressLower,
+})
+
+export type GetLeverageStrategyDataInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getLeverageStrategyData = (values: GetLeverageStrategyDataInput) => {
-  const { options, userAddress, vaultAddress } = values
+  const { options } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  const { userAddress, vaultAddress } = parseArgs(validateSchema, values)
 
   return graphql.subgraph.boost.fetchLeverageStrategyDataQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      userAddress: userAddress.toLowerCase(),
-      vaultAddress: vaultAddress.toLowerCase(),
+      userAddress,
+      vaultAddress,
     },
     modifyResult: modifyLeverageStrategyData,
   })

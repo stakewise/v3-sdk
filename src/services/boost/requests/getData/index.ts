@@ -1,13 +1,24 @@
+import * as z from 'zod/mini'
+
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../../../helpers'
+import {
+  schema,
+  apiUrls,
+  Network,
+  parseArgs,
+  constants,
+  BorrowStatus,
+} from '../../../../helpers'
 import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../helpers/modifyLeverageStrategyData'
 
 
-export type GetBoostDataInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+const validateSchema = z.object({
+  userAddress: schema.ethAddressLower,
+  vaultAddress: schema.ethAddressLower,
+})
+
+export type GetBoostDataInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 type Output = {
   shares: bigint
@@ -23,9 +34,9 @@ type Output = {
 }
 
 const getData = async (values: GetBoostDataInput) => {
-  const { contracts, options, vaultAddress, userAddress } = values
+  const { contracts, options } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  const { vaultAddress, userAddress } = parseArgs(validateSchema, values)
 
   const boost: Output = {
     shares: 0n,
@@ -47,8 +58,8 @@ const getData = async (values: GetBoostDataInput) => {
     const boostMainData = await graphql.subgraph.boost.fetchBoostMainDataQuery({
       url: apiUrls.getSubgraphqlUrl(options),
       variables: {
-        userAddress: userAddress.toLowerCase(),
-        vaultAddress: vaultAddress.toLowerCase(),
+        userAddress,
+        vaultAddress,
       },
     })
 
