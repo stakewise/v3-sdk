@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod/mini'
 
 import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'

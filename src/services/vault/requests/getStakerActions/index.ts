@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod/mini'
 
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
 import { AllocatorActionType, apiUrls, schema, parseArgs } from '../../../../helpers'
@@ -11,7 +11,7 @@ const validateSchema = z.object({
   skip: schema.number,
   limit: schema.number,
   vaultAddress: schema.ethAddressLower,
-  userAddress: schema.ethAddressLower.optional(),
+  userAddress: z.optional(schema.ethAddressLower),
 })
 
 export type GetStakerActionsInput = StakeWise.CommonParams & {

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod/mini'
 import { MaxUint256 } from 'ethers'
 
 import { CreateVaultTransactionInput } from '../types'
@@ -15,20 +15,22 @@ const vaultTypeError = `must be one of the following: ${vaultTypes.join(', ')}`
 const createVaultSchema = z.object({
   isMainnet: schema.boolean,
   userAddress: schema.ethAddress,
-  capacity: schema.bigint.optional(),
-  vaultToken: z.unknown().optional(),
-  keysManagerFee: schema.number.optional(),
-  isOwnMevEscrow: schema.boolean.optional(),
+  capacity: z.optional(schema.bigint),
+  vaultToken: z.optional(z.unknown()),
+  keysManagerFee: z.optional(schema.number),
+  isOwnMevEscrow: z.optional(schema.boolean),
   type: z.enum(VaultType, { error: vaultTypeError }),
-}).superRefine((values, ctx) => {
+}).check((ctx) => {
+  const values = ctx.value
   const { capacity, keysManagerFee, vaultToken, isMainnet, isOwnMevEscrow } = values
 
   const { type } = values
   const isMetaVault = [ VaultType.MetaVault, VaultType.PrivateMetaVault ].includes(type)
 
-  const addIssue = (message: string, field?: string) => ctx.addIssue({
+  const addIssue = (message: string, field?: string) => ctx.issues.push({
     code: 'custom',
     message,
+    input: values,
     path: field ? [ field ] : undefined,
   })
 

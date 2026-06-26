@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod/mini'
 
 import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import { fetchRewardSplittersQuery } from '../../../../graphql/subgraph/rewardSplitters'
@@ -9,8 +9,8 @@ import modifyRewardSplitters from './modifyRewardSplitters'
 
 const validateSchema = z.object({
   vaultAddress: schema.ethAddressLower,
-  id: schema.ethAddressLower.optional(),
-  owner: schema.ethAddressLower.optional(),
+  id: z.optional(schema.ethAddressLower),
+  owner: z.optional(schema.ethAddressLower),
 })
 
 export type GetRewardSplittersInput = StakeWise.CommonParams & z.input<typeof validateSchema>

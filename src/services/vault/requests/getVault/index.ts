@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod/mini'
 
 import { apiUrls, schema, parseArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
@@ -8,7 +8,7 @@ import modifyVault from './modifyVault'
 
 const validateSchema = z.object({
   vaultAddress: schema.ethAddressLower,
-  withTime: schema.boolean.optional(),
+  withTime: z.optional(schema.boolean),
 })
 
 export type GetVaultInput = StakeWise.CommonParams & z.input<typeof validateSchema>
