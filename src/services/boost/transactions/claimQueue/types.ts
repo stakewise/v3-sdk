@@ -1,9 +1,7 @@
 import type { ClaimPosition } from '../../requests/getQueuePosition/modifyQueuePosition'
 
 
-export type ClaimQueueInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
+export type ClaimQueueInput = StakeWise.BaseInput & {
   position: ClaimPosition
   leverageStrategyVersion?: number
 }

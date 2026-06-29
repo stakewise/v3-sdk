@@ -1,7 +1,8 @@
-import type { ClaimQueueInput } from './types'
-import { validateArgs } from '../../../../helpers'
-import { boostMulticall } from '../../../../contracts'
+import { parseArgs, baseInputSchema, validateArgs } from '../../../../helpers'
 import getLeverageStrategyData from '../../requests/getLeverageStrategyData'
+import { boostMulticall } from '../../../../contracts'
+
+import type { ClaimQueueInput } from './types'
 
 
 export const commonLogic = async (values: ClaimQueueInput) => {
@@ -9,7 +10,7 @@ export const commonLogic = async (values: ClaimQueueInput) => {
 
   const { timestamp, positionTicket } = position
 
-  validateArgs.address({ vaultAddress, userAddress })
+  parseArgs(baseInputSchema, values)
   validateArgs.string({ timestamp, positionTicket })
 
   if (leverageStrategyVersion) {

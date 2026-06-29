@@ -1,16 +1,20 @@
-import { validateArgs } from '../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs } from '../../../helpers'
 import { getTransactions } from '../getTransactions'
 import AbortPromise from '../../../modules/gql-module/abortPromise'
 
 
-export type WaitForSubgraphInput = StakeWise.CommonParams & {
-  hash: string
-}
+const waitForSubgraphSchema = z.object({
+  hash: schema.hash,
+})
+
+export type WaitForSubgraphInput = StakeWise.CommonParams & z.input<typeof waitForSubgraphSchema>
 
 export const waitForSubgraph = (input: WaitForSubgraphInput): AbortPromise<void> => {
   const { hash, config, options, provider, contracts } = input
 
-  validateArgs.hash({ hash })
+  parseArgs(waitForSubgraphSchema, input)
 
   const commonParams: StakeWise.CommonParams = { config, options, provider, contracts }
 

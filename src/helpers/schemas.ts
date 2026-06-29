@@ -11,6 +11,11 @@ const hash = z.string().check(z.refine((value) => isHexString(value, 32), 'must 
 
 const ethAddressLower = ethAddress.check(z.toLowerCase())
 
+export const baseInputSchema = z.object({
+  userAddress: ethAddress,
+  vaultAddress: ethAddress,
+})
+
 export const parseArgs = <Schema extends z.ZodMiniType>(schema: Schema, input: unknown): z.infer<Schema> => {
   const result = schema.safeParse(input)
 

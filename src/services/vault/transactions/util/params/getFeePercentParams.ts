@@ -1,15 +1,17 @@
-import { validateArgs } from '../../../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs } from '../../../../../helpers'
 import { vaultMulticall } from '../../../../../contracts'
 
 
-export type SetFeePercentParams = {
-  feePercent: number
-}
+const setFeePercentParamsSchema = z.object({
+  feePercent: schema.number,
+})
+
+export type SetFeePercentParams = z.input<typeof setFeePercentParamsSchema>
 
 const getFeePercentParams = (values: SetFeePercentParams) => {
-  const { feePercent } = values
-
-  validateArgs.number({ feePercent })
+  const { feePercent } = parseArgs(setFeePercentParamsSchema, values)
 
   if (feePercent < 0) {
     throw new Error(`The "feePercent" argument must be at least 0`)
