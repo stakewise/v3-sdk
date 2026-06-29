@@ -1,14 +1,14 @@
-import type { WithdrawInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { parseArgs } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
 
+import { withdrawSchema, type WithdrawInput } from './types'
+
 
 export const commonLogic = async (values: WithdrawInput) => {
-  const { options, contracts, assets, vaultAddress, userAddress } = values
+  const { contracts, assets, vaultAddress, userAddress } = values
 
-  validateArgs.bigint({ assets })
-  validateArgs.address({ vaultAddress, userAddress })
+  parseArgs(withdrawSchema, values)
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = []
 

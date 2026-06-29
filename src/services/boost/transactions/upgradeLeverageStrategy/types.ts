@@ -1,11 +1,14 @@
-import upgradeLeverageStrategyGas from './upgradeLeverageStrategyGas'
-import upgradeLeverageStrategyEncode from './upgradeLeverageStrategyEncode'
+import * as z from 'zod/mini'
+
+import { schema } from '../../../../helpers'
 
 
-export type UpgradeLeverageStrategyInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+export const upgradeLeverageStrategySchema = z.object({
+  userAddress: schema.ethAddress,
+  vaultAddress: schema.ethAddress,
+})
+
+export type UpgradeLeverageStrategyInput = StakeWise.CommonParams & z.input<typeof upgradeLeverageStrategySchema>
 
 export interface ExtractUpgradeLeverageStrategy {
   (values: StakeWise.ExtractInput<UpgradeLeverageStrategyInput>): Promise<StakeWise.TransactionHash>

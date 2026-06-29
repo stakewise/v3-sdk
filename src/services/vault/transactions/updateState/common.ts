@@ -1,12 +1,13 @@
 import { getHarvestArgs } from '../../../../contracts/multicall/util'
-import { validateArgs } from '../../../../helpers'
-import { UpdateStateInput } from './types'
+import { parseArgs } from '../../../../helpers'
+
+import { updateStateSchema, type UpdateStateInput } from './types'
 
 
 export const commonLogic = async (values: UpdateStateInput) => {
-  const { contracts, vaultAddress, userAddress } = values
+  const { contracts, vaultAddress } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  parseArgs(updateStateSchema, values)
 
   const harvestArgs = await getHarvestArgs(values)
 

@@ -1,8 +1,15 @@
-export type SetDepositDataManagerInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-  managerAddress: string
-}
+import * as z from 'zod/mini'
+
+import { schema } from '../../../../helpers'
+
+
+export const setDepositDataManagerSchema = z.object({
+  userAddress: schema.ethAddress,
+  vaultAddress: schema.ethAddress,
+  managerAddress: schema.ethAddress,
+})
+
+export type SetDepositDataManagerInput = StakeWise.CommonParams & z.input<typeof setDepositDataManagerSchema>
 
 export interface ExtractSetDepositDataManager {
   (values: StakeWise.ExtractInput<SetDepositDataManagerInput>): Promise<StakeWise.TransactionHash>

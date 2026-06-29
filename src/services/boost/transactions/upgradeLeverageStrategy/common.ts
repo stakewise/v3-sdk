@@ -1,11 +1,12 @@
-import type { UpgradeLeverageStrategyInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { parseArgs } from '../../../../helpers'
+
+import { upgradeLeverageStrategySchema, type UpgradeLeverageStrategyInput } from './types'
 
 
 export const commonLogic = (values: UpgradeLeverageStrategyInput) => {
-  const { contracts, vaultAddress, userAddress } = values
+  const { contracts } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  parseArgs(upgradeLeverageStrategySchema, values)
 
   return contracts.special.leverageStrategy
 }

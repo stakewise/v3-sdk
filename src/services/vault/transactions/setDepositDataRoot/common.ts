@@ -1,12 +1,10 @@
-import { SetDepositDataRootInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { parseArgs } from '../../../../helpers'
+
+import { setDepositDataRootSchema, type SetDepositDataRootInput } from './types'
 
 
 export const commonLogic = (values: SetDepositDataRootInput) => {
-  const { vaultAddress, depositDataRoot, userAddress } = values
-
-  validateArgs.string({ depositDataRoot })
-  validateArgs.address({ vaultAddress, userAddress })
+  parseArgs(setDepositDataRootSchema, values)
 
   return values.contracts.base.depositDataRegistry
 }

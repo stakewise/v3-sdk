@@ -1,7 +1,14 @@
-export type UpdateStateInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+import * as z from 'zod/mini'
+
+import { schema } from '../../../../helpers'
+
+
+export const updateStateSchema = z.object({
+  userAddress: schema.ethAddress,
+  vaultAddress: schema.ethAddress,
+})
+
+export type UpdateStateInput = StakeWise.CommonParams & z.input<typeof updateStateSchema>
 
 export interface ExtractUpdateStateInput {
   (values: StakeWise.ExtractInput<UpdateStateInput>): Promise<StakeWise.TransactionHash>
