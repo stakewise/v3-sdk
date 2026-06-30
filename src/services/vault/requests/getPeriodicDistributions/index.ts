@@ -21,9 +21,9 @@ const getPeriodicDistributions = (values: GetPeriodicDistributionsInput) => {
   return graphql.subgraph.vault.fetchPeriodicDistributionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      vaultAddress,
       endTimestamp: String(endTimestamp),
       startTimestamp: String(startTimestamp),
+      vaultAddress,
     },
     modifyResult: (data: PeriodicDistributionsQueryPayload) => data?.periodicDistributions || [],
   })

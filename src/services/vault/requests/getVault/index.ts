@@ -14,9 +14,9 @@ const validateSchema = z.object({
 export type GetVaultInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getVault = (input: GetVaultInput) => {
-  const { options } = input
+  const { options, withTime } = input
 
-  const { vaultAddress, withTime } = parseArgs(validateSchema, input)
+  const { vaultAddress } = parseArgs(validateSchema, input)
 
   return graphql.subgraph.vault.fetchVaultQuery<ModifiedVault>({
     url: apiUrls.getSubgraphqlUrl(options),

@@ -1,30 +1,23 @@
-import * as z from 'zod/mini'
-
 import graphql from '../../../../graphql'
 import modifyQueuePosition from './modifyQueuePosition'
-import { apiUrls, schema, parseArgs } from '../../../../helpers'
+import { apiUrls, parseArgs, baseInputSchema } from '../../../../helpers'
 import type { ParseBoostQueueOutput } from './modifyQueuePosition'
 
 
-const validateSchema = z.object({
-  vaultAddress: schema.ethAddressLower,
-  userAddress: schema.ethAddressLower,
-})
-
-export type GetQueuePositionInput = StakeWise.CommonParams & z.input<typeof validateSchema>
+export type GetQueuePositionInput = StakeWise.BaseInput
 
 export type Output = ParseBoostQueueOutput
 
 const getQueuePosition = (input: GetQueuePositionInput) => {
-  const { options } = input
+  const { options, vaultAddress, userAddress } = input
 
-  const { vaultAddress, userAddress } = parseArgs(validateSchema, input)
+  parseArgs(baseInputSchema, input)
 
   return graphql.subgraph.boost.fetchBoostQueuePositionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      userAddress,
-      vaultAddress,
+      userAddress: userAddress.toLowerCase(),
+      vaultAddress: vaultAddress.toLowerCase(),
     },
     modifyResult: modifyQueuePosition,
   })

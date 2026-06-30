@@ -1,26 +1,19 @@
-import * as z from 'zod/mini'
-
-import { apiUrls, schema, parseArgs } from '../../../../helpers'
+import { apiUrls, parseArgs, baseInputSchema } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
 
-const validateSchema = z.object({
-  userAddress: schema.ethAddressLower,
-  vaultAddress: schema.ethAddressLower,
-})
-
-export type GetStakeBalanceInput = StakeWise.CommonParams & z.input<typeof validateSchema>
+export type GetStakeBalanceInput = StakeWise.BaseInput
 
 const getStakeBalance = (values: GetStakeBalanceInput) => {
-  const { options } = values
+  const { options, userAddress, vaultAddress } = values
 
-  const { userAddress, vaultAddress } = parseArgs(validateSchema, values)
+  parseArgs(baseInputSchema, values)
 
   return graphql.subgraph.allocator.fetchAllocatorsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      vaultAddress,
-      address: userAddress,
+      vaultAddress: vaultAddress.toLowerCase(),
+      address: userAddress.toLowerCase(),
     },
     modifyResult: (data) => ({
       assets: BigInt(data?.allocators?.[0]?.assets || 0),

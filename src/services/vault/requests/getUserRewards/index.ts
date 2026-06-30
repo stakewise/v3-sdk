@@ -7,17 +7,16 @@ import {
   configs,
   parseArgs,
   MergedReward,
+  baseInputSchema,
   mergeRewardsFiat,
 } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import graphql from '../../../../graphql'
 
 
-const validateSchema = z.object({
+const validateSchema = z.extend(baseInputSchema, {
   dateTo: schema.number,
   dateFrom: schema.number,
-  userAddress: schema.ethAddressLower,
-  vaultAddress: schema.ethAddressLower,
 })
 
 export type GetUserRewardsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
@@ -30,9 +29,9 @@ const calculateLimit = (dateTo: number, dateFrom: number): number => {
 }
 
 const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[]> => {
-  const { options, dateFrom, dateTo } = input
+  const { options, dateFrom, dateTo, vaultAddress, userAddress } = input
 
-  const { vaultAddress, userAddress } = parseArgs(validateSchema, input)
+  parseArgs(validateSchema, input)
 
   const isGnosis = Network.Gnosis === options.network
 
@@ -61,8 +60,8 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
           timestamp_lte: timestampTo,
           timestamp_gte: timestampFrom,
           allocator_: {
-            address: userAddress,
-            vault: vaultAddress,
+            address: userAddress.toLowerCase(),
+            vault: vaultAddress.toLowerCase(),
           },
         },
       },
