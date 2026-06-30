@@ -1,9 +1,10 @@
+import * as z from 'zod/mini'
 import { MaxUint256, ZeroAddress } from 'ethers'
 
 import Utils from '../../../utils'
 import type { LockInput } from './types'
-import { validateArgs } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
+import { parseArgs, baseInputSchema, schema } from '../../../../helpers'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../helpers'
 
@@ -12,14 +13,18 @@ type CommonLogicInput = LockInput & {
   mockPermitSignature?: boolean
 }
 
+const validateSchema = z.extend(baseInputSchema, {
+  amount: schema.bigint,
+  referrerAddress: z._default(schema.ethAddress, ZeroAddress),
+})
+
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
     contracts, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
     mockPermitSignature, leverageStrategyData,
   } = values
 
-  validateArgs.bigint({ amount })
-  validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+  parseArgs(validateSchema, values)
 
   if (leverageStrategyData) {
     validateLeverageStrategyData(leverageStrategyData)
@@ -35,14 +40,16 @@ export const commonLogic = async (values: CommonLogicInput) => {
   const permitParams = isMultiSig ? null : values.permitParams
 
   if (permitParams) {
-    validateArgs.object({ permitParams })
-
-    const { vault, amount, deadline, v, r, s } = permitParams
-
-    validateArgs.address({ 'permitParams.vault': vault })
-    validateArgs.bigint({ 'permitParams.amount': amount })
-    validateArgs.string({ 'permitParams.r': r, 'permitParams.s': s })
-    validateArgs.number({ 'permitParams.v': v, 'permitParams.deadline': deadline })
+    parseArgs(z.object({
+      permitParams: z.object({
+        vault: schema.ethAddress,
+        amount: schema.bigint,
+        r: schema.string,
+        s: schema.string,
+        v: schema.number,
+        deadline: schema.number,
+      }),
+    }), { permitParams })
   }
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {

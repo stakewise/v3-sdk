@@ -1,4 +1,6 @@
-import { validateArgs } from '../../../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs } from '../../../../../helpers'
 
 
 type ListItem = {
@@ -8,7 +10,7 @@ type ListItem = {
 
 const validateList = (values: Record<string, ListItem[]>) => {
   Object.keys(values).forEach((key) => {
-    validateArgs.array({ [key]: values[key] })
+    parseArgs(z.object({ [key]: schema.array() }), { [key]: values[key] })
 
     const isValid = values[key].every((listItem) => (
       listItem

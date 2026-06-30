@@ -1,5 +1,7 @@
+import * as z from 'zod/mini'
 import { isAddress } from 'ethers'
-import { validateArgs } from '../../helpers'
+
+import { schema, parseArgs } from '../../helpers'
 import { StakeWiseSubgraphGraph } from '../../types/graphql/subgraph'
 
 
@@ -20,22 +22,17 @@ const validateList = (addressIn: string[]) => {
   }
 }
 
+const validateSchema = z.object({
+  vaultAddress: schema.ethAddress,
+  skip: z.optional(schema.number),
+  limit: z.optional(schema.number),
+  search: z.optional(schema.string),
+})
+
 export const getListVariables = <T>(input: GetListVariablesInput): T => {
   const { vaultAddress, orderDirection, search, limit, skip, addressIn } = input
 
-  validateArgs.address({ vaultAddress })
-
-  if (typeof skip !== 'undefined') {
-    validateArgs.number({ skip })
-  }
-
-  if (typeof limit !== 'undefined') {
-    validateArgs.number({ limit })
-  }
-
-  if (typeof search !== 'undefined') {
-    validateArgs.string({ search })
-  }
+  parseArgs(validateSchema, input)
 
   if (typeof orderDirection !== 'undefined') {
     if (![ 'asc', 'desc' ].includes(orderDirection)) {
@@ -44,7 +41,7 @@ export const getListVariables = <T>(input: GetListVariablesInput): T => {
   }
 
   if (typeof addressIn !== 'undefined') {
-    validateArgs.array({ addressIn })
+    parseArgs(z.object({ addressIn: schema.array() }), { addressIn })
     validateList(addressIn as string[])
   }
 
