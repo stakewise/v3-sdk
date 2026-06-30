@@ -15,11 +15,15 @@ type CommonLogicInput = LockInput & {
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
     contracts, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    mockPermitSignature, leverageStrategyData, useApprove,
+    mockPermitSignature, leverageStrategyData, approveParams,
   } = values
 
   validateArgs.bigint({ amount })
   validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+
+  if (approveParams) {
+    validateArgs.bigint({ 'approveParams.amount': approveParams.amount })
+  }
 
   if (leverageStrategyData) {
     validateLeverageStrategyData(leverageStrategyData)
@@ -31,9 +35,9 @@ export const commonLogic = async (values: CommonLogicInput) => {
   const isEip7702Delegated = code.toLowerCase().startsWith('0xef0100')
   const isMultiSig = code !== '0x' && !isEip7702Delegated
 
-  const isApproveMode = isMultiSig || Boolean(useApprove)
+  const isApproveMode = isMultiSig || Boolean(approveParams)
 
-  let multiSigData = null
+  let approveData = null
 
   const permitParams = isApproveMode ? null : values.permitParams
 
@@ -78,9 +82,9 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
     if (isPermitRequired) {
       if (isApproveMode) {
-        multiSigData = {
+        approveData = {
           contract: contracts.tokens.mintToken,
-          approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],
+          approveArgs: [ strategyProxy, approveParams?.amount || MaxUint256 ] as [ string, bigint ],
         }
       }
       else if (mockPermitSignature) {
@@ -122,7 +126,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
   })
 
   return {
-    multiSigData,
+    approveData,
     multicallArgs: {
       ...multicallArgs,
       request: {

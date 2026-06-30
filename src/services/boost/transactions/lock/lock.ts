@@ -8,18 +8,18 @@ import upgradeLeverageStrategy from '../upgradeLeverageStrategy/upgradeLeverageS
 const lock = async (values: LockInput) => {
   const { provider, userAddress } = values
 
-  const { multiSigData, multicallArgs, isUpgradeRequired } = await commonLogic(values)
+  const { approveData, multicallArgs, isUpgradeRequired } = await commonLogic(values)
 
   if (isUpgradeRequired) {
     await upgradeLeverageStrategy(values)
   }
 
-  if (multiSigData) {
+  if (approveData) {
     const signer = await provider.getSigner(userAddress)
-    const signedContract = multiSigData.contract.connect(signer)
+    const signedContract = approveData.contract.connect(signer)
 
     const { hash } = await wrapErrorHandler(
-      signedContract.approve(...multiSigData.approveArgs),
+      signedContract.approve(...approveData.approveArgs),
       'transaction'
     )
 
