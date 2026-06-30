@@ -37,18 +37,6 @@ const image = string.check(z.refine(
   { error: (issue) => `must be under 1 MB, current size is ${imageSizeMb(issue.input as string).toFixed(2)} MB` }
 ))
 
-export const parseArgs = <Schema extends z.ZodMiniType>(schema: Schema, input: unknown): z.infer<Schema> => {
-  const result = schema.safeParse(input)
-
-  if (!result.success) {
-    const { path, message } = result.error.issues[0]
-
-    throw new Error(path.length ? `The "${path.join('.')}" argument ${message}` : message)
-  }
-
-  return result.data
-}
-
 export default {
   hash,
   image,

@@ -1,6 +1,7 @@
 import * as z from 'zod/mini'
 
-import schema, { parseArgs } from './schemas'
+import schema from './schemas'
+import parseArgs from './parseArgs'
 
 
 const validateSchema = z.object({
