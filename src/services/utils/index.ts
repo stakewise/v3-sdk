@@ -7,6 +7,7 @@ import { getFiatRatesByDay, GetFiatRatesByDayInput } from './getFiatRatesByDay'
 import { getPermitSignature, GetPermitSignatureInput } from './getPermitSignature'
 import { getVaultMulticallGas, GetVaultMulticallGas } from './getVaultMulticallGas'
 import { getVaultMulticallEncode, GetVaultMulticallEncodeInput } from './getVaultMulticallEncode'
+import { checkTxBatchSupported, CheckTxBatchSupportedInput } from './checkTxBatchSupported'
 
 
 class Utils {
@@ -83,6 +84,14 @@ class Utils {
   */
   public getVaultMulticallEncode(values: StakeWise.ExtractInput<GetVaultMulticallEncodeInput>) {
     return getVaultMulticallEncode({ ...this.params, ...values })
+  }
+
+  /**
+   * @description Detect whether the connected wallet supports atomic EIP-5792 transaction batching on the current network.
+   * @see https://docs.stakewise.io/sdk/api/utils/checktxbatchsupported
+  */
+  public checkTxBatchSupported(values: StakeWise.ExtractInput<CheckTxBatchSupportedInput>) {
+    return checkTxBatchSupported({ ...this.params, ...values })
   }
 }
 

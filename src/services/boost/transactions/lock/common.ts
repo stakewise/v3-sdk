@@ -15,7 +15,7 @@ type CommonLogicInput = LockInput & {
 export const commonLogic = async (values: CommonLogicInput) => {
   const {
     contracts, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    mockPermitSignature, leverageStrategyData,
+    mockPermitSignature, leverageStrategyData, useApprove,
   } = values
 
   validateArgs.bigint({ amount })
@@ -28,11 +28,14 @@ export const commonLogic = async (values: CommonLogicInput) => {
   const { leverageStrategyContract, isUpgradeRequired } = await getLeverageStrategyContract(values)
 
   const code = await provider.getCode(userAddress)
-  const isMultiSig = code !== '0x'
+  const isEip7702Delegated = code.toLowerCase().startsWith('0xef0100')
+  const isMultiSig = code !== '0x' && !isEip7702Delegated
+
+  const isApproveMode = isMultiSig || Boolean(useApprove)
 
   let multiSigData = null
 
-  const permitParams = isMultiSig ? null : values.permitParams
+  const permitParams = isApproveMode ? null : values.permitParams
 
   if (permitParams) {
     validateArgs.object({ permitParams })
@@ -74,9 +77,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
     const isPermitRequired = allowance < amount
 
     if (isPermitRequired) {
-      // It is hard to make permit action for MultiSig e.g. Safe wallet,
-      // so we need to use approve instead
-      if (isMultiSig) {
+      if (isApproveMode) {
         multiSigData = {
           contract: contracts.tokens.mintToken,
           approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],

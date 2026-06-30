@@ -16,6 +16,7 @@ export type LockInput = StakeWise.CommonParams & {
   vaultAddress: string
   referrerAddress?: string
   permitParams?: PermitParams
+  useApprove?: boolean
   leverageStrategyData?: {
     version: number
     isUpgradeRequired: boolean
