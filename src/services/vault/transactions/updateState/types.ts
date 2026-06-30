@@ -1,14 +1,4 @@
-import * as z from 'zod/mini'
-
-import { schema } from '../../../../helpers'
-
-
-export const updateStateSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
-})
-
-export type UpdateStateInput = StakeWise.CommonParams & z.input<typeof updateStateSchema>
+export type UpdateStateInput = StakeWise.BaseInput
 
 export interface ExtractUpdateStateInput {
   (values: StakeWise.ExtractInput<UpdateStateInput>): Promise<StakeWise.TransactionHash>

@@ -1,12 +1,12 @@
-import { parseArgs } from '../../../../helpers'
+import { parseArgs, baseInputSchema } from '../../../../helpers'
 
-import { upgradeLeverageStrategySchema, type UpgradeLeverageStrategyInput } from './types'
+import type { UpgradeLeverageStrategyInput } from './types'
 
 
 export const commonLogic = (values: UpgradeLeverageStrategyInput) => {
   const { contracts } = values
 
-  parseArgs(upgradeLeverageStrategySchema, values)
+  parseArgs(baseInputSchema, values)
 
   return contracts.special.leverageStrategy
 }

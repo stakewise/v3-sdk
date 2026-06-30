@@ -16,13 +16,9 @@ export const baseInputSchema = z.object({
   vaultAddress: ethAddress,
 })
 
-const array = (withEmptyCheck: boolean = true) => {
-  const brick = z.array(z.unknown(), { error: 'must be an array' })
-
-  return withEmptyCheck
-    ? brick.check(z.minLength(1, { error: 'is an empty array' }))
-    : brick
-}
+const array = <Item extends z.ZodMiniType>(item: Item = z.unknown() as unknown as Item) => (
+  z.array(item, { error: 'must be an array' }).check(z.minLength(1, { error: 'is an empty array' }))
+)
 
 const maxLength = (length: number) => string.check(z.maxLength(length, { error: `must be less than ${length} characters` }))
 

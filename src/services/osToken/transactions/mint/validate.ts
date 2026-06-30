@@ -1,13 +1,11 @@
 import * as z from 'zod/mini'
 import { ZeroAddress } from 'ethers'
 
-import { schema, parseArgs } from '../../../../helpers'
+import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const mintSchema = z.object({
+const mintSchema = z.extend(baseInputSchema, {
   shares: schema.bigint,
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
   referrerAddress: z._default(schema.ethAddress, ZeroAddress),
 })
 

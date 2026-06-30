@@ -1,12 +1,10 @@
 import * as z from 'zod/mini'
 
-import { schema, parseArgs } from '../../../../helpers'
+import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const burnSchema = z.object({
+const burnSchema = z.extend(baseInputSchema, {
   shares: schema.bigint,
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
 })
 
 

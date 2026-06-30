@@ -9,11 +9,11 @@ import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
 import type { FeeRecipient, UpdateFeeRecipientsInput } from './types'
 
 
-const validateList = (values: Record<string, FeeRecipient[]>, withEmptyCheck: boolean = true) => {
+const validateList = (values: Record<string, FeeRecipient[]>) => {
   Object.keys(values).forEach((key) => {
     const list = values[key]
 
-    parseArgs(z.object({ [key]: schema.array(withEmptyCheck) }), { [key]: values[key] })
+    parseArgs(z.object({ [key]: schema.array() }), { [key]: values[key] })
 
     const isListValid = list.every(({ address, shares }) => (
       isAddress(address)
@@ -41,8 +41,8 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
   }), { vaultAddress, userAddress, rewardSplitterAddress })
   validateList({ feeRecipients })
 
-  if (oldFeeRecipients) {
-    validateList({ oldFeeRecipients }, false)
+  if (oldFeeRecipients?.length) {
+    validateList({ oldFeeRecipients })
   }
 
   const baseMulticall: RewardSplitterMulticallBaseInput = {

@@ -2,13 +2,11 @@ import * as z from 'zod/mini'
 
 import getHealthFactor from '../../helpers/getHealthFactor'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { schema, parseArgs } from '../../../../helpers'
+import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const validateSchema = z.object({
+const validateSchema = z.extend(baseInputSchema, {
   stakedAssets: schema.bigint,
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
   liqThresholdPercent: schema.bigint,
 })
 

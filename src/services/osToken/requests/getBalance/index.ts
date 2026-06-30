@@ -1,15 +1,8 @@
-import * as z from 'zod/mini'
-
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { schema, parseArgs } from '../../../../helpers'
+import { parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const validateSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
-})
-
-export type GetOsTokenBalanceInput = StakeWise.CommonParams & z.input<typeof validateSchema>
+export type GetOsTokenBalanceInput = StakeWise.BaseInput
 
 type Output = {
   assets: bigint
@@ -19,7 +12,7 @@ type Output = {
 const getBalance = async (values: GetOsTokenBalanceInput) => {
   const { contracts, vaultAddress, userAddress } = values
 
-  parseArgs(validateSchema, values)
+  parseArgs(baseInputSchema, values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)

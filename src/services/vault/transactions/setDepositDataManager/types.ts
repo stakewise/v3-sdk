@@ -1,11 +1,9 @@
 import * as z from 'zod/mini'
 
-import { schema } from '../../../../helpers'
+import { schema, baseInputSchema } from '../../../../helpers'
 
 
-export const setDepositDataManagerSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
+export const setDepositDataManagerSchema = z.extend(baseInputSchema, {
   managerAddress: schema.ethAddress,
 })
 

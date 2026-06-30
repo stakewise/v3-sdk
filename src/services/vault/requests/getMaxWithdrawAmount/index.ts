@@ -1,26 +1,20 @@
-import * as z from 'zod/mini'
 import { parseEther } from 'ethers'
 
 import getStakeBalance from '../getStakeBalance'
 import getOsTokenConfig from '../getOsTokenConfig'
-import { constants, schema, parseArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getMintedBalance from '../../../osToken/requests/getBalance'
+import { constants, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const validateSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
-})
-
-export type GetMaxWithdrawAmountInput = StakeWise.CommonParams & z.input<typeof validateSchema>
+export type GetMaxWithdrawAmountInput = StakeWise.BaseInput
 
 const min = parseEther('0.00001')
 
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   const { contracts } = values
 
-  parseArgs(validateSchema, values)
+  parseArgs(baseInputSchema, values)
 
   const [ config, mint, stake ] = await Promise.all([
     getOsTokenConfig(values),

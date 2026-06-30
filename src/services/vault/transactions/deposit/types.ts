@@ -1,13 +1,11 @@
 import * as z from 'zod/mini'
 import { ZeroAddress } from 'ethers'
 
-import { schema } from '../../../../helpers'
+import { schema, baseInputSchema } from '../../../../helpers'
 
 
-export const depositSchema = z.object({
+export const depositSchema = z.extend(baseInputSchema, {
   assets: schema.bigint,
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
   referrerAddress: z._default(schema.ethAddress, ZeroAddress),
 })
 

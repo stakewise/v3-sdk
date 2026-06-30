@@ -1,11 +1,9 @@
 import * as z from 'zod/mini'
 
-import { schema } from '../../../../helpers'
+import { schema, baseInputSchema } from '../../../../helpers'
 
 
-export const ejectSubVaultSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
+export const ejectSubVaultSchema = z.extend(baseInputSchema, {
   subVaultAddress: schema.ethAddress,
 })
 

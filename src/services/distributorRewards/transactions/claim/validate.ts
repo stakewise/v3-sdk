@@ -3,9 +3,7 @@ import * as z from 'zod/mini'
 import { schema, parseArgs } from '../../../../helpers'
 
 
-const stringArray = z
-  .array(schema.string, { error: 'must be an array' })
-  .check(z.minLength(1, { error: 'is an empty array' }))
+const stringArray = schema.array(schema.string)
 
 const claimSchema = z.object({
   proof: stringArray,

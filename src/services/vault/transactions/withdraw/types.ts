@@ -1,12 +1,10 @@
 import * as z from 'zod/mini'
 
-import { schema } from '../../../../helpers'
+import { schema, baseInputSchema } from '../../../../helpers'
 
 
-export const withdrawSchema = z.object({
+export const withdrawSchema = z.extend(baseInputSchema, {
   assets: schema.bigint,
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
 })
 
 export type WithdrawInput = StakeWise.CommonParams & z.input<typeof withdrawSchema>

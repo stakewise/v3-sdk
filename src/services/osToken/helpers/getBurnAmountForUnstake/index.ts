@@ -1,22 +1,15 @@
-import * as z from 'zod/mini'
-
 import getBalance from '../../requests/getBalance'
-import { constants, schema, parseArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
+import { constants, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const getBurnAmountForUnstakeSchema = z.object({
-  userAddress: schema.ethAddress,
-  vaultAddress: schema.ethAddress,
-})
-
-export type GetBurnAmountForUnstakeInput = StakeWise.CommonParams & z.input<typeof getBurnAmountForUnstakeSchema>
+export type GetBurnAmountForUnstakeInput = StakeWise.BaseInput
 
 const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => {
   const { contracts } = values
 
-  parseArgs(getBurnAmountForUnstakeSchema, values)
+  parseArgs(baseInputSchema, values)
 
   const [ config, mint ] = await Promise.all([
     getOsTokenConfig(values),
