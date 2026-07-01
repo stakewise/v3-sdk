@@ -23,7 +23,7 @@ If the wallet doesn't support batching, use the regular [sdk.boost.lock](/sdk/ap
 ```ts
 type LeverageStrategyData = {
   version: number
-  isRequired: boolean
+  isUpgradeRequired: boolean
 }
 ```
 

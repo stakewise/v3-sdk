@@ -23,6 +23,10 @@ export const commonLogic = async (values: CommonLogicInput) => {
 
   if (approveParams) {
     validateArgs.bigint({ 'approveParams.amount': approveParams.amount })
+
+    if (approveParams.amount <= 0n) {
+      throw new Error(`The "approveParams.amount" argument must be greater than 0`)
+    }
   }
 
   if (leverageStrategyData) {

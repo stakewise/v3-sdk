@@ -28,7 +28,7 @@ If the wallet doesn't support batching, use the regular [sdk.vault.deposit](/sdk
 ```ts
 type LeverageStrategyData = {
   version: number
-  isRequired: boolean
+  isUpgradeRequired: boolean
 }
 ```
 

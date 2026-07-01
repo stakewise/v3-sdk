@@ -26,7 +26,7 @@ If the wallet doesn't support batching, use the regular [sdk.vault.deposit](/sdk
 
 ```ts
 const params = {
-  assets: 0n,
+  assets: parseEther('1'),
   userAddress: '0x...',
   vaultAddress: '0x...',
 }

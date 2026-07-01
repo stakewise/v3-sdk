@@ -20,7 +20,7 @@ Unboost your boosted osToken
 ```ts
 type LeverageStrategyData = {
   version: number
-  isRequired: boolean
+  isUpgradeRequired: boolean
 }
 ```
 

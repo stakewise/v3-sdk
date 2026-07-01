@@ -22,7 +22,7 @@ If the wallet doesn't support batching, use the regular [sdk.boost.unlock](/sdk/
 ```ts
 type LeverageStrategyData = {
   version: number
-  isRequired: boolean
+  isUpgradeRequired: boolean
 }
 ```
 

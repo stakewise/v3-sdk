@@ -4,14 +4,14 @@ import { validateArgs } from '../../../helpers'
 import { getDepositAndMintCalls } from '../helpers'
 import getMaxMintAmount from '../../osToken/requests/getMaxMintAmount'
 import getLeverageStrategyProxy from '../../boost/requests/getLeverageStrategyProxy'
-import { getLeverageStrategyContract } from '../../boost/helpers'
+import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../boost/helpers'
 import upgradeLeverageStrategyEncode from '../../boost/transactions/upgradeLeverageStrategy/upgradeLeverageStrategyEncode'
 import type { DepositAndBoostInput } from './types'
 
 
 const depositAndBoostEncode = async (values: DepositAndBoostInput): Promise<StakeWise.BatchData> => {
   const {
-    contracts, assets, receiveShares, boostShares,
+    contracts, assets, receiveShares, boostShares, leverageStrategyData,
     userAddress, vaultAddress, referrerAddress = ZeroAddress,
   } = values
 
@@ -24,6 +24,10 @@ const depositAndBoostEncode = async (values: DepositAndBoostInput): Promise<Stak
 
   if (boostShares !== undefined) {
     validateArgs.bigint({ boostShares })
+  }
+
+  if (leverageStrategyData) {
+    validateLeverageStrategyData(leverageStrategyData)
   }
 
   const maxMintInput = {
