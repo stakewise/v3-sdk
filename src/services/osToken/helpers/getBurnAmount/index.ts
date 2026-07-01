@@ -1,23 +1,16 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { constants, schema, parseArgs } from '../../../../helpers'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
+import { validate, validateSchema } from './validate'
 
 
-const getBurnAmountSchema = z.object({
-  ltvPercent: schema.bigint,
-  mintedAssets: schema.bigint,
-  stakedAssets: schema.bigint,
-  newStakedAssets: schema.bigint,
-  vaultAddress: schema.ethAddress,
-})
-
-export type GetBurnAmountInput = StakeWise.CommonParams & z.input<typeof getBurnAmountSchema>
+export type GetBurnAmountInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getBurnAmount = async (values: GetBurnAmountInput) => {
-  const { contracts, ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = values
+  const { contracts } = values
 
-  parseArgs(getBurnAmountSchema, values)
+  const { ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = validate(values)
 
   const hasMinted = mintedAssets && mintedAssets > 0
 

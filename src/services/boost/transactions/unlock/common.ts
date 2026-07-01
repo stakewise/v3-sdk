@@ -1,16 +1,16 @@
 import { parseEther } from 'ethers'
 
-import { parseArgs } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../helpers'
 
-import { unlockSchema, type UnlockInput } from './types'
+import { validate } from './validate'
+import type { UnlockInput } from './types'
 
 
 export const commonLogic = async (values: UnlockInput) => {
-  const { percent, vaultAddress, leverageStrategyData } = values
+  const { leverageStrategyData } = values
 
-  parseArgs(unlockSchema, values)
+  const { percent, vaultAddress } = validate(values)
 
   if (percent <= 0) {
     throw new Error(`The "percent" argument must be greater than 0`)

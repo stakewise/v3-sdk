@@ -1,13 +1,9 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { schema, baseInputSchema } from '../../../../helpers'
+import { validateSchema } from './validate'
 
 
-export const setDepositDataRootSchema = z.extend(baseInputSchema, {
-  depositDataRoot: schema.string,
-})
-
-export type SetDepositDataRootInput = StakeWise.CommonParams & z.input<typeof setDepositDataRootSchema>
+export type SetDepositDataRootInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractSetDepositDataRoot {
   (values: StakeWise.ExtractInput<SetDepositDataRootInput>): Promise<StakeWise.TransactionHash>

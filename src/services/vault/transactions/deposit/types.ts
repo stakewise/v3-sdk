@@ -1,15 +1,9 @@
-import * as z from 'zod/mini'
-import { ZeroAddress } from 'ethers'
+import type * as z from 'zod/mini'
 
-import { schema, baseInputSchema } from '../../../../helpers'
+import { validateSchema } from './validate'
 
 
-export const depositSchema = z.extend(baseInputSchema, {
-  assets: schema.bigint,
-  referrerAddress: z._default(schema.ethAddress, ZeroAddress),
-})
-
-export type DepositInput = StakeWise.CommonParams & z.input<typeof depositSchema>
+export type DepositInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractDeposit {
   (values: StakeWise.ExtractInput<DepositInput>): Promise<StakeWise.TransactionHash>

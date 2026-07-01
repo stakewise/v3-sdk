@@ -1,22 +1,17 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { constants, schema, parseArgs } from '../../../../helpers'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
+import { validate, validateSchema } from './validate'
 
-const validateSchema = z.object({
-  ltvPercent: schema.bigint,
-  mintedAssets: schema.bigint,
-  stakedAssets: schema.bigint,
-  vaultAddress: schema.ethAddress,
-})
 
 export type GetMaxMintInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getMaxMint = async (values: GetMaxMintInput) => {
-  const { contracts, ltvPercent, mintedAssets, stakedAssets } = values
+  const { contracts } = values
 
-  parseArgs(validateSchema, values)
+  const { ltvPercent, mintedAssets, stakedAssets } = validate(values)
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {
     return 0n

@@ -1,13 +1,15 @@
-import { apiUrls, parseArgs, baseInputSchema } from '../../../../helpers'
 import graphql from '../../../../graphql'
+import { apiUrls } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
 export type GetStakeBalanceInput = StakeWise.BaseInput
 
 const getStakeBalance = (values: GetStakeBalanceInput) => {
-  const { options, userAddress, vaultAddress } = values
+  const { options } = values
 
-  parseArgs(baseInputSchema, values)
+  const { userAddress, vaultAddress } = validate(values)
 
   return graphql.subgraph.allocator.fetchAllocatorsQuery({
     url: apiUrls.getSubgraphqlUrl(options),

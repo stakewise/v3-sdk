@@ -2,9 +2,11 @@ import { parseEther } from 'ethers'
 
 import getStakeBalance from '../getStakeBalance'
 import getOsTokenConfig from '../getOsTokenConfig'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getMintedBalance from '../../../osToken/requests/getBalance'
-import { constants, parseArgs, baseInputSchema } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
 export type GetMaxWithdrawAmountInput = StakeWise.BaseInput
@@ -14,7 +16,7 @@ const min = parseEther('0.00001')
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   const { contracts } = values
 
-  parseArgs(baseInputSchema, values)
+  validate(values)
 
   const [ config, mint, stake ] = await Promise.all([
     getOsTokenConfig(values),

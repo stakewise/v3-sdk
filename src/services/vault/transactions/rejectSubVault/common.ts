@@ -1,11 +1,11 @@
 import getVault from '../../requests/getVault'
-import { parseArgs } from '../../../../helpers'
 
-import { rejectSubVaultSchema, type RejectSubVaultInput } from './types'
+import { validate } from './validate'
+import type { RejectSubVaultInput } from './types'
 
 
 export const commonLogic = async (values: RejectSubVaultInput) => {
-  parseArgs(rejectSubVaultSchema, values)
+  validate(values)
 
   const { subVaultsRegistry } = await getVault(values)
 

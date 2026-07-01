@@ -1,5 +1,4 @@
 import { vaultMulticall } from '../../../../contracts'
-import { parseArgs, baseInputSchema } from '../../../../helpers'
 import type { VaultMulticallBaseInput } from '../../../../contracts'
 
 import {
@@ -14,6 +13,7 @@ import {
   getValidatorsManagerParams,
 } from '../util'
 
+import { validate } from './validate'
 import type { OperateTransactionInput } from './types'
 
 
@@ -21,10 +21,10 @@ export const commonLogic = async (values: OperateTransactionInput) => {
   const {
     blocklistManager, metadataIpfsHash, admin, feePercent,
     blocklist, whitelist, whitelistManager, feeRecipient,
-    options, contracts, userAddress, vaultAddress, provider, validatorsManager,
+    options, contracts, provider, validatorsManager,
   } = values
 
-  parseArgs(baseInputSchema, values)
+  const { userAddress, vaultAddress } = validate(values)
 
   const isPrivate = Boolean(whitelist?.length || whitelistManager)
   const isBlocklist = Boolean(blocklist?.length || blocklistManager)

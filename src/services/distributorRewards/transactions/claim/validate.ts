@@ -5,7 +5,7 @@ import { schema, parseArgs } from '../../../../helpers'
 
 const stringArray = schema.array(schema.string)
 
-const claimSchema = z.object({
+export const validateSchema = z.object({
   proof: stringArray,
   tokens: stringArray,
   userAddress: schema.ethAddress,
@@ -13,6 +13,6 @@ const claimSchema = z.object({
 })
 
 
-export type ClaimArgs = z.input<typeof claimSchema>
+export type ClaimArgs = z.input<typeof validateSchema>
 
-export const validate = (values: unknown) => parseArgs(claimSchema, values)
+export const validate = (values: unknown) => parseArgs(validateSchema, values)

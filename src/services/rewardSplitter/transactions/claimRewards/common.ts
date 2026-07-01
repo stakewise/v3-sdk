@@ -1,15 +1,15 @@
-import { parseArgs } from '../../../../helpers'
 import { rewardSplitterMulticall } from '../../../../contracts'
 import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
 
+import { validate } from './validate'
+import type { ClaimRewardsInput } from './types'
 import getSharesFromAssets from './getSharesFromAssets'
-import { claimRewardsSchema, type ClaimRewardsInput } from './types'
 
 
 export const commonLogic = async (values: ClaimRewardsInput) => {
-  const { contracts, userAddress, rewardSplitterAddress } = values
+  const { contracts } = values
 
-  parseArgs(claimRewardsSchema, values)
+  const { userAddress, rewardSplitterAddress } = validate(values)
 
   const baseMulticall: RewardSplitterMulticallBaseInput = {
     rewardSplitterContract: contracts.helpers.createRewardSplitter(rewardSplitterAddress),

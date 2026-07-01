@@ -1,5 +1,6 @@
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { parseArgs, baseInputSchema } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
 export type GetOsTokenBalanceInput = StakeWise.BaseInput
@@ -10,9 +11,9 @@ type Output = {
 }
 
 const getBalance = async (values: GetOsTokenBalanceInput) => {
-  const { contracts, vaultAddress, userAddress } = values
+  const { contracts } = values
 
-  parseArgs(baseInputSchema, values)
+  const { vaultAddress, userAddress } = validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)

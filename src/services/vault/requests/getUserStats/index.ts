@@ -1,19 +1,17 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { apiUrls, schema, parseArgs, baseInputSchema, calculateUserStats } from '../../../../helpers'
+import { apiUrls, calculateUserStats } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
+import { validate, validateSchema } from './validate'
 
-const validateSchema = z.extend(baseInputSchema, {
-  daysCount: schema.number,
-})
 
 export type GetUserStatsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getUserStats = (input: GetUserStatsInput) => {
-  const { options, daysCount, userAddress, vaultAddress } = input
+  const { options } = input
 
-  parseArgs(validateSchema, input)
+  const { daysCount, userAddress, vaultAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),

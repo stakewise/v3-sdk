@@ -1,14 +1,16 @@
 import graphql from '../../../../graphql'
-import { apiUrls, parseArgs, baseInputSchema } from '../../../../helpers'
+import { apiUrls } from '../../../../helpers'
 import modifyLeverageStrategyData from '../../helpers/modifyLeverageStrategyData'
+
+import { validate } from './validate'
 
 
 export type GetLeverageStrategyDataInput = StakeWise.BaseInput
 
 const getLeverageStrategyData = (values: GetLeverageStrategyDataInput) => {
-  const { options, userAddress, vaultAddress } = values
+  const { options } = values
 
-  parseArgs(baseInputSchema, values)
+  const { userAddress, vaultAddress } = validate(values)
 
   return graphql.subgraph.boost.fetchLeverageStrategyDataQuery({
     url: apiUrls.getSubgraphqlUrl(options),

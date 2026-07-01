@@ -1,13 +1,9 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { schema, baseInputSchema } from '../../../../helpers'
+import { validateSchema } from './validate'
 
 
-export const withdrawSchema = z.extend(baseInputSchema, {
-  assets: schema.bigint,
-})
-
-export type WithdrawInput = StakeWise.CommonParams & z.input<typeof withdrawSchema>
+export type WithdrawInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractWithdraw {
   (values: StakeWise.ExtractInput<WithdrawInput>): Promise<StakeWise.TransactionHash>

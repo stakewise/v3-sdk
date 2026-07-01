@@ -1,7 +1,9 @@
+import { constants } from '../../../../helpers'
 import getBalance from '../../requests/getBalance'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
-import { constants, parseArgs, baseInputSchema } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
 export type GetBurnAmountForUnstakeInput = StakeWise.BaseInput
@@ -9,7 +11,7 @@ export type GetBurnAmountForUnstakeInput = StakeWise.BaseInput
 const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => {
   const { contracts } = values
 
-  parseArgs(baseInputSchema, values)
+  validate(values)
 
   const [ config, mint ] = await Promise.all([
     getOsTokenConfig(values),

@@ -1,14 +1,10 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { schema, baseInputSchema } from '../../../../helpers'
+import { validateSchema } from './validate'
 import { UnlockEncodeOutput } from './unlockEncode'
 
 
-export const unlockSchema = z.extend(baseInputSchema, {
-  percent: schema.number,
-})
-
-export type UnlockInput = StakeWise.CommonParams & z.input<typeof unlockSchema> & {
+export type UnlockInput = StakeWise.CommonParams & z.input<typeof validateSchema> & {
   leverageStrategyData?: {
     version: number
     isUpgradeRequired: boolean

@@ -1,10 +1,9 @@
-import { parseArgs } from '../../../../helpers'
-
-import { setDepositDataManagerSchema, type SetDepositDataManagerInput } from './types'
+import { validate } from './validate'
+import type { SetDepositDataManagerInput } from './types'
 
 
 export const commonLogic = (values: SetDepositDataManagerInput) => {
-  parseArgs(setDepositDataManagerSchema, values)
+  validate(values)
 
   return values.contracts.base.depositDataRegistry
 }

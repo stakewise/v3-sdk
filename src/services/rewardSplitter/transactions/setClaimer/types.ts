@@ -1,15 +1,9 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { schema } from '../../../../helpers'
+import { validateSchema } from './validate'
 
 
-export const setClaimerSchema = z.object({
-  userAddress: schema.ethAddress,
-  claimerAddress: schema.ethAddress,
-  rewardSplitterAddress: schema.ethAddress,
-})
-
-export type SetClaimerInput = StakeWise.CommonParams & z.input<typeof setClaimerSchema>
+export type SetClaimerInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractSetClaimer {
   (values: StakeWise.ExtractInput<SetClaimerInput>): Promise<StakeWise.TransactionHash>

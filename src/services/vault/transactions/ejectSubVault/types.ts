@@ -1,13 +1,9 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { schema, baseInputSchema } from '../../../../helpers'
+import { validateSchema } from './validate'
 
 
-export const ejectSubVaultSchema = z.extend(baseInputSchema, {
-  subVaultAddress: schema.ethAddress,
-})
-
-export type EjectSubVaultInput = StakeWise.CommonParams & z.input<typeof ejectSubVaultSchema>
+export type EjectSubVaultInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractEjectSubVaultInput {
   (values: StakeWise.ExtractInput<EjectSubVaultInput>): Promise<StakeWise.TransactionHash>

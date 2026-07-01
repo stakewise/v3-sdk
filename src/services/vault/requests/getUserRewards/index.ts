@@ -1,23 +1,17 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
 import {
-  schema,
   apiUrls,
   Network,
   configs,
-  parseArgs,
   MergedReward,
-  baseInputSchema,
   mergeRewardsFiat,
 } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import graphql from '../../../../graphql'
 
+import { validate, validateSchema } from './validate'
 
-const validateSchema = z.extend(baseInputSchema, {
-  dateTo: schema.number,
-  dateFrom: schema.number,
-})
 
 export type GetUserRewardsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
@@ -29,9 +23,9 @@ const calculateLimit = (dateTo: number, dateFrom: number): number => {
 }
 
 const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[]> => {
-  const { options, dateFrom, dateTo, vaultAddress, userAddress } = input
+  const { options } = input
 
-  parseArgs(validateSchema, input)
+  const { dateFrom, dateTo, vaultAddress, userAddress } = validate(input)
 
   const isGnosis = Network.Gnosis === options.network
 

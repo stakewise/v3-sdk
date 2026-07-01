@@ -1,10 +1,11 @@
 import * as z from 'zod/mini'
-import { MaxUint256, ZeroAddress } from 'ethers'
+import { MaxUint256 } from 'ethers'
 
 import Utils from '../../../utils'
+import { validate } from './validate'
 import type { LockInput } from './types'
 import { boostMulticall } from '../../../../contracts'
-import { parseArgs, baseInputSchema, schema } from '../../../../helpers'
+import { parseArgs, schema } from '../../../../helpers'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../helpers'
 
@@ -13,18 +14,10 @@ type CommonLogicInput = LockInput & {
   mockPermitSignature?: boolean
 }
 
-const validateSchema = z.extend(baseInputSchema, {
-  amount: schema.bigint,
-  referrerAddress: z._default(schema.ethAddress, ZeroAddress),
-})
-
 export const commonLogic = async (values: CommonLogicInput) => {
-  const {
-    contracts, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    mockPermitSignature, leverageStrategyData,
-  } = values
+  const { contracts, provider, mockPermitSignature, leverageStrategyData } = values
 
-  parseArgs(validateSchema, values)
+  const { amount, vaultAddress, userAddress, referrerAddress } = validate(values)
 
   if (leverageStrategyData) {
     validateLeverageStrategyData(leverageStrategyData)

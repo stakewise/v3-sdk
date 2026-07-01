@@ -1,12 +1,12 @@
-import { parseArgs, baseInputSchema } from '../../../../helpers'
+import { validate } from './validate'
 
 import type { CreateRewardSplitterInput } from './types'
 
 
 export const commonLogic = async (values: CreateRewardSplitterInput) => {
-  const { contracts, userAddress, provider } = values
+  const { contracts, provider } = values
 
-  parseArgs(baseInputSchema, values)
+  const { userAddress } = validate(values)
 
   const signer = await provider.getSigner(userAddress)
 

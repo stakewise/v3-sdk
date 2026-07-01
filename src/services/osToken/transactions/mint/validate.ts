@@ -4,12 +4,12 @@ import { ZeroAddress } from 'ethers'
 import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const mintSchema = z.extend(baseInputSchema, {
+export const validateSchema = z.extend(baseInputSchema, {
   shares: schema.bigint,
   referrerAddress: z._default(schema.ethAddress, ZeroAddress),
 })
 
 
-export type MintArgs = z.input<typeof mintSchema>
+export type MintArgs = z.input<typeof validateSchema>
 
-export const validate = (values: unknown) => parseArgs(mintSchema, values)
+export const validate = (values: unknown) => parseArgs(validateSchema, values)

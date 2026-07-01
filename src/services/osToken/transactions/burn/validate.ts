@@ -3,11 +3,11 @@ import * as z from 'zod/mini'
 import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-const burnSchema = z.extend(baseInputSchema, {
+export const validateSchema = z.extend(baseInputSchema, {
   shares: schema.bigint,
 })
 
 
-export type BurnArgs = z.input<typeof burnSchema>
+export type BurnArgs = z.input<typeof validateSchema>
 
-export const validate = (values: unknown) => parseArgs(burnSchema, values)
+export const validate = (values: unknown) => parseArgs(validateSchema, values)

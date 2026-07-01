@@ -1,8 +1,10 @@
 import getBalance from '../getBalance'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getStakeBalance from '../../../vault/requests/getStakeBalance'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
-import { constants, parseArgs, baseInputSchema } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
 export type GetMaxMintAmountInput = StakeWise.BaseInput
@@ -10,7 +12,7 @@ export type GetMaxMintAmountInput = StakeWise.BaseInput
 const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
   const { contracts } = values
 
-  parseArgs(baseInputSchema, values)
+  validate(values)
 
   const [ config, stake, mint ] = await Promise.all([
     getOsTokenConfig(values),

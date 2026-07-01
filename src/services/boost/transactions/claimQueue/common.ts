@@ -1,25 +1,15 @@
-import * as z from 'zod/mini'
-
-import { parseArgs, baseInputSchema, schema } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 
 import getLeverageStrategyData from '../../requests/getLeverageStrategyData'
 
+import { validate } from './validate'
 import type { ClaimQueueInput } from './types'
 
 
-const validateSchema = z.extend(baseInputSchema, {
-  position: z.object({
-    timestamp: schema.string,
-    positionTicket: schema.string,
-  }),
-  leverageStrategyVersion: z.optional(schema.number),
-})
-
 export const commonLogic = async (values: ClaimQueueInput) => {
-  const { contracts, position, vaultAddress, userAddress, leverageStrategyVersion } = values
+  const { contracts } = values
 
-  parseArgs(validateSchema, values)
+  const { position, vaultAddress, userAddress, leverageStrategyVersion } = validate(values)
 
   if (leverageStrategyVersion) {
     const isValidLeverageStrategyVersion = [ 1, 2 ].includes(leverageStrategyVersion as number)

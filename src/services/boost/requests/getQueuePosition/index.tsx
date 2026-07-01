@@ -1,6 +1,8 @@
 import graphql from '../../../../graphql'
+import { apiUrls } from '../../../../helpers'
+
+import { validate } from './validate'
 import modifyQueuePosition from './modifyQueuePosition'
-import { apiUrls, parseArgs, baseInputSchema } from '../../../../helpers'
 import type { ParseBoostQueueOutput } from './modifyQueuePosition'
 
 
@@ -9,9 +11,9 @@ export type GetQueuePositionInput = StakeWise.BaseInput
 export type Output = ParseBoostQueueOutput
 
 const getQueuePosition = (input: GetQueuePositionInput) => {
-  const { options, vaultAddress, userAddress } = input
+  const { options } = input
 
-  parseArgs(baseInputSchema, input)
+  const { vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.boost.fetchBoostQueuePositionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),

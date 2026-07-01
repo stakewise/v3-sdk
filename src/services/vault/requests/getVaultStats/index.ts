@@ -1,21 +1,18 @@
-import * as z from 'zod/mini'
+import type * as z from 'zod/mini'
 
-import { apiUrls, schema, parseArgs } from '../../../../helpers'
-import modifyVaultStats from './modifyVaultStats'
+import { apiUrls } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
+import modifyVaultStats from './modifyVaultStats'
+import { validate, validateSchema } from './validate'
 
-const validateSchema = z.object({
-  daysCount: schema.number,
-  vaultAddress: schema.ethAddressLower,
-})
 
 export type GetVaultStatsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getVaultStats = (input: GetVaultStatsInput) => {
   const { options, daysCount } = input
 
-  const { vaultAddress } = parseArgs(validateSchema, input)
+  const { vaultAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchVaultStatsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
