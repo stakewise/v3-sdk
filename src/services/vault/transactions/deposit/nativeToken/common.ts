@@ -1,5 +1,3 @@
-import { ZeroAddress } from 'ethers'
-
 import { validate } from '../validate'
 import type { DepositInput } from '../types'
 import getHarvestArgs, { HarvestArgs } from '../../../../../contracts/multicall/util/getHarvestArgs'
@@ -10,9 +8,9 @@ type BaseParams = [ string, string, PayableOverrides ]
 type UpdateStateParams = [ string, string, HarvestArgs, PayableOverrides ]
 
 export const commonLogic = async (values: DepositInput) => {
-  const { contracts, userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
+  const { contracts } = values
 
-  validate(values)
+  const { userAddress, vaultAddress, referrerAddress, assets } = validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
 

@@ -1,13 +1,17 @@
 import graphql from '../../../../graphql'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { validateArgs, apiUrls, Network, constants, BorrowStatus } from '../../../../helpers'
+import {
+  apiUrls,
+  Network,
+  constants,
+  BorrowStatus,
+} from '../../../../helpers'
 import modifyLeverageStrategyData, { Output as LeverageStrategyData } from '../../helpers/modifyLeverageStrategyData'
 
+import { validate } from './validate'
 
-export type GetBoostDataInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+
+export type GetBoostDataInput = StakeWise.BaseInput
 
 type Output = {
   shares: bigint
@@ -23,9 +27,9 @@ type Output = {
 }
 
 const getData = async (values: GetBoostDataInput) => {
-  const { contracts, options, vaultAddress, userAddress } = values
+  const { contracts, options } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  const { vaultAddress, userAddress } = validate(values)
 
   const boost: Output = {
     shares: 0n,

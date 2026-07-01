@@ -5,7 +5,7 @@ interface TransactionLike {
 }
 
 /**
- * @description Prevents transaction invocation if provider is not passed to the SDK instance
+ * Prevents transaction invocation if provider is not passed to the SDK instance
 */
 const transactionWrapper = <T extends TransactionLike>(params: StakeWise.CommonParams, method: T): T => {
   const isReadOnlyProvider = !params.options.provider

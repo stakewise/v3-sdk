@@ -1,18 +1,17 @@
+import { constants } from '../../../../helpers'
 import getBalance from '../../requests/getBalance'
-import { constants, validateArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
+import { validate } from './validate'
 
-export type GetBurnAmountForUnstakeInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+
+export type GetBurnAmountForUnstakeInput = StakeWise.BaseInput
 
 const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => {
-  const { contracts, vaultAddress } = values
+  const { contracts } = values
 
-  validateArgs.address({ vaultAddress })
+  validate(values)
 
   const [ config, mint ] = await Promise.all([
     getOsTokenConfig(values),

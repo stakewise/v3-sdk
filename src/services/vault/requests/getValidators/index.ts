@@ -1,28 +1,27 @@
-import type { ValidatorsQueryPayload, ValidatorsQueryVariables } from '../../../../graphql/backend/vault'
-import { apiUrls, validateArgs } from '../../../../helpers'
-import type { ModifiedValidators } from './types'
-import modifyValidators from './modifyValidators'
+import type * as z from 'zod/mini'
+
+import type { ValidatorsQueryPayload } from '../../../../graphql/backend/vault'
+import { apiUrls } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
+import type { ModifiedValidators } from './types'
+import modifyValidators from './modifyValidators'
+import { validate, validateSchema } from './validate'
 
-export type GetValidatorsInput = StakeWise.CommonParams & {
-  vaultAddress: ValidatorsQueryVariables['vaultAddress']
-  limit: ValidatorsQueryVariables['first']
-  skip: ValidatorsQueryVariables['skip']
-}
+
+export type GetValidatorsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getValidators = (input: GetValidatorsInput) => {
-  const { options, skip, limit, vaultAddress } = input
+  const { options, skip, limit } = input
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.number({ skip, limit })
+  const { vaultAddress } = validate(input)
 
   return graphql.backend.vault.fetchValidatorsQuery<ModifiedValidators>({
     url: apiUrls.getBackendUrl(options),
     variables: {
-      vaultAddress: vaultAddress.toLowerCase(),
       skip,
       first: limit,
+      vaultAddress,
     },
     modifyResult: (data: ValidatorsQueryPayload) => modifyValidators({ data, network: options.network }),
   })

@@ -18,68 +18,68 @@ class VaultTransactions {
   readonly params: StakeWise.CommonParams
 
   /**
-   * @description Deposit (stake) in a vault.
+   * Deposit (stake) in a vault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/deposit
-  */
+   */
   public deposit: ExtractDeposit
 
   /**
-   * @description Withdrawal of funds from a vault.
+   * Withdrawal of funds from a vault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/withdraw
-  */
+   */
   public withdraw: ExtractWithdraw
 
   /**
-   * @description Create vault.
+   * Create vault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/create
-  */
+   */
   public create: ExtractCreateVault
 
   /**
-   * @description Updates the vault by authorized personnel such as the vault admin, whitelist manager,
+   * Updates the vault by authorized personnel such as the vault admin, whitelist manager,
    * blocklist manager, validators manager, or deposit-data manager.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/operate
-  */
+   */
   public operate: ExtractOperate
 
   /**
-   * @description Claim user's exit queue.
+   * Claim user's exit queue.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/claimexitqueue
-  */
+   */
   public claimExitQueue: ExtractClaimExitQueue
 
   /**
-   * @description Adding root validators to vault. Supports only vault v2.
+   * Adding root validators to vault. Supports only vault v2.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/setdepositdataroot
-  */
+   */
   public setDepositDataRoot: ExtractSetDepositDataRoot
 
   /**
-   * @description Adding deposit data manager. Supports only vault v2.
+   * Adding deposit data manager. Supports only vault v2.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/setdepositdatamanager
-  */
+   */
   public setDepositDataManager: ExtractSetDepositDataManager
 
   /**
-   * @description Adding new sub-vault. Supports only in metaVault.
+   * Adding new sub-vault. Supports only in metaVault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/addsubvault
    */
   public addSubVault: ExtractAddSubVaultInput
 
   /**
-   * @description Rejecting a sub-vault. Supports only in metaVault.
+   * Rejecting a sub-vault. Supports only in metaVault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/rejectsubvault
    */
   public rejectSubVault: ExtractRejectSubVaultInput
 
   /**
-   * @description Ejecting a sub-vault. Supports only in metaVault.
+   * Ejecting a sub-vault. Supports only in metaVault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/ejectsubvault
    */
   public ejectSubVault: ExtractEjectSubVaultInput
 
   /**
-   * @description Update a vault state.
+   * Update a vault state.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/updatestate
    */
   public updateState: ExtractUpdateStateInput
@@ -109,8 +109,8 @@ class VaultTransactions {
   }
 
   /**
-   * @description Assistant function for custom multi-query requests to the vault.
-  */
+   * Assistant function for custom multi-query requests to the vault.
+   */
   public multicall<T>(values: StakeWise.ExtractInput<VaultMulticallInput>) {
     return multicall<T>({ ...this.params, ...values })
   }

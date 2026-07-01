@@ -1,7 +1,9 @@
-export type ClaimRewardsInput = StakeWise.BaseInput & {
-  assets: bigint
-  rewardSplitterAddress: string
-}
+import type * as z from 'zod/mini'
+
+import { validateSchema } from './validate'
+
+
+export type ClaimRewardsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractClaimRewards {
   (values: StakeWise.ExtractInput<ClaimRewardsInput>): Promise<StakeWise.TransactionHash>

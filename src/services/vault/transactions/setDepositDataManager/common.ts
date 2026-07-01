@@ -1,11 +1,9 @@
-import { SetDepositDataManagerInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { validate } from './validate'
+import type { SetDepositDataManagerInput } from './types'
 
 
 export const commonLogic = (values: SetDepositDataManagerInput) => {
-  const { vaultAddress, managerAddress, userAddress } = values
-
-  validateArgs.address({ vaultAddress, userAddress, managerAddress })
+  validate(values)
 
   return values.contracts.base.depositDataRegistry
 }

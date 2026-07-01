@@ -1,3 +1,4 @@
+import type * as z from 'zod/mini'
 import type { BrowserProvider, JsonRpcProvider, FallbackProvider, JsonRpcSigner, TransactionResponse } from 'ethers'
 
 import type Vault from '../services/vault'
@@ -7,7 +8,7 @@ import type OsToken from '../services/osToken'
 import type RewardSplitter from '../services/rewardSplitter'
 import type DistributorRewards from '../services/distributorRewards'
 
-import { Network, configs } from '../helpers'
+import { Network, configs, baseInputSchema } from '../helpers'
 import { createContracts } from '../contracts'
 
 import type {
@@ -83,10 +84,7 @@ declare global {
       estimateGas(values: StakeWise.ExtractInput<Parameters<T['estimateGas']>[0]>): ReturnType<T['estimateGas']>
     }
 
-    type BaseInput = StakeWise.CommonParams & {
-      userAddress: string
-      vaultAddress: string
-    }
+    type BaseInput = StakeWise.CommonParams & z.input<typeof baseInputSchema>
 
     // FallbackProvider has no base methods unlike JsonRpcProvider
     type CustomFallbackProvider = FallbackProvider & {

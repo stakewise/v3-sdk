@@ -1,109 +1,111 @@
+import * as z from 'zod/mini'
 import { MaxUint256 } from 'ethers'
 
-import { CreateVaultCommonInput } from '../types'
-import { VaultType, constants } from '../../../../../helpers'
+import { CreateVaultTransactionInput } from '../types'
+import { VaultType, constants, parseArgs, schema } from '../../../../../helpers'
 
 
-const capacity = (value: bigint) => {
-  if (value < constants.blockchain.amount32) {
-    throw new Error(`The "capacity" argument must be at least ${constants.blockchain.amount32}`)
-  }
-  if (value > MaxUint256) {
-    throw new Error(`The "capacity" argument must be at most ${MaxUint256}`)
-  }
-}
-
-const mevEscrow = (value: unknown) => {
-  if (typeof value !== 'boolean') {
-    throw new Error(`The "isOwnMevEscrow" argument must be of boolean type`)
-  }
-}
-
-const vaultType = (value: VaultType) => {
-  const vaultTypes = Object.values(VaultType)
-  const isValidType = vaultTypes.includes(value)
-
-  if (!isValidType) {
-    throw new Error(`The "type" argument must be one of the following: ${vaultTypes.join(', ')}`)
-  }
-}
-
-const vaultToken = (vaultToken: CreateVaultCommonInput['vaultToken']) => {
-  if (typeof vaultToken !== 'object') {
-    throw new Error(`The "vaultToken" argument must be an object`)
-  }
-
-  const missingParams = Object.keys(vaultToken)
-    .filter((key) => typeof vaultToken[key as keyof typeof vaultToken] !== 'string')
-
-  if (missingParams.length) {
-    const args = missingParams.map((key) => `"vaultToken.${key}"`).join(', ')
-
-    throw new Error(`The ${args} ${missingParams.length === 1 ? 'argument' : 'arguments'} must be a string`)
-  }
-
-  const emptyParams = Object.keys(vaultToken)
-    .filter((key) => !vaultToken[key as keyof typeof vaultToken])
-
-  if (emptyParams.length) {
-    const args = emptyParams.map((key) => `"vaultToken.${key}"`).join(', ')
-
-    throw new Error(`The ${args} ${missingParams.length === 1 ? 'argument' : 'arguments'} must be not empty string`)
-  }
-}
-
-const keysManagerFee = (value: number) => {
-  if (value < 0) {
-    throw new Error(`The "keysManagerFee" argument must be at least 0`)
-  }
-  if (value > 100) {
-    throw new Error(`The "keysManagerFee" argument must be at most 100`)
-  }
-
-  const decimals = value.toString().split('.')[1]?.length
-
-  if (decimals > 2) {
-    throw new Error(`The "keysManagerFee" argument must have at most two decimal places`)
-  }
-}
-
-type GnosisMetaVaultInput = Pick<CreateVaultCommonInput, 'vaultToken' | 'isOwnMevEscrow' | 'type'> & {
+type ValidateInput = CreateVaultTransactionInput & {
   isMainnet: boolean
 }
 
-const metaVault = (values: GnosisMetaVaultInput) => {
-  const { type, vaultToken, isMainnet, isOwnMevEscrow } = values
+const vaultTypes = Object.values(VaultType)
+const vaultTypeError = `must be one of the following: ${vaultTypes.join(', ')}`
 
-  const isMetaVault = [
-    VaultType.MetaVault,
-    VaultType.PrivateMetaVault,
-  ].includes(type as VaultType)
+const createVaultSchema = z.object({
+  isMainnet: schema.boolean,
+  userAddress: schema.ethAddress,
+  capacity: z.optional(schema.bigint),
+  vaultToken: z.optional(z.unknown()),
+  keysManagerFee: z.optional(schema.number),
+  isOwnMevEscrow: z.optional(schema.boolean),
+  type: z.enum(VaultType, { error: vaultTypeError }),
+}).check((ctx) => {
+  const values = ctx.value
+  const { capacity, keysManagerFee, vaultToken, isMainnet, isOwnMevEscrow } = values
 
-  if (isMetaVault) {
-    return
-  }
+  const { type } = values
+  const isMetaVault = [ VaultType.MetaVault, VaultType.PrivateMetaVault ].includes(type)
 
-  if (isOwnMevEscrow) {
-    throw new Error('MetaVault does not support the "isOwnMevEscrow" parameter.')
-  }
+  const addIssue = (message: string, field?: string) => ctx.issues.push({
+    code: 'custom',
+    message,
+    input: values,
+    path: field ? [ field ] : undefined,
+  })
 
-  if (!isMainnet) {
-    if (vaultToken) {
-      throw new Error('MetaVault does not support the ERC20 token on gnosis chain.')
+  if (!isMetaVault) {
+    if (isOwnMevEscrow) {
+      addIssue('MetaVault does not support the "isOwnMevEscrow" parameter.')
     }
 
-    if (type === VaultType.PrivateMetaVault) {
-      throw new Error('Gnosis chain does not support private MetaVault.')
+    if (!isMainnet) {
+      if (vaultToken) {
+        addIssue('MetaVault does not support the ERC20 token on gnosis chain.')
+      }
+
+      if (type === VaultType.PrivateMetaVault) {
+        addIssue('Gnosis chain does not support private MetaVault.')
+      }
     }
   }
+
+  if (vaultToken) {
+    if (typeof vaultToken !== 'object') {
+      addIssue('must be an object', 'vaultToken')
+    }
+    else {
+      const token = vaultToken as Record<string, unknown>
+
+      const missingParams = Object.keys(token).filter((key) => typeof token[key] !== 'string')
+      const argWord = missingParams.length === 1 ? 'argument' : 'arguments'
+
+      if (missingParams.length) {
+        const args = missingParams.map((key) => `"vaultToken.${key}"`).join(', ')
+
+        addIssue(`The ${args} ${argWord} must be a string`)
+      }
+
+      const emptyParams = Object.keys(token).filter((key) => !token[key])
+
+      if (emptyParams.length) {
+        const args = emptyParams.map((key) => `"vaultToken.${key}"`).join(', ')
+
+        addIssue(`The ${args} ${argWord} must be not empty string`)
+      }
+    }
+  }
+
+  if (capacity) {
+    if (capacity < constants.blockchain.amount32) {
+      addIssue(`must be at least ${constants.blockchain.amount32}`, 'capacity')
+    }
+
+    if (capacity > MaxUint256) {
+      addIssue(`must be at most ${MaxUint256}`, 'capacity')
+    }
+  }
+
+  if (keysManagerFee) {
+    if (keysManagerFee < 0) {
+      addIssue('must be at least 0', 'keysManagerFee')
+    }
+
+    if (keysManagerFee > 100) {
+      addIssue('must be at most 100', 'keysManagerFee')
+    }
+
+    const decimals = keysManagerFee.toString().split('.')[1]?.length
+
+    if (decimals && decimals > 2) {
+      addIssue('must have at most two decimal places', 'keysManagerFee')
+    }
+  }
+})
+
+const validateCreateVaultArgs = (values: ValidateInput) => {
+  parseArgs(createVaultSchema, values)
 }
 
 
-export default {
-  capacity,
-  metaVault,
-  mevEscrow,
-  vaultType,
-  vaultToken,
-  keysManagerFee,
-}
+export default validateCreateVaultArgs

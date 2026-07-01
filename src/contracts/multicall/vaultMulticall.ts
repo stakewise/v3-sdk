@@ -38,7 +38,7 @@ const harvestCheckMethods = [
 ]
 
 /**
- * @description This method will automatically add the execution of the updateState method to the vault,
+ * This method will automatically add the execution of the updateState method to the vault,
  * __but this method must be added to the whitelist__ inside the vaultMulticall method (harvestCheckMethods)
 */
 const vaultMulticall = async <T extends unknown>(values: VaultMulticallInput): Promise<T> => {

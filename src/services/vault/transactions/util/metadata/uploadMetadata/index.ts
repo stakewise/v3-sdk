@@ -1,5 +1,7 @@
+import * as z from 'zod/mini'
+
 import graphql from '../../../../../../graphql'
-import { apiUrls, validateArgs } from '../../../../../../helpers'
+import { apiUrls, schema, parseArgs } from '../../../../../../helpers'
 
 
 export type UploadMetadataInput = {
@@ -7,6 +9,12 @@ export type UploadMetadataInput = {
   displayName?: string
   description?: string
 }
+
+const validateSchema = z.object({
+  image: schema.image,
+  displayName: schema.maxLength(30),
+  description: schema.maxLength(1000),
+})
 
 type Input = UploadMetadataInput & StakeWise.CommonParams
 
@@ -24,14 +32,7 @@ const uploadMetadata = async (values: Input) => {
 
   const { image = '', displayName = '', description = '', options } = values
 
-  validateArgs.string({ image, displayName, description })
-
-  validateArgs.image(image)
-
-  validateArgs.maxLength({
-    displayName: { value: displayName, length: 30 },
-    description: { value: description, length: 1000 },
-  })
+  parseArgs(validateSchema, { image, displayName, description })
 
   if (!image && !displayName && !description) {
     return ''

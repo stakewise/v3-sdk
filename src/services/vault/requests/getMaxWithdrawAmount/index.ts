@@ -1,22 +1,22 @@
 import { parseEther } from 'ethers'
+
 import getStakeBalance from '../getStakeBalance'
 import getOsTokenConfig from '../getOsTokenConfig'
-import { constants, validateArgs } from '../../../../helpers'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getMintedBalance from '../../../osToken/requests/getBalance'
 
+import { validate } from './validate'
 
-export type GetMaxWithdrawAmountInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+
+export type GetMaxWithdrawAmountInput = StakeWise.BaseInput
 
 const min = parseEther('0.00001')
 
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
-  const { contracts, vaultAddress } = values
+  const { contracts } = values
 
-  validateArgs.address({ vaultAddress })
+  validate(values)
 
   const [ config, mint, stake ] = await Promise.all([
     getOsTokenConfig(values),

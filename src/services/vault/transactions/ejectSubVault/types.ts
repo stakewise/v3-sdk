@@ -1,8 +1,9 @@
-export type EjectSubVaultInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-  subVaultAddress: string
-}
+import type * as z from 'zod/mini'
+
+import { validateSchema } from './validate'
+
+
+export type EjectSubVaultInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractEjectSubVaultInput {
   (values: StakeWise.ExtractInput<EjectSubVaultInput>): Promise<StakeWise.TransactionHash>

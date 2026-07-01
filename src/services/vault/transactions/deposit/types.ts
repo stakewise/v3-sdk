@@ -1,9 +1,9 @@
-export type DepositInput = StakeWise.CommonParams & {
-  assets: bigint
-  userAddress: string
-  vaultAddress: string
-  referrerAddress?: string
-}
+import type * as z from 'zod/mini'
+
+import { validateSchema } from './validate'
+
+
+export type DepositInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractDeposit {
   (values: StakeWise.ExtractInput<DepositInput>): Promise<StakeWise.TransactionHash>

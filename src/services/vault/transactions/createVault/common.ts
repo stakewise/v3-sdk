@@ -1,17 +1,16 @@
-import type { CreateVaultTransactionInput } from './types'
 import getVaultFactory from '../../requests/getVaultFactory'
-import { validateCreateVaultArgs, getEncodeBytes } from './helpers'
+import { constants, Network, VaultType } from '../../../../helpers'
 import { PayableOverrides } from '../../../../contracts/types/common'
-import { constants, Network, validateArgs, VaultType } from '../../../../helpers'
+
+
+import type { CreateVaultTransactionInput } from './types'
+import { validateCreateVaultArgs, getEncodeBytes } from './helpers'
 
 
 export const commonLogic = async (values: CreateVaultTransactionInput) => {
   const {
     options,
-    capacity,
     vaultToken,
-    userAddress,
-    keysManagerFee,
     isOwnMevEscrow = false,
     type = VaultType.Default,
   } = values
@@ -28,26 +27,7 @@ export const commonLogic = async (values: CreateVaultTransactionInput) => {
     : StakeWise.ABI.VaultFactory
 
 
-  validateArgs.address({ userAddress })
-  validateCreateVaultArgs.vaultType(type)
-  validateCreateVaultArgs.metaVault({ type, vaultToken, isMainnet, isOwnMevEscrow })
-
-  if (!isMetaVault) {
-    validateCreateVaultArgs.mevEscrow(isOwnMevEscrow)
-  }
-
-  if (vaultToken) {
-    validateCreateVaultArgs.vaultToken(vaultToken)
-  }
-
-  if (capacity) {
-    validateArgs.bigint({ capacity })
-    validateCreateVaultArgs.capacity(capacity)
-  }
-
-  if (keysManagerFee) {
-    validateCreateVaultArgs.keysManagerFee(keysManagerFee)
-  }
+  validateCreateVaultArgs({ ...values, type, isOwnMevEscrow, isMainnet })
 
   const encodedParams = getEncodeBytes({ ...values, isMetaVault })
 

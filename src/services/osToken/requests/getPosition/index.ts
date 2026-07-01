@@ -1,14 +1,12 @@
+import type * as z from 'zod/mini'
+
 import getHealthFactor from '../../helpers/getHealthFactor'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import { validateArgs } from '../../../../helpers'
+
+import { validate, validateSchema } from './validate'
 
 
-export type GetOsTokenPositionInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-  stakedAssets: bigint
-  liqThresholdPercent: bigint
-}
+export type GetOsTokenPositionInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 type Output = {
   minted: {
@@ -20,10 +18,9 @@ type Output = {
 }
 
 const getPosition = async (values: GetOsTokenPositionInput) => {
-  const { contracts, vaultAddress, userAddress, stakedAssets, liqThresholdPercent } = values
+  const { contracts } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.bigint({ stakedAssets, liqThresholdPercent })
+  const { vaultAddress, userAddress, stakedAssets, liqThresholdPercent } = validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const mintedShares = await vaultContract.osTokenPositions(userAddress)

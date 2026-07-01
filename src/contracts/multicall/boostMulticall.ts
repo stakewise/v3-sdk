@@ -29,7 +29,7 @@ const harvestCheckMethods = [
 ]
 
 /**
- * @description This method will automatically add the execution of the updateState method to the boost,
+ * This method will automatically add the execution of the updateState method to the boost,
  * __but this method must be added to the whitelist__ inside the boostMulticall method (harvestCheckMethods)
  */
 const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): Promise<T> => {
