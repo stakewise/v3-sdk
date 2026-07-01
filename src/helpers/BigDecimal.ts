@@ -5,7 +5,7 @@ type Argument = bigint | string | number | BigDecimal
 
 /**
  * @private
- * @description This class can be modified without maintaining backward compatibility.
+ * This class can be modified without maintaining backward compatibility.
  */
 class BigDecimal {
   #value: BigDecimals
