@@ -1,30 +1,26 @@
+import type * as z from 'zod/mini'
+
 import graphql from '../../../../graphql'
-import { apiUrls, validateArgs } from '../../../../helpers'
+import { apiUrls } from '../../../../helpers'
+
 import modifyExitRequests from './modifyExitRequests'
+import { validate, validateSchema } from './validate'
 
 
-export type GetExitQueuePositionsInput = StakeWise.CommonParams & {
-  vaultAddress: string
-  userAddress: string
-  isClaimed?: boolean
-}
+export type GetExitQueuePositionsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getExitQueuePositions = (input: GetExitQueuePositionsInput) => {
-  const { options, vaultAddress, userAddress, isClaimed } = input
+  const { options } = input
 
-  validateArgs.address({ vaultAddress, userAddress })
-
-  if (typeof isClaimed !== 'undefined') {
-    validateArgs.boolean({ isClaimed })
-  }
+  const { isClaimed, vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.exitQueue.fetchExitQueueQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where: {
+        isClaimed,
         vault: vaultAddress.toLowerCase(),
         receiver: userAddress.toLowerCase(),
-        isClaimed,
       },
     },
     modifyResult: modifyExitRequests,

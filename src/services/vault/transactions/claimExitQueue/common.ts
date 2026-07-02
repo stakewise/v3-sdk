@@ -1,14 +1,26 @@
-import { validateArgs } from '../../../../helpers'
-import type { ClaimExitQueueInput } from './types'
+import * as z from 'zod/mini'
+
 import { vaultMulticall } from '../../../../contracts'
+import { parseArgs, schema } from '../../../../helpers'
 import type { VaultMulticallBaseInput } from '../../../../contracts'
 
+import type { ClaimExitQueueInput } from './types'
+
+
+const positionsSchema = z.object({
+  positions: schema.array(),
+})
+
+const positionItemSchema = z.object({
+  exitQueueIndex: schema.string,
+  positionTicket: schema.string,
+})
 
 const validatePositions = (positions: ClaimExitQueueInput['positions']) => {
-  validateArgs.array({ positions })
+  parseArgs(positionsSchema, { positions })
 
-  positions.forEach(({ positionTicket, exitQueueIndex }) => {
-    validateArgs.string({ exitQueueIndex, positionTicket })
+  positions.forEach((position) => {
+    parseArgs(positionItemSchema, position)
   })
 }
 

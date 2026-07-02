@@ -1,20 +1,18 @@
-import { validateArgs } from '../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs } from '../../../helpers'
 
 
-type LeverageStrategyData = {
-  version: number
-  isUpgradeRequired: boolean
-}
+const validateSchema = z.object({
+  leverageStrategyData: z.object({
+    version: schema.number,
+    isUpgradeRequired: schema.boolean,
+  }),
+})
 
 const validateLeverageStrategyData = (leverageStrategyData?: unknown) => {
   if (leverageStrategyData) {
-    validateArgs.object({ leverageStrategyData })
-    validateArgs.number({
-      'leverageStrategyData.version': (leverageStrategyData as LeverageStrategyData).version,
-    })
-    validateArgs.boolean({
-      'leverageStrategyData.isUpgradeRequired': (leverageStrategyData as LeverageStrategyData).isUpgradeRequired,
-    })
+    parseArgs(validateSchema, { leverageStrategyData })
   }
 }
 

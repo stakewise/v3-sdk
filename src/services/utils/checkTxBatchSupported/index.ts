@@ -1,4 +1,6 @@
-import { validateArgs } from '../../../helpers'
+import * as z from 'zod/mini'
+
+import { parseArgs, schema } from '../../../helpers'
 
 
 export type CheckTxBatchSupportedInput = StakeWise.CommonParams & {
@@ -8,7 +10,7 @@ export type CheckTxBatchSupportedInput = StakeWise.CommonParams & {
 export const checkTxBatchSupported = async (values: CheckTxBatchSupportedInput): Promise<boolean> => {
   const { provider, options, userAddress } = values
 
-  validateArgs.address({ userAddress })
+  parseArgs(z.object({ userAddress: schema.ethAddress }), { userAddress })
 
   const chainIdHex = `0x${options.network.toString(16)}`
 

@@ -18,70 +18,70 @@ class Utils {
   }
 
   /**
-   * @description Returns the USD, EUR, GBP, CNY, JPY, KRW, AUD, SWISE exchange rates for the current network asset
+   * Returns the USD, EUR, GBP, CNY, JPY, KRW, AUD, SWISE exchange rates for the current network asset
    * @see https://docs.stakewise.io/sdk/api/utils/getfiatrates
-  */
+   */
   public getFiatRates() {
     return getFiatRates(this.params)
   }
 
   /**
-   * @description TVL statistics, number of users, rewards earned
+   * TVL statistics, number of users, rewards earned
    * @see https://docs.stakewise.io/sdk/api/utils/getstakewisestats
-  */
+   */
   public getStakewiseStats() {
     return getStakewiseStats(this.params)
   }
 
   /**
-   * @description Retrieving a transaction to verify that the data went into the subgraph after the transaction
+   * Retrieving a transaction to verify that the data went into the subgraph after the transaction
    * @see https://docs.stakewise.io/sdk/api/utils/gettransactions
-  */
+   */
   public getTransactions(values: StakeWise.ExtractInput<GetTransactionsInput>) {
     return getTransactions({ ...this.params, ...values })
   }
 
   /**
-   * @description Polls the subgraph until a transaction with the given hash is indexed. Required after every write before refetching reads.
+   * Polls the subgraph until a transaction with the given hash is indexed. Required after every write before refetching reads.
    * @see https://docs.stakewise.io/sdk/api/utils/waitforsubgraph
-  */
+   */
   public waitForSubgraph(values: StakeWise.ExtractInput<WaitForSubgraphInput>) {
     return waitForSubgraph({ ...this.params, ...values })
   }
 
   /**
-   * @description Get fiat data by day
+   * Get fiat data by day
    * @see https://docs.stakewise.io/sdk/api/utils/getfiatratesbyday
-  */
+   */
   public getFiatRatesByDay(values: StakeWise.ExtractInput<GetFiatRatesByDayInput>) {
     return getFiatRatesByDay({ ...this.params, ...values })
   }
 
   /**
-   * @description Get permit signature (used in leverage staking).
+   * Get permit signature (used in leverage staking).
    * @see https://docs.stakewise.io/sdk/api/utils/getpermitsignature
-  */
+   */
   public getPermitSignature(values: StakeWise.ExtractInput<GetPermitSignatureInput>) {
     return getPermitSignature({ ...this.params, ...values })
   }
 
   /**
-   * @description Estimate gas for a custom vault multicall (auto-injects `updateState` when needed).
-  */
+   * Estimate gas for a custom vault multicall (auto-injects `updateState` when needed).
+   */
   public getVaultMulticallGas(values: StakeWise.ExtractInput<GetVaultMulticallGas>) {
     return getVaultMulticallGas({ ...this.params, ...values })
   }
 
   /**
-   * @description Build `{ skip, limit, orderBy, orderDirection }` variables for paginated subgraph list queries.
-  */
+   * Build `{ skip, limit, orderBy, orderDirection }` variables for paginated subgraph list queries.
+   */
   public getListVariables<T>(values: StakeWise.ExtractInput<GetListVariablesInput>) {
     return getListVariables<T>({ ...this.params, ...values })
   }
 
   /**
-   * @description Get encoded calldata (`{ data, to }`) for a custom vault multicall — for custodial signing flows.
-  */
+   * Get encoded calldata (`{ data, to }`) for a custom vault multicall — for custodial signing flows.
+   */
   public getVaultMulticallEncode(values: StakeWise.ExtractInput<GetVaultMulticallEncodeInput>) {
     return getVaultMulticallEncode({ ...this.params, ...values })
   }

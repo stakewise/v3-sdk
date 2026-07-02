@@ -1,24 +1,20 @@
 import getBalance from '../getBalance'
-import { constants, validateArgs } from '../../../../helpers'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getStakeBalance from '../../../vault/requests/getStakeBalance'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
+import { validate } from './validate'
 
-export type GetMaxMintAmountInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
+
+export type GetMaxMintAmountInput = StakeWise.BaseInput & {
   additionalStakedAssets?: bigint
 }
 
 const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
-  const { contracts, vaultAddress, userAddress, additionalStakedAssets } = values
+  const { contracts, additionalStakedAssets } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
-
-  if (additionalStakedAssets !== undefined) {
-    validateArgs.bigint({ additionalStakedAssets })
-  }
+  validate(values)
 
   const [ config, stake, mint ] = await Promise.all([
     getOsTokenConfig(values),

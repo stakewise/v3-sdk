@@ -1,12 +1,11 @@
-import { AddSubVaultInput } from './types'
 import getVault from '../../requests/getVault'
-import { validateArgs } from '../../../../helpers'
+
+import { validate } from './validate'
+import type { AddSubVaultInput } from './types'
 
 
 export const commonLogic = async (values: AddSubVaultInput) => {
-  const { vaultAddress, subVaultAddress, userAddress } = values
-
-  validateArgs.address({ vaultAddress, userAddress, subVaultAddress })
+  validate(values)
 
   const { subVaultsRegistry } = await getVault(values)
 

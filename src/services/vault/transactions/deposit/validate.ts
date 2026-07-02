@@ -1,12 +1,12 @@
+import * as z from 'zod/mini'
 import { ZeroAddress } from 'ethers'
 
-import type { DepositInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-export const validate = (values: DepositInput) => {
-  const { userAddress, vaultAddress, referrerAddress = ZeroAddress, assets } = values
+export const validateSchema = z.extend(baseInputSchema, {
+  assets: schema.bigint,
+  referrerAddress: z._default(schema.ethAddress, ZeroAddress),
+})
 
-  validateArgs.bigint({ assets })
-  validateArgs.address({ userAddress, vaultAddress, referrerAddress })
-}
+export const validate = (values: unknown) => parseArgs(validateSchema, values)

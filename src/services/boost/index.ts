@@ -24,7 +24,7 @@ class Boost extends BoostTransactions {
   }
 
   /**
-   * @description Get basic boost data for the user.
+   * Get basic boost data for the user.
    * @see https://docs.stakewise.io/sdk/api/boost/requests/getdata
    */
   public getData(values: StakeWise.ExtractInput<GetBoostDataInput>) {
@@ -32,7 +32,7 @@ class Boost extends BoostTransactions {
   }
 
   /**
-   * @description Get unlock position data.
+   * Get unlock position data.
    * @see https://docs.stakewise.io/sdk/api/boost/requests/getqueueposition
    */
   public getQueuePosition(values: StakeWise.ExtractInput<GetQueuePositionInput>) {
@@ -40,7 +40,7 @@ class Boost extends BoostTransactions {
   }
 
   /**
-   * @description Get Aave leverage strategy contract data
+   * Get Aave leverage strategy contract data
    * @see https://docs.stakewise.io/sdk/api/boost/requests/getleveragestrategydata
    */
   public getLeverageStrategyData(values: StakeWise.ExtractInput<GetLeverageStrategyDataInput>) {
@@ -48,7 +48,7 @@ class Boost extends BoostTransactions {
   }
 
   /**
-   * @description Get Aave leverage strategy proxy contract address
+   * Get Aave leverage strategy proxy contract address
    * @see https://docs.stakewise.io/sdk/api/boost/requests/getleveragestrategyproxy
    */
   public getLeverageStrategyProxy(values: StakeWise.ExtractInput<GetLeverageStrategyProxyInput>) {

@@ -1,12 +1,10 @@
 import type { BurnInput } from './types'
-import { validateArgs } from '../../../../helpers'
+import { validate } from './validate'
 
 
 export const commonLogic = (values: BurnInput) => {
-  const { contracts, vaultAddress, userAddress, shares } = values
-
-  validateArgs.bigint({ shares })
-  validateArgs.address({ vaultAddress, userAddress })
+  const { contracts } = values
+  const { vaultAddress } = validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
 

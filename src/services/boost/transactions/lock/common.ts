@@ -1,9 +1,11 @@
-import { MaxUint256, ZeroAddress } from 'ethers'
+import * as z from 'zod/mini'
+import { MaxUint256 } from 'ethers'
 
 import Utils from '../../../utils'
+import { validate } from './validate'
 import type { LockInput } from './types'
-import { validateArgs } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
+import { parseArgs, schema } from '../../../../helpers'
 import getLeverageStrategyProxy from '../../requests/getLeverageStrategyProxy'
 import { getLeverageStrategyContract, validateLeverageStrategyData } from '../../helpers'
 
@@ -13,20 +15,16 @@ type CommonLogicInput = LockInput & {
 }
 
 export const commonLogic = async (values: CommonLogicInput) => {
-  const {
-    contracts, provider, amount, vaultAddress, userAddress, referrerAddress = ZeroAddress,
-    mockPermitSignature, leverageStrategyData, approveParams,
-  } = values
+  const { contracts, provider, mockPermitSignature, leverageStrategyData, approveParams } = values
 
-  validateArgs.bigint({ amount })
-  validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+  const { amount, vaultAddress, userAddress, referrerAddress } = validate(values)
 
   if (approveParams) {
-    validateArgs.bigint({ 'approveParams.amount': approveParams.amount })
-
-    if (approveParams.amount <= 0n) {
-      throw new Error(`The "approveParams.amount" argument must be greater than 0`)
-    }
+    parseArgs(z.object({
+      approveParams: z.object({
+        amount: schema.bigint.check(z.refine((value) => value > 0n, 'must be greater than 0')),
+      }),
+    }), { approveParams })
   }
 
   if (leverageStrategyData) {
@@ -46,14 +44,16 @@ export const commonLogic = async (values: CommonLogicInput) => {
   const permitParams = isApproveMode ? null : values.permitParams
 
   if (permitParams) {
-    validateArgs.object({ permitParams })
-
-    const { vault, amount, deadline, v, r, s } = permitParams
-
-    validateArgs.address({ 'permitParams.vault': vault })
-    validateArgs.bigint({ 'permitParams.amount': amount })
-    validateArgs.string({ 'permitParams.r': r, 'permitParams.s': s })
-    validateArgs.number({ 'permitParams.v': v, 'permitParams.deadline': deadline })
+    parseArgs(z.object({
+      permitParams: z.object({
+        vault: schema.ethAddress,
+        amount: schema.bigint,
+        r: schema.string,
+        s: schema.string,
+        v: schema.number,
+        deadline: schema.number,
+      }),
+    }), { permitParams })
   }
 
   const multicallArgs: Omit<Parameters<typeof boostMulticall>[0], 'request'> = {

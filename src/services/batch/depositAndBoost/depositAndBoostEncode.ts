@@ -1,6 +1,7 @@
+import * as z from 'zod/mini'
 import { ZeroAddress } from 'ethers'
 
-import { validateArgs } from '../../../helpers'
+import { parseArgs, schema } from '../../../helpers'
 import { getDepositAndMintCalls } from '../helpers'
 import getMaxMintAmount from '../../osToken/requests/getMaxMintAmount'
 import getLeverageStrategyProxy from '../../boost/requests/getLeverageStrategyProxy'
@@ -15,16 +16,14 @@ const depositAndBoostEncode = async (values: DepositAndBoostInput): Promise<Stak
     userAddress, vaultAddress, referrerAddress = ZeroAddress,
   } = values
 
-  validateArgs.bigint({ assets })
-  validateArgs.address({ userAddress, vaultAddress, referrerAddress })
-
-  if (receiveShares !== undefined) {
-    validateArgs.bigint({ receiveShares })
-  }
-
-  if (boostShares !== undefined) {
-    validateArgs.bigint({ boostShares })
-  }
+  parseArgs(z.object({
+    assets: schema.bigint,
+    userAddress: schema.ethAddress,
+    vaultAddress: schema.ethAddress,
+    referrerAddress: schema.ethAddress,
+    receiveShares: z.optional(schema.bigint),
+    boostShares: z.optional(schema.bigint),
+  }), { assets, userAddress, vaultAddress, referrerAddress, receiveShares, boostShares })
 
   if (leverageStrategyData) {
     validateLeverageStrategyData(leverageStrategyData)

@@ -1,7 +1,4 @@
-export type UpdateStateInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+export type UpdateStateInput = StakeWise.BaseInput
 
 export interface ExtractUpdateStateInput {
   (values: StakeWise.ExtractInput<UpdateStateInput>): Promise<StakeWise.TransactionHash>

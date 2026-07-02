@@ -1,9 +1,7 @@
-export type MintInput = StakeWise.CommonParams & {
-  shares: bigint
-  userAddress: string
-  vaultAddress: string
-  referrerAddress?: string
-}
+import type { MintArgs } from './validate'
+
+
+export type MintInput = StakeWise.CommonParams & MintArgs
 
 export interface ExtractMint {
   (values: StakeWise.ExtractInput<MintInput>): Promise<StakeWise.TransactionHash>
