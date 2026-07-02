@@ -1,21 +1,16 @@
-import * as z from 'zod/mini'
-import { MaxUint256, ZeroAddress } from 'ethers'
+import { MaxUint256 } from 'ethers'
 
+import { validate } from './validate'
 import { createErc20Contract } from '../../../contracts'
-import { parseArgs, schema, getNetworkTypes } from '../../../helpers'
+import { getNetworkTypes } from '../../../helpers'
 import { createNativeTokenDeposit, createOtherTokenDeposit } from '../../vault/transactions/deposit'
 import type { DepositBatchInput } from './types'
 
 
 const depositEncode = async (values: DepositBatchInput): Promise<StakeWise.BatchData> => {
-  const { config, provider, options, assets, userAddress, vaultAddress, referrerAddress = ZeroAddress } = values
+  const { config, provider, options } = values
 
-  parseArgs(z.object({
-    assets: schema.bigint,
-    userAddress: schema.ethAddress,
-    vaultAddress: schema.ethAddress,
-    referrerAddress: schema.ethAddress,
-  }), { assets, userAddress, vaultAddress, referrerAddress })
+  const { assets, userAddress, vaultAddress } = validate(values)
 
   const { isEthereum } = getNetworkTypes(options)
 

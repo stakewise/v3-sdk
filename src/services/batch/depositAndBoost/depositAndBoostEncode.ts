@@ -1,7 +1,4 @@
-import * as z from 'zod/mini'
-import { ZeroAddress } from 'ethers'
-
-import { parseArgs, schema } from '../../../helpers'
+import { validate } from './validate'
 import { getDepositAndMintCalls } from '../helpers'
 import getMaxMintAmount from '../../osToken/requests/getMaxMintAmount'
 import getLeverageStrategyProxy from '../../boost/requests/getLeverageStrategyProxy'
@@ -11,19 +8,9 @@ import type { DepositAndBoostInput } from './types'
 
 
 const depositAndBoostEncode = async (values: DepositAndBoostInput): Promise<StakeWise.BatchData> => {
-  const {
-    contracts, assets, receiveShares, boostShares, leverageStrategyData,
-    userAddress, vaultAddress, referrerAddress = ZeroAddress,
-  } = values
+  const { contracts, leverageStrategyData } = values
 
-  parseArgs(z.object({
-    assets: schema.bigint,
-    userAddress: schema.ethAddress,
-    vaultAddress: schema.ethAddress,
-    referrerAddress: schema.ethAddress,
-    receiveShares: z.optional(schema.bigint),
-    boostShares: z.optional(schema.bigint),
-  }), { assets, userAddress, vaultAddress, referrerAddress, receiveShares, boostShares })
+  const { assets, vaultAddress, receiveShares, boostShares, referrerAddress } = validate(values)
 
   if (leverageStrategyData) {
     validateLeverageStrategyData(leverageStrategyData)
