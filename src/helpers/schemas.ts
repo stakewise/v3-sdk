@@ -25,7 +25,7 @@ const maxLength = (length: number) => string.check(z.maxLength(length, { error: 
 const imageSizeMb = (value: string) => {
   const decoded = value.substring(value.indexOf(',') + 1)
 
-  return decoded ? atob(decoded).length / 1000 / 1000 : 0
+  return decoded ? atob(decoded).length / 1024 / 1024 : 0
 }
 
 const image = string.check(z.refine(
