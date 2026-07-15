@@ -1,4 +1,10 @@
-import { parseArgs, baseInputSchema } from '../../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
-export const validate = (values: unknown) => parseArgs(baseInputSchema, values)
+export const validateSchema = z.extend(baseInputSchema, {
+  assets: z.optional(schema.bigint),
+})
+
+export const validate = (values: unknown) => parseArgs(validateSchema, values)

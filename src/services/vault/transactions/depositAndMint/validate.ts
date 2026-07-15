@@ -1,10 +1,13 @@
 import * as z from 'zod/mini'
+import { ZeroAddress } from 'ethers'
 
 import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
 export const validateSchema = z.extend(baseInputSchema, {
-  withBurn: z.optional(schema.boolean),
+  assets: schema.bigint,
+  receiveShares: schema.bigint,
+  referrerAddress: z._default(schema.ethAddress, ZeroAddress),
 })
 
 export const validate = (values: unknown) => parseArgs(validateSchema, values)

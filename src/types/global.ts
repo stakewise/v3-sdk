@@ -4,7 +4,6 @@ import type { BrowserProvider, JsonRpcProvider, FallbackProvider, JsonRpcSigner,
 import type Vault from '../services/vault'
 import type Boost from '../services/boost'
 import type Utils from '../services/utils'
-import type Batch from '../services/batch'
 import type OsToken from '../services/osToken'
 import type RewardSplitter from '../services/rewardSplitter'
 import type DistributorRewards from '../services/distributorRewards'
@@ -59,7 +58,6 @@ declare global {
       type VaultService = Vault
       type BoostService = Boost
       type UtilsService = Utils
-      type BatchService = Batch
       type OsTokenService = OsToken
       type RewardSplitterService = RewardSplitter
       type DistributorRewardsService = DistributorRewards
@@ -104,10 +102,6 @@ declare global {
     type TransactionData = {
       data: string
       to: string
-    }
-
-    type BatchData = {
-      calls: Array<TransactionData & { value?: bigint }>
     }
 
     type TransactionHash = string

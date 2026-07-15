@@ -119,7 +119,7 @@ class OsToken extends OsTokenTransactions {
   }
 
   /**
-   * Returns the amount of osToken to burn for full unstake.
+   * Returns the amount of osToken to burn to unstake - in full, or up to a specific amount when `assets` is passed.
    * @see https://docs.stakewise.io/sdk/api/osToken/helpers/getburnamountforunstake
    */
   public getBurnAmountForUnstake(values: StakeWise.ExtractInput<GetBurnAmountForUnstakeInput>) {

@@ -87,7 +87,7 @@ class Utils {
   }
 
   /**
-   * @description Detect whether the connected wallet supports atomic EIP-5792 transaction batching on the current network.
+   * Detect whether the connected wallet supports atomic EIP-5792 transaction batching on the current network.
    * @see https://docs.stakewise.io/sdk/api/utils/checktxbatchsupported
   */
   public checkTxBatchSupported(values: StakeWise.ExtractInput<CheckTxBatchSupportedInput>) {

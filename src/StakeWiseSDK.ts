@@ -1,4 +1,4 @@
-import { Vault, Boost, RewardSplitter, DistributorRewards, OsToken, Utils, Batch } from './services'
+import { Vault, Boost, RewardSplitter, DistributorRewards, OsToken, Utils } from './services'
 import { configs, createProvider } from './helpers'
 import { createContracts } from './contracts'
 
@@ -12,7 +12,6 @@ class StakeWiseSDK {
   readonly vault: StakeWise.Services.VaultService
   readonly utils: StakeWise.Services.UtilsService
   readonly boost: StakeWise.Services.BoostService
-  readonly batch: StakeWise.Services.BatchService
   readonly osToken: StakeWise.Services.OsTokenService
   readonly rewardSplitter: StakeWise.Services.RewardSplitterService
   readonly distributorRewards: StakeWise.Services.DistributorRewardsService
@@ -57,7 +56,6 @@ class StakeWiseSDK {
     this.vault = new Vault(commonParams)
     this.utils = new Utils(commonParams)
     this.boost = new Boost(commonParams)
-    this.batch = new Batch(commonParams)
     this.osToken = new OsToken(commonParams)
     this.rewardSplitter = new RewardSplitter(commonParams)
     this.distributorRewards = new DistributorRewards(commonParams)
