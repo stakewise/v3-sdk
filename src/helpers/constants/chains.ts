@@ -35,7 +35,7 @@ const gnosis = {
   name: 'Gnosis Chain',
   chainId: Network.Gnosis,
   hexadecimalChainId: '0x64',
-  blockExplorerUrl: 'https://gnosisscan.io',
+  blockExplorerUrl: 'https://gnosis.blockscout.com',
   nativeCurrency: {
     symbol: tokens.xdai,
     name: tokens.xdai,
