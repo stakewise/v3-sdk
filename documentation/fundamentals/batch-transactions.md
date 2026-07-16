@@ -82,7 +82,9 @@ const sendBatch = async ({ sdk, calls, userAddress }: SendBatchInput) => {
   const receipts = result.receipts || []
 
   // status 200 means "included", not "succeeded" - an inner call can still revert, so check each receipt
-  if (receipts.some(({ status }) => status === '0x0')) {
+  const isReverted = receipts.some(({ status }) => status === '0x0')
+  
+  if (isReverted) {
     throw new Error('Batch reverted')
   }
 
