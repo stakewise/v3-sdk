@@ -46,10 +46,7 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
     return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
   }
 
-  const [ walletShares, harvest ] = await Promise.all([
-    contracts.tokens.mintToken.balanceOf(userAddress),
-    getHarvestParams(values),
-  ])
+  const walletShares = await contracts.tokens.mintToken.balanceOf(userAddress)
 
   const burnShares = walletShares < mint.shares ? walletShares : mint.shares
 
@@ -60,6 +57,8 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   if (!burnShares) {
     return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
   }
+
+  const harvest = await getHarvestParams(values)
 
   const { receivedAssets } = await contracts.special.stakeCalculator.calculateUnstake.staticCall({
     user: userAddress,
