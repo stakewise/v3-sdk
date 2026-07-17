@@ -7,11 +7,13 @@ import { createVaultCreator, ExtractCreateVault } from './createVault'
 import { createAddSubVault, ExtractAddSubVaultInput } from './addSubVault'
 import { createUpdateState, ExtractUpdateStateInput } from './updateState'
 import { createClaimExitQueue, ExtractClaimExitQueue } from './claimExitQueue'
+import { createBurnAndWithdraw, ExtractBurnAndWithdraw } from './burnAndWithdraw'
 import { createEjectSubVault, ExtractEjectSubVaultInput } from './ejectSubVault'
 import { createRejectSubVault, ExtractRejectSubVaultInput } from './rejectSubVault'
 import { createSetDepositDataRoot, ExtractSetDepositDataRoot } from './setDepositDataRoot'
 import { createSetDepositDataManager, ExtractSetDepositDataManager } from './setDepositDataManager'
 import { createNativeTokenDeposit, createOtherTokenDeposit, ExtractDeposit } from './deposit'
+import { createNativeTokenDepositAndMint, createOtherTokenDepositAndMint, ExtractDepositAndMint } from './depositAndMint'
 
 
 class VaultTransactions {
@@ -24,10 +26,22 @@ class VaultTransactions {
   public deposit: ExtractDeposit
 
   /**
+   * Deposit (stake) and mint osToken in one transaction.
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/depositandmint
+   */
+  public depositAndMint: ExtractDepositAndMint
+
+  /**
    * Withdrawal of funds from a vault.
    * @see https://docs.stakewise.io/sdk/api/vault/transactions/withdraw
    */
   public withdraw: ExtractWithdraw
+
+  /**
+   * Burn osToken and withdraw (unstake) funds from a vault in one transaction.
+   * @see https://docs.stakewise.io/sdk/api/vault/transactions/burnandwithdraw
+   */
+  public burnAndWithdraw: ExtractBurnAndWithdraw
 
   /**
    * Create vault.
@@ -96,8 +110,16 @@ class VaultTransactions {
         : createOtherTokenDeposit(params)
     )
 
+    this.depositAndMint = transactionWrapper(
+      params,
+      isEthereum
+        ? createNativeTokenDepositAndMint(params)
+        : createOtherTokenDepositAndMint(params)
+    )
+
     this.operate = transactionWrapper(params, createOperate(params))
     this.withdraw = transactionWrapper(params, createWithdraw(params))
+    this.burnAndWithdraw = transactionWrapper(params, createBurnAndWithdraw(params))
     this.create = transactionWrapper(params, createVaultCreator(params))
     this.updateState = transactionWrapper(params, createUpdateState(params))
     this.addSubVault = transactionWrapper(params, createAddSubVault(params))

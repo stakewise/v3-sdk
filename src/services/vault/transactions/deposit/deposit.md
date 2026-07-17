@@ -10,11 +10,12 @@ Deposit (stake) in a vault
 
 #### Arguments:
 
-| Name         | Type     | Required | Description               |
-|--------------|----------|----------|---------------------------|
-| assets       | `bigint` | **Yes**  | Deposit amount            |
-| userAddress  | `string` | **Yes**  | The user address          |
-| vaultAddress | `string` | **Yes**  | The address of the vault  |
+| Name            | Type     | Required | Description                  |
+|-----------------|----------|----------|------------------------------|
+| assets          | `bigint` | **Yes**  | Deposit amount               |
+| userAddress     | `string` | **Yes**  | The user address             |
+| vaultAddress    | `string` | **Yes**  | The address of the vault     |
+| referrerAddress | `string` | **No**   | The address of the referrer  |
 
 #### Example:
 

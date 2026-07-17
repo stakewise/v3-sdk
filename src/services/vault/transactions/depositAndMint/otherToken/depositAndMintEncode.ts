@@ -1,9 +1,9 @@
 import Utils from '../../../../utils'
 import { commonLogic } from './common'
-import { DepositInput } from '../types'
+import { DepositAndMintInput } from '../types'
 
 
-const depositEncode = async (values: DepositInput): Promise<StakeWise.TransactionData> => {
+const depositAndMintEncode = async (values: DepositAndMintInput): Promise<StakeWise.TransactionData> => {
   const multicallArgs = commonLogic(values)
 
   const utils = new Utils(values)
@@ -12,4 +12,4 @@ const depositEncode = async (values: DepositInput): Promise<StakeWise.Transactio
 }
 
 
-export default depositEncode
+export default depositAndMintEncode

@@ -8,7 +8,7 @@ import upgradeLeverageStrategyGas from '../upgradeLeverageStrategy/upgradeLevera
 const lockGas = async (values: LockInput) => {
   const { provider, userAddress } = values
 
-  const { multiSigData, multicallArgs, isUpgradeRequired } = await commonLogic({
+  const { approveData, multicallArgs, isUpgradeRequired } = await commonLogic({
     ...values,
     mockPermitSignature: true,
   })
@@ -21,8 +21,8 @@ const lockGas = async (values: LockInput) => {
         estimateGas: true,
       },
     }),
-    multiSigData
-      ? multiSigData.contract.approve.estimateGas(...multiSigData.approveArgs, {
+    approveData
+      ? approveData.contract.approve.estimateGas(...approveData.approveArgs, {
         from: userAddress,
       })
       : Promise.resolve(0n),

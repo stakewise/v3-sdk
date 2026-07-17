@@ -7,10 +7,12 @@ import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 import { validate } from './validate'
 
 
-export type GetMaxMintAmountInput = StakeWise.BaseInput
+export type GetMaxMintAmountInput = StakeWise.BaseInput & {
+  additionalStakedAssets?: bigint
+}
 
 const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
-  const { contracts } = values
+  const { contracts, additionalStakedAssets } = values
 
   validate(values)
 
@@ -21,7 +23,7 @@ const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
   ])
 
   const ltvPercent = BigInt(config.ltvPercent)
-  const stakedAssets = stake.assets
+  const stakedAssets = stake.assets + (additionalStakedAssets || 0n)
   const mintedAssets = mint.assets
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {

@@ -15,9 +15,17 @@ type CommonLogicInput = LockInput & {
 }
 
 export const commonLogic = async (values: CommonLogicInput) => {
-  const { contracts, provider, mockPermitSignature, leverageStrategyData } = values
+  const { contracts, provider, mockPermitSignature, leverageStrategyData, approveParams } = values
 
   const { amount, vaultAddress, userAddress, referrerAddress } = validate(values)
+
+  if (approveParams) {
+    parseArgs(z.object({
+      approveParams: z.object({
+        amount: schema.bigint.check(z.refine((value) => value > 0n, 'must be greater than 0')),
+      }),
+    }), { approveParams })
+  }
 
   if (leverageStrategyData) {
     validateLeverageStrategyData(leverageStrategyData)
@@ -26,11 +34,14 @@ export const commonLogic = async (values: CommonLogicInput) => {
   const { leverageStrategyContract, isUpgradeRequired } = await getLeverageStrategyContract(values)
 
   const code = await provider.getCode(userAddress)
-  const isMultiSig = code !== '0x'
+  const isEip7702Delegated = code.toLowerCase().startsWith('0xef0100')
+  const isMultiSig = code !== '0x' && !isEip7702Delegated
 
-  let multiSigData = null
+  const isApproveMode = isMultiSig || Boolean(approveParams)
 
-  const permitParams = isMultiSig ? null : values.permitParams
+  let approveData = null
+
+  const permitParams = isApproveMode ? null : values.permitParams
 
   if (permitParams) {
     parseArgs(z.object({
@@ -74,12 +85,10 @@ export const commonLogic = async (values: CommonLogicInput) => {
     const isPermitRequired = allowance < amount
 
     if (isPermitRequired) {
-      // It is hard to make permit action for MultiSig e.g. Safe wallet,
-      // so we need to use approve instead
-      if (isMultiSig) {
-        multiSigData = {
+      if (isApproveMode) {
+        approveData = {
           contract: contracts.tokens.mintToken,
-          approveArgs: [ strategyProxy, MaxUint256 ] as [ string, bigint ],
+          approveArgs: [ strategyProxy, approveParams?.amount || MaxUint256 ] as [ string, bigint ],
         }
       }
       else if (mockPermitSignature) {
@@ -121,7 +130,7 @@ export const commonLogic = async (values: CommonLogicInput) => {
   })
 
   return {
-    multiSigData,
+    approveData,
     multicallArgs: {
       ...multicallArgs,
       request: {

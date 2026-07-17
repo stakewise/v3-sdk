@@ -17,7 +17,7 @@ import DistributorRewardsTransactions from './distributorRewards/transactions'
 type Requests<T, Excluded extends keyof T = never> = Pick<T, Exclude<keyof T, Excluded | 'params'>>
 
 // Wallet signing cannot be aborted, gas estimation is part of tx send
-type UtilsTxHelpers = 'getVaultMulticallGas' | 'getVaultMulticallEncode' | 'getPermitSignature'
+type UtilsTxHelpers = 'getVaultMulticallGas' | 'getVaultMulticallEncode' | 'getPermitSignature' | 'checkTxBatchSupported'
 
 const assertCancellable: {
   utils: AssertCancellable<Requests<Utils, UtilsTxHelpers>>
