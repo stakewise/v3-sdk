@@ -60,7 +60,7 @@ const modifyQueuePosition = (values: BoostQueuePositionsQueryPayload): ParseBoos
       }
     }
 
-    output.isClaimable = isClaimable && (exitedAssets === totalAssets)
+    output.isClaimable = isClaimable && exitQueueIndex !== null && (exitedAssets === totalAssets)
     output.duration = withdrawalTimestamp ? Number(withdrawalTimestamp) : null
   }
 
