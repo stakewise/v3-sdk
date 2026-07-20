@@ -6,15 +6,21 @@ description: Use the StakeWise SDK burnAndWithdraw method to burn osToken and un
 
 #### Description:
 
-Burn the osToken required to unstake and withdraw funds from a vault in a single transaction
+Burn the osToken required to unstake and withdraw funds from a vault in a single transaction.
+
+Pass `assets` for the default withdraw-driven mode (unstake that amount, burning the minimum osToken plus any already-free collateral).
+Pass `shares` instead for the burn-driven mode: burn exactly that many osToken shares and unstake all the collateral that burning frees.
+
+Provide one of `assets` or `shares`.
 
 #### Arguments:
 
-| Name         | Type     | Required | Description               |
-|--------------|----------|----------|---------------------------|
-| assets       | `bigint` | **Yes**  | Unstake amount            |
-| userAddress  | `string` | **Yes**  | The user address          |
-| vaultAddress | `string` | **Yes**  | The address of the vault  |
+| Name         | Type     | Required | Description                                                       |
+|--------------|----------|----------|-------------------------------------------------------------------|
+| assets       | `bigint` | No       | Unstake amount (withdraw-driven mode)                             |
+| shares       | `bigint` | No       | osToken shares to burn; unstakes all the collateral it frees      |
+| userAddress  | `string` | **Yes**  | The user address                                                  |
+| vaultAddress | `string` | **Yes**  | The address of the vault                                          |
 
 #### Example:
 
@@ -22,7 +28,7 @@ Burn the osToken required to unstake and withdraw funds from a vault in a single
 const params = {
   vaultAddress: '0x...',
   userAddress: '0x...',
-  assets: 200n, // from input mb
+  assets: 200n, // withdraw-driven; or pass shares: 200n to burn exactly that and unstake the equivalent
 }
 
 // Send transaction

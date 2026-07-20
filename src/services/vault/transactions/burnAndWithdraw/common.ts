@@ -10,13 +10,34 @@ import type { BurnAndWithdrawInput } from './types'
 export const commonLogic = async (values: BurnAndWithdrawInput) => {
   const { contracts } = values
 
-  const { vaultAddress, userAddress } = validate(values)
+  const { vaultAddress, userAddress, shares } = validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
   const baseMulticallArgs: VaultMulticallBaseInput = {
     vaultContract,
     ...values,
+  }
+
+  if (typeof shares !== 'undefined') {
+    const harvest = await getHarvestParams(values)
+
+    const { exitQueueShares, burnOsTokenShares } = await contracts.special.stakeCalculator.calculateUnstake.staticCall({
+      user: userAddress,
+      vault: vaultAddress,
+      harvestParams: harvest.params,
+      osTokenShares: shares,
+    })
+
+    const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
+      { method: 'burnOsToken', args: [ burnOsTokenShares ] },
+      { method: 'enterExitQueue', args: [ exitQueueShares, userAddress ] },
+    ]
+
+    return {
+      ...baseMulticallArgs,
+      request: { params },
+    }
   }
 
   const [ burnShares, maxWithdrawAssets, harvest ] = await Promise.all([
