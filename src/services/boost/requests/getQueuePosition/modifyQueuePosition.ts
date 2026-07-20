@@ -3,7 +3,9 @@ import { BoostQueuePositionsQueryPayload } from '../../../../graphql/subgraph/bo
 
 type BoostQueueItem = BoostQueuePositionsQueryPayload['leverageStrategyPositions'][number]
 type ExitRequest = NonNullable<BoostQueueItem['exitRequest']>
-export type ClaimPosition = Pick<ExitRequest, 'positionTicket' | 'timestamp' | 'exitQueueIndex'>
+export type ClaimPosition = Pick<ExitRequest, 'positionTicket' | 'timestamp'> & {
+  exitQueueIndex: string
+}
 
 export type ParseBoostQueueOutput = {
   version: number
@@ -50,10 +52,12 @@ const modifyQueuePosition = (values: BoostQueuePositionsQueryPayload): ParseBoos
       withdrawalTimestamp,
     } = exitRequest
 
-    output.position = {
-      timestamp,
-      positionTicket,
-      exitQueueIndex,
+    if (exitQueueIndex !== null) {
+      output.position = {
+        timestamp,
+        positionTicket,
+        exitQueueIndex,
+      }
     }
 
     output.isClaimable = isClaimable && (exitedAssets === totalAssets)

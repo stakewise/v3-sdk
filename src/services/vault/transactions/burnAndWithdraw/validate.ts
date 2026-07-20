@@ -4,7 +4,8 @@ import { schema, parseArgs, baseInputSchema } from '../../../../helpers'
 
 
 export const validateSchema = z.extend(baseInputSchema, {
-  assets: schema.bigint,
+  assets: z.optional(schema.bigint),
+  shares: z.optional(schema.bigint),
 })
 
 export const validate = (values: unknown) => parseArgs(validateSchema, values)

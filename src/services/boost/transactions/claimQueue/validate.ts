@@ -7,6 +7,7 @@ export const validateSchema = z.extend(baseInputSchema, {
   position: z.object({
     timestamp: schema.string,
     positionTicket: schema.string,
+    exitQueueIndex: schema.string,
   }),
   leverageStrategyVersion: z.optional(schema.number),
 })
