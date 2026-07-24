@@ -4,6 +4,7 @@ import getBurnAmountForUnstake from '../../../osToken/helpers/getBurnAmountForUn
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
 
 import { validate } from './validate'
+import { getSafeBurnOsTokenShares } from './helpers'
 import type { BurnAndWithdrawInput } from './types'
 
 
@@ -29,8 +30,14 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
       osTokenShares: shares,
     })
 
+    const safeBurnOsTokenShares = await getSafeBurnOsTokenShares({
+      ...values,
+      exitShares: exitQueueShares,
+      burnOsTokenShares,
+    })
+
     const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
-      { method: 'burnOsToken', args: [ burnOsTokenShares ] },
+      { method: 'burnOsToken', args: [ safeBurnOsTokenShares ] },
       { method: 'enterExitQueue', args: [ exitQueueShares, userAddress ] },
     ]
 
@@ -63,8 +70,14 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
 
   const exitShares = exitQueueShares + baseShares
 
+  const safeBurnOsTokenShares = await getSafeBurnOsTokenShares({
+    ...values,
+    exitShares,
+    burnOsTokenShares,
+  })
+
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
-    { method: 'burnOsToken', args: [ burnOsTokenShares ] },
+    { method: 'burnOsToken', args: [ safeBurnOsTokenShares ] },
     { method: 'enterExitQueue', args: [ exitShares, userAddress ] },
   ]
 
