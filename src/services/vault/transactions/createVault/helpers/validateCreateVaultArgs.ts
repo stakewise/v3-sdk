@@ -34,7 +34,7 @@ const createVaultSchema = z.object({
     path: field ? [ field ] : undefined,
   })
 
-  if (!isMetaVault) {
+  if (isMetaVault) {
     if (isOwnMevEscrow) {
       addIssue('MetaVault does not support the "isOwnMevEscrow" parameter.')
     }
