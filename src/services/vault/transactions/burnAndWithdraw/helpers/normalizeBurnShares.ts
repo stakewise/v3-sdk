@@ -14,7 +14,7 @@ const secondsInHour = 60n * 60n
 // calculateUnstake can leave the burn a couple wei short of the vault's exact LTV check
 // (VaultOsToken._checkOsTokenPosition), reverting LowLtv at max LTV. Raise it to the exact minimum the check
 // needs, plus one hour of debt accrual so it still holds once the tx lands
-const getSafeBurnOsTokenShares = async (values: Input): Promise<bigint> => {
+const normalizeBurnShares = async (values: Input): Promise<bigint> => {
   const { contracts, vaultAddress, userAddress, exitShares, burnOsTokenShares } = values
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
@@ -39,4 +39,4 @@ const getSafeBurnOsTokenShares = async (values: Input): Promise<bigint> => {
 }
 
 
-export default getSafeBurnOsTokenShares
+export default normalizeBurnShares

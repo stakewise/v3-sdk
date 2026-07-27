@@ -1,1 +1,1 @@
-export { default as getSafeBurnOsTokenShares } from './getSafeBurnOsTokenShares'
+export { default as normalizeBurnShares } from './normalizeBurnShares'
