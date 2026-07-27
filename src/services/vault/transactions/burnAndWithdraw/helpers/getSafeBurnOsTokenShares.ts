@@ -27,13 +27,11 @@ const getSafeBurnOsTokenShares = async (values: Input): Promise<bigint> => {
   ])
 
   const remainingStakeShares = stakeShares > exitShares ? stakeShares - exitShares : 0n
-  const remainingStakeAssets = remainingStakeShares > 0n ? await vaultContract.convertToAssets(remainingStakeShares) : 0n
+  const remainingStakeAssets = await vaultContract.convertToAssets(remainingStakeShares)
 
-  const factor = constants.blockchain.amount1 + avgRewardPerSecond * secondsInHour
-  const maxOsTokenAssets = remainingStakeAssets * BigInt(config.ltvPercent) / factor
-  const maxOsTokenShares = maxOsTokenAssets > 0n
-    ? await contracts.base.mintTokenController.convertToShares(maxOsTokenAssets)
-    : 0n
+  const bufferedMaxPercent = constants.blockchain.amount1 + avgRewardPerSecond * secondsInHour
+  const maxOsTokenAssets = remainingStakeAssets * BigInt(config.ltvPercent) / bufferedMaxPercent
+  const maxOsTokenShares = await contracts.base.mintTokenController.convertToShares(maxOsTokenAssets)
 
   const requiredBurnShares = osTokenShares > maxOsTokenShares ? osTokenShares - maxOsTokenShares : 0n
 
