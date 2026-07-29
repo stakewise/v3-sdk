@@ -1,11 +1,11 @@
 import { parseEther } from 'ethers'
 
 import getStakeBalance from '../getStakeBalance'
-import getHarvestParams from '../getHarvestParams'
 import getOsTokenConfig from '../getOsTokenConfig'
-import { constants } from '../../../../helpers'
+import { constants, divideRoundingUp } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getMintedBalance from '../../../osToken/requests/getBalance'
+import getUnstakeAmountForBurn from '../../../osToken/helpers/getUnstakeAmountForBurn'
 
 import { validate } from './validate'
 
@@ -19,7 +19,7 @@ const min = parseEther('0.00001')
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   const { contracts } = values
 
-  const { userAddress, vaultAddress, withBurn } = validate(values)
+  const { userAddress, withBurn } = validate(values)
 
   const [ config, mint, stake ] = await Promise.all([
     getOsTokenConfig(values),
@@ -37,9 +37,11 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
 
   const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
+  const ltvPercent = BigInt(config.ltvPercent)
   const secondsInHour = 60n * 60n
   const gap = avgRewardPerSecond * secondsInHour * mint.assets / constants.blockchain.amount1
-  const lockedAssets = (mint.assets + gap) * constants.blockchain.amount1 / BigInt(config.ltvPercent)
+
+  const lockedAssets = divideRoundingUp((mint.assets + gap) * constants.blockchain.amount1, ltvPercent)
   const assetsWithoutBurn = stake.assets - lockedAssets
 
   if (!withBurn) {
@@ -58,16 +60,9 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
     return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
   }
 
-  const harvest = await getHarvestParams(values)
+  const { receivedAssets } = await getUnstakeAmountForBurn({ ...values, shares: burnShares })
 
-  const { receivedAssets } = await contracts.special.stakeCalculator.calculateUnstake.staticCall({
-    user: userAddress,
-    vault: vaultAddress,
-    harvestParams: harvest.params,
-    osTokenShares: burnShares,
-  })
-
-  return assetsWithoutBurn + receivedAssets
+  return receivedAssets
 }
 
 

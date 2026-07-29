@@ -38,8 +38,8 @@ const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => 
 
   const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
-  const factor = constants.blockchain.amount1 + avgRewardPerSecond * secondsInHour
-  const allowedMintAssets = remainingStake * BigInt(config.ltvPercent) / factor
+  const bufferedMaxPercent = constants.blockchain.amount1 + avgRewardPerSecond * secondsInHour
+  const allowedMintAssets = remainingStake * BigInt(config.ltvPercent) / bufferedMaxPercent
   const assetsToBurn = mint.assets - allowedMintAssets
 
   if (assetsToBurn <= 0n) {

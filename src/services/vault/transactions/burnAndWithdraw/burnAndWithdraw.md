@@ -8,7 +8,7 @@ description: Use the StakeWise SDK burnAndWithdraw method to burn osToken and un
 
 Burn the osToken required to unstake and withdraw funds from a vault in a single transaction.
 
-Pass `assets` for the default withdraw-driven mode (unstake that amount, burning the minimum osToken plus any already-free collateral).
+Pass `assets` for the default withdraw-driven mode: unstake that amount, burning the minimum osToken it requires.
 Pass `shares` instead for the burn-driven mode: burn exactly that many osToken shares and unstake all the collateral that burning frees.
 
 Provide one of `assets` or `shares`.

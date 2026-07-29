@@ -1,18 +1,35 @@
-import getHarvestParams from '../../requests/getHarvestParams'
 import getMintedBalance from '../../../osToken/requests/getBalance'
-import getMaxWithdrawAmount from '../../requests/getMaxWithdrawAmount'
 import getBurnAmountForUnstake from '../../../osToken/helpers/getBurnAmountForUnstake'
+import getUnstakeAmountForBurn from '../../../osToken/helpers/getUnstakeAmountForBurn'
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
 
 import { validate } from './validate'
-import { normalizeBurnShares } from './helpers'
 import type { BurnAndWithdrawInput } from './types'
 
+
+type GetParamsInput = {
+  userAddress: string
+  burnShares: bigint
+  exitShares: bigint
+}
+
+const getParams = (values: GetParamsInput): Parameters<typeof vaultMulticall>[0]['request']['params'] => {
+  const { userAddress, burnShares, exitShares } = values
+
+  const burnParams = burnShares > 0n
+    ? [ { method: 'burnOsToken' as const, args: [ burnShares ] } ]
+    : []
+
+  return [
+    ...burnParams,
+    { method: 'enterExitQueue', args: [ exitShares, userAddress ] },
+  ]
+}
 
 export const commonLogic = async (values: BurnAndWithdrawInput) => {
   const { contracts } = values
 
-  const { vaultAddress, userAddress, shares } = validate(values)
+  const { vaultAddress, userAddress, assets, shares } = validate(values)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
@@ -22,10 +39,10 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
   }
 
   if (typeof shares !== 'undefined') {
-    const [ harvest, mint, walletShares ] = await Promise.all([
-      getHarvestParams(values),
+    const [ mint, walletShares, { exitQueueShares } ] = await Promise.all([
       getMintedBalance(values),
       contracts.tokens.mintToken.balanceOf(userAddress),
+      getUnstakeAmountForBurn({ ...values, shares }),
     ])
 
     const maxBurnShares = walletShares < mint.shares ? walletShares : mint.shares
@@ -34,66 +51,45 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
       throw new Error(`The "shares" argument must be at most ${maxBurnShares}`)
     }
 
-    const { exitQueueShares, burnOsTokenShares } = await contracts.special.stakeCalculator.calculateUnstake.staticCall({
-      user: userAddress,
-      vault: vaultAddress,
-      harvestParams: harvest.params,
-      osTokenShares: shares,
-    })
-
-    const normalizedBurnShares = await normalizeBurnShares({
-      ...values,
+    const params = getParams({
+      userAddress,
+      burnShares: shares,
       exitShares: exitQueueShares,
-      burnOsTokenShares,
     })
-
-    const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
-      { method: 'burnOsToken', args: [ normalizedBurnShares ] },
-      { method: 'enterExitQueue', args: [ exitQueueShares, userAddress ] },
-    ]
 
     return {
       ...baseMulticallArgs,
-      request: { params },
+      request: {
+        params,
+      },
     }
   }
 
-  const [ burnShares, maxWithdrawAssets, harvest ] = await Promise.all([
-    getBurnAmountForUnstake(values),
-    getMaxWithdrawAmount(values),
-    getHarvestParams(values),
+  const burnShares = await getBurnAmountForUnstake(values)
+
+  const [ { exitQueueShares: unlockedShares }, [ { shares: requestedShares } ] ] = await Promise.all([
+    getUnstakeAmountForBurn({ ...values, shares: burnShares }),
+    vaultMulticall<[ { shares: bigint } ]>({
+      ...baseMulticallArgs,
+      request: {
+        params: [ { method: 'convertToShares', args: [ assets ] } ],
+        callStatic: true,
+      },
+    }),
   ])
 
-  const { exitQueueShares, burnOsTokenShares } = await contracts.special.stakeCalculator.calculateUnstake.staticCall({
-    user: userAddress,
-    vault: vaultAddress,
-    harvestParams: harvest.params,
-    osTokenShares: burnShares,
-  })
+  const exitShares = requestedShares < unlockedShares ? requestedShares : unlockedShares
 
-  const [ { shares: baseShares } ] = await vaultMulticall<[ { shares: bigint } ]>({
-    ...baseMulticallArgs,
-    request: {
-      params: [ { method: 'convertToShares', args: [ maxWithdrawAssets ] } ],
-      callStatic: true,
-    },
-  })
-
-  const exitShares = exitQueueShares + baseShares
-
-  const normalizedBurnShares = await normalizeBurnShares({
-    ...values,
+  const params = getParams({
+    userAddress,
+    burnShares,
     exitShares,
-    burnOsTokenShares,
   })
-
-  const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
-    { method: 'burnOsToken', args: [ normalizedBurnShares ] },
-    { method: 'enterExitQueue', args: [ exitShares, userAddress ] },
-  ]
 
   return {
     ...baseMulticallArgs,
-    request: { params },
+    request: {
+      params,
+    },
   }
 }
