@@ -9,6 +9,7 @@ type GetMaxExitSharesInput = StakeWise.CommonParams & {
   burnShares: bigint
 }
 
+// The vault floors every conversion on its LTV check, the buffer adds 3 wei to fix that
 const ltvCheckBuffer = 3n
 const secondsInHour = 60n * 60n
 
