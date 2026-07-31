@@ -18,10 +18,10 @@ const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => 
 
   validate(values)
 
-  const [ config, mint, stake ] = await Promise.all([
-    getOsTokenConfig(values),
+  const [ mint, stake, config ] = await Promise.all([
     getBalance(values),
     getStakeBalance(values),
+    getOsTokenConfig(values),
   ])
 
   const hasMinted = mint.shares && mint.shares > 0

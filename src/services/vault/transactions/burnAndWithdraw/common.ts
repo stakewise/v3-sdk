@@ -1,4 +1,4 @@
-import getMintedBalance from '../../../osToken/requests/getBalance'
+import getMaxExitShares from '../../helpers/getMaxExitShares'
 import getBurnAmountForUnstake from '../../../osToken/helpers/getBurnAmountForUnstake'
 import getUnstakeAmountForBurn from '../../../osToken/helpers/getUnstakeAmountForBurn'
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
@@ -15,6 +15,10 @@ type GetParamsInput = {
 
 const getParams = (values: GetParamsInput): Parameters<typeof vaultMulticall>[0]['request']['params'] => {
   const { userAddress, burnShares, exitShares } = values
+
+  if (!exitShares) {
+    throw new Error('Nothing can be withdrawn without breaking the osToken position LTV')
+  }
 
   const burnParams = burnShares > 0n
     ? [ { method: 'burnOsToken' as const, args: [ burnShares ] } ]
@@ -38,18 +42,19 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
     ...values,
   }
 
+  const [ walletShares, osTokenShares ] = await Promise.all([
+    contracts.tokens.mintToken.balanceOf(userAddress),
+    vaultContract.osTokenPositions(userAddress),
+  ])
+
+  const maxBurnShares = walletShares < osTokenShares ? walletShares : osTokenShares
+
   if (typeof shares !== 'undefined') {
-    const [ mint, walletShares, { exitQueueShares } ] = await Promise.all([
-      getMintedBalance(values),
-      contracts.tokens.mintToken.balanceOf(userAddress),
-      getUnstakeAmountForBurn({ ...values, shares }),
-    ])
-
-    const maxBurnShares = walletShares < mint.shares ? walletShares : mint.shares
-
     if (shares > maxBurnShares) {
       throw new Error(`The "shares" argument must be at most ${maxBurnShares}`)
     }
+
+    const { exitQueueShares } = await getUnstakeAmountForBurn({ ...values, shares })
 
     const params = getParams({
       userAddress,
@@ -65,10 +70,12 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
     }
   }
 
-  const burnShares = await getBurnAmountForUnstake(values)
+  const requiredBurnShares = await getBurnAmountForUnstake(values)
 
-  const [ { exitQueueShares: unlockedShares }, [ { shares: requestedShares } ] ] = await Promise.all([
-    getUnstakeAmountForBurn({ ...values, shares: burnShares }),
+  const burnShares = requiredBurnShares < maxBurnShares ? requiredBurnShares : maxBurnShares
+
+  const [ maxExitShares, [ { shares: requestedShares } ] ] = await Promise.all([
+    getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares }),
     vaultMulticall<[ { shares: bigint } ]>({
       ...baseMulticallArgs,
       request: {
@@ -78,7 +85,7 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
     }),
   ])
 
-  const exitShares = requestedShares < unlockedShares ? requestedShares : unlockedShares
+  const exitShares = requestedShares < maxExitShares ? requestedShares : maxExitShares
 
   const params = getParams({
     userAddress,

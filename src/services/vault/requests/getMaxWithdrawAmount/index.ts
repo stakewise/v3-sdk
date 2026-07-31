@@ -1,11 +1,8 @@
 import { parseEther } from 'ethers'
 
-import getStakeBalance from '../getStakeBalance'
-import getOsTokenConfig from '../getOsTokenConfig'
-import { constants, divideRoundingUp } from '../../../../helpers'
+import { vaultMulticall } from '../../../../contracts'
+import getMaxExitShares from '../../helpers/getMaxExitShares'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import getMintedBalance from '../../../osToken/requests/getBalance'
-import getUnstakeAmountForBurn from '../../../osToken/helpers/getUnstakeAmountForBurn'
 
 import { validate } from './validate'
 
@@ -19,50 +16,40 @@ const min = parseEther('0.00001')
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   const { contracts } = values
 
-  const { userAddress, withBurn } = validate(values)
+  const { userAddress, vaultAddress, withBurn } = validate(values)
 
-  const [ config, mint, stake ] = await Promise.all([
-    getOsTokenConfig(values),
-    getMintedBalance(values),
-    getStakeBalance(values),
-  ])
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
-  if (!mint.assets) {
-    return stake.assets
+  let burnShares = 0n
+
+  if (withBurn) {
+    const [ walletShares, osTokenShares ] = await Promise.all([
+      contracts.tokens.mintToken.balanceOf(userAddress),
+      vaultContract.osTokenPositions(userAddress),
+    ])
+
+    burnShares = walletShares < osTokenShares ? walletShares : osTokenShares
   }
 
-  if (Number(config.ltvPercent) <= 0 || stake.assets < min) {
+  const maxExitShares = await getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares })
+
+  if (!maxExitShares) {
     return 0n
   }
 
-  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
+  const [ { assets } ] = await vaultMulticall<[ { assets: bigint } ]>({
+    ...values,
+    userAddress,
+    vaultAddress,
+    vaultContract,
+    request: {
+      params: [ { method: 'convertToAssets', args: [ maxExitShares ] } ],
+      callStatic: true,
+    },
+  })
 
-  const ltvPercent = BigInt(config.ltvPercent)
-  const secondsInHour = 60n * 60n
-  const gap = avgRewardPerSecond * secondsInHour * mint.assets / constants.blockchain.amount1
-
-  const lockedAssets = divideRoundingUp((mint.assets + gap) * constants.blockchain.amount1, ltvPercent)
-  const assetsWithoutBurn = stake.assets - lockedAssets
-
-  if (!withBurn) {
-    return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
-  }
-
-  const walletShares = await contracts.tokens.mintToken.balanceOf(userAddress)
-
-  const burnShares = walletShares < mint.shares ? walletShares : mint.shares
-
-  if (burnShares >= mint.shares) {
-    return stake.assets
-  }
-
-  if (!burnShares) {
-    return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
-  }
-
-  const { receivedAssets } = await getUnstakeAmountForBurn({ ...values, shares: burnShares })
-
-  return receivedAssets
+  // dust below the exit queue minimum is not worth a transaction
+  return assets > min ? assets : 0n
 }
 
 
