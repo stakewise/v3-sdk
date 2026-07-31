@@ -130,7 +130,7 @@ class OsToken extends OsTokenTransactions {
   }
 
   /**
-   * Returns the maximum withdrawal unlocked by burning the given amount of osToken.
+   * Returns how much can be unstaked with the collateral that burning the given amount of osToken unlocks.
    * @see https://docs.stakewise.io/sdk/api/osToken/helpers/getunstakeamountforburn
    */
   public getUnstakeAmountForBurn(values: StakeWise.ExtractInput<GetUnstakeAmountForBurnInput>) {

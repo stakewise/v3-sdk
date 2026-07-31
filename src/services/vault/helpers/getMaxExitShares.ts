@@ -9,7 +9,6 @@ type GetMaxExitSharesInput = StakeWise.CommonParams & {
   burnShares: bigint
 }
 
-// The vault floors every conversion on its LTV check, the buffer adds 3 wei to fix that
 const ltvCheckBuffer = 3n
 const secondsInHour = 60n * 60n
 
@@ -29,6 +28,10 @@ const getMaxExitShares = async (values: GetMaxExitSharesInput): Promise<bigint> 
 
   if (!stakeShares || ltvPercent <= 0n) {
     return 0n
+  }
+
+  if (!osTokenShares) {
+    return stakeShares
   }
 
   const debtShares = osTokenShares > burnShares ? osTokenShares - burnShares : 0n

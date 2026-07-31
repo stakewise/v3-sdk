@@ -48,7 +48,6 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
     },
   })
 
-  // dust below the exit queue minimum is not worth a transaction
   return assets > min ? assets : 0n
 }
 
