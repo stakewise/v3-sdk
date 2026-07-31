@@ -1,8 +1,10 @@
 import { parseEther } from 'ethers'
 
-import { vaultMulticall } from '../../../../contracts'
-import getMaxExitShares from '../../helpers/getMaxExitShares'
+import getStakeBalance from '../getStakeBalance'
+import getOsTokenConfig from '../getOsTokenConfig'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
+import getMintedBalance from '../../../osToken/requests/getBalance'
 
 import { validate } from './validate'
 
@@ -13,42 +15,46 @@ export type GetMaxWithdrawAmountInput = StakeWise.BaseInput & {
 
 const min = parseEther('0.00001')
 
+const secondsInHour = 60n * 60n
+
+// The vault floors every conversion on its LTV check, the buffer adds 3 wei to fix that
+const ltvCheckBuffer = 3n
+
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
   const { contracts } = values
 
-  const { userAddress, vaultAddress, withBurn } = validate(values)
+  const { userAddress, withBurn } = validate(values)
 
-  const vaultContract = contracts.helpers.createVault({ vaultAddress })
+  const [ config, mint, stake ] = await Promise.all([
+    getOsTokenConfig(values),
+    getMintedBalance(values),
+    getStakeBalance(values),
+  ])
 
-  let burnShares = 0n
-
-  if (withBurn) {
-    const [ walletShares, osTokenShares ] = await Promise.all([
-      contracts.tokens.mintToken.balanceOf(userAddress),
-      vaultContract.osTokenPositions(userAddress),
-    ])
-
-    burnShares = walletShares < osTokenShares ? walletShares : osTokenShares
+  if (!mint.assets) {
+    return stake.assets
   }
 
-  const maxExitShares = await getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares })
-
-  if (!maxExitShares) {
+  if (Number(config.ltvPercent) <= 0 || stake.assets < min) {
     return 0n
   }
 
-  const [ { assets } ] = await vaultMulticall<[ { assets: bigint } ]>({
-    ...values,
-    userAddress,
-    vaultAddress,
-    vaultContract,
-    request: {
-      params: [ { method: 'convertToAssets', args: [ maxExitShares ] } ],
-      callStatic: true,
-    },
-  })
+  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
 
-  return assets > min ? assets : 0n
+  let debtAssets = mint.assets
+
+  if (withBurn) {
+    const walletShares = await contracts.tokens.mintToken.balanceOf(userAddress)
+    const burnShares = walletShares < mint.shares ? walletShares : mint.shares
+
+    debtAssets = await contracts.base.mintTokenController.convertToAssets(mint.shares - burnShares)
+  }
+
+  const gap = avgRewardPerSecond * secondsInHour * mint.assets / constants.blockchain.amount1
+  const lockedAssets = (debtAssets + gap) * constants.blockchain.amount1 / BigInt(config.ltvPercent)
+  const maxWithdrawAssets = stake.assets - lockedAssets - ltvCheckBuffer
+
+  return maxWithdrawAssets > min ? maxWithdrawAssets : 0n
 }
 
 

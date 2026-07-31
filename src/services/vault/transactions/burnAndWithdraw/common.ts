@@ -1,4 +1,4 @@
-import getMaxExitShares from '../../helpers/getMaxExitShares'
+import getMaxWithdrawAmount from '../../requests/getMaxWithdrawAmount'
 import getBurnAmountForUnstake from '../../../osToken/helpers/getBurnAmountForUnstake'
 import getUnstakeAmountForBurn from '../../../osToken/helpers/getUnstakeAmountForBurn'
 import { vaultMulticall, VaultMulticallBaseInput } from '../../../../contracts'
@@ -70,26 +70,24 @@ export const commonLogic = async (values: BurnAndWithdrawInput) => {
     }
   }
 
-  const requiredBurnShares = await getBurnAmountForUnstake(values)
-
-  const burnShares = requiredBurnShares < maxBurnShares ? requiredBurnShares : maxBurnShares
-
-  const [ maxExitShares, [ { shares: requestedShares } ] ] = await Promise.all([
-    getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares }),
-    vaultMulticall<[ { shares: bigint } ]>({
-      ...baseMulticallArgs,
-      request: {
-        params: [ { method: 'convertToShares', args: [ assets ] } ],
-        callStatic: true,
-      },
-    }),
+  const [ requiredBurnShares, maxAssets ] = await Promise.all([
+    getBurnAmountForUnstake(values),
+    getMaxWithdrawAmount({ ...values, withBurn: true }),
   ])
 
-  const exitShares = requestedShares < maxExitShares ? requestedShares : maxExitShares
+  const exitAssets = typeof assets !== 'undefined' && assets < maxAssets ? assets : maxAssets
+
+  const [ { shares: exitShares } ] = await vaultMulticall<[ { shares: bigint } ]>({
+    ...baseMulticallArgs,
+    request: {
+      params: [ { method: 'convertToShares', args: [ exitAssets ] } ],
+      callStatic: true,
+    },
+  })
 
   const params = getParams({
     userAddress,
-    burnShares,
+    burnShares: requiredBurnShares < maxBurnShares ? requiredBurnShares : maxBurnShares,
     exitShares,
   })
 
