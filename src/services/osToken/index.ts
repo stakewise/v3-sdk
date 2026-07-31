@@ -30,6 +30,9 @@ import {
 
   getBurnAmountForUnstake,
   GetBurnAmountForUnstakeInput,
+
+  getUnstakeAmountForBurn,
+  GetUnstakeAmountForBurnInput,
 } from './helpers'
 
 import OsTokenTransactions from './transactions'
@@ -124,6 +127,14 @@ class OsToken extends OsTokenTransactions {
    */
   public getBurnAmountForUnstake(values: StakeWise.ExtractInput<GetBurnAmountForUnstakeInput>) {
     return getBurnAmountForUnstake({ ...this.params, ...values })
+  }
+
+  /**
+   * Returns how much can be unstaked with the collateral that burning the given amount of osToken unlocks.
+   * @see https://docs.stakewise.io/sdk/api/osToken/helpers/getunstakeamountforburn
+   */
+  public getUnstakeAmountForBurn(values: StakeWise.ExtractInput<GetUnstakeAmountForBurnInput>) {
+    return getUnstakeAmountForBurn({ ...this.params, ...values })
   }
 
   /**

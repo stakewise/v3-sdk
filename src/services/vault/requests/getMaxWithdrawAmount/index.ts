@@ -1,11 +1,8 @@
 import { parseEther } from 'ethers'
 
-import getStakeBalance from '../getStakeBalance'
-import getHarvestParams from '../getHarvestParams'
-import getOsTokenConfig from '../getOsTokenConfig'
-import { constants } from '../../../../helpers'
+import { vaultMulticall } from '../../../../contracts'
+import getMaxExitShares from '../../helpers/getMaxExitShares'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import getMintedBalance from '../../../osToken/requests/getBalance'
 
 import { validate } from './validate'
 
@@ -21,53 +18,37 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
 
   const { userAddress, vaultAddress, withBurn } = validate(values)
 
-  const [ config, mint, stake ] = await Promise.all([
-    getOsTokenConfig(values),
-    getMintedBalance(values),
-    getStakeBalance(values),
-  ])
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
-  if (!mint.assets) {
-    return stake.assets
+  let burnShares = 0n
+
+  if (withBurn) {
+    const [ walletShares, osTokenShares ] = await Promise.all([
+      contracts.tokens.mintToken.balanceOf(userAddress),
+      vaultContract.osTokenPositions(userAddress),
+    ])
+
+    burnShares = walletShares < osTokenShares ? walletShares : osTokenShares
   }
 
-  if (Number(config.ltvPercent) <= 0 || stake.assets < min) {
+  const maxExitShares = await getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares })
+
+  if (!maxExitShares) {
     return 0n
   }
 
-  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
-
-  const secondsInHour = 60n * 60n
-  const gap = avgRewardPerSecond * secondsInHour * mint.assets / constants.blockchain.amount1
-  const lockedAssets = (mint.assets + gap) * constants.blockchain.amount1 / BigInt(config.ltvPercent)
-  const assetsWithoutBurn = stake.assets - lockedAssets
-
-  if (!withBurn) {
-    return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
-  }
-
-  const walletShares = await contracts.tokens.mintToken.balanceOf(userAddress)
-
-  const burnShares = walletShares < mint.shares ? walletShares : mint.shares
-
-  if (burnShares >= mint.shares) {
-    return stake.assets
-  }
-
-  if (!burnShares) {
-    return assetsWithoutBurn > min ? assetsWithoutBurn : 0n
-  }
-
-  const harvest = await getHarvestParams(values)
-
-  const { receivedAssets } = await contracts.special.stakeCalculator.calculateUnstake.staticCall({
-    user: userAddress,
-    vault: vaultAddress,
-    harvestParams: harvest.params,
-    osTokenShares: burnShares,
+  const [ { assets } ] = await vaultMulticall<[ { assets: bigint } ]>({
+    ...values,
+    userAddress,
+    vaultAddress,
+    vaultContract,
+    request: {
+      params: [ { method: 'convertToAssets', args: [ maxExitShares ] } ],
+      callStatic: true,
+    },
   })
 
-  return assetsWithoutBurn + receivedAssets
+  return assets > min ? assets : 0n
 }
 
 
