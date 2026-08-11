@@ -4,6 +4,8 @@
 - [sdk.vault.burnAndWithdraw](https://docs.stakewise.io/sdk/api/vault/transactions/burnandwithdraw)
 - [sdk.utils.checkTxBatchSupported](https://docs.stakewise.io/sdk/api/utils/checktxbatchsupported)
 - [sdk.osToken.getUnstakeAmountForBurn](https://docs.stakewise.io/sdk/api/osToken/helpers/getunstakeamountforburn)
+- [sdk.osToken.enterExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/enterexitqueue)
+- [sdk.osToken.claimExitedAssets](https://docs.stakewise.io/sdk/api/osToken/transactions/claimexitedassets)
 
 ## Modified methods
 
