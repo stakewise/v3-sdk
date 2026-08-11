@@ -46,6 +46,7 @@ query Vault($address: ID!) {
     depositDataManager
     pendingMetaSubVault
     allocatorMaxBoostApy
+    isStateUpdateRequired
     lastFeeUpdateTimestamp
   }
 }

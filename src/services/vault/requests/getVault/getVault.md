@@ -54,6 +54,7 @@ type Output = {
   tokenSymbol: string | null
   displayName: string | null
   description: string | null
+  isStateUpdateRequired: boolean
   lastFeeUpdateTimestamp: string
   osTokenConfig: {
     ltvPercent: string
@@ -91,6 +92,7 @@ type Output = {
 | `tokenName`                 | ERC20 token name |
 | `tokenSymbol`               | ERC20 token symbol |
 | `displayName`               | Name of vault |
+| `isStateUpdateRequired`     | Indicates whether the vault state is out of sync with the latest rewards nonce |
 | `pendingMetaSubVault`       | The address of the meta vault that is pending to join as a sub vault |
 | `ejectingSubVault`          | The address of the sub vault currently being ejected (for meta vaults) |
 | `canHarvest`               | Defines whether the vault can harvest new rewards |
