@@ -1,16 +1,18 @@
+import type * as z from 'zod/mini'
+
 import type { TransactionsQueryVariables } from '../../../graphql/subgraph/transactions'
-import { apiUrls, validateArgs } from '../../../helpers'
+import { apiUrls } from '../../../helpers'
 import graphql from '../../../graphql'
 
+import { validate, validateSchema } from './validate'
 
-export type GetTransactionsInput = StakeWise.CommonParams & {
-  hash: string
-}
+
+export type GetTransactionsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export const getTransactions = (input: GetTransactionsInput) => {
-  const { options, hash } = input
+  const { options } = input
 
-  validateArgs.string({ hash })
+  const { hash } = validate(input)
 
   return graphql.subgraph.transactions.fetchTransactionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),

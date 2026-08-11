@@ -30,20 +30,24 @@ type Output = {
   dailyRewardsJpy: number
   dailyRewardsKrw: number
   dailyRewardsAud: number
+  dailyStakeRewards: number
+  dailyBoostRewards: number
 }
 ```
 
-| Name              | Description               |
-|-------------------|---------------------------|
-| `date`            | Сurrent rate date         |
-| `dailyRewards`    | Daily reward asset in ETH |
-| `dailyRewardsUsd` | Daily reward asset in USD |
-| `dailyRewardsEur` | Daily reward asset in EUR |
-| `dailyRewardsGbp` | Daily reward asset in GBP |
-| `dailyRewardsCny` | Daily reward asset in CNY |
-| `dailyRewardsJpy` | Daily reward asset in JPY |
-| `dailyRewardsKrw` | Daily reward asset in KRW |
-| `dailyRewardsAud` | Daily reward asset in AUD |
+| Name                | Description                     |
+|---------------------|---------------------------------|
+| `date`              | Сurrent rate date               |
+| `dailyRewards`      | Daily reward asset in ETH       |
+| `dailyRewardsUsd`   | Daily reward asset in USD       |
+| `dailyRewardsEur`   | Daily reward asset in EUR       |
+| `dailyRewardsGbp`   | Daily reward asset in GBP       |
+| `dailyRewardsCny`   | Daily reward asset in CNY       |
+| `dailyRewardsJpy`   | Daily reward asset in JPY       |
+| `dailyRewardsKrw`   | Daily reward asset in KRW       |
+| `dailyRewardsAud`   | Daily reward asset in AUD       |
+| `dailyStakeRewards` | Daily stake reward asset in ETH |
+| `dailyBoostRewards` | Daily boost reward asset in ETH |
 
 #### Example:
 

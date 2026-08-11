@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const docsUrl = 'https://docs.stakewise.io'
 
 const srcDir = path.resolve(__dirname, '../src')
+const documentationDir = path.resolve(__dirname, '../documentation')
 
 const fetchSitemap = () => {
   const sitemapUrl = `${docsUrl}/sitemap.xml`
@@ -64,6 +65,29 @@ const getSdkApiSlugs = () => {
   }
 }
 
+const getDocumentationSlugs = () => {
+  try {
+    const output = execSync(
+      `find "${documentationDir}" -type f \\( -name "*.md" -o -name "*.mdx" \\)`,
+      { encoding: 'utf-8' }
+    )
+
+    return output
+      .split('\n')
+      .filter(Boolean)
+      .map((filePath) => (
+        filePath
+          .replace(documentationDir, '/sdk')
+          .replace(/\.mdx?$/, '')
+          .replace(/\/index$/, '')
+          .toLowerCase()
+      ))
+  }
+  catch {
+    return []
+  }
+}
+
 const getUrls = () => {
   const rootDir = path.resolve(__dirname, '..')
 
@@ -96,7 +120,7 @@ const checkDocLinks = async () => {
     return
   }
 
-  const slugs = getSdkApiSlugs()
+  const slugs = [ ...getSdkApiSlugs(), ...getDocumentationSlugs() ]
   const broken = []
 
   let sitemap = null

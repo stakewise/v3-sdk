@@ -1,16 +1,15 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
+import { apiUrls } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
-export type GetUserApyInput = StakeWise.CommonParams & {
-  vaultAddress: string
-  userAddress: string
-}
+export type GetUserApyInput = StakeWise.BaseInput
 
 const getUserApy = (input: GetUserApyInput) => {
-  const { options, vaultAddress, userAddress } = input
+  const { options } = input
 
-  validateArgs.address({ vaultAddress })
+  const { vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchUserApyQuery({
     url: apiUrls.getSubgraphqlUrl(options),

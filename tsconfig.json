@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "strict": true,
     "rootDir": ".",
     "allowJs": true,
@@ -17,15 +16,18 @@
     "removeComments": false,
     "declarationDir": "dist",
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "*": [
-        "src/*"
+        "./src/*"
       ]
     },
+    "types": [
+      "jest"
+    ]
   },
   "include": [
     "src/**/*.ts",

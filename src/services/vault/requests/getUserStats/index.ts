@@ -1,18 +1,17 @@
-import { apiUrls, validateArgs, calculateUserStats } from '../../../../helpers'
+import type * as z from 'zod/mini'
+
+import { apiUrls, calculateUserStats } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
+import { validate, validateSchema } from './validate'
 
-export type GetUserStatsInput = StakeWise.CommonParams & {
-  daysCount: number
-  userAddress: string
-  vaultAddress: string
-}
+
+export type GetUserStatsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getUserStats = (input: GetUserStatsInput) => {
-  const { options, userAddress, vaultAddress, daysCount } = input
+  const { options } = input
 
-  validateArgs.address({ vaultAddress, userAddress })
-  validateArgs.number({ daysCount })
+  const { daysCount, userAddress, vaultAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchUserRewardsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
@@ -20,8 +19,8 @@ const getUserStats = (input: GetUserStatsInput) => {
       limit: daysCount,
       where: {
         allocator_: {
-          address: userAddress.toLowerCase(),
           vault: vaultAddress.toLowerCase(),
+          address: userAddress.toLowerCase(),
         },
       },
     },

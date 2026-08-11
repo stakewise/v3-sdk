@@ -1,11 +1,12 @@
-import { validateArgs } from '../../../../helpers'
+import { validate } from './validate'
+
 import type { CreateRewardSplitterInput } from './types'
 
 
 export const commonLogic = async (values: CreateRewardSplitterInput) => {
-  const { contracts, userAddress, vaultAddress, provider } = values
+  const { contracts, provider } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  const { userAddress } = validate(values)
 
   const signer = await provider.getSigner(userAddress)
 

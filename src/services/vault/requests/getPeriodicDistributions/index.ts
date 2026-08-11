@@ -1,26 +1,25 @@
+import type * as z from 'zod/mini'
+
 import type { PeriodicDistributionsQueryPayload } from '../../../../graphql/subgraph/vault'
-import { apiUrls, validateArgs } from '../../../../helpers'
+import { apiUrls } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
+import { validate, validateSchema } from './validate'
 
-export type GetPeriodicDistributionsInput = StakeWise.CommonParams & {
-  vaultAddress: string
-  endTimestamp: number
-  startTimestamp: number
-}
+
+export type GetPeriodicDistributionsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getPeriodicDistributions = (values: GetPeriodicDistributionsInput) => {
-  const { options, vaultAddress, startTimestamp, endTimestamp } = values
+  const { options, startTimestamp, endTimestamp } = values
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.number({ startTimestamp, endTimestamp })
+  const { vaultAddress } = validate(values)
 
   return graphql.subgraph.vault.fetchPeriodicDistributionsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       endTimestamp: String(endTimestamp),
       startTimestamp: String(startTimestamp),
-      vaultAddress: vaultAddress.toLowerCase(),
+      vaultAddress,
     },
     modifyResult: (data: PeriodicDistributionsQueryPayload) => data?.periodicDistributions || [],
   })

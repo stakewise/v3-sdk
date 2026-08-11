@@ -1,10 +1,10 @@
+import type * as z from 'zod/mini'
+
+import { validateSchema } from './validate'
 import { UnlockEncodeOutput } from './unlockEncode'
 
 
-export type UnlockInput = StakeWise.CommonParams & {
-  percent: number
-  userAddress: string
-  vaultAddress: string
+export type UnlockInput = StakeWise.CommonParams & z.input<typeof validateSchema> & {
   leverageStrategyData?: {
     version: number
     isUpgradeRequired: boolean

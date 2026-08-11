@@ -1,20 +1,16 @@
-import { constants, validateArgs } from '../../../../helpers'
+import type * as z from 'zod/mini'
+
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
+import { validate, validateSchema } from './validate'
 
 
-export type GetBurnAmountInput = StakeWise.CommonParams & {
-  ltvPercent: bigint
-  mintedAssets: bigint
-  stakedAssets: bigint
-  vaultAddress: string
-  newStakedAssets: bigint
-}
+export type GetBurnAmountInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getBurnAmount = async (values: GetBurnAmountInput) => {
-  const { contracts, vaultAddress, ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = values
+  const { contracts } = values
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.bigint({ ltvPercent, mintedAssets, stakedAssets, newStakedAssets })
+  const { ltvPercent, mintedAssets, stakedAssets, newStakedAssets } = validate(values)
 
   const hasMinted = mintedAssets && mintedAssets > 0
 

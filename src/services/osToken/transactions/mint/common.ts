@@ -1,15 +1,11 @@
-import { ZeroAddress } from 'ethers'
-
+import { validate } from './validate'
 import type { MintInput } from './types'
-import { validateArgs } from '../../../../helpers'
 import { vaultMulticall } from '../../../../contracts'
 
 
 export const commonLogic = (values: MintInput) => {
-  const { contracts, vaultAddress, userAddress, referrerAddress = ZeroAddress, shares } = values
-
-  validateArgs.bigint({ shares })
-  validateArgs.address({ vaultAddress, userAddress, referrerAddress })
+  const { contracts } = values
+  const { shares, userAddress, vaultAddress, referrerAddress } = validate(values)
 
   const multicallArgs: Omit<Parameters<typeof vaultMulticall>[0], 'request'> = {
     vaultContract: contracts.helpers.createVault({ vaultAddress }),

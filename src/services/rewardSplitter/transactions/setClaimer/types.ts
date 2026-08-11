@@ -1,7 +1,9 @@
-export type SetClaimerInput = Omit<StakeWise.BaseInput, 'vaultAddress'> & {
-  claimerAddress: string
-  rewardSplitterAddress: string
-}
+import type * as z from 'zod/mini'
+
+import { validateSchema } from './validate'
+
+
+export type SetClaimerInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 export interface ExtractSetClaimer {
   (values: StakeWise.ExtractInput<SetClaimerInput>): Promise<StakeWise.TransactionHash>

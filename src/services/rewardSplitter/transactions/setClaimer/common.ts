@@ -1,11 +1,11 @@
-import { validateArgs } from '../../../../helpers'
+import { validate } from './validate'
 import type { SetClaimerInput } from './types'
 
 
 export const commonLogic = async (values: SetClaimerInput) => {
-  const { contracts, userAddress, rewardSplitterAddress, claimerAddress, provider } = values
+  const { contracts, provider } = values
 
-  validateArgs.address({ userAddress, claimerAddress, rewardSplitterAddress })
+  const { userAddress, rewardSplitterAddress } = validate(values)
 
   const signer = await provider.getSigner(userAddress)
 

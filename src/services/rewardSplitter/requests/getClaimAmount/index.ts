@@ -1,18 +1,18 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
-import modifyClaimAmount from './modifyClaimAmount'
+import type * as z from 'zod/mini'
+
+import { apiUrls } from '../../../../helpers'
 import graphql from '../../../../graphql'
 
+import modifyClaimAmount from './modifyClaimAmount'
+import { validate, validateSchema } from './validate'
 
-export type GetClaimAmountInput = StakeWise.CommonParams & {
-  vaultAddress: string
-  userAddress: string
-  rewardSplitterAddress: string
-}
+
+export type GetClaimAmountInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 const getClaimAmount = (input: GetClaimAmountInput) => {
-  const { vaultAddress, userAddress, rewardSplitterAddress, options } = input
+  const { options } = input
 
-  validateArgs.address({ vaultAddress, userAddress, rewardSplitterAddress })
+  const { vaultAddress, userAddress, rewardSplitterAddress } = validate(input)
 
   return graphql.subgraph.rewardSplitters.fetchRewardSplitterShareHoldersQuery({
     url: apiUrls.getSubgraphqlUrl(options),

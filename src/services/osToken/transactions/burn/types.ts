@@ -1,8 +1,7 @@
-export type BurnInput = StakeWise.CommonParams & {
-  shares: bigint
-  userAddress: string
-  vaultAddress: string
-}
+import type { BurnArgs } from './validate'
+
+
+export type BurnInput = StakeWise.CommonParams & BurnArgs
 
 export interface ExtractBurn {
   (values: StakeWise.ExtractInput<BurnInput>): Promise<StakeWise.TransactionHash>

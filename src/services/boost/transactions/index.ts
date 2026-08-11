@@ -9,25 +9,25 @@ import { createUpgradeLeverageStrategy, ExtractUpgradeLeverageStrategy } from '.
 class BoostTransactions {
 
   /**
-   * @description Lock your osToken to increase apy
+   * Lock your osToken to increase apy
    * @see https://docs.stakewise.io/sdk/api/boost/transactions/lock
    */
   public lock: ExtractLock
 
   /**
-   * @description Unlock your boosted osToken
+   * Unlock your boosted osToken
    * @see https://docs.stakewise.io/sdk/api/boost/transactions/unlock
    */
   public unlock: ExtractUnlock
 
   /**
-   * @description Claim your boosted osTokens and accumulated rewards
+   * Claim your boosted osTokens and accumulated rewards
    * @see https://docs.stakewise.io/sdk/api/boost/transactions/claimqueue
    */
   public claimQueue: ExtractClaimQueue
 
   /**
-   * @description Upgrade leverage strategy contract version
+   * Upgrade leverage strategy contract version
    * @see https://docs.stakewise.io/sdk/api/boost/transactions/upgradeleveragestrategy
    */
   public upgradeLeverageStrategy: ExtractUpgradeLeverageStrategy

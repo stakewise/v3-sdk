@@ -1,8 +1,10 @@
 import type { AllocatorActionsQueryVariables, AllocatorActionsQueryPayload } from '../../../../graphql/subgraph/allocatorActions'
-import { AllocatorActionType, apiUrls, validateArgs } from '../../../../helpers'
+import { AllocatorActionType, apiUrls } from '../../../../helpers'
 import modifyStakerActions from './modifyStakerActions'
-import { ModifiedStakerActions } from './types'
 import graphql from '../../../../graphql'
+
+import { ModifiedStakerActions } from './types'
+import { validate } from './validate'
 
 
 export type GetStakerActionsInput = StakeWise.CommonParams & {
@@ -14,14 +16,9 @@ export type GetStakerActionsInput = StakeWise.CommonParams & {
 }
 
 const getStakerActions = (input: GetStakerActionsInput) => {
-  const { options, skip, limit, types, vaultAddress, userAddress } = input
+  const { options, types } = input
 
-  validateArgs.address({ vaultAddress })
-  validateArgs.number({ skip, limit })
-
-  if (userAddress) {
-    validateArgs.address({ userAddress })
-  }
+  const { skip, limit, vaultAddress, userAddress } = validate(input)
 
   if (types) {
     if (!Array.isArray(types)) {
@@ -44,8 +41,8 @@ const getStakerActions = (input: GetStakerActionsInput) => {
       first: limit,
       where: {
         actionType_in: types,
-        vault_: { id: vaultAddress.toLowerCase() },
-        address: userAddress ? userAddress.toLowerCase() : undefined,
+        address: userAddress,
+        vault_: { id: vaultAddress },
       } as AllocatorActionsQueryVariables['where'],
     },
     modifyResult: (data: AllocatorActionsQueryPayload) => modifyStakerActions({ data, network: options.network }),

@@ -1,17 +1,19 @@
+import * as z from 'zod/mini'
 import { isAddress } from 'ethers'
 
 import Vault from '../../../vault'
-import { validateArgs } from '../../../../helpers'
+import { parseArgs, schema } from '../../../../helpers'
 import { rewardSplitterMulticall } from '../../../../contracts'
 import type { RewardSplitterMulticallBaseInput } from '../../../../contracts'
+
 import type { FeeRecipient, UpdateFeeRecipientsInput } from './types'
 
 
-const validateList = (values: Record<string, FeeRecipient[]>, withEmptyCheck?: boolean) => {
+const validateList = (values: Record<string, FeeRecipient[]>) => {
   Object.keys(values).forEach((key) => {
     const list = values[key]
 
-    validateArgs.array({ [key]: values[key] }, withEmptyCheck)
+    parseArgs(z.object({ [key]: schema.array() }), { [key]: values[key] })
 
     const isListValid = list.every(({ address, shares }) => (
       isAddress(address)
@@ -32,11 +34,15 @@ export const commonLogic = async (values: UpdateFeeRecipientsInput) => {
 
   let oldFeeRecipients: FeeRecipient[] = values.oldFeeRecipients as FeeRecipient[]
 
-  validateArgs.address({ vaultAddress, userAddress, rewardSplitterAddress })
+  parseArgs(z.object({
+    vaultAddress: schema.ethAddress,
+    userAddress: schema.ethAddress,
+    rewardSplitterAddress: schema.ethAddress,
+  }), { vaultAddress, userAddress, rewardSplitterAddress })
   validateList({ feeRecipients })
 
-  if (oldFeeRecipients) {
-    validateList({ oldFeeRecipients }, false)
+  if (oldFeeRecipients?.length) {
+    validateList({ oldFeeRecipients })
   }
 
   const baseMulticall: RewardSplitterMulticallBaseInput = {

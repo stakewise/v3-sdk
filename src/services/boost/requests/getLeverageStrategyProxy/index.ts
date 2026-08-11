@@ -1,16 +1,14 @@
-import { validateArgs } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
+import { validate } from './validate'
 
-export type GetLeverageStrategyProxyInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+
+export type GetLeverageStrategyProxyInput = StakeWise.BaseInput
 
 const getLeverageStrategyProxy = (values: GetLeverageStrategyProxyInput) => {
-  const { contracts, userAddress, vaultAddress } = values
+  const { contracts } = values
 
-  validateArgs.address({ userAddress, vaultAddress })
+  const { userAddress, vaultAddress } = validate(values)
 
   return contracts.special.leverageStrategyV2.getStrategyProxy(vaultAddress, userAddress)
 }

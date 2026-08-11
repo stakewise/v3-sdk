@@ -1,15 +1,17 @@
-import { validateArgs } from '../../../../../helpers'
+import * as z from 'zod/mini'
+
+import { schema, parseArgs } from '../../../../../helpers'
 import { vaultMulticall } from '../../../../../contracts'
 
 
-export type SetValidatorsManagerParams = {
-  validatorsManager: string
-}
+const setValidatorsManagerParamsSchema = z.object({
+  validatorsManager: schema.ethAddress,
+})
+
+export type SetValidatorsManagerParams = z.input<typeof setValidatorsManagerParamsSchema>
 
 const getValidatorsManagerParams = (values: SetValidatorsManagerParams) => {
-  const { validatorsManager } = values
-
-  validateArgs.address({ validatorsManager })
+  const { validatorsManager } = parseArgs(setValidatorsManagerParamsSchema, values)
 
   const params: Parameters<typeof vaultMulticall>[0]['request']['params'] = [
     {

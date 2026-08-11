@@ -1,45 +1,54 @@
 import { parseEther } from 'ethers'
-import getStakeBalance from '../getStakeBalance'
-import getOsTokenConfig from '../getOsTokenConfig'
-import { constants, validateArgs } from '../../../../helpers'
+
+import { vaultMulticall } from '../../../../contracts'
+import getMaxExitShares from '../../helpers/getMaxExitShares'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
-import getMintedBalance from '../../../osToken/requests/getBalance'
+
+import { validate } from './validate'
 
 
-export type GetMaxWithdrawAmountInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
+export type GetMaxWithdrawAmountInput = StakeWise.BaseInput & {
+  withBurn?: boolean
 }
 
 const min = parseEther('0.00001')
 
 const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
-  const { contracts, vaultAddress } = values
+  const { contracts } = values
 
-  validateArgs.address({ vaultAddress })
+  const { userAddress, vaultAddress, withBurn } = validate(values)
 
-  const [ config, mint, stake ] = await Promise.all([
-    getOsTokenConfig(values),
-    getMintedBalance(values),
-    getStakeBalance(values),
-  ])
+  const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
-  if (!mint.assets) {
-    return stake.assets
+  let burnShares = 0n
+
+  if (withBurn) {
+    const [ walletShares, osTokenShares ] = await Promise.all([
+      contracts.tokens.mintToken.balanceOf(userAddress),
+      vaultContract.osTokenPositions(userAddress),
+    ])
+
+    burnShares = walletShares < osTokenShares ? walletShares : osTokenShares
   }
 
-  if (Number(config.ltvPercent) <= 0 || stake.assets < min) {
+  const maxExitShares = await getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares })
+
+  if (!maxExitShares) {
     return 0n
   }
 
-  const avgRewardPerSecond = await contracts.base.mintTokenController.avgRewardPerSecond()
+  const [ { assets } ] = await vaultMulticall<[ { assets: bigint } ]>({
+    ...values,
+    userAddress,
+    vaultAddress,
+    vaultContract,
+    request: {
+      params: [ { method: 'convertToAssets', args: [ maxExitShares ] } ],
+      callStatic: true,
+    },
+  })
 
-  const secondsInHour = 60n * 60n
-  const gap = avgRewardPerSecond * secondsInHour * mint.assets / constants.blockchain.amount1
-  const lockedAssets = (mint.assets + gap) * constants.blockchain.amount1 / BigInt(config.ltvPercent)
-  const maxWithdrawAssets = stake.assets - lockedAssets
-
-  return maxWithdrawAssets > min ? maxWithdrawAssets : 0n
+  return assets > min ? assets : 0n
 }
 
 

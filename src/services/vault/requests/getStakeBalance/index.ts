@@ -1,22 +1,21 @@
-import { apiUrls, validateArgs } from '../../../../helpers'
 import graphql from '../../../../graphql'
+import { apiUrls } from '../../../../helpers'
+
+import { validate } from './validate'
 
 
-export type GetStakeBalanceInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
-}
+export type GetStakeBalanceInput = StakeWise.BaseInput
 
 const getStakeBalance = (values: GetStakeBalanceInput) => {
-  const { options, vaultAddress, userAddress } = values
+  const { options } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  const { userAddress, vaultAddress } = validate(values)
 
   return graphql.subgraph.allocator.fetchAllocatorsQuery({
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
-      address: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),
+      address: userAddress.toLowerCase(),
     },
     modifyResult: (data) => ({
       assets: BigInt(data?.allocators?.[0]?.assets || 0),

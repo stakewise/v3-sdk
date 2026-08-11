@@ -1,19 +1,20 @@
 import getBalance from '../getBalance'
-import { constants, validateArgs } from '../../../../helpers'
+import { constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 import getStakeBalance from '../../../vault/requests/getStakeBalance'
 import getOsTokenConfig from '../../../vault/requests/getOsTokenConfig'
 
+import { validate } from './validate'
 
-export type GetMaxMintAmountInput = StakeWise.CommonParams & {
-  userAddress: string
-  vaultAddress: string
+
+export type GetMaxMintAmountInput = StakeWise.BaseInput & {
+  additionalStakedAssets?: bigint
 }
 
 const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
-  const { contracts, vaultAddress, userAddress } = values
+  const { contracts, additionalStakedAssets } = values
 
-  validateArgs.address({ vaultAddress, userAddress })
+  validate(values)
 
   const [ config, stake, mint ] = await Promise.all([
     getOsTokenConfig(values),
@@ -22,7 +23,7 @@ const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
   ])
 
   const ltvPercent = BigInt(config.ltvPercent)
-  const stakedAssets = stake.assets
+  const stakedAssets = stake.assets + (additionalStakedAssets || 0n)
   const mintedAssets = mint.assets
 
   if (ltvPercent <= 0 || stakedAssets <= 0) {
@@ -39,7 +40,7 @@ const getMaxMintAmount = async (values: GetMaxMintAmountInput) => {
     const maxMintShares = await contracts.base.mintTokenController.convertToShares(maxMintAssets)
 
     // solves the problem of incorrect rounding
-    return maxMintShares -1n
+    return maxMintShares > 0n ? maxMintShares - 1n : 0n
   }
 
   return 0n

@@ -1,16 +1,14 @@
-import { OsTokenPositionHealth, BigDecimal, validateArgs, constants } from '../../../../helpers'
+import type * as z from 'zod/mini'
+
+import { OsTokenPositionHealth, BigDecimal, constants } from '../../../../helpers'
+
+import { validate, validateSchema } from './validate'
 
 
-export type GetHealthFactorInput = {
-  mintedAssets: bigint
-  stakedAssets: bigint
-  liqThresholdPercent: bigint
-}
+export type GetHealthFactorInput = z.input<typeof validateSchema>
 
 const getHealthFactor = (values: GetHealthFactorInput) => {
-  const { mintedAssets, stakedAssets, liqThresholdPercent } = values
-
-  validateArgs.bigint({ mintedAssets, stakedAssets, liqThresholdPercent })
+  const { mintedAssets, stakedAssets, liqThresholdPercent } = validate(values)
 
   if (mintedAssets === 0n || stakedAssets === 0n) {
     return {

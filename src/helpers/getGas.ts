@@ -1,15 +1,21 @@
-import validateArgs from './validateArgs'
+import * as z from 'zod/mini'
 
+import schema from './schemas'
+import parseArgs from './parseArgs'
+
+
+const validateSchema = z.object({
+  estimatedGas: schema.bigint,
+})
 
 type GetGasInput = {
   provider: StakeWise.Provider
-  estimatedGas: bigint
-}
+} & z.input<typeof validateSchema>
 
 const getGas = async (value: GetGasInput): Promise<bigint> => {
   const { provider, estimatedGas } = value
 
-  validateArgs.bigint({ estimatedGas })
+  parseArgs(validateSchema, value)
 
   const [ feeData, latestBlock ] = await Promise.all([
     provider.getFeeData(),

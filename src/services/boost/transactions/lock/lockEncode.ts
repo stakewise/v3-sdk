@@ -11,7 +11,7 @@ export type LockEncodeOutput = {
 }
 
 const lockEncode = async (values: LockInput): Promise<LockEncodeOutput> => {
-  const { multiSigData, multicallArgs, isUpgradeRequired } = await commonLogic(values)
+  const { approveData, multicallArgs, isUpgradeRequired } = await commonLogic(values)
 
   const [
     lockTxData,
@@ -25,8 +25,8 @@ const lockEncode = async (values: LockInput): Promise<LockEncodeOutput> => {
         transactionData: true,
       },
     }),
-    multiSigData
-      ? multiSigData.contract.approve.populateTransaction(...multiSigData.approveArgs)
+    approveData
+      ? approveData.contract.approve.populateTransaction(...approveData.approveArgs)
       : Promise.resolve(null),
     isUpgradeRequired
       ? upgradeLeverageStrategyEncode(values)
