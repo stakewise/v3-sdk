@@ -1,5 +1,3 @@
-export { default as commonMulticall } from './commonMulticall'
-
 export { default as vaultMulticall } from './vaultMulticall'
 export type { VaultMulticallBaseInput } from './vaultMulticall'
 

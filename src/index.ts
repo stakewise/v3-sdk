@@ -16,6 +16,7 @@ export {
   mergeRewardsFiat,
   wrapErrorHandler,
   calculateUserStats,
+  getDefaultHarvestParams,
 } from './helpers'
 
 export const chains = constants.chains
