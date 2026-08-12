@@ -2,6 +2,7 @@
 
 - [sdk.osToken.enterExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/enterexitqueue)
 - [sdk.osToken.claimExitedAssets](https://docs.stakewise.io/sdk/api/osToken/transactions/claimexitedassets)
+- [sdk.vault.getEstimatedApy](https://docs.stakewise.io/sdk/api/vault/requests/getestimatedapy)
 
 ## Modified methods
 

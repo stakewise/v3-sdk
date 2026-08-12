@@ -11,6 +11,7 @@ import {
   getMaxWithdraw, GetMaxWithdrawInput,
   getStakeBalance, GetStakeBalanceInput,
   getVaultVersion, GetVaultVersionInput,
+  getEstimatedApy, GetEstimatedApyInput,
   getVaultFactory, GetVaultFactoryInput,
   getStakerActions, GetStakerActionsInput,
   getOsTokenConfig, GetOsTokenConfigInput,
@@ -167,6 +168,15 @@ class Vault extends VaultTransactions {
    */
   public getUserApy(values: StakeWise.ExtractInput<GetUserApyInput>) {
     return getUserApy({ ...this.params, ...values })
+  }
+
+  /**
+   * Project the user's APY after a pending action (stake, mint, burn, boost) via position deltas.
+   * Pass zero deltas to reproduce the current APY. Mirrors the subgraph allocator APY calculation.
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getestimatedapy
+   */
+  public getEstimatedApy(values: StakeWise.ExtractInput<GetEstimatedApyInput>) {
+    return getEstimatedApy({ ...this.params, ...values })
   }
 
   /**

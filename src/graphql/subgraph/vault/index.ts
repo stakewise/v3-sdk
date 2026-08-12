@@ -16,8 +16,14 @@ export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userR
 export { fetchHarvestParamsQuery } from './harvestParamsQuery.graphql'
 export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './harvestParamsQuery.graphql'
 
+export { fetchEstimatedApyDataQuery } from './estimatedApyDataQuery.graphql'
+export type { EstimatedApyDataQueryPayload, EstimatedApyDataQueryVariables } from './estimatedApyDataQuery.graphql'
+
 export { fetchWhitelistAccountsQuery } from './whitelistAccountsQuery.graphql'
 export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } from './whitelistAccountsQuery.graphql'
+
+export { fetchBoostProxyApyDataQuery } from './boostProxyApyDataQuery.graphql'
+export type { BoostProxyApyDataQueryPayload, BoostProxyApyDataQueryVariables } from './boostProxyApyDataQuery.graphql'
 
 export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql'
 export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql'
