@@ -57,6 +57,7 @@ describe('modifyVault', () => {
         ltvPercent: '0',
         liqThresholdPercent: '0',
       },
+      isStateUpdateRequired: false,
     },
   }
 
@@ -109,6 +110,7 @@ describe('modifyVault', () => {
       depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       ejectingSubVault: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       pendingMetaSubVault: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
+      isStateUpdateRequired: false,
     }
 
     const result = modifyVault({
