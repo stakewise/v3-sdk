@@ -22,9 +22,6 @@ export type { GetStakerActionsInput } from './getStakerActions'
 export { default as getVaultVersion } from './getVaultVersion'
 export type { GetVaultVersionInput } from './getVaultVersion'
 
-export { default as getEstimatedApy } from './getEstimatedApy'
-export type { GetEstimatedApyInput } from './getEstimatedApy'
-
 export { default as getVaultFactory } from './getVaultFactory'
 export type { GetVaultFactoryInput } from './getVaultFactory'
 
