@@ -1,0 +1,54 @@
+query StakerPositionData(
+  $userId: ID!
+  $vaultAddress: String!
+  $userAddress: Bytes!
+) {
+  vaults(
+    where: {
+      addressString: $vaultAddress,
+    }
+  ) {
+    apy
+    isOsTokenEnabled
+    isCollateralized
+    osTokenConfig {
+      ltvPercent
+      leverageMaxMintLtvPercent
+    }
+  }
+  allocators(
+    where: {
+      address: $userAddress,
+      vault: $vaultAddress
+    }
+  ) {
+    assets
+    exitingAssets
+    mintedOsTokenShares
+  }
+  osToken(id: 1) {
+    apy
+    feePercent
+    totalAssets
+    totalSupply
+  }
+  aave(id: 1) {
+    borrowApy
+    leverageMaxBorrowLtvPercent
+  }
+  leverageStrategyPositions(
+    where: {
+      vault: $vaultAddress,
+      user: $userAddress
+    }
+  ) {
+    proxy
+    assets
+    exitingAssets
+    osTokenShares
+    exitingOsTokenShares
+  }
+  osTokenHolder(id: $userId) {
+    balance
+  }
+}

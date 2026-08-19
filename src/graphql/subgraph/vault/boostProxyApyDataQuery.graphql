@@ -1,0 +1,17 @@
+query BoostProxyApyData(
+  $vaultAddress: String!
+  $proxyAddress: Bytes!
+) {
+  allocators(
+    where: {
+      address: $proxyAddress,
+      vault: $vaultAddress
+    }
+  ) {
+    assets
+    mintedOsTokenShares
+  }
+  aavePositions(where: { user: $proxyAddress }) {
+    borrowedAssets
+  }
+}
