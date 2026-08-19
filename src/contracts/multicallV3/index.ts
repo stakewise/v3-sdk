@@ -8,7 +8,7 @@ const createMulticallV3 = <S extends Signer | undefined = undefined>(
   multicallContract: StakeWise.ABI.Multicall,
   signer?: S
 ): MulticallV3<S> => {
-  return (async (calls: readonly MulticallV3Call[]) => {
+  return (async (calls: MulticallV3Call[]) => {
     if (!calls.length) {
       throw new Error('createMulticallV3: empty batch')
     }
@@ -41,7 +41,9 @@ const createMulticallV3 = <S extends Signer | undefined = undefined>(
     }
 
     if (signer) {
-      return contract.aggregate3(encoded)
+      const { hash } = await contract.aggregate3(encoded)
+
+      return hash
     }
 
     return calls.reduce<Record<string, unknown>>((acc, call, index) => {

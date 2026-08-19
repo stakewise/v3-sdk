@@ -2,9 +2,6 @@ import {
   getAPY,
   getRate,
 
-  getMaxMint,
-  GetMaxMintInput,
-
   getMaxMintAmount,
   GetMaxMintAmountInput,
 
@@ -22,9 +19,6 @@ import {
 } from './requests'
 
 import {
-  getBurnAmount,
-  GetBurnAmountInput,
-
   getHealthFactor,
   GetHealthFactorInput,
 
@@ -64,28 +58,10 @@ class OsToken extends OsTokenTransactions {
 
   /**
    * Maximum number of **shares** for minting.
-   * @deprecated Use new getMaxMintAmount method.
-   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getmaxmint
-   */
-  public getMaxMint(values: StakeWise.ExtractInput<GetMaxMintInput>) {
-    return getMaxMint({ ...this.params, ...values })
-  }
-
-  /**
-   * Maximum number of **shares** for minting.
    * @see https://docs.stakewise.io/sdk/api/osToken/requests/getmaxmintamount
    */
   public getMaxMintAmount(values: StakeWise.ExtractInput<GetMaxMintAmountInput>) {
     return getMaxMintAmount({ ...this.params, ...values })
-  }
-
-  /**
-   * User position data
-   * @deprecated Use osToken.getHealthFactor and osToken.getBalance
-   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getposition
-   */
-  public getPosition(values: StakeWise.ExtractInput<GetOsTokenPositionInput>) {
-    return getPosition({ ...this.params, ...values })
   }
 
   /**
@@ -110,15 +86,6 @@ class OsToken extends OsTokenTransactions {
    */
   public getAssetsFromShares(values: StakeWise.ExtractInput<GetAssetsFromSharesInput>) {
     return getAssetsFromShares({ ...this.params, ...values })
-  }
-
-  /**
-   * How many osToken burn do you need to make to withdraw all deposit.
-   * @deprecated use new getBurnAmountForUnstake method
-   * @see https://docs.stakewise.io/sdk/api/osToken/helpers/getburnamount
-   */
-  public getBurnAmount(values: StakeWise.ExtractInput<GetBurnAmountInput>) {
-    return getBurnAmount({ ...this.params, ...values })
   }
 
   /**

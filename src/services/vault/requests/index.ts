@@ -31,9 +31,6 @@ export type { GetStakeBalanceInput } from './getStakeBalance'
 export { default as getUserRewards } from './getUserRewards'
 export type { GetUserRewardsInput } from './getUserRewards'
 
-export { default as getMaxWithdraw } from './getMaxWithdraw'
-export type { GetMaxWithdrawInput } from './getMaxWithdraw'
-
 export { default as getValidators } from './getValidators'
 export type { GetValidatorsInput } from './getValidators'
 
