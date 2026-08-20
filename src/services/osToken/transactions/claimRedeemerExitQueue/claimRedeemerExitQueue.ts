@@ -1,18 +1,18 @@
 import { commonLogic } from './common'
-import type { ClaimExitedAssetsInput } from './types'
+import type { ClaimRedeemerExitQueueInput } from './types'
 import { wrapErrorHandler } from '../../../../helpers'
 
 
-const claimExitedAssets = async (values: ClaimExitedAssetsInput) => {
+const claimRedeemerExitQueue = async (values: ClaimRedeemerExitQueueInput) => {
   const { provider } = values
 
-  const { redeemerContract, userAddress, positionTicket, exitQueueIndex } = commonLogic(values)
+  const { redeemerContract, userAddress, data } = commonLogic(values)
 
   const signer = await provider.getSigner(userAddress)
   const signedContract = redeemerContract.connect(signer)
 
   const result = await wrapErrorHandler(
-    signedContract.claimExitedAssets(positionTicket, exitQueueIndex),
+    signedContract.multicall(data),
     'transaction'
   )
 
@@ -20,4 +20,4 @@ const claimExitedAssets = async (values: ClaimExitedAssetsInput) => {
 }
 
 
-export default claimExitedAssets
+export default claimRedeemerExitQueue
