@@ -1,7 +1,8 @@
 ## Added methods
 
 - [sdk.osToken.enterExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/enterexitqueue)
-- [sdk.osToken.claimExitedAssets](https://docs.stakewise.io/sdk/api/osToken/transactions/claimexitedassets)
+- [sdk.osToken.getRedeemerExitQueuePositions](https://docs.stakewise.io/sdk/api/osToken/requests/getredeemerexitqueuepositions)
+- [sdk.osToken.claimRedeemerExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/claimredeemerexitqueue)
 
 ## Modified methods
 
