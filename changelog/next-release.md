@@ -1,6 +1,6 @@
 ## Added methods
 
-- [sdk.osToken.enterExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/enterexitqueue)
+- [sdk.osToken.redeemerWithdraw](https://docs.stakewise.io/sdk/api/osToken/transactions/redeemerwithdraw)
 - [sdk.osToken.getRedeemerExitQueuePositions](https://docs.stakewise.io/sdk/api/osToken/requests/getredeemerexitqueuepositions)
 - [sdk.osToken.claimRedeemerExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/claimredeemerexitqueue)
 

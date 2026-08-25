@@ -2,7 +2,7 @@ import { transactionWrapper } from '../../../helpers'
 
 import { createBurn, ExtractBurn } from './burn'
 import { createMint, ExtractMint } from './mint'
-import { createEnterExitQueue, ExtractEnterExitQueue } from './enterExitQueue'
+import { createRedeemerWithdraw, ExtractRedeemerWithdraw } from './redeemerWithdraw'
 import { createClaimRedeemerExitQueue, ExtractClaimRedeemerExitQueue } from './claimRedeemerExitQueue'
 
 
@@ -25,9 +25,9 @@ class OsTokenTransactions {
   /**
    * Enters the OsTokenRedeemer exit queue with your osToken shares to redeem them for the underlying assets.
    * The osToken must be approved to the OsTokenRedeemer contract (or use a permit) before calling.
-   * @see https://docs.stakewise.io/sdk/api/osToken/transactions/enterexitqueue
+   * @see https://docs.stakewise.io/sdk/api/osToken/transactions/redeemerwithdraw
    */
-  public enterExitQueue: ExtractEnterExitQueue
+  public redeemerWithdraw: ExtractRedeemerWithdraw
 
   /**
    * Claim user's OsTokenRedeemer exit queue.
@@ -38,7 +38,7 @@ class OsTokenTransactions {
   constructor(params: StakeWise.CommonParams) {
     this.mint = transactionWrapper(params, createMint(params))
     this.burn = transactionWrapper(params, createBurn(params))
-    this.enterExitQueue = transactionWrapper(params, createEnterExitQueue(params))
+    this.redeemerWithdraw = transactionWrapper(params, createRedeemerWithdraw(params))
     this.claimRedeemerExitQueue = transactionWrapper(params, createClaimRedeemerExitQueue(params))
   }
 }

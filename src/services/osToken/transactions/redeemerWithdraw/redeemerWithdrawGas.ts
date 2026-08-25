@@ -1,9 +1,9 @@
 import { commonLogic } from './common'
-import type { EnterExitQueueInput } from './types'
+import type { RedeemerWithdrawInput } from './types'
 import { getGas, wrapErrorHandler } from '../../../../helpers'
 
 
-const enterExitQueueGas = async (values: EnterExitQueueInput) => {
+const redeemerWithdrawGas = async (values: RedeemerWithdrawInput) => {
   const { provider } = values
 
   const { redeemerContract, userAddress, shares } = commonLogic(values)
@@ -17,4 +17,4 @@ const enterExitQueueGas = async (values: EnterExitQueueInput) => {
 }
 
 
-export default enterExitQueueGas
+export default redeemerWithdrawGas
