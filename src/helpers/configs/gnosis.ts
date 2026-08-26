@@ -27,7 +27,7 @@ export default {
     },
     base: {
       keeper: '0xcAC0e3E35d3BA271cd2aaBE688ac9DB1898C26aa',
-      multicall: '0xb5b692a88BDFc81ca69dcB1d924f59f0413A602a',
+      multicall: '0xcA11bde05977b3631167028862bE2a173976CA11',
       priceOracle: '0x9B1b13afA6a57e54C03AD0428a4766C39707D272',
       vaultsRegistry: '0x7d014B3C6ee446563d4e0cB6fBD8C3D0419867cB',
       sharedMevEscrow: '0x30db0d10d3774e78f8cB214b9e8B72D4B402488a',

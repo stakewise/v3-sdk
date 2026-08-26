@@ -39,6 +39,7 @@ describe('modifyVault', () => {
       exitingTickets: '150000000000',
       exitingAssets: '150000000000',
       capacity: '1000000000000000',
+      isStateUpdateRequired: false,
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
       isCollateralized: true,
@@ -53,11 +54,11 @@ describe('modifyVault', () => {
       validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
       pendingMetaSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+      lastUpdateStateTimestamp: null,
       osTokenConfig: {
         ltvPercent: '0',
         liqThresholdPercent: '0',
       },
-      isStateUpdateRequired: false,
     },
   }
 
@@ -92,6 +93,7 @@ describe('modifyVault', () => {
       displayName: 'Mock Vault',
       totalAssets: '0.00000015',
       exitingTickets: '0.00000015',
+      isStateUpdateRequired: false,
       exitingAssets: '0.00000015',
       depositDataRoot: 'mockValidators',
       description: 'This is a mock vault',
@@ -110,7 +112,7 @@ describe('modifyVault', () => {
       depositDataManager: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       ejectingSubVault: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
       pendingMetaSubVault: '0xeEFFFD4C23D2E8c845870e273861e7d60Df49663',
-      isStateUpdateRequired: false,
+      lastUpdateStateTimestamp: null,
     }
 
     const result = modifyVault({

@@ -34,6 +34,7 @@ const harvestCheckMethods = [
   'upgradeToAndCall',
   'getExitQueueIndex',
   'claimExitedAssets',
+  'withdrawableAssets',
   'calculateExitedAssets',
 ]
 

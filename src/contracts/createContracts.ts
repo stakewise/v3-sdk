@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { Provider } from 'ethers'
+import type { Provider, Signer } from 'ethers'
 
 import {
   Erc20Abi,
@@ -26,8 +26,8 @@ import {
   RewardSplitterFactoryAbi,
 } from './abis'
 
-import commonMulticall from './multicall/commonMulticall'
 import createErc20Contract from './createErc20Contract'
+import createMulticallV3 from './multicallV3'
 import createContract from './createContract'
 import { createVaultContract } from './vault'
 
@@ -55,7 +55,6 @@ const getMetaVaultFactory = (provider: Provider, address: string) => createContr
   MetaVaultFactoryAbi,
   provider
 )
-
 
 const getVaultsRegistry = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.VaultsRegistry>(
   config.addresses.base.vaultsRegistry,
@@ -157,13 +156,13 @@ export const createContracts = (input: CreateContractsInput) => {
       createVault,
       multicallContract,
       createErc20: (address: string) => createErc20Contract(address, provider),
-      createMulticall: commonMulticall(multicallContract as StakeWise.ABI.Multicall),
       createEigenPodOwner: (address: string) => createContract<StakeWise.ABI.EigenPodOwner>(address, EigenPodOwnerAbi, provider),
       createRewardSplitter: (address: string) => createContract<StakeWise.ABI.RewardSplitter>(address, RewardSplitterAbi, provider),
       createVestingEscrowDirect: (address: string) => createContract<StakeWise.ABI.VestingEscrow>(address, VestingEscrowAbi, provider),
       createSubVaultsRegistry: (address: string) => createContract<StakeWise.ABI.SubVaultsRegistry>(address, SubVaultsRegistryAbi, provider),
       createUsdRate: (address: string, _provider?: Provider) => createContract<StakeWise.ABI.UsdRate>(address, UsdRateAbi, _provider || provider),
       createVestingEscrowFactory: (address: string) => createContract<StakeWise.ABI.VestingEscrowFactory>(address, VestingEscrowFactoryAbi, provider),
+      createMulticall: <S extends Signer | undefined = undefined>(signer?: S) => createMulticallV3<S>(multicallContract as StakeWise.ABI.Multicall, signer),
     },
     base: {
       keeper: getKeeper(provider, config),

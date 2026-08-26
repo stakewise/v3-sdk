@@ -48,5 +48,6 @@ query Vault($address: ID!) {
     allocatorMaxBoostApy
     isStateUpdateRequired
     lastFeeUpdateTimestamp
+    lastUpdateStateTimestamp
   }
 }

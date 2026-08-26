@@ -8,7 +8,6 @@ import {
   getValidators, GetValidatorsInput,
   getVaultStats, GetVaultStatsInput,
   getUserRewards, GetUserRewardsInput,
-  getMaxWithdraw, GetMaxWithdrawInput,
   getStakeBalance, GetStakeBalanceInput,
   getVaultVersion, GetVaultVersionInput,
   getVaultFactory, GetVaultFactoryInput,
@@ -86,15 +85,6 @@ class Vault extends VaultTransactions {
    */
   public getUserRewards(values: StakeWise.ExtractInput<GetUserRewardsInput>) {
     return getUserRewards({ ...this.params, ...values })
-  }
-
-  /**
-   * How much a user can withdraw. Deprecated.
-   * @deprecated Use new getMaxWithdrawAmount method
-   * @see https://docs.stakewise.io/sdk/api/vault/requests/getmaxwithdraw
-   */
-  public getMaxWithdraw(values: StakeWise.ExtractInput<GetMaxWithdrawInput>) {
-    return getMaxWithdraw({ ...this.params, ...values })
   }
 
   /**
