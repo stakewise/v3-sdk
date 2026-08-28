@@ -1,5 +1,6 @@
 import { parseEther } from 'ethers'
 
+import getStakeBalance from '../getStakeBalance'
 import { vaultMulticall } from '../../../../contracts'
 import getMaxExitShares from '../../helpers/getMaxExitShares'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
@@ -31,6 +32,7 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
     burnShares = walletShares < osTokenShares ? walletShares : osTokenShares
   }
 
+  const { assets: subgraphAssets } = await getStakeBalance(values)
   const maxExitShares = await getMaxExitShares({ ...values, userAddress, vaultAddress, burnShares })
 
   if (!maxExitShares) {
@@ -48,7 +50,15 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
     },
   })
 
-  return assets > min ? assets : 0n
+  if (assets > subgraphAssets) {
+    return subgraphAssets
+  }
+
+  if (assets <= min) {
+    return 0n
+  }
+
+  return assets
 }
 
 
