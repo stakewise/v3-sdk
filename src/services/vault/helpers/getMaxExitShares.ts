@@ -18,13 +18,32 @@ const getMaxExitShares = async (values: GetMaxExitSharesInput): Promise<bigint> 
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
 
-  const [ config, stakeShares, osTokenShares, avgRewardPerSecond ] = await Promise.all([
+  const [
+    config,
+    osTokenShares,
+    avgRewardPerSecond,
+    [ [ stakeShares ] ],
+  ] = await Promise.all([
     getOsTokenConfig(values),
-    vaultContract.getShares(userAddress),
     vaultContract.osTokenPositions(userAddress),
     contracts.base.mintTokenController.avgRewardPerSecond(),
+    vaultMulticall<[ [ bigint ] ]>({
+      ...values,
+      vaultContract,
+      request: {
+        params: [
+          {
+            method: 'getShares',
+            args: [
+              userAddress,
+            ],
+          },
+        ],
+        callStatic: true,
+      },
+    }),
   ])
-
+  
   const ltvPercent = BigInt(config.ltvPercent)
 
   if (!stakeShares || ltvPercent <= 0n) {
