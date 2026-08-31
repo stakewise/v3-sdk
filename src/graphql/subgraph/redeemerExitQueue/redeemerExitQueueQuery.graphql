@@ -1,0 +1,14 @@
+query redeemerExitQueue($where: OsTokenRedeemerExitRequest_filter) {
+  osTokenRedeemerExitRequests(where: $where, first: 1000) {
+    owner
+    receiver
+    isClaimed
+    timestamp
+    totalShares
+    totalAssets
+    exitedAssets
+    isClaimable
+    positionTicket
+    exitQueueIndex
+  }
+}

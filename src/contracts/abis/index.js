@@ -9,6 +9,7 @@ import MintTokenConfigV2Abi from './MintTokenConfigV2Abi.json'
 import LeverageStrategyAbi from './LeverageStrategyAbi.json'
 import MetaVaultFactoryAbi from './MetaVaultFactoryAbi.json'
 import StakeCalculatorAbi from './StakeCalculatorAbi.json'
+import OsTokenRedeemerAbi from './OsTokenRedeemerAbi.json'
 import VaultsRegistryAbi from './VaultsRegistryAbi.json'
 import RewardSplitterAbi from './RewardSplitterAbi.json'
 import V2RewardTokenAbi from './V2RewardTokenAbi.json'
@@ -35,6 +36,7 @@ export {
   LeverageStrategyAbi,
   MetaVaultFactoryAbi,
   StakeCalculatorAbi,
+  OsTokenRedeemerAbi,
   VaultsRegistryAbi,
   RewardSplitterAbi,
   V2RewardTokenAbi,

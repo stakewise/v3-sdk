@@ -8,8 +8,8 @@ export default {
   api: {
     backend: 'https://mainnet-api.stakewise.io/graphql',
     subgraph: [
+      'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/stage',
       'https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
-      'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
     ],
   },
   pages: {
@@ -31,6 +31,7 @@ export default {
       priceOracle: '0x8023518b2192FB5384DAdc596765B3dD1cdFe471',
       vaultsRegistry: '0x3a0008a588772446f6e656133C2D5029CC4FC20E',
       sharedMevEscrow: '0x48319f97E5Da1233c21c48b80097c0FB7a20Ff86',
+      osTokenRedeemer: '0xc43a7b16a7a167c0318390cba16787c11e9e1fd0',
       mintTokenConfigV1: '0xE8822246F8864DA92015813A39ae776087Fb1Cd5',
       mintTokenConfigV2: '0x287d1e2A8dE183A8bf8f2b09Fa1340fBd766eb59',
       depositDataRegistry: '0x75AB6DdCe07556639333d3Df1eaa684F5735223e',
