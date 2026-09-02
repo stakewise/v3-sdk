@@ -8,6 +8,6 @@ export const validateSchema = z.extend(baseInputSchema, {
 })
 
 
-export type EnterExitQueueArgs = z.input<typeof validateSchema>
+export type RedeemerWithdrawArgs = z.input<typeof validateSchema>
 
 export const validate = (values: unknown) => parseArgs(validateSchema, values)

@@ -1,8 +1,8 @@
-import type { EnterExitQueueInput } from './types'
+import type { RedeemerWithdrawInput } from './types'
 import { validate } from './validate'
 
 
-export const commonLogic = (values: EnterExitQueueInput) => {
+export const commonLogic = (values: RedeemerWithdrawInput) => {
   const { contracts } = values
 
   const { userAddress, shares } = validate(values)
