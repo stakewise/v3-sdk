@@ -47,6 +47,11 @@ query StakerPositionData(
     exitingAssets
     osTokenShares
     exitingOsTokenShares
+    exitRequest {
+      id
+      totalAssets
+      exitedAssets
+    }
   }
   osTokenHolder(id: $userId) {
     balance

@@ -23,7 +23,7 @@ Estimates the user's APY and total staked assets after a pending action by apply
 ```ts
 type Output = {
   apy: number
-  totalStakedAssets: bigint
+  totalAssets: bigint
 }
 ```
 

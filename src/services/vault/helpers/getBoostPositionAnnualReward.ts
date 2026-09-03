@@ -11,6 +11,8 @@ type GetBoostPositionAnnualRewardInput = {
   proxyMintedShares: bigint
   osTokenTotalAssets: bigint
   osTokenTotalSupply: bigint
+  proxyExitingAssets: bigint
+  proxyExitingMintedShares: bigint
 }
 
 const getBoostPositionAnnualReward = (values: GetBoostPositionAnnualRewardInput): bigint => {
@@ -23,11 +25,16 @@ const getBoostPositionAnnualReward = (values: GetBoostPositionAnnualRewardInput)
     proxyMintedShares,
     osTokenTotalAssets,
     osTokenTotalSupply,
+    proxyExitingAssets,
+    proxyExitingMintedShares,
   } = values
 
-  const mintedOsTokenAssets = convertOsTokenSharesToAssets(proxyMintedShares, osTokenTotalAssets, osTokenTotalSupply)
+  const effectiveAssets = proxyAssets + proxyExitingAssets
+  const effectiveMintedShares = proxyMintedShares + proxyExitingMintedShares
 
-  let totalEarnedAssets = getAnnualReward(proxyAssets, vaultApy)
+  const mintedOsTokenAssets = convertOsTokenSharesToAssets(effectiveMintedShares, osTokenTotalAssets, osTokenTotalSupply)
+
+  let totalEarnedAssets = getAnnualReward(effectiveAssets, vaultApy)
   totalEarnedAssets -= getAnnualReward(mintedOsTokenAssets, osTokenMintApy)
   totalEarnedAssets -= getAnnualReward(borrowedAssets, borrowApy)
 

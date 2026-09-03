@@ -1,6 +1,7 @@
 query BoostProxyApyData(
   $vaultAddress: String!
   $proxyAddress: Bytes!
+  $exitRequestId: ID!
 ) {
   allocators(
     where: {
@@ -13,5 +14,9 @@ query BoostProxyApyData(
   }
   aavePositions(where: { user: $proxyAddress }) {
     borrowedAssets
+  }
+  osTokenExitRequests(where: { id: $exitRequestId }) {
+    osTokenShares
+    exitedAssets
   }
 }

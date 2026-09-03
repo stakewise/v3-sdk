@@ -1,11 +1,12 @@
 import graphql from '../../../../graphql'
-import { BigDecimal, apiUrls, constants } from '../../../../helpers'
+import { BigDecimal, apiUrls } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 import getAnnualReward from '../../helpers/getAnnualReward'
+import getBoostDeltaReward from '../../helpers/getBoostDeltaReward'
 import getVaultOsTokenMintApy from '../../helpers/getVaultOsTokenMintApy'
-import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 import getBoostPositionAnnualReward from '../../helpers/getBoostPositionAnnualReward'
+import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 
 import { validate } from './validate'
 
@@ -18,10 +19,10 @@ export type GetAllocatorPositionInput = StakeWise.BaseInput & {
 
 type Output = {
   apy: number
-  totalStakedAssets: bigint
+  totalAssets: bigint
 }
 
-const wad = constants.blockchain.amount1
+const apyAnomalyTolerance = 1.1
 
 const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   const { options } = values
@@ -47,7 +48,7 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   const vault = data.vaults[0]
 
   if (!vault) {
-    return { apy: 0, totalStakedAssets: 0n }
+    return { apy: 0, totalAssets: 0n }
   }
 
   const allocator = data.allocators[0]
@@ -77,7 +78,7 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   if (!vault.isOsTokenEnabled) {
     const stakedAssets = totalAssets > 0n ? totalAssets : 0n
 
-    return { apy: stakedAssets === 0n ? 0 : vaultApy, totalStakedAssets: stakedAssets }
+    return { apy: stakedAssets === 0n ? 0 : vaultApy, totalAssets: stakedAssets }
   }
 
   let totalEarnedAssets = getAnnualReward(totalAssets, vaultApy)
@@ -97,13 +98,23 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
     || BigInt(leverage?.exitingAssets || 0) > 0n
 
   if (hasBoostPosition) {
+    const exitRequest = leverage.exitRequest
+
     const proxyData = await graphql.subgraph.vault.fetchBoostProxyApyDataQuery({
       url,
       variables: {
         vaultAddress: vaultAddress.toLowerCase(),
         proxyAddress: (leverage.proxy || '').toLowerCase(),
+        exitRequestId: exitRequest?.id || '',
       },
     })
+
+    const osTokenExitRequest = proxyData.osTokenExitRequests[0]
+    const isExitPending = osTokenExitRequest?.exitedAssets === null
+
+    const proxyExitingAssets = isExitPending
+      ? BigInt(exitRequest?.totalAssets || 0) - BigInt(exitRequest?.exitedAssets || 0)
+      : 0n
 
     totalEarnedAssets += getBoostPositionAnnualReward({
       vaultApy,
@@ -111,34 +122,32 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
       osTokenMintApy,
       osTokenTotalAssets,
       osTokenTotalSupply,
+      proxyExitingAssets,
       proxyAssets: BigInt(proxyData.allocators[0]?.assets || 0),
       proxyMintedShares: BigInt(proxyData.allocators[0]?.mintedOsTokenShares || 0),
       borrowedAssets: BigInt(proxyData.aavePositions[0]?.borrowedAssets || 0),
+      proxyExitingMintedShares: BigInt(osTokenExitRequest?.osTokenShares || 0),
     })
   }
 
-  let strategyMintedShares = 0n
-
-  if (boostedSharesDelta > 0n && vault.isCollateralized) {
-    const vaultLeverageLtv = ltvPercent < leverageMaxMintLtvPercent ? ltvPercent : leverageMaxMintLtvPercent
-    const aaveLeverageLtv = leverageMaxBorrowLtvPercent
-    const totalLtv = vaultLeverageLtv * aaveLeverageLtv / wad
-
-    if (vaultLeverageLtv > 0n && aaveLeverageLtv > 0n && wad > totalLtv) {
-      strategyMintedShares = boostedSharesDelta * wad / (wad - totalLtv) - boostedSharesDelta
-
-      const strategyMintedAssets = convertOsTokenSharesToAssets(strategyMintedShares, osTokenTotalAssets, osTokenTotalSupply)
-      const strategyDepositedAssets = strategyMintedAssets * wad / vaultLeverageLtv
-
-      totalEarnedAssets += getAnnualReward(strategyDepositedAssets, vaultApy)
-      totalEarnedAssets -= getAnnualReward(strategyMintedAssets, osTokenMintApy)
-      totalEarnedAssets -= getAnnualReward(strategyDepositedAssets, borrowApy)
-    }
+  if (vault.isCollateralized) {
+    totalEarnedAssets += getBoostDeltaReward({
+      vaultApy,
+      borrowApy,
+      ltvPercent,
+      osTokenMintApy,
+      osTokenTotalAssets,
+      osTokenTotalSupply,
+      boostedSharesDelta,
+      leverageMaxMintLtvPercent,
+      leverageMaxBorrowLtvPercent,
+    })
   }
 
-  const boostedOsTokenShares = existingBoostedShares + boostedSharesDelta + strategyMintedShares
+  const boostedOsTokenShares = existingBoostedShares + boostedSharesDelta
+  const hasExtraBoostShares = boostedOsTokenShares > mintedShares
 
-  if (boostedOsTokenShares > mintedShares) {
+  if (hasExtraBoostShares) {
     const extraShares = boostedOsTokenShares - mintedShares
     const extraAssets = convertOsTokenSharesToAssets(extraShares, osTokenTotalAssets, osTokenTotalSupply)
 
@@ -147,16 +156,18 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   }
 
   if (totalAssets <= 0n) {
-    return { apy: 0, totalStakedAssets: 0n }
+    return { apy: 0, totalAssets: 0n }
   }
 
   const allocatorApy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
 
-  const apy = vaultApy < allocatorMaxBoostApy && allocatorApy > allocatorMaxBoostApy
-    ? allocatorMaxBoostApy
-    : allocatorApy
+  if (hasExtraBoostShares) {
+    return { apy: allocatorApy, totalAssets }
+  }
 
-  return { apy, totalStakedAssets: totalAssets }
+  const isApyAnomaly = vaultApy < allocatorMaxBoostApy && allocatorApy > allocatorMaxBoostApy * apyAnomalyTolerance
+
+  return { apy: isApyAnomaly ? allocatorMaxBoostApy : allocatorApy, totalAssets }
 }
 
 
