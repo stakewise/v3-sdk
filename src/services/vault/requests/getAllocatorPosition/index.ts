@@ -2,6 +2,7 @@ import graphql from '../../../../graphql'
 import { BigDecimal, apiUrls } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
+import capBoostApy from '../../helpers/capBoostApy'
 import getAnnualReward from '../../helpers/getAnnualReward'
 import getBoostDeltaReward from '../../helpers/getBoostDeltaReward'
 import getVaultOsTokenMintApy from '../../helpers/getVaultOsTokenMintApy'
@@ -21,8 +22,6 @@ type Output = {
   apy: number
   totalAssets: bigint
 }
-
-const apyAnomalyTolerance = 1.1
 
 const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   const { options } = values
@@ -161,13 +160,9 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
 
   const allocatorApy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
 
-  if (hasExtraBoostShares) {
-    return { apy: allocatorApy, totalAssets }
-  }
+  const apy = capBoostApy({ apy: allocatorApy, vaultApy, allocatorMaxBoostApy })
 
-  const isApyAnomaly = vaultApy < allocatorMaxBoostApy && allocatorApy > allocatorMaxBoostApy * apyAnomalyTolerance
-
-  return { apy: isApyAnomaly ? allocatorMaxBoostApy : allocatorApy, totalAssets }
+  return { apy, totalAssets }
 }
 
 

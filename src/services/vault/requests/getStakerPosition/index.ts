@@ -2,6 +2,7 @@ import graphql from '../../../../graphql'
 import { BigDecimal, apiUrls } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
+import capBoostApy from '../../helpers/capBoostApy'
 import getAnnualReward from '../../helpers/getAnnualReward'
 import getBoostDeltaReward from '../../helpers/getBoostDeltaReward'
 import getVaultOsTokenMintApy from '../../helpers/getVaultOsTokenMintApy'
@@ -64,6 +65,7 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   const leverage = data.leverageStrategyPositions[0]
 
   const vaultApy = Number(vault.apy)
+  const allocatorMaxBoostApy = Number(vault.allocatorMaxBoostApy)
   const ltvPercent = BigInt(vault.osTokenConfig?.ltvPercent || 0)
   const leverageMaxMintLtvPercent = BigInt(vault.osTokenConfig?.leverageMaxMintLtvPercent || 0)
 
@@ -172,7 +174,9 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
 
   totalEarnedAssets += getSignedAnnualReward(netOsTokenAssets, osTokenApy)
 
-  const apy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
+  const stakerApy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
+
+  const apy = capBoostApy({ apy: stakerApy, vaultApy, allocatorMaxBoostApy })
 
   return { apy, totalAssets }
 }

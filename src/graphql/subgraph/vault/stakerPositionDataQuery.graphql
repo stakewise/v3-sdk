@@ -11,6 +11,7 @@ query StakerPositionData(
     apy
     isOsTokenEnabled
     isCollateralized
+    allocatorMaxBoostApy
     osTokenConfig {
       ltvPercent
       leverageMaxMintLtvPercent
