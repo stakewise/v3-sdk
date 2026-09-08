@@ -5,7 +5,7 @@ import { schema, parseArgs } from '../../../../helpers'
 
 export const validateSchema = z.object({
   userAddress: schema.ethAddress,
-  isClaimed: z.optional(schema.boolean),
+  isClaimed: z._default(schema.boolean, false),
 })
 
 

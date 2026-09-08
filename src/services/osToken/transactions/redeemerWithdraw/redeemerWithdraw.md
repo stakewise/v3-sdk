@@ -14,7 +14,6 @@ Enters the OsTokenRedeemer exit queue with your osToken shares. The osToken must
 |--------------|----------|----------|---------------------------|
 | shares       | `bigint` | **Yes**  | osToken shares to redeem  |
 | userAddress  | `string` | **Yes**  | The user address          |
-| vaultAddress | `string` | **Yes**  | The address of the vault  |
 
 #### Example:
 
@@ -22,7 +21,6 @@ Enters the OsTokenRedeemer exit queue with your osToken shares. The osToken must
 const params = {
   shares: 0n,
   userAddress: '0x...',
-  vaultAddress: '0x...',
 }
 
 // Send transaction
