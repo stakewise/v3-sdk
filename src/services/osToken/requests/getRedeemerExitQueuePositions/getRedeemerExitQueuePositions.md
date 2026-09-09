@@ -13,7 +13,7 @@ Returns the OsTokenRedeemer exit queue positions for a specific user.
 | Name        | Type      | Required | Description                             |
 |-------------|-----------|----------|-----------------------------------------|
 | userAddress | `string`  | **Yes**  | The user address                        |
-| isClaimed   | `boolean` | **No**   | Whether the exit request is claimed     |
+| isClaimed   | `boolean` | **No**   | Whether the exit request is claimed. Defaults to `false` |
 
 #### Returns:
 
