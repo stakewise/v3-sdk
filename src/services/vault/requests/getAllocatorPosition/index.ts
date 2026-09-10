@@ -84,6 +84,7 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
     vaultAddress,
     boostedSharesDelta,
     isCollateralized: vault.isCollateralized,
+    isOsTokenEnabled: vault.isOsTokenEnabled,
   })
 
   const existingBoostedShares = leverage
@@ -92,15 +93,15 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
 
   const boostedOsTokenShares = existingBoostedShares + boostedSharesDelta
 
-  if (boostedOsTokenShares > mintedShares) {
+  const hasExtraBoostShares = boostedOsTokenShares > mintedShares
+
+  if (hasExtraBoostShares) {
     const extraShares = boostedOsTokenShares - mintedShares
     const extraAssets = convertOsTokenSharesToAssets(extraShares, osTokenTotalAssets, osTokenTotalSupply)
 
     totalEarnedAssets += getAnnualReward(extraAssets, osTokenApy)
     totalAssets += extraAssets
   }
-
-  const hasExtraBoostShares = existingBoostedShares > BigInt(allocator?.mintedOsTokenShares || 0)
 
   if (totalAssets <= 0n) {
     return { apy: 0, totalAssets: 0n }

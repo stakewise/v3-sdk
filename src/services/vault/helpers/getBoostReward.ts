@@ -26,6 +26,7 @@ type GetBoostRewardInput = PositionApyData & {
   leverage?: LeveragePosition | null
   vaultAddress: string
   isCollateralized: boolean
+  isOsTokenEnabled: boolean
   boostedSharesDelta: bigint
 }
 
@@ -39,6 +40,7 @@ const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
     vaultAddress,
     osTokenMintApy,
     isCollateralized,
+    isOsTokenEnabled,
     osTokenTotalAssets,
     osTokenTotalSupply,
     boostedSharesDelta,
@@ -89,19 +91,19 @@ const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
     })
   }
 
-  if (isCollateralized) {
-    reward += getBoostDeltaReward({
-      vaultApy,
-      borrowApy,
-      ltvPercent,
-      osTokenMintApy,
-      osTokenTotalAssets,
-      osTokenTotalSupply,
-      boostedSharesDelta,
-      leverageMaxMintLtvPercent,
-      leverageMaxBorrowLtvPercent,
-    })
-  }
+  reward += getBoostDeltaReward({
+    vaultApy,
+    borrowApy,
+    ltvPercent,
+    osTokenMintApy,
+    isCollateralized,
+    isOsTokenEnabled,
+    osTokenTotalAssets,
+    osTokenTotalSupply,
+    boostedSharesDelta,
+    leverageMaxMintLtvPercent,
+    leverageMaxBorrowLtvPercent,
+  })
 
   return reward
 }

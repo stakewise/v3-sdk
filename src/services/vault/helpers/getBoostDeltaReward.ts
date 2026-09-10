@@ -11,6 +11,8 @@ type GetBoostDeltaRewardInput = {
   osTokenMintApy: number
   osTokenTotalAssets: bigint
   osTokenTotalSupply: bigint
+  isCollateralized: boolean
+  isOsTokenEnabled: boolean
   boostedSharesDelta: bigint
   leverageMaxMintLtvPercent: bigint
   leverageMaxBorrowLtvPercent: bigint
@@ -26,12 +28,18 @@ const getBoostDeltaReward = (values: GetBoostDeltaRewardInput): bigint => {
     osTokenMintApy,
     osTokenTotalAssets,
     osTokenTotalSupply,
+    isCollateralized,
+    isOsTokenEnabled,
     boostedSharesDelta,
     leverageMaxMintLtvPercent,
     leverageMaxBorrowLtvPercent,
   } = values
 
   if (boostedSharesDelta <= 0n) {
+    return 0n
+  }
+
+  if (!isCollateralized || !isOsTokenEnabled) {
     return 0n
   }
 

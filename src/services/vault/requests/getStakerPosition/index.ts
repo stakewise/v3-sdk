@@ -25,12 +25,6 @@ const getSignedAnnualReward = (principal: bigint, apy: number): bigint => (
   principal >= 0n ? getAnnualReward(principal, apy) : -getAnnualReward(-principal, apy)
 )
 
-const convertSigned = (shares: bigint, totalAssets: bigint, totalSupply: bigint): bigint => (
-  shares >= 0n
-    ? convertOsTokenSharesToAssets(shares, totalAssets, totalSupply)
-    : -convertOsTokenSharesToAssets(-shares, totalAssets, totalSupply)
-)
-
 const getStakerPosition = async (values: GetStakerPositionInput) => {
   const { options } = values
 
@@ -91,7 +85,7 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   const boostAssets = existingBoostAssets
 
   const netOsTokenShares = walletOsTokenShares + boostOsTokenShares - mintedOsTokenShares
-  const netOsTokenAssets = convertSigned(netOsTokenShares, osTokenTotalAssets, osTokenTotalSupply)
+  const netOsTokenAssets = convertOsTokenSharesToAssets(netOsTokenShares, osTokenTotalAssets, osTokenTotalSupply)
 
   let totalAssets = stakedAssets + exitingAssets + boostAssets + netOsTokenAssets
 
@@ -118,6 +112,7 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
     vaultAddress,
     boostedSharesDelta,
     isCollateralized: vault.isCollateralized,
+    isOsTokenEnabled: vault.isOsTokenEnabled,
   })
 
   totalEarnedAssets += getSignedAnnualReward(netOsTokenAssets, osTokenApy)
