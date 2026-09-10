@@ -3,10 +3,9 @@ import { BigDecimal, apiUrls } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 import capBoostApy from '../../helpers/capBoostApy'
+import getBoostReward from '../../helpers/getBoostReward'
 import getAnnualReward from '../../helpers/getAnnualReward'
-import getBoostDeltaReward from '../../helpers/getBoostDeltaReward'
-import getVaultOsTokenMintApy from '../../helpers/getVaultOsTokenMintApy'
-import getBoostPositionAnnualReward from '../../helpers/getBoostPositionAnnualReward'
+import getPositionApyData from '../../helpers/getPositionApyData'
 import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 
 import { validate } from './validate'
@@ -64,19 +63,9 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   const allocator = data.allocators[0]
   const leverage = data.leverageStrategyPositions[0]
 
-  const vaultApy = Number(vault.apy)
-  const allocatorMaxBoostApy = Number(vault.allocatorMaxBoostApy)
-  const ltvPercent = BigInt(vault.osTokenConfig?.ltvPercent || 0)
-  const leverageMaxMintLtvPercent = BigInt(vault.osTokenConfig?.leverageMaxMintLtvPercent || 0)
+  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken })
 
-  const osTokenApy = Number(data.osToken?.apy || 0)
-  const feePercent = Number(data.osToken?.feePercent || 0)
-  const osTokenTotalAssets = BigInt(data.osToken?.totalAssets || 0)
-  const osTokenTotalSupply = BigInt(data.osToken?.totalSupply || 0)
-  const borrowApy = Number(data.aave?.borrowApy || 0)
-  const leverageMaxBorrowLtvPercent = BigInt(data.aave?.leverageMaxBorrowLtvPercent || 0)
-
-  const osTokenMintApy = getVaultOsTokenMintApy(osTokenApy, feePercent, ltvPercent)
+  const { vaultApy, osTokenApy, osTokenMintApy, osTokenTotalAssets, osTokenTotalSupply, allocatorMaxBoostApy } = apyData
 
   const walletOsTokenDelta = mintedSharesDelta - boostedSharesDelta
 
@@ -98,8 +87,6 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   const existingBoostAssets = leverage
     ? BigInt(leverage.assets || 0) + BigInt(leverage.exitingAssets || 0)
     : 0n
-
-  const hasBoostPosition = existingBoostedShares > 0n || existingBoostAssets > 0n
 
   const boostOsTokenShares = existingBoostedShares + boostedSharesDelta
   const boostAssets = existingBoostAssets
@@ -125,52 +112,14 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
     totalEarnedAssets -= getAnnualReward(mintedOsTokenAssets, osTokenMintApy)
   }
 
-  if (hasBoostPosition) {
-    const exitRequest = leverage.exitRequest
-
-    const proxyData = await graphql.subgraph.vault.fetchBoostProxyApyDataQuery({
-      url,
-      variables: {
-        vaultAddress: vaultAddress.toLowerCase(),
-        proxyAddress: (leverage.proxy || '').toLowerCase(),
-        exitRequestId: exitRequest?.id || '',
-      },
-    })
-
-    const osTokenExitRequest = proxyData.osTokenExitRequests[0]
-    const isExitPending = osTokenExitRequest?.exitedAssets === null
-
-    const proxyExitingAssets = isExitPending
-      ? BigInt(exitRequest?.totalAssets || 0) - BigInt(exitRequest?.exitedAssets || 0)
-      : 0n
-
-    totalEarnedAssets += getBoostPositionAnnualReward({
-      vaultApy,
-      borrowApy,
-      osTokenMintApy,
-      osTokenTotalAssets,
-      osTokenTotalSupply,
-      proxyExitingAssets,
-      proxyAssets: BigInt(proxyData.allocators[0]?.assets || 0),
-      proxyMintedShares: BigInt(proxyData.allocators[0]?.mintedOsTokenShares || 0),
-      borrowedAssets: BigInt(proxyData.aavePositions[0]?.borrowedAssets || 0),
-      proxyExitingMintedShares: BigInt(osTokenExitRequest?.osTokenShares || 0),
-    })
-  }
-
-  if (vault.isCollateralized) {
-    totalEarnedAssets += getBoostDeltaReward({
-      vaultApy,
-      borrowApy,
-      ltvPercent,
-      osTokenMintApy,
-      osTokenTotalAssets,
-      osTokenTotalSupply,
-      boostedSharesDelta,
-      leverageMaxMintLtvPercent,
-      leverageMaxBorrowLtvPercent,
-    })
-  }
+  totalEarnedAssets += await getBoostReward({
+    ...apyData,
+    url,
+    leverage,
+    vaultAddress,
+    boostedSharesDelta,
+    isCollateralized: vault.isCollateralized,
+  })
 
   totalEarnedAssets += getSignedAnnualReward(netOsTokenAssets, osTokenApy)
 
