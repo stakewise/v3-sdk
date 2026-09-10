@@ -91,9 +91,8 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
     : 0n
 
   const boostedOsTokenShares = existingBoostedShares + boostedSharesDelta
-  const hasExtraBoostShares = boostedOsTokenShares > mintedShares
 
-  if (hasExtraBoostShares) {
+  if (boostedOsTokenShares > mintedShares) {
     const extraShares = boostedOsTokenShares - mintedShares
     const extraAssets = convertOsTokenSharesToAssets(extraShares, osTokenTotalAssets, osTokenTotalSupply)
 
@@ -101,13 +100,15 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
     totalAssets += extraAssets
   }
 
+  const hasExtraBoostShares = existingBoostedShares > BigInt(allocator?.mintedOsTokenShares || 0)
+
   if (totalAssets <= 0n) {
     return { apy: 0, totalAssets: 0n }
   }
 
   const allocatorApy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
 
-  const apy = capBoostApy({ apy: allocatorApy, vaultApy, allocatorMaxBoostApy })
+  const apy = capBoostApy({ apy: allocatorApy, vaultApy, allocatorMaxBoostApy, hasExtraBoostShares })
 
   return { apy, totalAssets }
 }
