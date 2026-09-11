@@ -1,7 +1,8 @@
 import graphql from '../../../graphql'
+import { constants } from '../../../helpers'
 
-import getBoostDeltaReward from './getBoostDeltaReward'
-import getBoostPositionAnnualReward from './getBoostPositionAnnualReward'
+import getLeverageReward from './getLeverageReward'
+import convertOsTokenSharesToAssets from './convertOsTokenSharesToAssets'
 
 import type { PositionApyData } from './getPositionApyData'
 
@@ -29,6 +30,8 @@ type GetBoostRewardInput = PositionApyData & {
   isOsTokenEnabled: boolean
   boostedSharesDelta: bigint
 }
+
+const wad = constants.blockchain.amount1
 
 const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
   const {
@@ -77,32 +80,47 @@ const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
       ? BigInt(exitRequest?.totalAssets || 0) - BigInt(exitRequest?.exitedAssets || 0)
       : 0n
 
-    reward += getBoostPositionAnnualReward({
+    const depositedAssets = BigInt(proxyData.allocators[0]?.assets || 0) + proxyExitingAssets
+    const mintedShares = BigInt(proxyData.allocators[0]?.mintedOsTokenShares || 0)
+      + BigInt(osTokenExitRequest?.osTokenShares || 0)
+
+    reward += getLeverageReward({
       vaultApy,
       borrowApy,
       osTokenMintApy,
-      osTokenTotalAssets,
-      osTokenTotalSupply,
-      proxyExitingAssets,
-      proxyAssets: BigInt(proxyData.allocators[0]?.assets || 0),
-      proxyMintedShares: BigInt(proxyData.allocators[0]?.mintedOsTokenShares || 0),
+      depositedAssets,
       borrowedAssets: BigInt(proxyData.aavePositions[0]?.borrowedAssets || 0),
-      proxyExitingMintedShares: BigInt(osTokenExitRequest?.osTokenShares || 0),
+      mintedAssets: convertOsTokenSharesToAssets(mintedShares, osTokenTotalAssets, osTokenTotalSupply),
     })
   }
 
-  reward += getBoostDeltaReward({
+  const vaultLeverageLtv = ltvPercent < leverageMaxMintLtvPercent ? ltvPercent : leverageMaxMintLtvPercent
+
+  const isBoostAvailable = isCollateralized && isOsTokenEnabled && vaultLeverageLtv > 0n
+
+  if (!isBoostAvailable || boostedSharesDelta <= 0n) {
+    return reward
+  }
+
+  const totalLtv = vaultLeverageLtv * leverageMaxBorrowLtvPercent / wad
+
+  if (totalLtv >= wad) {
+    return reward
+  }
+
+  // a position that does not exist yet - the same three values are derived from the vault and aave ltv
+  const mintedShares = boostedSharesDelta * wad / (wad - totalLtv) - boostedSharesDelta
+  const mintedAssets = convertOsTokenSharesToAssets(mintedShares, osTokenTotalAssets, osTokenTotalSupply)
+
+  const depositedAssets = mintedAssets * wad / vaultLeverageLtv
+
+  reward += getLeverageReward({
     vaultApy,
     borrowApy,
-    ltvPercent,
+    mintedAssets,
     osTokenMintApy,
-    isCollateralized,
-    isOsTokenEnabled,
-    osTokenTotalAssets,
-    osTokenTotalSupply,
-    boostedSharesDelta,
-    leverageMaxMintLtvPercent,
-    leverageMaxBorrowLtvPercent,
+    depositedAssets,
+    borrowedAssets: depositedAssets,
   })
 
   return reward

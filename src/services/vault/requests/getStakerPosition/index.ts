@@ -84,10 +84,11 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   const boostOsTokenShares = existingBoostedShares + boostedSharesDelta
   const boostAssets = existingBoostAssets
 
-  const netOsTokenShares = walletOsTokenShares + boostOsTokenShares - mintedOsTokenShares
-  const netOsTokenAssets = convertOsTokenSharesToAssets(netOsTokenShares, osTokenTotalAssets, osTokenTotalSupply)
+  // what the staker holds (wallet + boost) minus what they owe (minted against the stake)
+  const ownOsTokenShares = walletOsTokenShares + boostOsTokenShares - mintedOsTokenShares
+  const ownOsTokenAssets = convertOsTokenSharesToAssets(ownOsTokenShares, osTokenTotalAssets, osTokenTotalSupply)
 
-  let totalAssets = stakedAssets + exitingAssets + boostAssets + netOsTokenAssets
+  let totalAssets = stakedAssets + exitingAssets + boostAssets + ownOsTokenAssets
 
   if (totalAssets < 0n) {
     totalAssets = 0n
@@ -115,7 +116,7 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
     isOsTokenEnabled: vault.isOsTokenEnabled,
   })
 
-  totalEarnedAssets += getSignedAnnualReward(netOsTokenAssets, osTokenApy)
+  totalEarnedAssets += getSignedAnnualReward(ownOsTokenAssets, osTokenApy)
 
   const apy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
 

@@ -2,13 +2,13 @@ import graphql from '../../../../graphql'
 import { BigDecimal, apiUrls } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
-import capBoostApy from '../../helpers/capBoostApy'
 import getBoostReward from '../../helpers/getBoostReward'
 import getAnnualReward from '../../helpers/getAnnualReward'
 import getPositionApyData from '../../helpers/getPositionApyData'
 import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 
 import { validate } from './validate'
+import capBoostApy from './capBoostApy'
 
 
 export type GetAllocatorPositionInput = StakeWise.BaseInput & {
