@@ -41,11 +41,10 @@ const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
     borrowApy,
     ltvPercent,
     vaultAddress,
+    osTokenRate,
     osTokenMintApy,
     isCollateralized,
     isOsTokenEnabled,
-    osTokenTotalAssets,
-    osTokenTotalSupply,
     boostedSharesDelta,
     leverageMaxMintLtvPercent,
     leverageMaxBorrowLtvPercent,
@@ -90,7 +89,7 @@ const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
       osTokenMintApy,
       depositedAssets,
       borrowedAssets: BigInt(proxyData.aavePositions[0]?.borrowedAssets || 0),
-      mintedAssets: convertOsTokenSharesToAssets(mintedShares, osTokenTotalAssets, osTokenTotalSupply),
+      mintedAssets: convertOsTokenSharesToAssets(mintedShares, osTokenRate),
     })
   }
 
@@ -110,7 +109,7 @@ const getBoostReward = async (values: GetBoostRewardInput): Promise<bigint> => {
 
   // a position that does not exist yet - the same three values are derived from the vault and aave ltv
   const mintedShares = boostedSharesDelta * wad / (wad - totalLtv) - boostedSharesDelta
-  const mintedAssets = convertOsTokenSharesToAssets(mintedShares, osTokenTotalAssets, osTokenTotalSupply)
+  const mintedAssets = convertOsTokenSharesToAssets(mintedShares, osTokenRate)
 
   const depositedAssets = mintedAssets * wad / vaultLeverageLtv
 

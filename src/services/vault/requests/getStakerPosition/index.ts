@@ -1,5 +1,5 @@
 import graphql from '../../../../graphql'
-import { BigDecimal, apiUrls } from '../../../../helpers'
+import { BigDecimal, apiUrls, constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 import getBoostReward from '../../helpers/getBoostReward'
@@ -26,7 +26,7 @@ const getSignedAnnualReward = (principal: bigint, apy: number): bigint => (
 )
 
 const getStakerPosition = async (values: GetStakerPositionInput) => {
-  const { options } = values
+  const { options, contracts } = values
 
   const {
     userAddress,
@@ -38,14 +38,17 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
 
   const url = apiUrls.getSubgraphqlUrl(options)
 
-  const data = await graphql.subgraph.vault.fetchStakerPositionDataQuery({
-    url,
-    variables: {
-      userId: userAddress.toLowerCase(),
-      userAddress: userAddress.toLowerCase(),
-      vaultAddress: vaultAddress.toLowerCase(),
-    },
-  })
+  const [ data, osTokenRate ] = await Promise.all([
+    graphql.subgraph.vault.fetchStakerPositionDataQuery({
+      url,
+      variables: {
+        userId: userAddress.toLowerCase(),
+        userAddress: userAddress.toLowerCase(),
+        vaultAddress: vaultAddress.toLowerCase(),
+      },
+    }),
+    contracts.base.mintTokenController.convertToAssets(constants.blockchain.amount1),
+  ])
 
   const vault = data.vaults[0]
 
@@ -56,9 +59,9 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   const allocator = data.allocators[0]
   const leverage = data.leverageStrategyPositions[0]
 
-  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken })
+  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken, osTokenRate })
 
-  const { vaultApy, osTokenApy, osTokenMintApy, osTokenTotalAssets, osTokenTotalSupply } = apyData
+  const { vaultApy, osTokenApy, osTokenMintApy } = apyData
 
   const walletOsTokenDelta = mintedSharesDelta - boostedSharesDelta
 
@@ -86,7 +89,7 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
 
   // what the staker holds (wallet + boost) minus what they owe (minted against the stake)
   const ownOsTokenShares = walletOsTokenShares + boostOsTokenShares - mintedOsTokenShares
-  const ownOsTokenAssets = convertOsTokenSharesToAssets(ownOsTokenShares, osTokenTotalAssets, osTokenTotalSupply)
+  const ownOsTokenAssets = convertOsTokenSharesToAssets(ownOsTokenShares, osTokenRate)
 
   let totalAssets = stakedAssets + exitingAssets + boostAssets + ownOsTokenAssets
 
@@ -101,7 +104,7 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
   let totalEarnedAssets = getAnnualReward(stakedAssets, vaultApy)
 
   if (mintedOsTokenShares > 0n && vault.isOsTokenEnabled) {
-    const mintedOsTokenAssets = convertOsTokenSharesToAssets(mintedOsTokenShares, osTokenTotalAssets, osTokenTotalSupply)
+    const mintedOsTokenAssets = convertOsTokenSharesToAssets(mintedOsTokenShares, osTokenRate)
 
     totalEarnedAssets -= getAnnualReward(mintedOsTokenAssets, osTokenMintApy)
   }

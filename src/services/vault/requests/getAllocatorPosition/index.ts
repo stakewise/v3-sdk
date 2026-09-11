@@ -1,5 +1,5 @@
 import graphql from '../../../../graphql'
-import { BigDecimal, apiUrls } from '../../../../helpers'
+import { BigDecimal, apiUrls, constants } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
 import getBoostReward from '../../helpers/getBoostReward'
@@ -23,7 +23,7 @@ type Output = {
 }
 
 const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
-  const { options } = values
+  const { options, contracts } = values
 
   const {
     userAddress,
@@ -35,13 +35,16 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
 
   const url = apiUrls.getSubgraphqlUrl(options)
 
-  const data = await graphql.subgraph.vault.fetchAllocatorPositionDataQuery({
-    url,
-    variables: {
-      userAddress: userAddress.toLowerCase(),
-      vaultAddress: vaultAddress.toLowerCase(),
-    },
-  })
+  const [ data, osTokenRate ] = await Promise.all([
+    graphql.subgraph.vault.fetchAllocatorPositionDataQuery({
+      url,
+      variables: {
+        userAddress: userAddress.toLowerCase(),
+        vaultAddress: vaultAddress.toLowerCase(),
+      },
+    }),
+    contracts.base.mintTokenController.convertToAssets(constants.blockchain.amount1),
+  ])
 
   const vault = data.vaults[0]
 
@@ -52,9 +55,9 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   const allocator = data.allocators[0]
   const leverage = data.leverageStrategyPositions[0]
 
-  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken })
+  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken, osTokenRate })
 
-  const { vaultApy, osTokenApy, osTokenMintApy, osTokenTotalAssets, osTokenTotalSupply, allocatorMaxBoostApy } = apyData
+  const { vaultApy, osTokenApy, osTokenMintApy, allocatorMaxBoostApy } = apyData
 
   let totalAssets = BigInt(allocator?.assets || 0) + stakedAssetsDelta
   let mintedShares = BigInt(allocator?.mintedOsTokenShares || 0) + mintedSharesDelta
@@ -72,7 +75,7 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
   let totalEarnedAssets = getAnnualReward(totalAssets, vaultApy)
 
   if (mintedShares > 0n) {
-    const mintedAssets = convertOsTokenSharesToAssets(mintedShares, osTokenTotalAssets, osTokenTotalSupply)
+    const mintedAssets = convertOsTokenSharesToAssets(mintedShares, osTokenRate)
 
     totalEarnedAssets -= getAnnualReward(mintedAssets, osTokenMintApy)
   }
@@ -97,7 +100,7 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
 
   if (hasExtraBoostShares) {
     const extraShares = boostedOsTokenShares - mintedShares
-    const extraAssets = convertOsTokenSharesToAssets(extraShares, osTokenTotalAssets, osTokenTotalSupply)
+    const extraAssets = convertOsTokenSharesToAssets(extraShares, osTokenRate)
 
     totalEarnedAssets += getAnnualReward(extraAssets, osTokenApy)
     totalAssets += extraAssets

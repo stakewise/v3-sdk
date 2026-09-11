@@ -20,13 +20,12 @@ type Aave = {
 type OsToken = {
   apy: string
   feePercent: number
-  totalAssets: string
-  totalSupply: string
 }
 
 type GetPositionApyDataInput = {
   vault: Vault
   aave?: Aave | null
+  osTokenRate: bigint
   osToken?: OsToken | null
 }
 
@@ -36,16 +35,15 @@ export type PositionApyData = {
   osTokenApy: number
   feePercent: number
   ltvPercent: bigint
+  osTokenRate: bigint
   osTokenMintApy: number
-  osTokenTotalAssets: bigint
-  osTokenTotalSupply: bigint
   allocatorMaxBoostApy: number
   leverageMaxMintLtvPercent: bigint
   leverageMaxBorrowLtvPercent: bigint
 }
 
 const getPositionApyData = (values: GetPositionApyDataInput): PositionApyData => {
-  const { vault, aave, osToken } = values
+  const { vault, aave, osToken, osTokenRate } = values
 
   const vaultApy = Number(vault.apy)
   const allocatorMaxBoostApy = Number(vault.allocatorMaxBoostApy)
@@ -54,8 +52,6 @@ const getPositionApyData = (values: GetPositionApyDataInput): PositionApyData =>
 
   const osTokenApy = Number(osToken?.apy || 0)
   const feePercent = Number(osToken?.feePercent || 0)
-  const osTokenTotalAssets = BigInt(osToken?.totalAssets || 0)
-  const osTokenTotalSupply = BigInt(osToken?.totalSupply || 0)
   const borrowApy = Number(aave?.borrowApy || 0)
   const leverageMaxBorrowLtvPercent = BigInt(aave?.leverageMaxBorrowLtvPercent || 0)
 
@@ -67,9 +63,8 @@ const getPositionApyData = (values: GetPositionApyDataInput): PositionApyData =>
     osTokenApy,
     feePercent,
     ltvPercent,
+    osTokenRate,
     osTokenMintApy,
-    osTokenTotalAssets,
-    osTokenTotalSupply,
     allocatorMaxBoostApy,
     leverageMaxMintLtvPercent,
     leverageMaxBorrowLtvPercent,

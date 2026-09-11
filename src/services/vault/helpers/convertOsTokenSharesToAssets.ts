@@ -1,6 +1,9 @@
-const convertOsTokenSharesToAssets = (shares: bigint, totalAssets: bigint, totalSupply: bigint): bigint => (
-  totalSupply === 0n ? shares : shares * totalAssets / totalSupply
-)
+import { constants } from '../../../helpers'
+
+
+const wad = constants.blockchain.amount1
+
+const convertOsTokenSharesToAssets = (shares: bigint, osTokenRate: bigint): bigint => shares * osTokenRate / wad
 
 
 export default convertOsTokenSharesToAssets
