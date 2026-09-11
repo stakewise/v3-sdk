@@ -1,0 +1,130 @@
+import graphql from '../../../../graphql'
+import { BigDecimal, apiUrls, constants } from '../../../../helpers'
+import { wrapAbortPromise } from '../../../../modules/gql-module'
+
+import getBoostReward from '../../helpers/getBoostReward'
+import getAnnualReward from '../../helpers/getAnnualReward'
+import getPositionApyData from '../../helpers/getPositionApyData'
+import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
+
+import { validate } from './validate'
+
+
+export type GetStakerPositionInput = StakeWise.BaseInput & {
+  stakedAssetsDelta?: bigint
+  mintedSharesDelta?: bigint
+  boostedSharesDelta?: bigint
+}
+
+type Output = {
+  apy: number
+  totalAssets: bigint
+}
+
+const getSignedAnnualReward = (principal: bigint, apy: number): bigint => (
+  principal >= 0n ? getAnnualReward(principal, apy) : -getAnnualReward(-principal, apy)
+)
+
+const getStakerPosition = async (values: GetStakerPositionInput) => {
+  const { options, contracts } = values
+
+  const {
+    userAddress,
+    vaultAddress,
+    stakedAssetsDelta,
+    mintedSharesDelta,
+    boostedSharesDelta,
+  } = validate(values)
+
+  const url = apiUrls.getSubgraphqlUrl(options)
+
+  const [ data, osTokenRate ] = await Promise.all([
+    graphql.subgraph.vault.fetchStakerPositionDataQuery({
+      url,
+      variables: {
+        userId: userAddress.toLowerCase(),
+        userAddress: userAddress.toLowerCase(),
+        vaultAddress: vaultAddress.toLowerCase(),
+      },
+    }),
+    contracts.base.mintTokenController.convertToAssets(constants.blockchain.amount1),
+  ])
+
+  const vault = data.vaults[0]
+
+  if (!vault) {
+    return { apy: 0, totalAssets: 0n }
+  }
+
+  const allocator = data.allocators[0]
+  const leverage = data.leverageStrategyPositions[0]
+
+  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken, osTokenRate })
+
+  const { vaultApy, osTokenApy, osTokenMintApy } = apyData
+
+  const walletOsTokenDelta = mintedSharesDelta - boostedSharesDelta
+
+  const stakedAssets = BigInt(allocator?.assets || 0) + stakedAssetsDelta
+  const exitingAssets = BigInt(allocator?.exitingAssets || 0)
+
+  let mintedOsTokenShares = BigInt(allocator?.mintedOsTokenShares || 0) + mintedSharesDelta
+
+  if (mintedOsTokenShares < 0n) {
+    mintedOsTokenShares = 0n
+  }
+
+  const walletOsTokenShares = BigInt(data.osTokenHolder?.balance || 0) + walletOsTokenDelta
+
+  const existingBoostedShares = leverage
+    ? BigInt(leverage.osTokenShares || 0) + BigInt(leverage.exitingOsTokenShares || 0)
+    : 0n
+
+  const existingBoostAssets = leverage
+    ? BigInt(leverage.assets || 0) + BigInt(leverage.exitingAssets || 0)
+    : 0n
+
+  const boostOsTokenShares = existingBoostedShares + boostedSharesDelta
+  const boostAssets = existingBoostAssets
+
+  // what the staker holds (wallet + boost) minus what they owe (minted against the stake)
+  const ownOsTokenShares = walletOsTokenShares + boostOsTokenShares - mintedOsTokenShares
+  const ownOsTokenAssets = convertOsTokenSharesToAssets(ownOsTokenShares, osTokenRate)
+
+  let totalAssets = stakedAssets + exitingAssets + boostAssets + ownOsTokenAssets
+
+  if (totalAssets < 0n) {
+    totalAssets = 0n
+  }
+
+  if (totalAssets <= 0n) {
+    return { apy: 0, totalAssets: 0n }
+  }
+
+  let totalEarnedAssets = getAnnualReward(stakedAssets, vaultApy)
+
+  if (mintedOsTokenShares > 0n && vault.isOsTokenEnabled) {
+    const mintedOsTokenAssets = convertOsTokenSharesToAssets(mintedOsTokenShares, osTokenRate)
+
+    totalEarnedAssets -= getAnnualReward(mintedOsTokenAssets, osTokenMintApy)
+  }
+
+  totalEarnedAssets += await getBoostReward({
+    ...apyData,
+    url,
+    leverage,
+    vaultAddress,
+    boostedSharesDelta,
+    isCollateralized: vault.isCollateralized,
+    isOsTokenEnabled: vault.isOsTokenEnabled,
+  })
+
+  totalEarnedAssets += getSignedAnnualReward(ownOsTokenAssets, osTokenApy)
+
+  const apy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
+
+  return { apy, totalAssets }
+}
+
+
+export default wrapAbortPromise<GetStakerPositionInput, Output>(getStakerPosition)
