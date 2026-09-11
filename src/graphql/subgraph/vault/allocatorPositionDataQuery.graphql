@@ -1,0 +1,55 @@
+query AllocatorPositionData(
+  $vaultAddress: String!
+  $userAddress: Bytes!
+) {
+  vaults(
+    where: {
+      addressString: $vaultAddress,
+    }
+  ) {
+    apy
+    isOsTokenEnabled
+    isCollateralized
+    allocatorMaxBoostApy
+    osTokenConfig {
+      ltvPercent
+      leverageMaxMintLtvPercent
+    }
+  }
+  allocators(
+    where: {
+      address: $userAddress,
+      vault: $vaultAddress
+    }
+  ) {
+    assets
+    mintedOsTokenShares
+  }
+  osToken(id: 1) {
+    apy
+    feePercent
+    totalAssets
+    totalSupply
+  }
+  aave(id: 1) {
+    borrowApy
+    leverageMaxBorrowLtvPercent
+  }
+  leverageStrategyPositions(
+    where: {
+      vault: $vaultAddress,
+      user: $userAddress
+    }
+  ) {
+    proxy
+    assets
+    exitingAssets
+    osTokenShares
+    exitingOsTokenShares
+    exitRequest {
+      id
+      totalAssets
+      exitedAssets
+    }
+  }
+}

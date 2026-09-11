@@ -16,6 +16,12 @@ export const baseInputSchema = z.object({
   vaultAddress: ethAddress,
 })
 
+export const positionDeltasSchema = z.extend(baseInputSchema, {
+  stakedAssetsDelta: z._default(bigint, 0n),
+  mintedSharesDelta: z._default(bigint, 0n),
+  boostedSharesDelta: z._default(bigint, 0n),
+})
+
 const array = <Item extends z.ZodMiniType>(item: Item = z.unknown() as unknown as Item) => (
   z.array(item, { error: 'must be an array' }).check(z.minLength(1, { error: 'is an empty array' }))
 )
