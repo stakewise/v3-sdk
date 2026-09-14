@@ -15,7 +15,9 @@ import {
   getStakerActions, GetStakerActionsInput,
   getOsTokenConfig, GetOsTokenConfigInput,
   getHarvestParams, GetHarvestParamsInput,
+  getStakerPosition, GetStakerPositionInput,
   getRewardSplitters, GetRewardSplittersInput,
+  getAllocatorPosition, GetAllocatorPositionInput,
   getMaxWithdrawAmount, GetMaxWithdrawAmountInput,
   getExitQueuePositions, GetExitQueuePositionsInput,
   getPeriodicDistributions, GetPeriodicDistributionsInput,
@@ -167,6 +169,24 @@ class Vault extends VaultTransactions {
    */
   public getUserApy(values: StakeWise.ExtractInput<GetUserApyInput>) {
     return getUserApy({ ...this.params, ...values })
+  }
+
+  /**
+   * Estimate the user's APY and total staked assets in a vault after a pending action (stake, mint, burn, boost) via position deltas.
+   * Pass zero deltas to reproduce the current position.
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getallocatorposition
+   */
+  public getAllocatorPosition(values: StakeWise.ExtractInput<GetAllocatorPositionInput>) {
+    return getAllocatorPosition({ ...this.params, ...values })
+  }
+
+  /**
+   * Estimate the staker's net APY and total assets after a pending action (stake, mint, burn, boost) via position deltas.
+   * Pass zero deltas to reproduce the current position.
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getstakerposition
+   */
+  public getStakerPosition(values: StakeWise.ExtractInput<GetStakerPositionInput>) {
+    return getStakerPosition({ ...this.params, ...values })
   }
 
   /**

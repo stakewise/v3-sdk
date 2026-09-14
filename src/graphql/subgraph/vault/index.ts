@@ -19,11 +19,20 @@ export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './h
 export { fetchWhitelistAccountsQuery } from './whitelistAccountsQuery.graphql'
 export type { WhitelistAccountsQueryPayload, WhitelistAccountsQueryVariables } from './whitelistAccountsQuery.graphql'
 
+export { fetchBoostProxyApyDataQuery } from './boostProxyApyDataQuery.graphql'
+export type { BoostProxyApyDataQueryPayload, BoostProxyApyDataQueryVariables } from './boostProxyApyDataQuery.graphql'
+
 export { fetchBlocklistAccountsQuery } from './blocklistAccountsQuery.graphql'
 export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } from './blocklistAccountsQuery.graphql'
 
 export { fetchVaultOsTokenConfigQuery } from './vaultOsTokenConfigQuery.graphql'
 export type { VaultOsTokenConfigQueryPayload, VaultOsTokenConfigQueryVariables } from './vaultOsTokenConfigQuery.graphql'
 
+export { fetchStakerPositionDataQuery } from './stakerPositionDataQuery.graphql'
+export type { StakerPositionDataQueryPayload, StakerPositionDataQueryVariables } from './stakerPositionDataQuery.graphql'
+
 export { fetchPeriodicDistributionsQuery } from './periodicDistributionsQuery.graphql'
 export type { PeriodicDistributionsQueryPayload, PeriodicDistributionsQueryVariables } from './periodicDistributionsQuery.graphql'
+
+export { fetchAllocatorPositionDataQuery } from './allocatorPositionDataQuery.graphql'
+export type { AllocatorPositionDataQueryPayload, AllocatorPositionDataQueryVariables } from './allocatorPositionDataQuery.graphql'

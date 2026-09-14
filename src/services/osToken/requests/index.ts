@@ -19,3 +19,6 @@ export type { GetSharesFromAssetsInput } from './getSharesFromAssets'
 
 export { default as getAssetsFromShares } from './getAssetsFromShares'
 export type { GetAssetsFromSharesInput } from './getAssetsFromShares'
+
+export { default as getRedeemerExitQueuePositions } from './getRedeemerExitQueuePositions'
+export type { GetRedeemerExitQueuePositionsInput } from './getRedeemerExitQueuePositions'

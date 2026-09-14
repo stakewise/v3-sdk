@@ -19,6 +19,9 @@ import {
 
   getAssetsFromShares,
   GetAssetsFromSharesInput,
+
+  getRedeemerExitQueuePositions,
+  GetRedeemerExitQueuePositionsInput,
 } from './requests'
 
 import {
@@ -94,6 +97,14 @@ class OsToken extends OsTokenTransactions {
    */
   public getBalance(values: StakeWise.ExtractInput<GetOsTokenBalanceInput>) {
     return getBalance({ ...this.params, ...values })
+  }
+
+  /**
+   * Getting user's OsTokenRedeemer exit queue positions.
+   * @see https://docs.stakewise.io/sdk/api/osToken/requests/getredeemerexitqueuepositions
+   */
+  public getRedeemerExitQueuePositions(values: StakeWise.ExtractInput<GetRedeemerExitQueuePositionsInput>) {
+    return getRedeemerExitQueuePositions({ ...this.params, ...values })
   }
 
   /**
