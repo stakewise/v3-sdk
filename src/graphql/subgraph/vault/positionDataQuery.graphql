@@ -1,4 +1,4 @@
-query StakerPositionData(
+query PositionData(
   $userId: ID!
   $vaultAddress: String!
   $userAddress: Bytes!
@@ -30,8 +30,6 @@ query StakerPositionData(
   osToken(id: 1) {
     apy
     feePercent
-    totalAssets
-    totalSupply
   }
   aave(id: 1) {
     borrowApy
