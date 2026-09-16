@@ -14,6 +14,7 @@ import {
   VaultsRegistryAbi,
   RewardSplitterAbi,
   StakeCalculatorAbi,
+  OsTokenRedeemerAbi,
   MetaVaultFactoryAbi,
   LeverageStrategyAbi,
   MintTokenConfigV1Abi,
@@ -98,6 +99,12 @@ const getMintTokenController = (provider: Provider, config: StakeWise.Config) =>
   provider
 )
 
+const getOsTokenRedeemer = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.OsTokenRedeemer>(
+  config.addresses.base.osTokenRedeemer,
+  OsTokenRedeemerAbi,
+  provider
+)
+
 const getPriceOracle = (provider: Provider, config: StakeWise.Config) => createContract<StakeWise.ABI.PriceOracle>(
   config.addresses.base.priceOracle,
   PriceOracleAbi,
@@ -168,6 +175,7 @@ export const createContracts = (input: CreateContractsInput) => {
       keeper: getKeeper(provider, config),
       priceOracle: getPriceOracle(provider, config),
       vaultsRegistry: getVaultsRegistry(provider, config),
+      osTokenRedeemer: getOsTokenRedeemer(provider, config),
       mintTokenConfig: {
         v1: getMintTokenConfigV1(provider, config),
         v2: getMintTokenConfigV2(provider, config),

@@ -25,6 +25,7 @@ type VaultMulticallInput = VaultMulticallBaseInput & {
 // Methods with _checkHarvested() call
 const harvestCheckMethods = [
   'deposit',
+  'getShares',
   'mintOsToken',
   'setFeePercent',
   'enterExitQueue',
