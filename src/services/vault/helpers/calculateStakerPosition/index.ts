@@ -1,21 +1,21 @@
 import { BigDecimal } from '../../../../helpers'
 
-import getBoostReward from '../../helpers/getBoostReward'
-import getAnnualReward from '../../helpers/getAnnualReward'
-import validatePositionInput from '../../helpers/validatePositionInput'
-import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
+import getBoostReward from '../getBoostReward'
+import getAnnualReward from '../getAnnualReward'
+import validatePositionInput from '../validatePositionInput'
+import convertOsTokenSharesToAssets from '../convertOsTokenSharesToAssets'
 
-import type { Position } from '../getPositionData'
-import type { PositionInput } from '../../helpers/validatePositionInput'
+import type { PositionInput } from '../validatePositionInput'
+import type { Position } from '../../requests/getPositionData'
 
 
-export type GetStakerPositionInput = PositionInput
+export type CalculateStakerPositionInput = PositionInput
 
 const getSignedAnnualReward = (principal: bigint, apy: number): bigint => (
   principal >= 0n ? getAnnualReward(principal, apy) : -getAnnualReward(-principal, apy)
 )
 
-const getStakerPosition = (values: GetStakerPositionInput): Position => {
+const calculateStakerPosition = (values: CalculateStakerPositionInput): Position => {
   const { data, stakedAssetsDelta, mintedSharesDelta, boostedSharesDelta } = validatePositionInput(values)
   const { vault, walletShares, boostedShares, boostedAssets, exitingAssets, leverageReward } = data
 
@@ -67,4 +67,4 @@ const getStakerPosition = (values: GetStakerPositionInput): Position => {
 }
 
 
-export default getStakerPosition
+export default calculateStakerPosition

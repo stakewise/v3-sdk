@@ -16,19 +16,35 @@ import {
   getStakerActions, GetStakerActionsInput,
   getOsTokenConfig, GetOsTokenConfigInput,
   getHarvestParams, GetHarvestParamsInput,
-  getStakerPosition, GetStakerPositionInput,
   getRewardSplitters, GetRewardSplittersInput,
-  getAllocatorPosition, GetAllocatorPositionInput,
   getMaxWithdrawAmount, GetMaxWithdrawAmountInput,
   getExitQueuePositions, GetExitQueuePositionsInput,
   getPeriodicDistributions, GetPeriodicDistributionsInput,
 } from './requests'
+
+import { calculateStakerPosition, calculateAllocatorPosition } from './helpers'
 
 import VaultTransactions from './transactions'
 
 
 class Vault extends VaultTransactions {
   readonly params: StakeWise.CommonParams
+
+  readonly helpers = {
+    /**
+     * Calculate the staker's net APY and total assets across wallet, mint and boost from getPositionData result and optional deltas.
+     * Zero deltas return the current position.
+     * @see https://docs.stakewise.io/sdk/api/vault/helpers/calculatestakerposition
+     */
+    calculateStakerPosition,
+
+    /**
+     * Calculate the user's APY and total staked assets in a vault from getPositionData result and optional deltas.
+     * Zero deltas return the current position.
+     * @see https://docs.stakewise.io/sdk/api/vault/helpers/calculateallocatorposition
+     */
+    calculateAllocatorPosition,
+  }
 
   constructor(params: StakeWise.CommonParams) {
     super(params)
@@ -178,24 +194,6 @@ class Vault extends VaultTransactions {
    */
   public getPositionData(values: StakeWise.ExtractInput<GetPositionDataInput>) {
     return getPositionData({ ...this.params, ...values })
-  }
-
-  /**
-   * Calculate the user's APY and total staked assets in a vault from getPositionData result and optional deltas.
-   * Zero deltas return the current position.
-   * @see https://docs.stakewise.io/sdk/api/vault/requests/getallocatorposition
-   */
-  public getAllocatorPosition(values: GetAllocatorPositionInput) {
-    return getAllocatorPosition(values)
-  }
-
-  /**
-   * Calculate the staker's net APY and total assets across wallet, mint and boost from getPositionData result and optional deltas.
-   * Zero deltas return the current position.
-   * @see https://docs.stakewise.io/sdk/api/vault/requests/getstakerposition
-   */
-  public getStakerPosition(values: GetStakerPositionInput) {
-    return getStakerPosition(values)
   }
 
   /**

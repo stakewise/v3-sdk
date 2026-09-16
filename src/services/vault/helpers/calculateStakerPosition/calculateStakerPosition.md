@@ -1,12 +1,12 @@
 ---
-id: getStakerPosition
-slug: /sdk/api/vault/requests/getstakerposition
-description: Use the StakeWise SDK getStakerPosition method to calculate a user's net staker APY and total assets after staking, minting, burning or boosting.
+id: calculateStakerPosition
+slug: /sdk/api/vault/helpers/calculatestakerposition
+description: Use the StakeWise SDK calculateStakerPosition helper to calculate a user's net staker APY and total assets after staking, minting, burning or boosting.
 ---
 
 #### Description:
 
-Calculates the staker's net APY and total assets across the wallet, mint and boost from the result of `getPositionData` and optional deltas. Synchronous, no requests. Zero deltas return the current position. For a single vault use `getAllocatorPosition`.
+Calculates the staker's net APY and total assets across the wallet, mint and boost from the result of `getPositionData` and optional deltas. Synchronous, no requests. Zero deltas return the current position. For a single vault use `calculateAllocatorPosition`.
 
 #### Arguments:
 
@@ -34,7 +34,7 @@ const data = await sdk.vault.getPositionData({
   vaultAddress: '0x...',
 })
 
-const { apy, totalAssets } = sdk.vault.getStakerPosition({
+const { apy, totalAssets } = sdk.vault.helpers.calculateStakerPosition({
   data,
   stakedAssetsDelta: parseEther('1'),
 })

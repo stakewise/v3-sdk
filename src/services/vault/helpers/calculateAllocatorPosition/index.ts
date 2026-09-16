@@ -1,19 +1,19 @@
 import { BigDecimal } from '../../../../helpers'
 
-import getBoostReward from '../../helpers/getBoostReward'
-import getAnnualReward from '../../helpers/getAnnualReward'
-import validatePositionInput from '../../helpers/validatePositionInput'
-import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
+import getBoostReward from '../getBoostReward'
+import getAnnualReward from '../getAnnualReward'
+import validatePositionInput from '../validatePositionInput'
+import convertOsTokenSharesToAssets from '../convertOsTokenSharesToAssets'
 
 import capBoostApy from './capBoostApy'
 
-import type { Position } from '../getPositionData'
-import type { PositionInput } from '../../helpers/validatePositionInput'
+import type { PositionInput } from '../validatePositionInput'
+import type { Position } from '../../requests/getPositionData'
 
 
-export type GetAllocatorPositionInput = PositionInput
+export type CalculateAllocatorPositionInput = PositionInput
 
-const getAllocatorPosition = (values: GetAllocatorPositionInput): Position => {
+const calculateAllocatorPosition = (values: CalculateAllocatorPositionInput): Position => {
   const { data, stakedAssetsDelta, mintedSharesDelta, boostedSharesDelta } = validatePositionInput(values)
   const { vault, boostedShares, leverageReward } = data
 
@@ -74,4 +74,4 @@ const getAllocatorPosition = (values: GetAllocatorPositionInput): Position => {
 }
 
 
-export default getAllocatorPosition
+export default calculateAllocatorPosition

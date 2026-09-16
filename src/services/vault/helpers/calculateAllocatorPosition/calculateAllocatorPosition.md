@@ -1,7 +1,7 @@
 ---
-id: getAllocatorPosition
-slug: /sdk/api/vault/requests/getallocatorposition
-description: Use the StakeWise SDK getAllocatorPosition method to calculate a user's vault APY and total staked assets after staking, minting, burning or boosting.
+id: calculateAllocatorPosition
+slug: /sdk/api/vault/helpers/calculateallocatorposition
+description: Use the StakeWise SDK calculateAllocatorPosition helper to calculate a user's vault APY and total staked assets after staking, minting, burning or boosting.
 ---
 
 #### Description:
@@ -36,7 +36,7 @@ const data = await sdk.vault.getPositionData({
   vaultAddress: '0x...',
 })
 
-const { apy, totalAssets } = sdk.vault.getAllocatorPosition({
+const { apy, totalAssets } = sdk.vault.helpers.calculateAllocatorPosition({
   data,
   stakedAssetsDelta: parseEther('1'),
 })

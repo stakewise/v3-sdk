@@ -6,7 +6,7 @@ description: Use the StakeWise SDK getPositionData method to fetch the data need
 
 #### Description:
 
-Fetches the user's position in a vault: stake, minted and boosted osToken, wallet osToken balance and the APY parameters. Pass the result as `data` to `getAllocatorPosition` or `getStakerPosition`.
+Fetches the user's position in a vault: stake, minted and boosted osToken, wallet osToken balance and the APY parameters. Pass the result as `data` to `calculateAllocatorPosition` or `calculateStakerPosition`.
 
 #### Arguments:
 
@@ -64,7 +64,7 @@ const data = await sdk.vault.getPositionData({
   vaultAddress: '0x...',
 })
 
-const { apy, totalAssets } = sdk.vault.getAllocatorPosition({
+const { apy, totalAssets } = sdk.vault.helpers.calculateAllocatorPosition({
   data,
   boostedSharesDelta: parseEther('1'),
 })
