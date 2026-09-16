@@ -1,72 +1,36 @@
-import graphql from '../../../../graphql'
-import { BigDecimal, apiUrls, constants } from '../../../../helpers'
-import { wrapAbortPromise } from '../../../../modules/gql-module'
+import { BigDecimal } from '../../../../helpers'
 
 import getBoostReward from '../../helpers/getBoostReward'
 import getAnnualReward from '../../helpers/getAnnualReward'
-import getPositionApyData from '../../helpers/getPositionApyData'
+import validatePositionInput from '../../helpers/validatePositionInput'
 import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 
-import { validate } from './validate'
 import capBoostApy from './capBoostApy'
+import type { Position } from '../getPositionData'
+import type { PositionInput } from '../../helpers/validatePositionInput'
 
 
-export type GetAllocatorPositionInput = StakeWise.BaseInput & {
-  stakedAssetsDelta?: bigint
-  mintedSharesDelta?: bigint
-  boostedSharesDelta?: bigint
-}
+export type GetAllocatorPositionInput = PositionInput
 
-type Output = {
-  apy: number
-  totalAssets: bigint
-}
-
-const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
-  const { options, contracts } = values
-
-  const {
-    userAddress,
-    vaultAddress,
-    stakedAssetsDelta,
-    mintedSharesDelta,
-    boostedSharesDelta,
-  } = validate(values)
-
-  const url = apiUrls.getSubgraphqlUrl(options)
-
-  const [ data, osTokenRate ] = await Promise.all([
-    graphql.subgraph.vault.fetchAllocatorPositionDataQuery({
-      url,
-      variables: {
-        userAddress: userAddress.toLowerCase(),
-        vaultAddress: vaultAddress.toLowerCase(),
-      },
-    }),
-    contracts.base.mintTokenController.convertToAssets(constants.blockchain.amount1),
-  ])
-
-  const vault = data.vaults[0]
+const getAllocatorPosition = (values: GetAllocatorPositionInput): Position => {
+  const { data, stakedAssetsDelta, mintedSharesDelta, boostedSharesDelta } = validatePositionInput(values)
+  const { vault, boostedShares, leverageReward } = data
 
   if (!vault) {
     return { apy: 0, totalAssets: 0n }
   }
 
-  const allocator = data.allocators[0]
-  const leverage = data.leverageStrategyPositions[0]
+  const { apyData, isCollateralized, isOsTokenEnabled } = vault
+  const { vaultApy, osTokenApy, osTokenRate, osTokenMintApy, allocatorMaxBoostApy } = apyData
 
-  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken, osTokenRate })
-
-  const { vaultApy, osTokenApy, osTokenMintApy, allocatorMaxBoostApy } = apyData
-
-  let totalAssets = BigInt(allocator?.assets || 0) + stakedAssetsDelta
-  let mintedShares = BigInt(allocator?.mintedOsTokenShares || 0) + mintedSharesDelta
+  let totalAssets = data.stakedAssets + stakedAssetsDelta
+  let mintedShares = data.mintedShares + mintedSharesDelta
 
   if (mintedShares < 0n) {
     mintedShares = 0n
   }
 
-  if (!vault.isOsTokenEnabled) {
+  if (!isOsTokenEnabled) {
     const stakedAssets = totalAssets > 0n ? totalAssets : 0n
 
     return { apy: stakedAssets === 0n ? 0 : vaultApy, totalAssets: stakedAssets }
@@ -80,21 +44,12 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
     totalEarnedAssets -= getAnnualReward(mintedAssets, osTokenMintApy)
   }
 
-  totalEarnedAssets += await getBoostReward({
-    ...apyData,
-    url,
-    leverage,
-    vaultAddress,
-    boostedSharesDelta,
-    isCollateralized: vault.isCollateralized,
-    isOsTokenEnabled: vault.isOsTokenEnabled,
-  })
+  const boostDelta = boostedSharesDelta > 0n ? boostedSharesDelta : 0n
 
-  const existingBoostedShares = leverage
-    ? BigInt(leverage.osTokenShares || 0) + BigInt(leverage.exitingOsTokenShares || 0)
-    : 0n
+  totalEarnedAssets += leverageReward
+  totalEarnedAssets += getBoostReward({ ...apyData, isCollateralized, isOsTokenEnabled, boostedSharesDelta: boostDelta })
 
-  const boostedOsTokenShares = existingBoostedShares + boostedSharesDelta
+  const boostedOsTokenShares = boostedShares + boostDelta
 
   const hasExtraBoostShares = boostedOsTokenShares > mintedShares
 
@@ -118,4 +73,4 @@ const getAllocatorPosition = async (values: GetAllocatorPositionInput) => {
 }
 
 
-export default wrapAbortPromise<GetAllocatorPositionInput, Output>(getAllocatorPosition)
+export default getAllocatorPosition

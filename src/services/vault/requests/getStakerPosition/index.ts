@@ -1,101 +1,49 @@
-import graphql from '../../../../graphql'
-import { BigDecimal, apiUrls, constants } from '../../../../helpers'
-import { wrapAbortPromise } from '../../../../modules/gql-module'
+import { BigDecimal } from '../../../../helpers'
 
 import getBoostReward from '../../helpers/getBoostReward'
 import getAnnualReward from '../../helpers/getAnnualReward'
-import getPositionApyData from '../../helpers/getPositionApyData'
+import validatePositionInput from '../../helpers/validatePositionInput'
 import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 
-import { validate } from './validate'
+import type { Position } from '../getPositionData'
+import type { PositionInput } from '../../helpers/validatePositionInput'
 
 
-export type GetStakerPositionInput = StakeWise.BaseInput & {
-  stakedAssetsDelta?: bigint
-  mintedSharesDelta?: bigint
-  boostedSharesDelta?: bigint
-}
-
-type Output = {
-  apy: number
-  totalAssets: bigint
-}
+export type GetStakerPositionInput = PositionInput
 
 const getSignedAnnualReward = (principal: bigint, apy: number): bigint => (
   principal >= 0n ? getAnnualReward(principal, apy) : -getAnnualReward(-principal, apy)
 )
 
-const getStakerPosition = async (values: GetStakerPositionInput) => {
-  const { options, contracts } = values
-
-  const {
-    userAddress,
-    vaultAddress,
-    stakedAssetsDelta,
-    mintedSharesDelta,
-    boostedSharesDelta,
-  } = validate(values)
-
-  const url = apiUrls.getSubgraphqlUrl(options)
-
-  const [ data, osTokenRate ] = await Promise.all([
-    graphql.subgraph.vault.fetchStakerPositionDataQuery({
-      url,
-      variables: {
-        userId: userAddress.toLowerCase(),
-        userAddress: userAddress.toLowerCase(),
-        vaultAddress: vaultAddress.toLowerCase(),
-      },
-    }),
-    contracts.base.mintTokenController.convertToAssets(constants.blockchain.amount1),
-  ])
-
-  const vault = data.vaults[0]
+const getStakerPosition = (values: GetStakerPositionInput): Position => {
+  const { data, stakedAssetsDelta, mintedSharesDelta, boostedSharesDelta } = validatePositionInput(values)
+  const { vault, walletShares, boostedShares, boostedAssets, exitingAssets, leverageReward } = data
 
   if (!vault) {
     return { apy: 0, totalAssets: 0n }
   }
 
-  const allocator = data.allocators[0]
-  const leverage = data.leverageStrategyPositions[0]
-
-  const apyData = getPositionApyData({ vault, aave: data.aave, osToken: data.osToken, osTokenRate })
-
-  const { vaultApy, osTokenApy, osTokenMintApy } = apyData
+  const { apyData, isCollateralized, isOsTokenEnabled } = vault
+  const { vaultApy, osTokenApy, osTokenRate, osTokenMintApy } = apyData
 
   const walletOsTokenDelta = mintedSharesDelta - boostedSharesDelta
 
-  const stakedAssets = BigInt(allocator?.assets || 0) + stakedAssetsDelta
-  const exitingAssets = BigInt(allocator?.exitingAssets || 0)
+  const stakedAssets = data.stakedAssets + stakedAssetsDelta
 
-  let mintedOsTokenShares = BigInt(allocator?.mintedOsTokenShares || 0) + mintedSharesDelta
+  let mintedOsTokenShares = data.mintedShares + mintedSharesDelta
 
   if (mintedOsTokenShares < 0n) {
     mintedOsTokenShares = 0n
   }
 
-  const walletOsTokenShares = BigInt(data.osTokenHolder?.balance || 0) + walletOsTokenDelta
-
-  const existingBoostedShares = leverage
-    ? BigInt(leverage.osTokenShares || 0) + BigInt(leverage.exitingOsTokenShares || 0)
-    : 0n
-
-  const existingBoostAssets = leverage
-    ? BigInt(leverage.assets || 0) + BigInt(leverage.exitingAssets || 0)
-    : 0n
-
-  const boostOsTokenShares = existingBoostedShares + boostedSharesDelta
-  const boostAssets = existingBoostAssets
+  const walletOsTokenShares = walletShares + walletOsTokenDelta
+  const boostOsTokenShares = boostedShares + boostedSharesDelta
 
   // what the staker holds (wallet + boost) minus what they owe (minted against the stake)
   const ownOsTokenShares = walletOsTokenShares + boostOsTokenShares - mintedOsTokenShares
   const ownOsTokenAssets = convertOsTokenSharesToAssets(ownOsTokenShares, osTokenRate)
 
-  let totalAssets = stakedAssets + exitingAssets + boostAssets + ownOsTokenAssets
-
-  if (totalAssets < 0n) {
-    totalAssets = 0n
-  }
+  const totalAssets = stakedAssets + exitingAssets + boostedAssets + ownOsTokenAssets
 
   if (totalAssets <= 0n) {
     return { apy: 0, totalAssets: 0n }
@@ -103,22 +51,14 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
 
   let totalEarnedAssets = getAnnualReward(stakedAssets, vaultApy)
 
-  if (mintedOsTokenShares > 0n && vault.isOsTokenEnabled) {
+  if (mintedOsTokenShares > 0n && isOsTokenEnabled) {
     const mintedOsTokenAssets = convertOsTokenSharesToAssets(mintedOsTokenShares, osTokenRate)
 
     totalEarnedAssets -= getAnnualReward(mintedOsTokenAssets, osTokenMintApy)
   }
 
-  totalEarnedAssets += await getBoostReward({
-    ...apyData,
-    url,
-    leverage,
-    vaultAddress,
-    boostedSharesDelta,
-    isCollateralized: vault.isCollateralized,
-    isOsTokenEnabled: vault.isOsTokenEnabled,
-  })
-
+  totalEarnedAssets += leverageReward
+  totalEarnedAssets += getBoostReward({ ...apyData, isCollateralized, isOsTokenEnabled, boostedSharesDelta })
   totalEarnedAssets += getSignedAnnualReward(ownOsTokenAssets, osTokenApy)
 
   const apy = new BigDecimal(totalEarnedAssets).divide(totalAssets).multiply(100).toNumber()
@@ -127,4 +67,4 @@ const getStakerPosition = async (values: GetStakerPositionInput) => {
 }
 
 
-export default wrapAbortPromise<GetStakerPositionInput, Output>(getStakerPosition)
+export default getStakerPosition

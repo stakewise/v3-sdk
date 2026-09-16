@@ -22,6 +22,10 @@ export type { GetStakerActionsInput } from './getStakerActions'
 export { default as getVaultVersion } from './getVaultVersion'
 export type { GetVaultVersionInput } from './getVaultVersion'
 
+export { default as getPositionData } from './getPositionData'
+export type { GetPositionDataInput, PositionData, Position } from './getPositionData'
+export type { PositionApyData } from '../helpers/getPositionApyData'
+
 export { default as getAllocatorPosition } from './getAllocatorPosition'
 export type { GetAllocatorPositionInput } from './getAllocatorPosition'
 
