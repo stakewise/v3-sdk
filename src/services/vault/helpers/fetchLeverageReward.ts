@@ -11,21 +11,12 @@ type LeveragePosition = PositionDataQueryPayload['leverageStrategyPositions'][nu
 
 type FetchLeverageRewardInput = PositionApyData & {
   url: string | ReadonlyArray<string>
-  leverage?: LeveragePosition
+  leverage: LeveragePosition
   vaultAddress: string
 }
 
 const fetchLeverageReward = async (values: FetchLeverageRewardInput): Promise<bigint> => {
   const { url, leverage, vaultApy, borrowApy, osTokenRate, vaultAddress, osTokenMintApy } = values
-
-  const boostedShares = BigInt(leverage?.osTokenShares || 0) + BigInt(leverage?.exitingOsTokenShares || 0)
-  const boostedAssets = BigInt(leverage?.assets || 0) + BigInt(leverage?.exitingAssets || 0)
-
-  const hasBoostedPosition = boostedShares > 0n || boostedAssets > 0n
-
-  if (!leverage || !hasBoostedPosition) {
-    return 0n
-  }
 
   const exitRequest = leverage.exitRequest
 

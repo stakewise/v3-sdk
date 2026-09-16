@@ -6,6 +6,7 @@ import validatePositionInput from '../../helpers/validatePositionInput'
 import convertOsTokenSharesToAssets from '../../helpers/convertOsTokenSharesToAssets'
 
 import capBoostApy from './capBoostApy'
+
 import type { Position } from '../getPositionData'
 import type { PositionInput } from '../../helpers/validatePositionInput'
 

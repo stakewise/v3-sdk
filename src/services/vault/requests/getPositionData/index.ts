@@ -38,6 +38,8 @@ const getPositionData = async (values: GetPositionDataInput): Promise<PositionDa
   const boostedShares = BigInt(leverage?.osTokenShares || 0) + BigInt(leverage?.exitingOsTokenShares || 0)
   const boostedAssets = BigInt(leverage?.assets || 0) + BigInt(leverage?.exitingAssets || 0)
 
+  const hasBoostedPosition = boostedShares > 0n || boostedAssets > 0n
+
   const position = {
     stakedAssets: BigInt(allocator?.assets || 0),
     exitingAssets: BigInt(allocator?.exitingAssets || 0),
@@ -58,7 +60,9 @@ const getPositionData = async (values: GetPositionDataInput): Promise<PositionDa
     osToken: data.osToken,
   })
 
-  const leverageReward = await fetchLeverageReward({ ...apyData, url, leverage, vaultAddress })
+  const leverageReward = leverage && hasBoostedPosition
+    ? await fetchLeverageReward({ ...apyData, url, leverage, vaultAddress })
+    : 0n
 
   return {
     ...position,
