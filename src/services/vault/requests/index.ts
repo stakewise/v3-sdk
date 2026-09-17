@@ -22,11 +22,9 @@ export type { GetStakerActionsInput } from './getStakerActions'
 export { default as getVaultVersion } from './getVaultVersion'
 export type { GetVaultVersionInput } from './getVaultVersion'
 
-export { default as getAllocatorPosition } from './getAllocatorPosition'
-export type { GetAllocatorPositionInput } from './getAllocatorPosition'
-
-export { default as getStakerPosition } from './getStakerPosition'
-export type { GetStakerPositionInput } from './getStakerPosition'
+export { default as getPositionData } from './getPositionData'
+export type { GetPositionDataInput, PositionData, Position } from './getPositionData'
+export type { PositionApyData } from '../helpers/getPositionApyData'
 
 export { default as getVaultFactory } from './getVaultFactory'
 export type { GetVaultFactoryInput } from './getVaultFactory'

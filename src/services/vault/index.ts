@@ -11,22 +11,39 @@ import {
   getStakeBalance, GetStakeBalanceInput,
   getVaultVersion, GetVaultVersionInput,
   getVaultFactory, GetVaultFactoryInput,
+  getPositionData, GetPositionDataInput,
   getStakerActions, GetStakerActionsInput,
   getOsTokenConfig, GetOsTokenConfigInput,
   getHarvestParams, GetHarvestParamsInput,
-  getStakerPosition, GetStakerPositionInput,
   getRewardSplitters, GetRewardSplittersInput,
-  getAllocatorPosition, GetAllocatorPositionInput,
   getMaxWithdrawAmount, GetMaxWithdrawAmountInput,
   getExitQueuePositions, GetExitQueuePositionsInput,
   getPeriodicDistributions, GetPeriodicDistributionsInput,
 } from './requests'
+
+import { calculateStakerPosition, calculateAllocatorPosition } from './helpers'
 
 import VaultTransactions from './transactions'
 
 
 class Vault extends VaultTransactions {
   readonly params: StakeWise.CommonParams
+
+  readonly helpers = {
+    /**
+     * Calculate the staker's net APY and total assets across wallet, mint and boost from getPositionData result and optional deltas.
+     * Zero deltas return the current position.
+     * @see https://docs.stakewise.io/sdk/api/vault/helpers/calculatestakerposition
+     */
+    calculateStakerPosition,
+
+    /**
+     * Calculate the user's APY and total staked assets in a vault from getPositionData result and optional deltas.
+     * Zero deltas return the current position.
+     * @see https://docs.stakewise.io/sdk/api/vault/helpers/calculateallocatorposition
+     */
+    calculateAllocatorPosition,
+  }
 
   constructor(params: StakeWise.CommonParams) {
     super(params)
@@ -162,21 +179,11 @@ class Vault extends VaultTransactions {
   }
 
   /**
-   * Estimate the user's APY and total staked assets in a vault after a pending action (stake, mint, burn, boost) via position deltas.
-   * Pass zero deltas to reproduce the current position.
-   * @see https://docs.stakewise.io/sdk/api/vault/requests/getallocatorposition
+   * Fetch the user's position in a vault: stake, minted osToken, boost, wallet balance and APY parameters.
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getpositiondata
    */
-  public getAllocatorPosition(values: StakeWise.ExtractInput<GetAllocatorPositionInput>) {
-    return getAllocatorPosition({ ...this.params, ...values })
-  }
-
-  /**
-   * Estimate the staker's net APY and total assets after a pending action (stake, mint, burn, boost) via position deltas.
-   * Pass zero deltas to reproduce the current position.
-   * @see https://docs.stakewise.io/sdk/api/vault/requests/getstakerposition
-   */
-  public getStakerPosition(values: StakeWise.ExtractInput<GetStakerPositionInput>) {
-    return getStakerPosition({ ...this.params, ...values })
+  public getPositionData(values: StakeWise.ExtractInput<GetPositionDataInput>) {
+    return getPositionData({ ...this.params, ...values })
   }
 
   /**

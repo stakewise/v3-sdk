@@ -13,6 +13,9 @@ export type { VaultStatsQueryPayload, VaultStatsQueryVariables } from './vaultSt
 export { fetchUserRewardsQuery } from './userRewardsQuery.graphql'
 export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userRewardsQuery.graphql'
 
+export { fetchPositionDataQuery } from './positionDataQuery.graphql'
+export type { PositionDataQueryPayload, PositionDataQueryVariables } from './positionDataQuery.graphql'
+
 export { fetchHarvestParamsQuery } from './harvestParamsQuery.graphql'
 export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './harvestParamsQuery.graphql'
 
@@ -28,11 +31,5 @@ export type { BlocklistAccountsQueryPayload, BlocklistAccountsQueryVariables } f
 export { fetchVaultOsTokenConfigQuery } from './vaultOsTokenConfigQuery.graphql'
 export type { VaultOsTokenConfigQueryPayload, VaultOsTokenConfigQueryVariables } from './vaultOsTokenConfigQuery.graphql'
 
-export { fetchStakerPositionDataQuery } from './stakerPositionDataQuery.graphql'
-export type { StakerPositionDataQueryPayload, StakerPositionDataQueryVariables } from './stakerPositionDataQuery.graphql'
-
 export { fetchPeriodicDistributionsQuery } from './periodicDistributionsQuery.graphql'
 export type { PeriodicDistributionsQueryPayload, PeriodicDistributionsQueryVariables } from './periodicDistributionsQuery.graphql'
-
-export { fetchAllocatorPositionDataQuery } from './allocatorPositionDataQuery.graphql'
-export type { AllocatorPositionDataQueryPayload, AllocatorPositionDataQueryVariables } from './allocatorPositionDataQuery.graphql'

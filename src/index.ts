@@ -7,6 +7,7 @@ export { default as StakeWiseSDK } from './StakeWiseSDK'
 export { default as localStorage } from './modules/local-storage'
 export { createContract, createErc20Contract } from './contracts'
 export { wrapAbortPromise, AbortPromise, AbortRequest, AbortCallback } from './modules/gql-module'
+export type { Position, PositionData, PositionApyData } from './services/vault/requests'
 
 export {
   configs,
