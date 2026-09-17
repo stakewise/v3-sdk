@@ -1,6 +1,6 @@
 import { validate } from '../validate'
 import type { DepositAndMintInput } from '../types'
-import getHarvestArgs, { HarvestArgs } from '../../../../../contracts/multicall/util/getHarvestArgs'
+import getHarvestArgs, { HarvestArgs } from '../../../../../contracts/ownMulticalls/util/getHarvestArgs'
 import { PayableOverrides } from '../../../../../contracts/types/common'
 
 

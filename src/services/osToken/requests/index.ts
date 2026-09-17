@@ -5,12 +5,6 @@ export { default as getRate } from './getOsTokenRate'
 export { default as getBalance } from './getBalance'
 export type { GetOsTokenBalanceInput } from './getBalance'
 
-export { default as getMaxMint } from './getMaxMint'
-export type { GetMaxMintInput } from './getMaxMint'
-
-export { default as getPosition } from './getPosition'
-export type { GetOsTokenPositionInput } from './getPosition'
-
 export { default as getMaxMintAmount } from './getMaxMintAmount'
 export type { GetMaxMintAmountInput } from './getMaxMintAmount'
 
