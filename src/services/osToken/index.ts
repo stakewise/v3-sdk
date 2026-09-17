@@ -5,9 +5,6 @@ import {
   getMaxMintAmount,
   GetMaxMintAmountInput,
 
-  getPosition,
-  GetOsTokenPositionInput,
-
   getBalance,
   GetOsTokenBalanceInput,
 
