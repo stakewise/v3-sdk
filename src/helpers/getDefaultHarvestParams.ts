@@ -1,3 +1,6 @@
+import { ZeroHash } from 'ethers'
+
+
 type Input = {
   proof: string[]
   reward: string
@@ -8,7 +11,7 @@ type Input = {
 const getDefaultHarvestParams = (values: Input) => ({
   proof: values.proof || [],
   reward: values.reward || '0',
-  rewardsRoot: values.rewardsRoot || '0x0000000000000000000000000000000000000000000000000000000000000000',
+  rewardsRoot: values.rewardsRoot || ZeroHash,
   unlockedMevReward: values.unlockedMevReward || '0',
 })
 

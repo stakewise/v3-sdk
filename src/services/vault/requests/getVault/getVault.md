@@ -100,6 +100,7 @@ type Output = {
 | `description`               | Description of vault |
 | `whitelist`                 | List of authorized users for deposits |
 | `blocklist`                 | List of blocked users for deposits |
+| `lastUpdateStateTimestamp`  | The timestamp of the last vault state update. Will be null if the state has never been updated |
 | `performance`               | Vault performance indicator (percent) |
 | `lastFeeUpdateTimestamp`               | The timestamp of the last fee update |
 | `lastFeePercent`               | The vault last fee percent |
