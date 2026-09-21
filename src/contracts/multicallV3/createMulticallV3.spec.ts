@@ -28,12 +28,17 @@ type Result = {
   returnData: string
 }
 
-const createMulticallContract = (results: Result[]) => {
-  const aggregate3 = jest.fn(async () => ({ hash: txHash })) as jest.Mock & { staticCall: jest.Mock }
+type MulticallContract = {
+  connect: jest.Mock
+  aggregate3: jest.Mock & { staticCall: jest.Mock }
+}
+
+const createMulticallContract = (results: Result[]): MulticallContract => {
+  const aggregate3 = jest.fn(async () => ({ hash: txHash })) as MulticallContract['aggregate3']
 
   aggregate3.staticCall = jest.fn(async () => results)
 
-  const contract = {
+  const contract: MulticallContract = {
     aggregate3,
     connect: jest.fn(() => contract),
   }
