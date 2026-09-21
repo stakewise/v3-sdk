@@ -9,8 +9,8 @@ export default {
     backend: 'https://gnosis-api.stakewise.io/graphql',
     subgraph: [
       // TODO replace to 'prod' before release
-      'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/stage',
-      'https://graphs-replica.stakewise.io/gnosis/subgraphs/name/stakewise/prod',
+      // 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/stage',
+      'https://graphs-replica.stakewise.io/gnosis/subgraphs/name/stakewise/stage',
     ],
   },
   pages: {
