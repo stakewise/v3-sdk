@@ -9,8 +9,8 @@ export default {
     backend: 'https://mainnet-api.stakewise.io/graphql',
     subgraph: [
       // TODO replace to 'prod' before release
-      'https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/stage',
-      'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/prod',
+      // 'https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/stage',
+      'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/stage',
     ],
   },
   pages: {
@@ -28,7 +28,7 @@ export default {
     },
     base: {
       keeper: '0x6B5815467da09DaA7DC83Db21c9239d98Bb487b5',
-      multicall: '0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441',
+      multicall: '0xcA11bde05977b3631167028862bE2a173976CA11',
       priceOracle: '0x8023518b2192FB5384DAdc596765B3dD1cdFe471',
       vaultsRegistry: '0x3a0008a588772446f6e656133C2D5029CC4FC20E',
       sharedMevEscrow: '0x48319f97E5Da1233c21c48b80097c0FB7a20Ff86',

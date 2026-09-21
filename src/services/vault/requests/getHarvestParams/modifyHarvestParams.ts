@@ -1,4 +1,5 @@
 import { HarvestParamsQueryPayload } from '../../../../graphql/subgraph/vault'
+import { getDefaultHarvestParams } from '../../../../helpers'
 
 
 const modifyHarvestParams = (data: HarvestParamsQueryPayload) => {
@@ -7,12 +8,7 @@ const modifyHarvestParams = (data: HarvestParamsQueryPayload) => {
   return {
     canHarvest,
     isMetaVault,
-    params: {
-      proof: params.proof || [],
-      reward: params.reward || '0',
-      rewardsRoot: params.rewardsRoot || '0x0000000000000000000000000000000000000000000000000000000000000000',
-      unlockedMevReward: params.unlockedMevReward || '0',
-    },
+    params: getDefaultHarvestParams(params),
   }
 }
 

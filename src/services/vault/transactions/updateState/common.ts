@@ -1,4 +1,4 @@
-import { getHarvestArgs } from '../../../../contracts/multicall/util'
+import { getHarvestArgs } from '../../../../contracts/ownMulticalls/util'
 
 import { validate } from './validate'
 import type { UpdateStateInput } from './types'

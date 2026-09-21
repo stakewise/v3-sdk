@@ -1,7 +1,7 @@
 import { validate } from '../validate'
 import type { DepositInput } from '../types'
-import getHarvestArgs, { HarvestArgs } from '../../../../../contracts/multicall/util/getHarvestArgs'
 import { PayableOverrides } from '../../../../../contracts/types/common'
+import getHarvestArgs, { HarvestArgs } from '../../../../../contracts/ownMulticalls/util/getHarvestArgs'
 
 
 type BaseParams = [ string, string, PayableOverrides ]
