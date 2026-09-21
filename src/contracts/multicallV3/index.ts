@@ -53,7 +53,7 @@ const createMulticallV3 = <S extends Signer | undefined = undefined>(
         return acc
       }
 
-      if (acc[returnName]) {
+      if (returnName in acc) {
         throw new Error(`createMulticallV3: duplicate returnName "${returnName}"`)
       }
 
