@@ -39,17 +39,15 @@ const modifyRedeemerExitRequests = (values: ParseRedeemerExitRequestsInput): Par
     const totalAssets = BigInt(exitRequest.totalAssets || 0)
     const exitedAssets = BigInt(exitRequest.exitedAssets || 0)
 
+    total += totalAssets
+
     if (exitRequest.isClaimable) {
-      total += exitedAssets
       withdrawable += exitedAssets
 
       positions.push({
         positionTicket: exitRequest.positionTicket,
         exitQueueIndex: exitRequest.exitQueueIndex as string,
       })
-    }
-    else {
-      total += totalAssets
     }
 
     requests.push({
