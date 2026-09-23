@@ -265,4 +265,100 @@ describe('createMulticallV3', () => {
     await expect(multicall(calls)).rejects.toThrow('Multicall batch failed')
     expect(contract.aggregate3).not.toHaveBeenCalled()
   })
+
+  it('forwards allowFailure to the sent batch', async () => {
+    const contract = createMulticallContract([ failure() ])
+    const multicall = createMulticallV3(contract as unknown as StakeWise.ABI.Multicall, signer)
+
+    const hash = await multicall([
+      {
+        contract: createContract(vaultAddress),
+        method: 'updateState',
+        args: [ 1n ],
+        allowFailure: true,
+      },
+    ])
+
+    expect(hash).toBe(txHash)
+    expect(contract.aggregate3).toHaveBeenCalledWith([
+      {
+        target: vaultAddress,
+        allowFailure: true,
+        callData: vaultInterface.encodeFunctionData('updateState', [ 1n ]),
+      },
+    ])
+  })
+
+  it('does not throw when only the calls allowed to fail have failed', async () => {
+    const contract = createMulticallContract([
+      success('totalAssets', [ 1000n ]),
+      failure(),
+    ])
+    const multicall = createMulticallV3(contract as unknown as StakeWise.ABI.Multicall, signer)
+
+    await expect(multicall([
+      {
+        contract: createContract(vaultAddress),
+        method: 'updateState',
+        args: [ 1n ],
+      },
+      {
+        contract: createContract(otherVaultAddress),
+        method: 'updateState',
+        args: [ 2n ],
+        allowFailure: true,
+      },
+    ])).resolves.toBe(txHash)
+  })
+
+  it('still throws when a call not allowed to fail has failed', async () => {
+    const contract = createMulticallContract([
+      failure(),
+      failure(),
+    ])
+    const multicall = createMulticallV3(contract as unknown as StakeWise.ABI.Multicall, signer)
+
+    const calls: MulticallV3Call[] = [
+      {
+        contract: createContract(vaultAddress),
+        method: 'updateState',
+        args: [ 1n ],
+        allowFailure: true,
+      },
+      {
+        contract: createContract(otherVaultAddress),
+        method: 'updateState',
+        args: [ 2n ],
+      },
+    ]
+
+    await expect(multicall(calls)).rejects.toThrow(
+      `Multicall batch failed:\n[1] updateState @ ${otherVaultAddress}: NotHarvested()`
+    )
+    expect(contract.aggregate3).not.toHaveBeenCalled()
+  })
+
+  it('omits the returnName of a failed call allowed to fail', async () => {
+    const contract = createMulticallContract([
+      success('totalAssets', [ 1000n ]),
+      failure(),
+    ])
+    const multicall = createMulticallV3(contract as unknown as StakeWise.ABI.Multicall)
+
+    const result = await multicall([
+      {
+        contract: createContract(vaultAddress),
+        method: 'totalAssets',
+        returnName: 'totalAssets',
+      },
+      {
+        contract: createContract(otherVaultAddress),
+        method: 'totalAssets',
+        returnName: 'otherTotalAssets',
+        allowFailure: true,
+      },
+    ])
+
+    expect(result).toEqual({ totalAssets: 1000n })
+  })
 })

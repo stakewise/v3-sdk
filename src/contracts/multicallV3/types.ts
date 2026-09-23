@@ -6,6 +6,7 @@ export type MulticallV3Call = {
   method: string
   args?: readonly unknown[]
   returnName?: string
+  allowFailure?: boolean
 }
 
 export type MulticallV3Results = Awaited<ReturnType<StakeWise.ABI.Multicall['aggregate3']['staticCall']>>
