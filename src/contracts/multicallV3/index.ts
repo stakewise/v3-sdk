@@ -16,7 +16,7 @@ const createMulticallV3 = <S extends Signer | undefined = undefined>(
     const encoded = await Promise.all(calls.map(async (call) => ({
       callData: call.contract.interface.encodeFunctionData(call.method, call.args || []),
       target: await call.contract.getAddress(),
-      allowFailure: false,
+      allowFailure: Boolean(call.allowFailure),
     })))
 
     const contract = signer ? multicallContract.connect(signer) : multicallContract
@@ -26,7 +26,7 @@ const createMulticallV3 = <S extends Signer | undefined = undefined>(
     )
 
     const failed = results.reduce<string[]>((acc, result, index) => {
-      if (!result.success) {
+      if (!result.success && !calls[index].allowFailure) {
         const { method } = calls[index]
         const { target } = encoded[index]
 
@@ -49,7 +49,7 @@ const createMulticallV3 = <S extends Signer | undefined = undefined>(
     return calls.reduce<Record<string, unknown>>((acc, call, index) => {
       const { contract, method, returnName } = call
 
-      if (!returnName) {
+      if (!returnName || !results[index].success) {
         return acc
       }
 
