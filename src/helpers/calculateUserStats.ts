@@ -1,14 +1,16 @@
 import { formatEther } from 'ethers'
 
 
-type Input = Array<{
+type Snapshot = {
   boostEarnedAssets?: string
   stakeEarnedAssets?: string
   earnedAssets: string
   totalAssets: string
   timestamp: string
   apy?: string
-}>
+}
+
+type Input = Array<Snapshot>
 
 type ExtraData = {
   boostRewards: number
@@ -33,14 +35,76 @@ type ModifiedStats = {
   rewards: Data[]
 }
 
-const calculateUserStats = (data: Input): ModifiedStats => {
+const secondsInDay = 86_400
+const microsecondsInSecond = 1_000_000
+const millisecondsInDay = secondsInDay * 1_000
+const microsecondsInDay = secondsInDay * microsecondsInSecond
+
+const alignToDay = (timestamp: string) => (
+  Math.floor(Number(timestamp) / microsecondsInDay) * microsecondsInDay
+)
+
+const getLastFullDayTimestamp = () => (
+  Math.floor(Date.now() / millisecondsInDay) * microsecondsInDay - microsecondsInDay
+)
+
+const createEmptySnapshotTemplate = (snapshot: Snapshot): Omit<Snapshot, 'timestamp'> => {
+  const { apy, boostEarnedAssets, stakeEarnedAssets } = snapshot
+
+  return {
+    boostEarnedAssets: boostEarnedAssets === undefined ? undefined : '0',
+    stakeEarnedAssets: stakeEarnedAssets === undefined ? undefined : '0',
+    apy: apy === undefined ? undefined : '0',
+    earnedAssets: '0',
+    totalAssets: '0',
+  }
+}
+
+const fillEmptyDays = (data: Input, daysCount?: number): Input => {
+  if (!data.length) {
+    return data
+  }
+
+  const timestamps = data.map(({ timestamp }) => alignToDay(timestamp))
+
+  const lastRealTimestamp = Math.max(...timestamps)
+  const firstRealTimestamp = Math.min(...timestamps)
+
+  const lastTimestamp = daysCount
+    ? Math.max(lastRealTimestamp, getLastFullDayTimestamp())
+    : lastRealTimestamp
+
+  const firstTimestamp = daysCount
+    ? Math.max(firstRealTimestamp, lastTimestamp - (daysCount - 1) * microsecondsInDay)
+    : firstRealTimestamp
+
+  const existingTimestamps = new Set(timestamps)
+  const emptySnapshotTemplate = createEmptySnapshotTemplate(data[0])
+
+  const result = data.filter((_, index) => (
+    timestamps[index] >= firstTimestamp && timestamps[index] <= lastTimestamp
+  ))
+
+  for (let t = firstTimestamp; t <= lastTimestamp; t += microsecondsInDay) {
+    if (!existingTimestamps.has(t)) {
+      result.push({
+        ...emptySnapshotTemplate,
+        timestamp: String(t),
+      })
+    }
+  }
+
+  return result
+}
+
+const calculateUserStats = (data: Input, daysCount?: number): ModifiedStats => {
   const result: StatsMap = {
     apy: {},
     balance: {},
     rewards: {},
   }
 
-  data.forEach((stats) => {
+  fillEmptyDays(data, daysCount).forEach((stats) => {
     const {
       boostEarnedAssets,
       stakeEarnedAssets,
@@ -50,7 +114,7 @@ const calculateUserStats = (data: Input): ModifiedStats => {
       apy,
     } = stats
 
-    const timeInSeconds = Number(timestamp) / 1_000_000
+    const timeInSeconds = Number(timestamp) / microsecondsInSecond
     const balance = Number(formatEther(totalAssets || 0n))
     const rewards = Number(formatEther(earnedAssets || 0n))
 

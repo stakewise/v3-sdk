@@ -24,7 +24,7 @@ const getUserStats = (input: GetUserStatsInput) => {
         },
       },
     },
-    modifyResult: (data) => calculateUserStats(data?.allocator || []),
+    modifyResult: (data) => calculateUserStats(data?.allocator || [], daysCount),
   })
 }
 
