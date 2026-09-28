@@ -8,9 +8,8 @@ export default {
   api: {
     backend: 'https://hoodi-api.stakewise.io/graphql',
     subgraph: [
-      // TODO replace to 'prod' before release
-      // 'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
-      'https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/stage',
+      'https://graphs.stakewise.io/hoodi/subgraphs/name/stakewise/prod',
+      'https://graphs-replica.stakewise.io/hoodi/subgraphs/name/stakewise/prod',
     ],
   },
   pages: {
