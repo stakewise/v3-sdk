@@ -11,7 +11,7 @@ const transactionWrapper = <T extends TransactionLike>(params: StakeWise.CommonP
   const isReadOnlyProvider = !params.options.provider
 
   if (isReadOnlyProvider) {
-    const block = () => {
+    const block = async () => {
       throw new Error('To send this transaction, please provide BrowserProvider to the StakeWiseSDK')
     }
 

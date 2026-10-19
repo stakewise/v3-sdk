@@ -2,11 +2,10 @@ import { commonLogic } from './common'
 import type { LockInput } from './types'
 import { getGas } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
-import upgradeLeverageStrategyGas from '../upgradeLeverageStrategy/upgradeLeverageStrategyGas'
 
 
 const lockGas = async (values: LockInput) => {
-  const { provider, userAddress } = values
+  const { provider, contracts, userAddress, vaultAddress } = values
 
   const { approveData, multicallArgs, isUpgradeRequired } = await commonLogic({
     ...values,
@@ -27,7 +26,7 @@ const lockGas = async (values: LockInput) => {
       })
       : Promise.resolve(0n),
     isUpgradeRequired
-      ? upgradeLeverageStrategyGas(values)
+      ? contracts.special.leverageStrategy.upgradeProxy.estimateGas(vaultAddress, { from: userAddress })
       : Promise.resolve(0n),
   ])
 

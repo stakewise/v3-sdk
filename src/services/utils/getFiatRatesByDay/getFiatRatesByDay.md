@@ -10,10 +10,10 @@ Get fiat data by day
 
 #### Arguments:
 
-| Name     | Type     | Required | Description      |
-|----------|----------|----------|------------------|
-| dateTo   | `string` | **Yes**  | Start time       |
-| dateFrom | `string` | **Yes**  | End time         |
+| Name     | Type     | Required | Description                   |
+|----------|----------|----------|-------------------------------|
+| dateFrom | `number` | **Yes**  | Time to start in milliseconds |
+| dateTo   | `number` | **Yes**  | Time to end in milliseconds   |
 
 #### Returns:
 

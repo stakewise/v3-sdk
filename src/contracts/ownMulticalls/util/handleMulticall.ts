@@ -27,7 +27,7 @@ const handleMulticall = async ({ contract, multicallParams }: Input) => {
     return wrapErrorHandler<any>(contract[method](...args, { gasLimit }), 'transaction')
   }
 
-  const estimatedGas = await contract.multicall.estimateGas(calls)
+  const estimatedGas = await wrapErrorHandler<bigint>(contract.multicall.estimateGas(calls), 'transaction')
   const gasLimit = estimatedGas * 110n / 100n
 
   return wrapErrorHandler(contract.multicall(calls, { gasLimit }), 'transaction')

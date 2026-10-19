@@ -28,7 +28,7 @@ const getGas = async (value: GetGasInput): Promise<bigint> => {
   const isEIP1559 = Boolean(maxFeePerGas && maxPriorityFeePerGas)
 
   const gas = isEIP1559
-    ? estimatedGas * (baseFeePerGas + (maxPriorityFeePerGas || 0n))
+    ? estimatedGas * (baseFeePerGas + (maxPriorityFeePerGas as bigint))
     : estimatedGas * (gasPrice as bigint)
 
   return gas

@@ -16,23 +16,9 @@ export type GetStakerActionsInput = StakeWise.CommonParams & {
 }
 
 const getStakerActions = (input: GetStakerActionsInput) => {
-  const { options, types } = input
+  const { options } = input
 
-  const { skip, limit, vaultAddress, userAddress } = validate(input)
-
-  if (types) {
-    if (!Array.isArray(types)) {
-      throw new Error(`The "types" argument must be a array`)
-    }
-
-    types.forEach((value) => {
-      if (value in AllocatorActionType) {
-        return
-      }
-
-      throw new Error(`The "types" argument must contain enum AllocatorActionType values`)
-    })
-  }
+  const { skip, limit, types, vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
     url: apiUrls.getSubgraphqlUrl(options),

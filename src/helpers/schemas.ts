@@ -25,12 +25,29 @@ const maxLength = (length: number) => string.check(z.maxLength(length, { error: 
 const imageSizeMb = (value: string) => {
   const decoded = value.substring(value.indexOf(',') + 1)
 
-  return decoded ? atob(decoded).length / 1024 / 1024 : 0
+  try {
+    return decoded ? atob(decoded).length / 1024 / 1024 : 0
+  }
+  catch {
+    return null
+  }
 }
 
 const image = string.check(z.refine(
-  (value) => imageSizeMb(value) <= 1,
-  { error: (issue) => `must be under 1 MB, current size is ${imageSizeMb(issue.input as string).toFixed(2)} MB` }
+  (value) => {
+    const sizeMb = imageSizeMb(value)
+
+    return sizeMb !== null && sizeMb <= 1
+  },
+  {
+    error: (issue) => {
+      const sizeMb = imageSizeMb(issue.input as string)
+
+      return sizeMb === null
+        ? 'must be a base64 image'
+        : `must be under 1 MB, current size is ${sizeMb.toFixed(2)} MB`
+    },
+  }
 ))
 
 export default {

@@ -51,16 +51,19 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
     return acc
   }, {})
 
+  const ratesByDay = new Map(fiatRates.map((rate) => [ rate.timestamp, rate ] as const))
+
   const result = Object.entries(mergedStats)
-    .map((reward, index) => {
+    .map((reward) => {
       const [ timestamp, aggregated ] = reward
+      const fiatRate = ratesByDay.get(timestamp)
 
       const milliseconds = Number(timestamp) / 1_000
       const assets = Number(formatEther(aggregated.earned))
       const stakeAssets = Number(formatEther(aggregated.stake))
       const boostAssets = Number(formatEther(aggregated.boost))
 
-      if (!fiatRates[index]) {
+      if (!fiatRate) {
         return {
           date: milliseconds,
           dailyRewardsUsd: 0,
@@ -84,7 +87,7 @@ const mergeRewardsFiat = (values: Input): MergedReward[] => {
         usdToJpyRate,
         usdToKrwRate,
         usdToAudRate,
-      } = fiatRates[index]
+      } = fiatRate
 
       const USD = {
         ASSETS:  Number(assetsUsdRate),

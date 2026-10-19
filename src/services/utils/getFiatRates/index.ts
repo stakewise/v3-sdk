@@ -4,7 +4,10 @@ import { configs, Network } from '../../../helpers'
 
 const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
   url: configs[Network.Gnosis].api.subgraph,
-  modifyResult: (data) => Number(data.exchangeRates[0].assetsUsdRate),
+  modifyResult: (data) => ({
+    assetUsd: Number(data.exchangeRates[0].assetsUsdRate),
+    osTokenRate: Number(data.exchangeRates[0].osTokenAssetsRate),
+  }),
 })
 
 export const getFiatRates = (values: StakeWise.CommonParams) => {
@@ -27,13 +30,11 @@ export const getFiatRates = (values: StakeWise.CommonParams) => {
         ssvUsdRate,
       } = data.exchangeRates[0]
 
-      let assetUsd = Number(assetsUsdRate)
-
       const isGnosis = Network.Gnosis === options.network
 
-      if (isGnosis) {
-        assetUsd = await getGnoRate()
-      }
+      const { assetUsd, osTokenRate } = isGnosis
+        ? await getGnoRate()
+        : { assetUsd: Number(assetsUsdRate), osTokenRate: Number(osTokenAssetsRate) }
 
       return {
         // Fiat
@@ -49,7 +50,7 @@ export const getFiatRates = (values: StakeWise.CommonParams) => {
         'SSV/USD': Number(ssvUsdRate),
         'OBOL/USD': Number(obolUsdRate),
         'SWISE/USD': Number(swiseUsdRate),
-        'osToken/USD': Number(osTokenAssetsRate) * assetUsd,
+        'osToken/USD': osTokenRate * assetUsd,
       }
     },
   })

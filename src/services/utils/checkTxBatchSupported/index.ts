@@ -5,6 +5,8 @@ export type CheckTxBatchSupportedInput = StakeWise.CommonParams & {
   userAddress: string
 }
 
+type Capabilities = Record<string, { atomic?: { status?: string } }>
+
 export const checkTxBatchSupported = async (values: CheckTxBatchSupportedInput): Promise<boolean> => {
   const { provider, options, userAddress } = values
 
@@ -13,9 +15,9 @@ export const checkTxBatchSupported = async (values: CheckTxBatchSupportedInput):
   const chainIdHex = `0x${options.network.toString(16)}`
 
   try {
-    const capabilities = await provider.send('wallet_getCapabilities', [ userAddress, [ chainIdHex ] ])
-    const chainCapabilities = capabilities?.[chainIdHex] || Object.values(capabilities || {})[0]
-    const status = chainCapabilities?.atomic?.status
+    const capabilities: Capabilities | null = await provider.send('wallet_getCapabilities', [ userAddress, [ chainIdHex ] ])
+    const chainEntry = Object.entries(capabilities || {}).find(([ chainId ]) => Number(chainId) === options.network)
+    const status = chainEntry?.[1]?.atomic?.status
 
     return status === 'supported' || status === 'ready'
   }

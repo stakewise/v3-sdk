@@ -46,10 +46,9 @@ const getBurnAmountForUnstake = async (values: GetBurnAmountForUnstakeInput) => 
     return 0n
   }
 
-  const clampedAssetsToBurn = assetsToBurn > mint.assets ? mint.assets : assetsToBurn
-  const sharesToBurn = await contracts.base.mintTokenController.convertToShares(clampedAssetsToBurn)
+  const sharesToBurn = await contracts.base.mintTokenController.convertToShares(assetsToBurn)
 
-  return sharesToBurn || 0n
+  return sharesToBurn
 }
 
 
