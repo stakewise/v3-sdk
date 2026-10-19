@@ -1,0 +1,58 @@
+import type { VaultQueryPayload } from '../../src/graphql/subgraph/vault'
+
+
+const vaultQuery = {
+  vault: {
+    isErc20: true,
+    feePercent: 200,
+    isPrivate: false,
+    isGenesis: true,
+    isMetaVault: false,
+    isBlocklist: false,
+    canHarvest: false,
+    version: '1',
+    performance: '10',
+    tokenSymbol: 'mTKN',
+    imageUrl: 'mockUrl',
+    lastFeePercent: 0,
+    lastFeeUpdateTimestamp: '0',
+    tokenName: 'mockToken',
+    createdAt: '1693395816',
+    displayName: 'Mock Vault',
+    allocatorMaxBoostApy: '123.2',
+    apy: '2.80',
+    baseApy: '0.80',
+    queuedShares: '0',
+    subVaultsCurator: '',
+    subVaultsCount: 0,
+    blocklistCount: '0',
+    whitelistCount: '0',
+    totalAssets: '150000000000',
+    exitingTickets: '150000000000',
+    exitingAssets: '150000000000',
+    capacity: '1000000000000000',
+    isStateUpdateRequired: false,
+    depositDataRoot: 'mockValidators',
+    description: 'This is a mock vault',
+    isCollateralized: true,
+    admin: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    address: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    mevEscrow: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    whitelister: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    feeRecipient: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    ejectingSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    subVaultsRegistry: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    pendingMetaSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
+    lastUpdateStateTimestamp: null,
+    osTokenConfig: {
+      ltvPercent: '0',
+      liqThresholdPercent: '0',
+    },
+  },
+} satisfies VaultQueryPayload
+
+
+export default vaultQuery

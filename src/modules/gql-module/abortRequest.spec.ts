@@ -1,37 +1,40 @@
-import fetchMock from 'jest-fetch-mock'
+import { describe, expect, beforeEach, afterEach, vi } from 'vitest'
+
+import { it } from '../../../test'
 
 import AbortRequest from './abortRequest'
 
 
+const url = 'https://example.com'
+
+const sameBodyOptions = {
+  method: 'POST',
+  body: 'sameBody',
+  onSuccess: (data: string) => data,
+}
+
+const fetchMock = vi.fn<typeof fetch>()
+
+const mockResponse = (body: string) => fetchMock.mockImplementation(async () => new Response(body))
+const mockReject = (error: Error) => fetchMock.mockImplementation(async () => {
+  throw error
+})
+
 beforeEach(() => {
-  fetchMock.enableMocks()
+  vi.stubGlobal('fetch', fetchMock)
 })
 
 afterEach(() => {
-  fetchMock.resetMocks()
+  fetchMock.mockReset()
 })
 
 describe('AbortRequest', () => {
-  it('resolves the request', async () => {
-    const mock = 'response data'
-    fetchMock.mockResponse(JSON.stringify({ data: mock }))
-
-    const abortRequest = new AbortRequest('https://example.com', {
-      method: 'GET',
-      onSuccess: (data) => data,
-    })
-
-    const result = await abortRequest
-
-    expect(result).toEqual(mock)
-    expect(fetchMock.mock.calls.length).toBe(1)
-  })
-
   it('resolves modified data', async () => {
     const mock = { test: 'response data' }
-    fetchMock.mockResponse(JSON.stringify({ data: mock }))
 
-    const abortRequest = new AbortRequest<{ test: string }, string>('https://example.com', {
+    mockResponse(JSON.stringify({ data: mock }))
+
+    const abortRequest = new AbortRequest<{ test: string }, string>(url, {
       method: 'GET',
       onSuccess: (data) => data.test,
     })
@@ -42,48 +45,13 @@ describe('AbortRequest', () => {
     expect(fetchMock.mock.calls.length).toBe(1)
   })
 
-  it('rejects the request', async () => {
-    fetchMock.mockReject(new Error('Request failed'))
-
-    const abortRequest = new AbortRequest('https://example.com', {
-      method: 'GET',
-      onSuccess: (data) => data,
-    })
-
-    await expect(abortRequest).rejects.toThrow('Request failed')
-    expect(fetchMock.mock.calls.length).toBe(1)
-  })
-
-  it('aborts the request', async () => {
-    fetchMock.mockResponse(JSON.stringify({ data: 'response data' }))
-
-    const abortRequest = new AbortRequest('https://example.com', {
-      method: 'GET',
-      onSuccess: (data) => data,
-    })
-
-    abortRequest.abort()
-
-    const [ url, requestInit ] = fetchMock.mock.calls[0]
-
-    expect(requestInit?.signal?.aborted).toEqual(true)
-    expect(fetchMock.mock.calls.length).toBe(1)
-  })
-
-  it('handles multiple requests for the same body', async () => {
+  it('same body', async () => {
     const mock = 'response data'
 
-    fetchMock.mockResponse(JSON.stringify({ data: mock }))
+    mockResponse(JSON.stringify({ data: mock }))
 
-    const url = 'https://example.com'
-    const options = {
-      method: 'POST',
-      body: 'sameBody',
-      onSuccess: (data: string) => data,
-    }
-
-    const abortRequest1 = new AbortRequest(url, options)
-    const abortRequest2 = new AbortRequest(url, options)
+    const abortRequest1 = new AbortRequest(url, sameBodyOptions)
+    const abortRequest2 = new AbortRequest(url, sameBodyOptions)
 
     expect(abortRequest1.request).toBe(abortRequest2.request)
 
@@ -97,20 +65,13 @@ describe('AbortRequest', () => {
     expect(fetchMock.mock.calls.length).toBe(1)
   })
 
-  it('resolves the non-aborted request when multiple requests with the same body', async () => {
+  it('abort one of two', async () => {
     const mock = 'response data'
 
-    fetchMock.mockResponse(JSON.stringify({ data: mock }))
+    mockResponse(JSON.stringify({ data: mock }))
 
-    const url = 'https://example.com'
-    const options = {
-      method: 'POST',
-      body: 'sameBody',
-      onSuccess: (data: string) => data,
-    }
-
-    const abortRequest1 = new AbortRequest(url, options)
-    const abortRequest2 = new AbortRequest(url, options)
+    const abortRequest1 = new AbortRequest(url, sameBodyOptions)
+    const abortRequest2 = new AbortRequest(url, sameBodyOptions)
 
     abortRequest1.abort()
 
@@ -120,18 +81,16 @@ describe('AbortRequest', () => {
     expect(fetchMock.mock.calls.length).toBe(1)
   })
 
-  it('has "abort" method after "then", "catch" and "finally" methods', async () => {
-    const mock = 'response data'
+  it('abort after chain', async () => {
+    mockResponse(JSON.stringify({ data: 'response data' }))
 
-    fetchMock.mockResponse(JSON.stringify({ data: mock }))
+    const catchCallback = vi.fn()
+    const finallyCallback = vi.fn()
+    const onSuccessCallback = vi.fn()
+    const thenErrorCallback = vi.fn()
+    const thenSuccessCallback = vi.fn()
 
-    const catchCallback = jest.fn()
-    const finallyCallback = jest.fn()
-    const onSuccessCallback = jest.fn()
-    const thenErrorCallback = jest.fn()
-    const thenSuccessCallback = jest.fn()
-
-    const initialRequest = new AbortRequest('https://example.com', {
+    const initialRequest = new AbortRequest(url, {
       method: 'POST',
       body: 'sameBody',
       onSuccess: onSuccessCallback,
@@ -143,7 +102,7 @@ describe('AbortRequest', () => {
 
     abortRequest.abort()
 
-    const [ url, requestInit ] = fetchMock.mock.calls[0]
+    const [ , requestInit ] = fetchMock.mock.calls[0]
 
     expect(requestInit?.signal?.aborted).toEqual(true)
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -154,11 +113,12 @@ describe('AbortRequest', () => {
     expect(onSuccessCallback).not.toHaveBeenCalled()
   })
 
-  it('rejects the error in "catch" method', async () => {
-    const error = 'Request failed'
-    fetchMock.mockReject(new Error(error))
+  it('catch error', async () => {
+    const message = 'Request failed'
 
-    const abortRequest = new AbortRequest('https://example.com', {
+    mockReject(new Error(message))
+
+    const abortRequest = new AbortRequest(url, {
       method: 'GET',
       onSuccess: (data) => data,
     })
@@ -166,20 +126,20 @@ describe('AbortRequest', () => {
 
     const data = await abortRequest
 
-    await expect(data).toBe(error)
+    expect(data).toBe(message)
     expect(fetchMock.mock.calls.length).toBe(1)
   })
 
-  it('calls methods if promise is successful', async () => {
-    fetchMock.mockResponse(JSON.stringify({ data: 'response data' }))
+  it('success chain', async () => {
+    mockResponse(JSON.stringify({ data: 'response data' }))
 
-    const catchCallback = jest.fn()
-    const finallyCallback = jest.fn()
-    const onSuccessCallback = jest.fn()
-    const thenErrorCallback = jest.fn()
-    const thenSuccessCallback = jest.fn()
+    const catchCallback = vi.fn()
+    const finallyCallback = vi.fn()
+    const onSuccessCallback = vi.fn()
+    const thenErrorCallback = vi.fn()
+    const thenSuccessCallback = vi.fn()
 
-    const abortRequest = new AbortRequest('https://example.com', {
+    const abortRequest = new AbortRequest(url, {
       method: 'GET',
       onSuccess: onSuccessCallback,
     })
@@ -196,18 +156,18 @@ describe('AbortRequest', () => {
     expect(catchCallback).not.toHaveBeenCalled()
   })
 
-  it('calls methods if promise is not successful', async () => {
-    fetchMock.mockReject(new Error('Request failed'))
+  it('failure chain', async () => {
+    mockReject(new Error('Request failed'))
 
-    const catchCallback = jest.fn()
-    const finallyCallback = jest.fn()
-    const onSuccessCallback = jest.fn()
-    const thenSuccessCallback = jest.fn()
-    const thenErrorCallback = jest.fn()
+    const catchCallback = vi.fn()
+    const finallyCallback = vi.fn()
+    const onSuccessCallback = vi.fn()
+    const thenErrorCallback = vi.fn()
+    const thenSuccessCallback = vi.fn()
 
     thenErrorCallback.mockImplementation(() => Promise.reject())
 
-    const abortRequest = new AbortRequest('https://example.com', {
+    const abortRequest = new AbortRequest(url, {
       method: 'GET',
       onSuccess: onSuccessCallback,
     })
@@ -222,5 +182,19 @@ describe('AbortRequest', () => {
     expect(thenSuccessCallback).not.toHaveBeenCalled()
     expect(thenErrorCallback).toHaveBeenCalled()
     expect(catchCallback).toHaveBeenCalled()
+  })
+
+  it('calls onError once', async () => {
+    mockReject(new Error('Request failed'))
+
+    const onError = vi.fn((error: Error) => Promise.reject(error))
+
+    const abortRequest = new AbortRequest(url, {
+      method: 'GET',
+      onError,
+    })
+
+    await expect(abortRequest).rejects.toThrow('Request failed')
+    expect(onError).toHaveBeenCalledTimes(1)
   })
 })

@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
         contents: read
-        packages: read
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
@@ -24,15 +23,25 @@ jobs:
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           cache: pnpm
-          scope: '@stakewise'
           node-version: '24.12.0'
-          registry-url: 'https://npm.pkg.github.com'
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install npm dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
 
       - name: Checking
-        run: pnpm prepare && pnpm test
+        run: pnpm prepare && pnpm lint && pnpm typecheck:test && pnpm test:coverage
+
+      - name: Coverage summary
+        run: |
+          node -e "
+            const { total } = require('./coverage/coverage-summary.json')
+            const title = '## Coverage (reported, not enforced)'
+            const head = [ title, '', '| Metric | % | Covered |', '| --- | --- | --- |' ]
+            const rows = [ 'lines', 'branches', 'functions', 'statements' ].map((key) => {
+              const { pct, covered, total: count } = total[key]
+
+              return '| ' + key + ' | ' + pct + '% | ' + covered + ' / ' + count + ' |'
+            })
+            console.log([ ...head, ...rows ].join('\n'))
+          " >> "$GITHUB_STEP_SUMMARY"

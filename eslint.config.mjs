@@ -1,6 +1,6 @@
 import globals from 'globals'
 import jsPkg from '@eslint/js'
-import jestPlugin from 'eslint-plugin-jest'
+import vitestPlugin from '@vitest/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
@@ -17,14 +17,11 @@ const importErrors = importPlugin.configs.errors
 const importWarnings = importPlugin.configs.warnings
 const importTypescript = importPlugin.configs.typescript
 
-const jestConfigs = jestPlugin.configs
-const jestRecommended = jestConfigs.recommended
-const jestGlobals = jestPlugin.environments.globals
+const vitestRecommended = vitestPlugin.configs.recommended
 
 
 export default defineConfig([
   globalIgnores([
-    'hardhat.config.js',
     "**/*.graphql.ts",
     '**/types/*.ts',
     '**/*.d.ts',
@@ -37,15 +34,13 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: {
-        ...jestGlobals.globals,
         ...globals.browser,
-        ...globals.mocha,
         ...globals.node,
         StakeWise: 'readonly',
       },
       parser: tsParser,
       parserOptions: {
-        project:  './tsconfig.json',
+        project:  './tsconfig.test.json',
         ecmaVersion: 'latest',
         sourceType: 'module',
       }
@@ -53,21 +48,24 @@ export default defineConfig([
     plugins: {
       '@typescript-eslint': tsPlugin,
       import: importPlugin,
-      jest: jestPlugin,
+      vitest: vitestPlugin,
     },
     settings: {
       'import/resolver': {
         typescript: {
-          project:  './tsconfig.json',
+          project:  './tsconfig.test.json',
         }
-      }
+      },
+      vitest: {
+        vitestImports: [ /^(\.\.\/)+test$/, /^\.\.?$/ ],
+      },
     },
     rules: {
       ...jsRecommended.rules,
       ...tsRecommended.rules,
       ...importErrors.rules,
       ...importWarnings.rules,
-      ...jestRecommended.rules,
+      ...vitestRecommended.rules,
       ...importTypescript.rules,
       'no-trailing-spaces': 'warn',
       'semi': [
@@ -122,7 +120,10 @@ export default defineConfig([
       'import/no-anonymous-default-export': 'off',
       'import/newline-after-import': [
         'error', { count: 2 },
-      ]
+      ],
+      'vitest/expect-expect': [
+        'error', { assertFunctionNames: [ 'expect', 'checkHarvestParams', '*.check*' ] },
+      ],
     }
   },
   {
