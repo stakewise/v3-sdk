@@ -73,7 +73,9 @@ const it = baseIt.extend('mockVaultMulticall', ({ sdk, runner, graphql, vaultCon
     const { canHarvest = false } = values
 
     runner.on(vaultContract, {
+      deposit: [ 7n ],
       updateState: [],
+      setMetadata: [],
       convertToShares: [ 5n ],
     })
 
@@ -118,6 +120,22 @@ describe('vaultMulticall', () => {
     await multicall.checkTransactionData({ ...vaultCall, params, names })
 
     expect(graphql.calls).toHaveLength(graphqlCalls)
+  })
+
+  it('send', async ({ multicall, mockVaultMulticall }) => {
+    const vaultCall = mockVaultMulticall({ canHarvest: true })
+
+    await multicall.checkSend({
+      ...vaultCall,
+      params: [ deposit ],
+      names: [ 'updateState', 'deposit' ],
+    })
+  })
+
+  it('estimateGas', async ({ multicall, mockVaultMulticall }) => {
+    const vaultCall = mockVaultMulticall()
+
+    await multicall.checkEstimateGas({ ...vaultCall, params: [ setMetadata ], names: [ 'setMetadata' ] })
   })
 
   it('callStatic', async ({ multicall, mockVaultMulticall }) => {
