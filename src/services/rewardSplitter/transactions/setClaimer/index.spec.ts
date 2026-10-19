@@ -2,7 +2,6 @@ import { describe, expect } from 'vitest'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   spenderAddress,
   rewardSplitterAddress,
@@ -54,15 +53,15 @@ const it = baseIt.extend('mockSetClaimer', ({ sdk, runner }) => (
 ))
 
 describe('setClaimer', () => {
-  it('encode', async ({ sdk, mockSetClaimer }) => {
-    const rewardSplitterContract = mockSetClaimer()
+  it('encode', async ({ sdk, transaction, mockSetClaimer }) => {
+    const contract = mockSetClaimer()
 
-    const encoded = await sdk.rewardSplitter.setClaimer.encode(input)
-    const [ call ] = decodeCalls(rewardSplitterContract, encoded.data)
-
-    expect(encoded.to).toBe(rewardSplitterAddress)
-    expect(call.name).toBe('setClaimer')
-    expect(call.args.toArray()).toEqual([ spenderAddress ])
+    await transaction.checkEncode({
+      input,
+      contract,
+      method: sdk.rewardSplitter.setClaimer,
+      calls: [ { name: 'setClaimer', args: [ spenderAddress ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction, mockSetClaimer }) => {

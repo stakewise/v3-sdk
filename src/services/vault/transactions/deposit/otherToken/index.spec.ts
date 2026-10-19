@@ -3,7 +3,6 @@ import { ZeroAddress } from 'ethers'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   spenderAddress,
@@ -29,17 +28,15 @@ const it = baseIt.extend('mockDeposit', ({ runner, graphql, gnosisSdk }) => (
 ))
 
 describe('deposit', () => {
-  it('default referrer', async ({ gnosisSdk, mockDeposit }) => {
-    const vaultContract = mockDeposit()
+  it('default referrer', async ({ gnosisSdk, transaction, mockDeposit }) => {
+    const contract = mockDeposit()
 
-    const encoded = await gnosisSdk.vault.deposit.encode(baseInput)
-    const calls = decodeCalls(vaultContract, encoded.data)
-    const callNames = calls.map(({ name }) => name)
-    const callArgs = calls.map((call) => call.args.toArray())
-
-    expect(encoded.to).toBe(vaultAddress)
-    expect(callNames).toEqual([ 'deposit' ])
-    expect(callArgs).toEqual([ [ assets, userAddress, ZeroAddress ] ])
+    await transaction.checkEncode({
+      contract,
+      input: baseInput,
+      method: gnosisSdk.vault.deposit,
+      calls: [ { name: 'deposit', args: [ assets, userAddress, ZeroAddress ] } ],
+    })
   })
 
   it('with harvest', async ({ gnosisSdk, transaction, mockDeposit }) => {

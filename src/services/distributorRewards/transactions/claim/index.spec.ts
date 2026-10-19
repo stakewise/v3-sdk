@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
 
-import { userAddress, decodeCalls, it as baseIt } from '../../../../../test'
+import { userAddress, it as baseIt } from '../../../../../test'
 
 import type { ClaimInput } from './types'
 
@@ -63,18 +63,15 @@ const it = baseIt.extend('mockClaim', ({ sdk, runner }) => (
 ))
 
 describe('claim', () => {
-  it('encode', async ({ sdk, mockClaim }) => {
-    const merkleDistributorContract = mockClaim()
+  it('encode', async ({ sdk, transaction, mockClaim }) => {
+    const contract = mockClaim()
 
-    const [ encoded, address ] = await Promise.all([
-      sdk.distributorRewards.claim.encode(input),
-      merkleDistributorContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(merkleDistributorContract, encoded.data)
-
-    expect(encoded.to).toBe(address)
-    expect(call.name).toBe('claim')
-    expect(call.args.toArray()).toEqual([ userAddress, tokens, cumulativeAmounts.map(BigInt), proof ])
+    await transaction.checkEncode({
+      input,
+      contract,
+      method: sdk.distributorRewards.claim,
+      calls: [ { name: 'claim', args: [ userAddress, tokens, cumulativeAmounts.map(BigInt), proof ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction, mockClaim }) => {

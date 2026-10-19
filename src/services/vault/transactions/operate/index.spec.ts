@@ -1,10 +1,9 @@
 import { describe, expect } from 'vitest'
-import type { Interface, TransactionDescription } from 'ethers'
+import type { Interface } from 'ethers'
 
 import {
   backendUrl,
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   accessDenied,
@@ -422,8 +421,6 @@ const invalidCases: Array<{ name: string, values: Record<string, unknown>, messa
   },
 ]
 
-const toCalls = (calls: TransactionDescription[]) => calls.map(({ name, args }) => ({ name, args: args.toArray() }))
-
 const it = baseIt.extend('mockOperate', ({ sdk, runner, graphql }) => (
   (values: MockOperateInput = {}) => {
     const {
@@ -461,14 +458,15 @@ const it = baseIt.extend('mockOperate', ({ sdk, runner, graphql }) => (
 ))
 
 describe('operate', () => {
-  it.for(encodeCases)('$name', async ({ values, calls }, { sdk, mockOperate }) => {
-    const vaultContract = mockOperate()
+  it.for(encodeCases)('$name', async ({ values, calls }, { sdk, transaction, mockOperate }) => {
+    const contract = mockOperate()
 
-    const encoded = await sdk.vault.operate.encode({ ...input, ...values })
-    const encodedCalls = toCalls(decodeCalls(vaultContract, encoded.data))
-
-    expect(encoded.to).toBe(vaultAddress)
-    expect(encodedCalls).toEqual(calls)
+    await transaction.checkEncode({
+      calls,
+      contract,
+      method: sdk.vault.operate,
+      input: { ...input, ...values },
+    })
   })
 
   it.for(limitCases)('$name', async ({ values, method, item }, { sdk, mockOperate }) => {
@@ -492,26 +490,32 @@ describe('operate', () => {
     })
   })
 
-  it('method without harvest', async ({ sdk, graphql, mockOperate }) => {
-    const vaultContract = mockOperate({ canHarvest: true })
+  it('method without harvest', async ({ sdk, graphql, transaction, mockOperate }) => {
+    const contract = mockOperate({ canHarvest: true })
 
-    const encoded = await sdk.vault.operate.encode({ ...input, admin: adminAddress })
-    const callNames = decodeCalls(vaultContract, encoded.data).map(({ name }) => name)
+    await transaction.checkEncode({
+      contract,
+      method: sdk.vault.operate,
+      calls: [ adminCalls.setAdmin ],
+      input: { ...input, admin: adminAddress },
+    })
 
-    expect(callNames).toEqual([ 'setAdmin' ])
     expect(graphql.calls).toHaveLength(0)
   })
 
-  it.for(metadataCases)('$name', async (metadataCase, { sdk, gnosisSdk, graphql, mockOperate }) => {
+  it.for(metadataCases)('$name', async (metadataCase, { sdk, gnosisSdk, graphql, transaction, mockOperate }) => {
     const { values, requests, hash, isGnosis = false } = metadataCase
-    const vaultContract = mockOperate()
+    const contract = mockOperate()
 
-    const encoded = await (isGnosis ? gnosisSdk : sdk).vault.operate.encode({ ...input, ...values })
-    const [ call ] = decodeCalls(vaultContract, encoded.data)
+    await transaction.checkEncode({
+      contract,
+      input: { ...input, ...values },
+      calls: [ { name: 'setMetadata', args: [ hash ] } ],
+      method: (isGnosis ? gnosisSdk : sdk).vault.operate,
+    })
+
     const uploads = graphql.calls.filter(({ operationName }) => operationName === 'UploadMetadata')
 
-    expect(call.name).toBe('setMetadata')
-    expect(call.args.toArray()).toEqual([ hash ])
     expect(uploads).toEqual(requests)
   })
 

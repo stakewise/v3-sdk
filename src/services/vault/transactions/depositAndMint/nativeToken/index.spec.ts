@@ -85,17 +85,19 @@ const it = baseIt.extend('mockDepositAndMint', ({ sdk, runner, graphql }) => (
 ))
 
 describe('depositAndMint', () => {
-  it.for(encodeCases)('$name', async (encodeCase, { sdk, mockDepositAndMint }) => {
+  it.for(encodeCases)('$name', async (encodeCase, { sdk, transaction, mockDepositAndMint }) => {
     const { input: encodeInput, args } = encodeCase
 
-    const vaultContract = mockDepositAndMint()
+    const contract = mockDepositAndMint()
 
-    const encoded = await sdk.vault.depositAndMint.encode(encodeInput)
-    const [ call ] = decodeCalls(vaultContract, encoded.data)
+    const encoded = await transaction.checkEncode({
+      contract,
+      input: encodeInput,
+      method: sdk.vault.depositAndMint,
+      calls: [ { name: 'depositAndMintOsToken', args } ],
+    })
 
-    expect(encoded).toMatchObject({ to: vaultAddress, value: encodeInput.assets })
-    expect(call.name).toBe('depositAndMintOsToken')
-    expect(call.args.toArray()).toEqual(args)
+    expect(encoded.value).toBe(encodeInput.assets)
   })
 
   it('with harvest', async ({ sdk, graphql, mockDepositAndMint }) => {

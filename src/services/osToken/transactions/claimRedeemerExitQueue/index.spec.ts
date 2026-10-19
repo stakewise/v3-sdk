@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
 
-import { it, userAddress, decodeCalls } from '../../../../../test'
+import { it, userAddress } from '../../../../../test'
 
 import type { ClaimRedeemerExitQueueInput } from './types'
 
@@ -58,20 +58,19 @@ describe('claimRedeemerExitQueue', () => {
     runner.on(sdk.contracts.base.osTokenRedeemer, { claimExitedAssets: [] })
   })
 
-  it('encode', async ({ sdk }) => {
-    const redeemerContract = sdk.contracts.base.osTokenRedeemer
+  it('encode', async ({ sdk, transaction }) => {
+    const contract = sdk.contracts.base.osTokenRedeemer
+    const calls = [
+      { name: 'claimExitedAssets', args: [ 11n, 3n ] },
+      { name: 'claimExitedAssets', args: [ 22n, 4n ] },
+    ]
 
-    const [ tx, address ] = await Promise.all([
-      sdk.osToken.claimRedeemerExitQueue.encode(input),
-      redeemerContract.getAddress(),
-    ])
-    const calls = decodeCalls(redeemerContract, tx.data)
-    const callNames = calls.map(({ name }) => name)
-    const callArgs = calls.map(({ args }) => args.toArray())
-
-    expect(tx.to).toBe(address)
-    expect(callNames).toEqual([ 'claimExitedAssets', 'claimExitedAssets' ])
-    expect(callArgs).toEqual([ [ 11n, 3n ], [ 22n, 4n ] ])
+    await transaction.checkEncode({
+      input,
+      calls,
+      contract,
+      method: sdk.osToken.claimRedeemerExitQueue,
+    })
   })
 
   it('send', async ({ sdk, transaction }) => {

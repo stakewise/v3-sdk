@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
 
-import { userAddress, decodeCalls, it, vaultAddress } from '../../../../../test'
+import { userAddress, it, vaultAddress } from '../../../../../test'
 import { baseInputWiringCase } from '../../../../../test/mocks/invalidCases'
 
 import type { BurnInput } from './types'
@@ -31,13 +31,13 @@ describe('burn', () => {
     runner.on(vaultContract, { burnOsToken: [ 1n ] })
   })
 
-  it('encode', async ({ sdk, vaultContract }) => {
-    const tx = await sdk.osToken.burn.encode(input)
-    const [ call ] = decodeCalls(vaultContract, tx.data)
-
-    expect(tx.to).toBe(vaultAddress)
-    expect(call.name).toBe('burnOsToken')
-    expect(call.args.toArray()).toEqual([ shares ])
+  it('encode', async ({ sdk, transaction, vaultContract }) => {
+    await transaction.checkEncode({
+      input,
+      contract: vaultContract,
+      method: sdk.osToken.burn,
+      calls: [ { name: 'burnOsToken', args: [ shares ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction }) => {

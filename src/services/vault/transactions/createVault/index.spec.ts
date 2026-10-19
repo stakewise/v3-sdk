@@ -4,7 +4,6 @@ import { AbiCoder, MaxUint256, parseEther } from 'ethers'
 import {
   backendUrl,
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
 } from '../../../../../test'
@@ -25,10 +24,6 @@ type MockCreateVaultInput = {
   isGnosis?: boolean
   factory?: FactoryName
   uploadedHash?: string
-}
-
-type EncodedWithValue = StakeWise.TransactionData & {
-  value?: bigint
 }
 
 type InvalidCase = {
@@ -281,11 +276,7 @@ const invalidCases: InvalidCase[] = [
   },
 ]
 
-const decodeParams = (tuple: string, bytes: string) => {
-  const [ params ] = abiCoder.decode([ tuple ], bytes)
-
-  return params.toArray()
-}
+const encodeParams = (tuple: string, params: unknown[]) => abiCoder.encode([ tuple ], [ params ])
 
 const it = baseIt.extend('mockCreateVault', ({ sdk, gnosisSdk, runner, graphql }) => (
   (values: MockCreateVaultInput = {}) => {
@@ -304,23 +295,18 @@ const it = baseIt.extend('mockCreateVault', ({ sdk, gnosisSdk, runner, graphql }
 ))
 
 describe('createVault', () => {
-  it.for(encodeCases)('$name', async (encodeCase, { sdk, gnosisSdk, mockCreateVault }) => {
+  it.for(encodeCases)('$name', async (encodeCase, { sdk, gnosisSdk, transaction, mockCreateVault }) => {
     const { values, factory, tuple, params, args, value, isGnosis = false } = encodeCase
-    const factoryContract = mockCreateVault({ factory, isGnosis })
+    const contract = mockCreateVault({ factory, isGnosis })
 
-    const [ encoded, address ] = await Promise.all([
-      (isGnosis ? gnosisSdk : sdk).vault.create.encode({ ...input, ...values }),
-      factoryContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(factoryContract, encoded.data)
-    const [ bytes, ...restArgs ] = call.args.toArray()
-    const decodedParams = decodeParams(tuple, bytes)
+    const encoded = await transaction.checkEncode({
+      contract,
+      input: { ...input, ...values },
+      method: (isGnosis ? gnosisSdk : sdk).vault.create,
+      calls: [ { name: 'createVault', args: [ encodeParams(tuple, params), ...args ] } ],
+    })
 
-    expect(encoded.to).toBe(address)
-    expect((encoded as EncodedWithValue).value).toBe(value)
-    expect(call.name).toBe('createVault')
-    expect(decodedParams).toEqual(params)
-    expect(restArgs).toEqual(args)
+    expect(encoded.value).toBe(value)
   })
 
   it('estimateGas', async ({ sdk, transaction, mockCreateVault }) => {
@@ -329,20 +315,21 @@ describe('createVault', () => {
     await transaction.checkEstimateGas({ method: sdk.vault.create, input })
   })
 
-  it('encode metadata', async ({ sdk, graphql, mockCreateVault }) => {
-    const factoryContract = mockCreateVault()
-
-    const encoded = await sdk.vault.create.encode({ ...input, ...metadata })
-    const [ call ] = decodeCalls(factoryContract, encoded.data)
-    const [ bytes ] = call.args.toArray()
-    const decodedParams = decodeParams(tuples.vault, bytes)
+  it('encode metadata', async ({ sdk, graphql, transaction, mockCreateVault }) => {
+    const contract = mockCreateVault()
     const uploadRequest = {
       url: backendUrl,
       operationName: 'UploadMetadata',
       variables: { payload: metadata },
     }
 
-    expect(decodedParams).toEqual([ MaxUint256, 0n, ipfsHash ])
+    await transaction.checkEncode({
+      contract,
+      method: sdk.vault.create,
+      input: { ...input, ...metadata },
+      calls: [ { name: 'createVault', args: [ encodeParams(tuples.vault, [ MaxUint256, 0n, ipfsHash ]), false ] } ],
+    })
+
     expect(graphql.calls).toEqual([ expect.objectContaining(uploadRequest) ])
   })
 

@@ -3,7 +3,6 @@ import { parseEther } from 'ethers'
 
 import {
   userAddress,
-  decodeCalls,
   subgraphUrl,
   it as baseIt,
   vaultAddress,
@@ -82,7 +81,7 @@ const diffCases = [
   {
     name: 'encode',
     values: { feeRecipients, oldFeeRecipients },
-    expected: mixedCalls,
+    calls: mixedCalls,
   },
   {
     name: 'address case',
@@ -96,7 +95,7 @@ const diffCases = [
         { address: lowercaseMixedCaseVaultAddress, shares: parseEther('35') },
       ],
     },
-    expected: [
+    calls: [
       { name: 'increaseShares', args: [ checksumAddress, parseEther('20') ] },
       { name: 'decreaseShares', args: [ mixedCaseVaultAddress, parseEther('15') ] },
     ],
@@ -110,7 +109,7 @@ const diffCases = [
         { address: removedAddress, shares: parseEther('70') },
       ],
     },
-    expected: [
+    calls: [
       { name: 'increaseShares', args: [ addedAddress, parseEther('30') ] },
       { name: 'increaseShares', args: [ removedAddress, parseEther('70') ] },
     ],
@@ -181,21 +180,23 @@ const it = baseIt.extend('mockUpdateFeeRecipients', ({ sdk, runner, graphql, vau
 ))
 
 describe('updateFeeRecipients', () => {
-  it.for(diffCases)('$name', async ({ values, expected }, { sdk, graphql, mockUpdateFeeRecipients }) => {
-    const rewardSplitterContract = mockUpdateFeeRecipients()
+  it.for(diffCases)('$name', async ({ values, calls }, { sdk, graphql, transaction, mockUpdateFeeRecipients }) => {
+    const contract = mockUpdateFeeRecipients()
 
-    const encoded = await sdk.rewardSplitter.updateFeeRecipients.encode({ ...input, ...values })
-    const calls = decodeCalls(rewardSplitterContract, encoded.data)
-    const decodedCalls = calls.map(({ name, args }) => ({ name, args: args.toArray() }))
+    await transaction.checkEncode({
+      calls,
+      contract,
+      input: { ...input, ...values },
+      method: sdk.rewardSplitter.updateFeeRecipients,
+    })
+
     const operationNames = graphql.calls.map(({ operationName }) => operationName)
 
-    expect(encoded.to).toBe(rewardSplitterAddress)
-    expect(decodedCalls).toEqual(expected)
     expect(operationNames).toEqual([ 'HarvestParams' ])
   })
 
-  it('subgraph fee recipients', async ({ sdk, graphql, mockUpdateFeeRecipients }) => {
-    const rewardSplitterContract = mockUpdateFeeRecipients()
+  it('subgraph fee recipients', async ({ sdk, graphql, transaction, mockUpdateFeeRecipients }) => {
+    const contract = mockUpdateFeeRecipients()
     const subgraphSplitter = {
       id: rewardSplitterAddress,
       owner: userAddress,
@@ -225,16 +226,15 @@ describe('updateFeeRecipients', () => {
       data: { rewardSplitters: [ subgraphSplitter ] },
     })
 
-    const encoded = await sdk.rewardSplitter.updateFeeRecipients.encode({
-      ...input,
-      feeRecipients: subgraphFeeRecipients,
-      oldFeeRecipients: undefined,
+    await transaction.checkEncode({
+      contract,
+      calls: subgraphCalls,
+      method: sdk.rewardSplitter.updateFeeRecipients,
+      input: { ...input, feeRecipients: subgraphFeeRecipients, oldFeeRecipients: undefined },
     })
-    const calls = decodeCalls(rewardSplitterContract, encoded.data)
-    const decodedCalls = calls.map(({ name, args }) => ({ name, args: args.toArray() }))
+
     const splittersCalls = graphql.calls.filter(({ operationName }) => operationName === 'RewardSplitters')
 
-    expect(decodedCalls).toEqual(subgraphCalls)
     expect(splittersCalls).toEqual([ expect.objectContaining(splittersRequest) ])
   })
 

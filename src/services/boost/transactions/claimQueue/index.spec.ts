@@ -2,7 +2,6 @@ import { describe, expect } from 'vitest'
 
 import {
   userAddress,
-  decodeCalls,
   subgraphUrl,
   it as baseIt,
   vaultAddress,
@@ -110,22 +109,20 @@ const it = baseIt.extend('mockClaimQueue', ({ mockLeverageStrategy }) => (
 ))
 
 describe('claimQueue', () => {
-  it.for(encodeCases)('$name', async (encodeCase, { sdk, graphql, mockClaimQueue }) => {
+  it.for(encodeCases)('$name', async (encodeCase, { sdk, graphql, transaction, mockClaimQueue }) => {
     const { contractName, values = {}, positions = [], strategyRequests = [] } = encodeCase
 
     mockClaimQueue({ positions })
 
-    const leverageStrategyContract = sdk.contracts.special[contractName]
-    const [ tx, address ] = await Promise.all([
-      sdk.boost.claimQueue.encode({ ...input, ...values }),
-      leverageStrategyContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(leverageStrategyContract, tx.data)
+    await transaction.checkEncode({
+      input: { ...input, ...values },
+      method: sdk.boost.claimQueue,
+      contract: sdk.contracts.special[contractName],
+      calls: [ { name: 'claimExitedAssets', args: [ vaultAddress, userAddress, [ 11n, 22n, 33n ] ] } ],
+    })
+
     const strategyCalls = graphql.calls.filter(({ operationName }) => operationName === strategyRequest.operationName)
 
-    expect(tx.to).toBe(address)
-    expect(call.name).toBe('claimExitedAssets')
-    expect(call.args.toArray()).toEqual([ vaultAddress, userAddress, [ 11n, 22n, 33n ] ])
     expect(strategyCalls).toEqual(strategyRequests.map((request) => expect.objectContaining(request)))
   })
 

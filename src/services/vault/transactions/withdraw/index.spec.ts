@@ -2,7 +2,6 @@ import { describe, expect } from 'vitest'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
 } from '../../../../../test'
@@ -47,15 +46,15 @@ const it = baseIt.extend('mockWithdraw', ({ sdk, runner, graphql, vaultContract 
 ))
 
 describe('withdraw', () => {
-  it.for(encodeCases)('$name', async ({ values, method }, { sdk, vaultContract, mockWithdraw }) => {
+  it.for(encodeCases)('$name', async ({ values, method }, { sdk, transaction, vaultContract, mockWithdraw }) => {
     mockWithdraw(values)
 
-    const tx = await sdk.vault.withdraw.encode(input)
-    const [ call ] = decodeCalls(vaultContract, tx.data)
-
-    expect(tx.to).toBe(vaultAddress)
-    expect(call.name).toBe(method)
-    expect(call.args.toArray()).toEqual([ 20n, userAddress ])
+    await transaction.checkEncode({
+      input,
+      contract: vaultContract,
+      method: sdk.vault.withdraw,
+      calls: [ { name: method, args: [ 20n, userAddress ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction, mockWithdraw }) => {

@@ -3,7 +3,6 @@ import { describe, expect } from 'vitest'
 import {
   it,
   userAddress,
-  decodeCalls,
   spenderAddress,
 } from '../../../../../test'
 
@@ -39,18 +38,13 @@ describe('redeemerWithdraw', () => {
     runner.on(sdk.contracts.base.osTokenRedeemer, { enterExitQueue: [ 1n ] })
   })
 
-  it('encode', async ({ sdk }) => {
-    const redeemerContract = sdk.contracts.base.osTokenRedeemer
-
-    const [ tx, address ] = await Promise.all([
-      sdk.osToken.redeemerWithdraw.encode({ userAddress: spenderAddress, shares }),
-      redeemerContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(redeemerContract, tx.data)
-
-    expect(tx.to).toBe(address)
-    expect(call.name).toBe('enterExitQueue')
-    expect(call.args.toArray()).toEqual([ shares, spenderAddress ])
+  it('encode', async ({ sdk, transaction }) => {
+    await transaction.checkEncode({
+      method: sdk.osToken.redeemerWithdraw,
+      contract: sdk.contracts.base.osTokenRedeemer,
+      input: { userAddress: spenderAddress, shares },
+      calls: [ { name: 'enterExitQueue', args: [ shares, spenderAddress ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction }) => {

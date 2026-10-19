@@ -1,11 +1,6 @@
 import { describe, expect } from 'vitest'
 
-import {
-  it,
-  userAddress,
-  decodeCalls,
-  vaultAddress,
-} from '../../../../../test'
+import { it, userAddress, vaultAddress } from '../../../../../test'
 import { baseInputWiringCase } from '../../../../../test/mocks/invalidCases'
 
 import type { UpgradeLeverageStrategyInput } from './types'
@@ -21,18 +16,13 @@ describe('upgradeLeverageStrategy', () => {
     runner.on(sdk.contracts.special.leverageStrategy, { upgradeProxy: [] })
   })
 
-  it('encode', async ({ sdk }) => {
-    const leverageStrategyContract = sdk.contracts.special.leverageStrategy
-
-    const [ tx, address ] = await Promise.all([
-      sdk.boost.upgradeLeverageStrategy.encode(input),
-      leverageStrategyContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(leverageStrategyContract, tx.data)
-
-    expect(tx.to).toBe(address)
-    expect(call.name).toBe('upgradeProxy')
-    expect(call.args.toArray()).toEqual([ vaultAddress ])
+  it('encode', async ({ sdk, transaction }) => {
+    await transaction.checkEncode({
+      input,
+      method: sdk.boost.upgradeLeverageStrategy,
+      contract: sdk.contracts.special.leverageStrategy,
+      calls: [ { name: 'upgradeProxy', args: [ vaultAddress ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction }) => {

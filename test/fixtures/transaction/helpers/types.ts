@@ -47,6 +47,13 @@ export type CheckListInput<Input, Encoded extends EncodedList> = {
   order: Array<keyof NoInfer<Encoded>>
 }
 
+export type CheckEncodeInput<Input> = {
+  contract: BaseContract
+  input: NoInfer<Input>
+  method: EncodeMethod<Input>
+  calls: Array<{ name: string, args: unknown[] }>
+}
+
 export type CheckHarvestInput<Input> = {
   names: string[]
   contract: BaseContract

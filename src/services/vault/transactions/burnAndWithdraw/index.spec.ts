@@ -4,7 +4,6 @@ import { parseEther } from 'ethers'
 import {
   stakeAmount,
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   mintedShares,
@@ -156,17 +155,15 @@ const it = baseIt.extend('mockBurnAndWithdraw', ({ sdk, runner, graphql, vaultCo
 ))
 
 describe('burnAndWithdraw', () => {
-  it.for(encodeCases)('$name', async (encodeCase, { sdk, vaultContract, mockBurnAndWithdraw }) => {
-    const { values, input, calls: expected } = encodeCase
-
+  it.for(encodeCases)('$name', async ({ values, input, calls }, { sdk, transaction, vaultContract, mockBurnAndWithdraw }) => {
     mockBurnAndWithdraw(values)
 
-    const encoded = await sdk.vault.burnAndWithdraw.encode(input)
-    const calls = decodeCalls(vaultContract, encoded.data)
-    const actual = calls.map(({ name, args }) => ({ name, args: args.toArray() }))
-
-    expect(encoded.to).toBe(vaultAddress)
-    expect(actual).toEqual(expected)
+    await transaction.checkEncode({
+      input,
+      calls,
+      contract: vaultContract,
+      method: sdk.vault.burnAndWithdraw,
+    })
   })
 
   it('send', async ({ sdk, transaction, mockBurnAndWithdraw }) => {

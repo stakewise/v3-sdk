@@ -2,7 +2,6 @@ import { describe, expect } from 'vitest'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   accessDenied,
@@ -36,18 +35,15 @@ const it = baseIt.extend('mockCreateRewardSplitter', ({ sdk, runner, vaultContra
 ))
 
 describe('createRewardSplitter', () => {
-  it('encode', async ({ sdk, mockCreateRewardSplitter }) => {
-    const rewardSplitterFactoryContract = mockCreateRewardSplitter()
+  it('encode', async ({ sdk, transaction, mockCreateRewardSplitter }) => {
+    const contract = mockCreateRewardSplitter()
 
-    const [ encoded, address ] = await Promise.all([
-      sdk.rewardSplitter.create.encode(input),
-      rewardSplitterFactoryContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(rewardSplitterFactoryContract, encoded.data)
-
-    expect(encoded.to).toBe(address)
-    expect(call.name).toBe('createRewardSplitter')
-    expect(call.args.toArray()).toEqual([ vaultAddress ])
+    await transaction.checkEncode({
+      input,
+      contract,
+      method: sdk.rewardSplitter.create,
+      calls: [ { name: 'createRewardSplitter', args: [ vaultAddress ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction, mockCreateRewardSplitter }) => {

@@ -3,7 +3,6 @@ import { ZeroAddress } from 'ethers'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   checksumAddress,
@@ -62,15 +61,15 @@ const it = baseIt.extend('mockMint', ({ runner, graphql, vaultContract }) => (
 ))
 
 describe('mint', () => {
-  it.for(encodeCases)('$name', async ({ values, referrer }, { sdk, vaultContract, mockMint }) => {
+  it.for(encodeCases)('$name', async ({ values, referrer }, { sdk, transaction, vaultContract, mockMint }) => {
     mockMint()
 
-    const tx = await sdk.osToken.mint.encode({ ...input, ...values })
-    const [ call ] = decodeCalls(vaultContract, tx.data)
-
-    expect(tx.to).toBe(vaultAddress)
-    expect(call.name).toBe('mintOsToken')
-    expect(call.args.toArray()).toEqual([ userAddress, shares, referrer ])
+    await transaction.checkEncode({
+      contract: vaultContract,
+      method: sdk.osToken.mint,
+      input: { ...input, ...values },
+      calls: [ { name: 'mintOsToken', args: [ userAddress, shares, referrer ] } ],
+    })
   })
 
   it('send', async ({ sdk, transaction, mockMint }) => {

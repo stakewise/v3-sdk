@@ -2,7 +2,6 @@ import { describe, expect } from 'vitest'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   accessDenied,
@@ -90,18 +89,15 @@ const it = baseIt.extend('mockSetDepositDataManager', ({ sdk, runner, vaultContr
 ))
 
 describe('setDepositDataManager', () => {
-  it.for(encodeCases)('$name', async ({ values, method, args }, { sdk, mockSetDepositDataManager }) => {
-    const managerContract = mockSetDepositDataManager(values)
+  it.for(encodeCases)('$name', async ({ values, method, args }, { sdk, transaction, mockSetDepositDataManager }) => {
+    const contract = mockSetDepositDataManager(values)
 
-    const [ encoded, address ] = await Promise.all([
-      sdk.vault.setDepositDataManager.encode(input),
-      managerContract.getAddress(),
-    ])
-    const [ call ] = decodeCalls(managerContract, encoded.data)
-
-    expect(encoded.to).toBe(address)
-    expect(call.name).toBe(method)
-    expect(call.args.toArray()).toEqual(args)
+    await transaction.checkEncode({
+      input,
+      contract,
+      calls: [ { name: method, args } ],
+      method: sdk.vault.setDepositDataManager,
+    })
   })
 
   it.for(sendCases)('$name', async ({ values }, { sdk, transaction, mockSetDepositDataManager }) => {
