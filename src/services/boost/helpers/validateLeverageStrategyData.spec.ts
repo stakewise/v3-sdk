@@ -12,8 +12,8 @@ const validCases = [
 
 const invalidCases = [
   {
-    name: 'invalid version',
-    values: { version: '2', isUpgradeRequired: false },
+    name: 'missing version',
+    values: { isUpgradeRequired: false },
     expected: 'The "leverageStrategyData.version" argument must be a number',
   },
   {

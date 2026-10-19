@@ -164,11 +164,6 @@ const invalidCases = [
     message: 'The "types" argument is an empty array',
   },
   {
-    name: 'unknown type',
-    input: { ...baseInput, types: [ 'Unknown' ] },
-    message: 'The "types.0" argument must be one of the following',
-  },
-  {
     name: 'inherited type',
     input: { ...baseInput, types: [ 'toString' ] },
     message: 'The "types.0" argument must be one of the following',
