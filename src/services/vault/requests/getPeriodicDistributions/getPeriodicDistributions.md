@@ -8,6 +8,8 @@ description: Use the StakeWise SDK getPeriodicDistributions method to fetch peri
 
 Getting the periodic distribution of additional incentives
 
+Returns the distributions that started no later than `startTimestamp` and end no earlier than `endTimestamp`: `startTimestamp` is the upper bound and `endTimestamp` the lower bound of the overlap window.
+
 #### Arguments:
 
 | Name         | Type     | Required | Description               |
@@ -36,7 +38,7 @@ type Output = Array<{
 
 ```ts
 await sdk.vault.getPeriodicDistributions({
-  userAddress: '0x...',
+  vaultAddress: '0x...',
   endTimestamp: 1741346116,
   startTimestamp: 1741346116,
 })

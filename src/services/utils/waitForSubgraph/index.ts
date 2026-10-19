@@ -25,7 +25,11 @@ export const waitForSubgraph = (input: WaitForSubgraphInput): AbortPromise<void>
     }
     catch (error) {
       if (attempt < 10) {
-        await new Promise((resolve) => setTimeout(resolve, attempt * 100))
+        await new Promise((resolve) => setTimeout(resolve, (attempt + 1) * 100))
+
+        if (isAborted) {
+          return Promise.reject(error)
+        }
 
         return fetchCount(attempt + 1)
       }

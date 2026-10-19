@@ -70,12 +70,14 @@ const getData = async (values: GetBoostDataInput) => {
 
     const leverageStrategyPosition = leverageStrategyPositions[0]
 
-    const aaveData = await graphql.subgraph.boost.fetchAavePositionsQuery({
-      url: apiUrls.getSubgraphqlUrl(options),
-      variables: {
-        proxyAddress: (leverageStrategyPosition?.proxy || '').toLowerCase(),
-      },
-    })
+    const proxyAddress = (leverageStrategyPosition?.proxy || '').toLowerCase()
+
+    const aaveData = proxyAddress
+      ? await graphql.subgraph.boost.fetchAavePositionsQuery({
+        url: apiUrls.getSubgraphqlUrl(options),
+        variables: { proxyAddress },
+      })
+      : null
 
     const stakedAssets = BigInt(allocators[0]?.assets || 0)
     const ltvPercent = BigInt(osTokenConfig.ltvPercent || 0)

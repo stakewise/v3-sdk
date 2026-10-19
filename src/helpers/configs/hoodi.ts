@@ -13,7 +13,7 @@ export default {
     ],
   },
   pages: {
-    beaconchain: 'https://hoodi.beaconcha.in/',
+    beaconchain: 'https://hoodi.beaconcha.in',
   },
   addresses: {
     tokens: {

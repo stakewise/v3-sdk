@@ -50,15 +50,9 @@ const getMaxWithdrawAmount = async (values: GetMaxWithdrawAmountInput) => {
     },
   })
 
-  if (assets > subgraphAssets) {
-    return subgraphAssets
-  }
+  const amount = assets > subgraphAssets ? subgraphAssets : assets
 
-  if (assets <= min) {
-    return 0n
-  }
-
-  return assets
+  return amount <= min ? 0n : amount
 }
 
 

@@ -1,12 +1,16 @@
+import type * as z from 'zod/mini'
+
 import { wrapAbortPromise } from '../../../../modules/gql-module'
 
+import { validate, validateSchema } from './validate'
 
-export type GetVaultVersionInput = StakeWise.CommonParams & {
-  vaultAddress: string
-}
 
-const getVaultVersion = async (values: GetVaultVersionInput) => {
-  const { contracts, vaultAddress } = values
+export type GetVaultVersionInput = StakeWise.CommonParams & z.input<typeof validateSchema>
+
+const getVaultVersion = async (input: GetVaultVersionInput) => {
+  const { contracts } = input
+
+  const { vaultAddress } = validate(input)
 
   const vaultContract = contracts.helpers.createVault({ vaultAddress })
   const version = await vaultContract.version()

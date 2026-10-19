@@ -34,6 +34,12 @@ class AbortPromise<Data> {
         catch (error) {
           return Promise.reject(error)
         }
+      }, (error) => {
+        if (this.isAborted) {
+          return dummyPromise as Promise<Data>
+        }
+
+        return Promise.reject(error)
       })
   }
 
@@ -53,7 +59,7 @@ class AbortPromise<Data> {
     let isAborted = false
 
     const handleAbort = () => {
-      isAborted = false
+      isAborted = true
 
       promises.forEach((promise) => {
         if (typeof (promise as AbortPromise<T>).abort === 'function') {
@@ -68,6 +74,12 @@ class AbortPromise<Data> {
       }
 
       return data
+    }, (error) => {
+      if (isAborted) {
+        return dummyPromise as Promise<T[]>
+      }
+
+      return Promise.reject(error)
     })
 
     return new AbortCallback(allPromises, handleAbort)
@@ -77,7 +89,7 @@ class AbortPromise<Data> {
     let isAborted = false
 
     const handleAbort = () => {
-      isAborted = false
+      isAborted = true
 
       promises.forEach((promise) => {
         if (typeof (promise as AbortPromise<T>).abort === 'function') {
@@ -92,6 +104,12 @@ class AbortPromise<Data> {
       }
 
       return data
+    }, (error) => {
+      if (isAborted) {
+        return dummyPromise as Promise<T>
+      }
+
+      return Promise.reject(error)
     })
 
     return new AbortCallback(allPromises, handleAbort)

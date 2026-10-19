@@ -52,7 +52,7 @@ export const getPermitSignature = async (values: GetPermitSignatureInput) => {
       owner: ownerAddress,
       nonce: tokenNonce.toString(),
       spender: spenderAddress,
-      value: amount,
+      value: amount.toString(),
     },
   })
 

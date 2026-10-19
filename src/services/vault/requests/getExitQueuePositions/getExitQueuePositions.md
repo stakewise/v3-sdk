@@ -52,7 +52,7 @@ type Output = {
 | `requests`     | Array of all requests |
 | `positions`    | Positions in a special format that are required for claiming |
 | `total`        | Total queued assets (e.g. ETH) |
-| `duration`     | Queue duration time (in seconds). <br/>- It represents the approximate time after which the assets can be collected (in seconds).<br/>- If the value is null, the time is still being calculated. <br/>- If the value is 0, the assets are available and can be collected. | 
+| `duration`     | Approximate unix time (seconds) when the assets can be claimed. <br/>- `null`: still being calculated. <br/>- `0`: can be claimed now. | 
 | `withdrawable` | Assets available for withdrawal (e.g. ETH) |
 
 #### Example:

@@ -18,7 +18,13 @@ const getOsTokenConfig = (input: GetOsTokenConfigInput) => {
     variables: {
       address: vaultAddress,
     },
-    modifyResult: (data) => data.vault.osTokenConfig,
+    modifyResult: (data) => {
+      if (!data.vault) {
+        throw new Error('Vault not found')
+      }
+
+      return data.vault.osTokenConfig
+    },
   })
 }
 

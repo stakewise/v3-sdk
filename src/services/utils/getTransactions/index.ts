@@ -18,7 +18,7 @@ export const getTransactions = (input: GetTransactionsInput) => {
     url: apiUrls.getSubgraphqlUrl(options),
     variables: {
       where: {
-        id: hash,
+        id: hash.toLowerCase(),
       },
     } as TransactionsQueryVariables,
     modifyResult: (data) => data?.transactions || [],

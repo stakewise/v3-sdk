@@ -5,6 +5,7 @@ import {
   Network,
   configs,
   MergedReward,
+  calculateLimit,
   mergeRewardsFiat,
 } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
@@ -14,13 +15,6 @@ import { validate, validateSchema } from './validate'
 
 
 export type GetUserRewardsInput = StakeWise.CommonParams & z.input<typeof validateSchema>
-
-const calculateLimit = (dateTo: number, dateFrom: number): number => {
-  const millisecondsInDay = 1000 * 60 * 60 * 24
-  const rawDays = (dateTo - dateFrom) / millisecondsInDay
-
-  return Math.ceil(rawDays)
-}
 
 const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[]> => {
   const { options } = input

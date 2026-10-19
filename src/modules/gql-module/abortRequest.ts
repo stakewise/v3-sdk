@@ -74,10 +74,6 @@ class AbortRequest<Data, ModifiedData = Data> {
           if (!this.isAborted) {
             requestsQueue[this.requestId] = undefined
 
-            if (typeof onError === 'function') {
-              onError(error)
-            }
-
             return Promise.reject(error)
           }
 
