@@ -234,43 +234,31 @@ const roleCases = [
     name: 'admin',
     values: { admin: adminAddress },
     method: 'setAdmin',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'fee percent',
     values: { feePercent: 5 },
     method: 'setFeePercent',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'fee recipient',
     values: { feeRecipient },
     method: 'setFeeRecipient',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'validators manager',
     values: { validatorsManager },
     method: 'setValidatorsManager',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'whitelist manager',
     values: { whitelistManager },
     method: 'setWhitelister',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'blocklist manager',
     values: { blocklistManager },
     method: 'setBlocklistManager',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'admin and whitelist',
@@ -290,15 +278,11 @@ const roleCases = [
     name: 'admin fields and whitelist',
     values: { admin: adminAddress, feeRecipient, whitelist },
     method: 'updateWhitelist',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
   {
     name: 'admin fields and blocklist',
     values: { admin: adminAddress, feeRecipient, blocklist },
     method: 'updateBlocklist',
-    roles: { admin: checksumAddress },
-    message: adminRoleError,
   },
 ]
 
@@ -462,12 +446,8 @@ const it = baseIt.extend('mockOperate', ({ sdk, runner, graphql }) => (
       setMetadata: [],
       setFeePercent: [],
       updateState: [],
-      setWhitelister: [],
       updateWhitelist: [],
       updateBlocklist: [],
-      setFeeRecipient: [],
-      setBlocklistManager: [],
-      setValidatorsManager: [],
     })
 
     graphql.mockHarvestParams({ canHarvest })
@@ -557,13 +537,13 @@ describe('operate', () => {
 
     await transaction.checkEstimateGas({ method: sdk.vault.operate, input: { ...input, ...values } })
 
-    const operationNames = graphql.calls.map(({ operationName }) => operationName)
-    const uploads = operationNames.filter((operationName) => operationName === 'UploadMetadata')
+    const uploads = graphql.calls.filter(({ operationName }) => operationName === 'UploadMetadata')
 
     expect(uploads).toHaveLength(1)
   })
 
-  it.for(roleCases)('$name', async ({ values, method, roles, message }, { sdk, runner, mockOperate }) => {
+  it.for(roleCases)('$name', async (roleCase, { sdk, runner, mockOperate }) => {
+    const { values, method, roles = { admin: checksumAddress }, message = adminRoleError } = roleCase
     const vaultContract = mockOperate(roles)
 
     runner.revert(vaultContract, method, accessDenied)
@@ -584,9 +564,7 @@ describe('operate', () => {
     await expect(request).rejects.toMatch(new RegExp(`^${prefix}`))
   })
 
-  it.for(invalidCases)('$name', async ({ values, message }, { sdk, graphql, mockOperate }) => {
-    mockOperate()
-
+  it.for(invalidCases)('$name', async ({ values, message }, { sdk, graphql }) => {
     const request = sdk.vault.operate.encode(values as Input)
 
     await expect(request).rejects.toThrow(message)

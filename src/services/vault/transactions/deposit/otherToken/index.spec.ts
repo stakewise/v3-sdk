@@ -20,10 +20,7 @@ const it = baseIt.extend('mockDeposit', ({ runner, graphql, gnosisSdk }) => (
     const { canHarvest = false } = values
     const vaultContract = gnosisSdk.contracts.helpers.createVault({ vaultAddress })
 
-    runner.on(vaultContract, {
-      deposit: [ 0n ],
-      updateState: [],
-    })
+    runner.on(vaultContract, { deposit: [ 0n ] })
 
     graphql.mockHarvestParams({ canHarvest })
 
@@ -71,9 +68,7 @@ describe('deposit', () => {
     await transaction.checkEstimateGas({ method: gnosisSdk.vault.deposit, input })
   })
 
-  it('invalid vault address', async ({ gnosisSdk, mockDeposit }) => {
-    mockDeposit()
-
+  it('invalid vault address', async ({ gnosisSdk }) => {
     const request = gnosisSdk.vault.deposit.encode({ ...input, vaultAddress: '0x123' })
 
     await expect(request).rejects.toThrow('The "vaultAddress" argument must be a valid address')

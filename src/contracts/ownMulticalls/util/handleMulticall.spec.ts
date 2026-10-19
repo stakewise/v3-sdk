@@ -6,27 +6,19 @@ import handleMulticall from './handleMulticall'
 import type { ContractAbi, MulticallRequestInput } from '../types'
 
 
-const soloParams = [ setFeeRecipient ]
-const multiParams = [ setFeeRecipient, setFeePercent ]
-
 const cases = [
   {
     name: 'solo call',
-    params: soloParams,
+    params: [ setFeeRecipient ],
     names: [ 'setFeeRecipient' ],
     expected: [ [ userAddress ] ],
   },
   {
     name: 'multicall',
-    params: multiParams,
+    params: [ setFeeRecipient, setFeePercent ],
     names: [ 'setFeeRecipient', 'setFeePercent' ],
     expected: [ [ userAddress ], [ 500n ] ],
   },
-]
-
-const revertCases = [
-  { name: 'solo', params: soloParams },
-  { name: 'multi', params: multiParams },
 ]
 
 const failedMessage = '[transaction call failed]:'
@@ -49,7 +41,7 @@ describe('handleMulticall', () => {
     expect(args).toEqual(expected)
   })
 
-  it.for(revertCases)('$name estimate revert', async ({ params }, { runner, vaultContract, signedVaultContract }) => {
+  it.for(cases)('$name estimate revert', async ({ params }, { runner, vaultContract, signedVaultContract }) => {
     runner.revert(vaultContract, 'setFeeRecipient', accessDenied)
 
     const request = createHandler(signedVaultContract).run({ params })
@@ -58,7 +50,7 @@ describe('handleMulticall', () => {
     expect(runner.sent).toHaveLength(0)
   })
 
-  it.for(revertCases)('$name send revert', async ({ params }, { runner, signedVaultContract }) => {
+  it.for(cases)('$name send revert', async ({ params }, { runner, signedVaultContract }) => {
     runner.revertSigning(accessDenied)
 
     const request = createHandler(signedVaultContract).run({ params })

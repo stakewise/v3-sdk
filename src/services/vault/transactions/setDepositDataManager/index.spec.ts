@@ -136,8 +136,8 @@ describe('setDepositDataManager', () => {
     await expect(request).rejects.toBe(adminRoleError)
   })
 
-  it('wallet rejection', async ({ sdk, runner, mockSetDepositDataManager }) => {
-    mockSetDepositDataManager()
+  it('wallet rejection v1 vault', async ({ sdk, runner, mockSetDepositDataManager }) => {
+    mockSetDepositDataManager({ version: 1n })
 
     runner.rejectSigning()
 

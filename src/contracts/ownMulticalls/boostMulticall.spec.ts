@@ -45,10 +45,8 @@ const it = baseIt.extend('mockBoostMulticall', ({ sdk, runner, graphql }) => (
     const leverageStrategyContract = sdk.contracts.special.leverageStrategy
 
     runner.on(leverageStrategyContract, {
-      deposit: [],
       upgradeProxy: [],
       updateVaultState: [],
-      claimExitedAssets: [],
       enterExitQueue: [ 7n ],
     })
 

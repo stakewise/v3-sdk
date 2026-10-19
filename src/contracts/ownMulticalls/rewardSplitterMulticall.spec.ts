@@ -1,13 +1,11 @@
 import { describe, expect } from 'vitest'
 
-import { userAddress, it as baseIt, vaultAddress, checkHarvestParams } from '../../../test'
+import { userAddress, it as baseIt, vaultAddress, checkHarvestParams, rewardSplitterAddress } from '../../../test'
 
 import rewardSplitterMulticall from './rewardSplitterMulticall'
 import type { MulticallRequestInput } from './types'
 import type { HarvestInput } from '../../../test'
 
-
-const rewardSplitterAddress = '0x5555555555555555555555555555555555555555'
 
 const syncRewards = { method: 'syncRewards', args: [] }
 const enterExitQueue = { method: 'enterExitQueue', args: [ 10n, userAddress ] }

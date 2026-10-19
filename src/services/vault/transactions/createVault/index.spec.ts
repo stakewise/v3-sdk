@@ -189,8 +189,6 @@ const encodeCases: EncodeCase[] = [
   },
 ]
 
-const tokenMessage = 'The "vaultToken.name" argument must be a string'
-
 const invalidCases: InvalidCase[] = [
   {
     name: userInvalidCase.name,
@@ -252,7 +250,7 @@ const invalidCases: InvalidCase[] = [
   {
     name: 'token name as number',
     values: { ...input, vaultToken: { ...vaultToken, name: 1 } },
-    message: tokenMessage,
+    message: 'The "vaultToken.name" argument must be a string',
   },
   {
     name: 'token fields as number',
@@ -359,8 +357,7 @@ describe('createVault', () => {
 
     await transaction.checkEstimateGas({ method: sdk.vault.create, input: { ...input, ...metadata } })
 
-    const operationNames = graphql.calls.map(({ operationName }) => operationName)
-    const uploads = operationNames.filter((operationName) => operationName === 'UploadMetadata')
+    const uploads = graphql.calls.filter(({ operationName }) => operationName === 'UploadMetadata')
 
     expect(uploads).toHaveLength(1)
   })

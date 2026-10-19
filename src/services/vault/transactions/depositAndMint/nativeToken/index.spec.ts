@@ -28,32 +28,27 @@ const baseInput = {
 const input = { ...baseInput, referrerAddress: spenderAddress }
 const invalidReceiveSharesMessage = 'The "receiveShares" argument must be of type bigint'
 
-const plainDeposit = { values: {} }
-const harvestDeposit = { values: { canHarvest: true } }
-
 const encodeCases = [
   {
     name: 'default referrer',
-    values: {},
     input: baseInput,
     args: [ userAddress, receiveShares, ZeroAddress ],
   },
   {
     name: 'max amounts',
-    values: {},
     input: { ...input, assets: MaxUint256, receiveShares: MaxUint256 },
     args: [ userAddress, MaxUint256, spenderAddress ],
   },
 ]
 
 const sendCases = [
-  { name: 'send', ...plainDeposit },
-  { name: 'send with harvest', ...harvestDeposit },
+  { name: 'send', canHarvest: false },
+  { name: 'send with harvest', canHarvest: true },
 ]
 
 const estimateGasCases = [
-  { name: 'estimateGas', ...plainDeposit },
-  { name: 'estimateGas with harvest', ...harvestDeposit },
+  { name: 'estimateGas', canHarvest: false },
+  { name: 'estimateGas with harvest', canHarvest: true },
 ]
 
 const invalidCases = [
@@ -91,9 +86,9 @@ const it = baseIt.extend('mockDepositAndMint', ({ sdk, runner, graphql }) => (
 
 describe('depositAndMint', () => {
   it.for(encodeCases)('$name', async (encodeCase, { sdk, mockDepositAndMint }) => {
-    const { values, input: encodeInput, args } = encodeCase
+    const { input: encodeInput, args } = encodeCase
 
-    const vaultContract = mockDepositAndMint(values)
+    const vaultContract = mockDepositAndMint()
 
     const encoded = await sdk.vault.depositAndMint.encode(encodeInput)
     const [ call ] = decodeCalls(vaultContract, encoded.data)
@@ -121,21 +116,19 @@ describe('depositAndMint', () => {
     expect(graphql.calls).toContainEqual(expect.objectContaining(harvestRequest))
   })
 
-  it.for(sendCases)('$name', async ({ values }, { sdk, transaction, mockDepositAndMint }) => {
-    mockDepositAndMint(values)
+  it.for(sendCases)('$name', async ({ canHarvest }, { sdk, transaction, mockDepositAndMint }) => {
+    mockDepositAndMint({ canHarvest })
 
     await transaction.checkSend({ method: sdk.vault.depositAndMint, input })
   })
 
-  it.for(estimateGasCases)('$name', async ({ values }, { sdk, transaction, mockDepositAndMint }) => {
-    mockDepositAndMint(values)
+  it.for(estimateGasCases)('$name', async ({ canHarvest }, { sdk, transaction, mockDepositAndMint }) => {
+    mockDepositAndMint({ canHarvest })
 
     await transaction.checkEstimateGas({ method: sdk.vault.depositAndMint, input })
   })
 
-  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk, mockDepositAndMint }) => {
-    mockDepositAndMint()
-
+  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk }) => {
     const request = sdk.vault.depositAndMint.encode(invalidInput as Input)
 
     await expect(request).rejects.toThrow(message)

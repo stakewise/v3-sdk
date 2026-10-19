@@ -3,7 +3,6 @@ import { ZeroAddress } from 'ethers'
 
 import {
   userAddress,
-  decodeCalls,
   it as baseIt,
   vaultAddress,
   setFeePercent,
@@ -80,11 +79,8 @@ const it = baseIt.extend('mockMulticall', ({ sdk, runner, graphql }) => (
 
     runner.on(vaultContract, {
       setFeePercent: [],
-      updateBlocklist: [],
-      updateWhitelist: [],
       setFeeRecipient: [],
       osTokenPositions: [ 6n ],
-      depositAndMintOsToken: [ 0n ],
     })
 
     graphql.mock<VaultQueryPayload>({ name: 'Vault', data: { vault } })
@@ -97,19 +93,12 @@ const it = baseIt.extend('mockMulticall', ({ sdk, runner, graphql }) => (
 ))
 
 describe('multicall', () => {
-  it('encode', async ({ sdk, graphql, mockMulticall }) => {
-    const { contract: vaultContract } = mockMulticall()
+  it('encode', async ({ graphql, multicall, mockMulticall }) => {
+    const vaultCall = mockMulticall()
 
-    const encoded = await sdk.vault.multicall<StakeWise.TransactionData>({
-      ...baseInput,
-      request: { params, transactionData: true },
-    })
-    const calls = decodeCalls(vaultContract, encoded.data)
-    const callNames = calls.map(({ name }) => name)
+    const calls = await multicall.checkTransactionData({ ...vaultCall, params, names })
     const callArgs = calls.map(({ args }) => args.toArray())
 
-    expect(encoded.to).toBe(vaultAddress)
-    expect(callNames).toEqual([ 'setFeeRecipient', 'setFeePercent' ])
     expect(callArgs).toEqual([ [ userAddress ], [ 500n ] ])
     expect(graphql.calls).toEqual([
       expect.objectContaining({ operationName: 'Vault', variables: lowercaseVariables }),
@@ -135,16 +124,12 @@ describe('multicall', () => {
     await multicall.checkCallStatic({ ...vaultCall, params: [ positionCall ], values: [ [ 6n ] ] })
   })
 
-  it.for(abiCases)('$name', async ({ values, call }, { sdk, mockMulticall }) => {
-    const { contract: vaultContract } = mockMulticall(values)
-    const request = { params: [ call ], transactionData: true }
+  it.for(abiCases)('$name', async ({ values, call }, { multicall, mockMulticall }) => {
+    const vaultCall = mockMulticall(values)
 
-    const encoded = await sdk.vault.multicall<StakeWise.TransactionData>({ ...baseInput, request })
-    const [ decoded ] = decodeCalls(vaultContract, encoded.data)
-    const decodedArgs = decoded.args.toArray()
+    const [ decoded ] = await multicall.checkTransactionData({ ...vaultCall, params: [ call ], names: [ call.method ] })
 
-    expect(decoded.name).toBe(call.method)
-    expect(decodedArgs).toEqual(call.args)
+    expect(decoded.args.toArray()).toEqual(call.args)
   })
 
   it.for(missingCases)('$name', async ({ values, method }, { sdk, mockMulticall }) => {
@@ -158,9 +143,7 @@ describe('multicall', () => {
     await expect(request).rejects.toThrow(method)
   })
 
-  it('invalid vault address', async ({ sdk, mockMulticall }) => {
-    mockMulticall()
-
+  it('invalid vault address', async ({ sdk }) => {
     const request = sdk.vault.multicall({
       ...baseInput,
       vaultAddress: '0x123',

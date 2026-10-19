@@ -6,25 +6,17 @@ import handleEstimateGas from './handleEstimateGas'
 import type { ContractAbi, MulticallRequestInput } from '../types'
 
 
-const soloParams = [ setFeeRecipient ]
-const multiParams = [ setFeeRecipient, setFeePercent ]
-
 const cases = [
   {
     name: 'solo call',
-    params: soloParams,
+    params: [ setFeeRecipient ],
     names: [ 'setFeeRecipient' ],
   },
   {
     name: 'multicall',
-    params: multiParams,
+    params: [ setFeeRecipient, setFeePercent ],
     names: [ 'setFeeRecipient', 'setFeePercent' ],
   },
-]
-
-const revertCases = [
-  { name: 'solo revert', params: soloParams },
-  { name: 'multi revert', params: multiParams },
 ]
 
 const createHandler = (contract: ContractAbi) => ({
@@ -38,7 +30,7 @@ describe('handleEstimateGas', () => {
     await multicall.checkEstimateGas({ ...createHandler(signedVaultContract), params, names })
   })
 
-  it.for(revertCases)('$name', async ({ params }, { runner, vaultContract, signedVaultContract }) => {
+  it.for(cases)('$name revert', async ({ params }, { runner, vaultContract, signedVaultContract }) => {
     runner.revert(vaultContract, 'setFeeRecipient', accessDenied)
 
     const request = createHandler(signedVaultContract).run({ params })

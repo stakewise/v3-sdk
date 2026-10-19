@@ -38,13 +38,13 @@ type Call = {
 
 type EncodeCase = {
   name: string
-  values: MockLockInput
-  extra: Partial<Input>
-  contractName: 'leverageStrategy' | 'leverageStrategyV2'
   calls: Call[]
-  hasApprove: boolean
-  hasUpgrade: boolean
-  strategyRequests: Array<Record<string, unknown>>
+  values?: MockLockInput
+  extra?: Partial<Input>
+  hasApprove?: boolean
+  hasUpgrade?: boolean
+  strategyRequests?: Array<Record<string, unknown>>
+  contractName?: 'leverageStrategy' | 'leverageStrategyV2'
 }
 
 const amount = 10n
@@ -109,91 +109,52 @@ const givenPermit = {
 const encodeCases: EncodeCase[] = [
   {
     name: 'referrer',
-    values: {},
     extra: { referrerAddress: checksumAddress },
-    contractName: 'leverageStrategyV2',
     calls: [ { name: 'deposit', args: [ vaultAddress, amount, checksumAddress ] } ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'v1 strategy',
-    values: {},
     extra: { leverageStrategyData: v1Data },
     contractName: 'leverageStrategy',
     calls: [ deposit ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'allowance equals amount',
     values: { allowance: amount },
-    extra: {},
-    contractName: 'leverageStrategyV2',
     calls: [ deposit ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'permit signature',
     values: { allowance: amount - 1n },
-    extra: {},
-    contractName: 'leverageStrategyV2',
     calls: [ signedPermit, deposit ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'permit params',
-    values: {},
     extra: { permitParams },
-    contractName: 'leverageStrategyV2',
     calls: [ givenPermit, deposit ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'approve not required',
-    values: {},
     extra: { approveParams: { amount: approveAmount } },
-    contractName: 'leverageStrategyV2',
     calls: [ deposit ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'multisig',
     values: { allowance: 0n, code: safeCode },
     extra: { permitParams },
-    contractName: 'leverageStrategyV2',
     calls: [ deposit ],
     hasApprove: true,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'eip-7702',
     values: { allowance: 0n, code: delegatedCode },
-    extra: {},
-    contractName: 'leverageStrategyV2',
     calls: [ signedPermit, deposit ],
-    hasApprove: false,
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'fetched upgrade',
     values: { positions: [ { version: '1', exitingPercent: '0' } ] },
     extra: { leverageStrategyData: undefined },
-    contractName: 'leverageStrategyV2',
     calls: [ deposit ],
-    hasApprove: false,
     hasUpgrade: true,
     strategyRequests: [ strategyRequest ],
   },
@@ -309,21 +270,15 @@ const invalidCases = [
   },
 ]
 
-const getCalls = (targetContract: BaseContract, transaction: StakeWise.TransactionData | null): Call[] => (
-  transaction
-    ? decodeCalls(targetContract, transaction.data).map(({ name, args }) => ({ name, args: args.toArray() }))
-    : []
+const getCalls = (targetContract: BaseContract, { data }: StakeWise.TransactionData): Call[] => (
+  decodeCalls(targetContract, data).map(({ name, args }) => ({ name, args: args.toArray() }))
 )
 
 const it = baseIt.extend('mockLock', ({ sdk, runner, mockLeverageStrategy }) => (
   (values: MockLockInput = {}) => {
-    const { code = '0x', allowance = 1000n, canHarvest = false, positions = [] } = values
+    const { code = '0x', allowance = 1000n, ...strategy } = values
     const mintTokenContract = sdk.contracts.tokens.mintToken
-    const leverageStrategyV2Contract = mockLeverageStrategy({
-      positions,
-      canHarvest,
-      answers: { permit: [], deposit: [] },
-    })
+    const leverageStrategyV2Contract = mockLeverageStrategy({ ...strategy, answers: { permit: [], deposit: [] } })
 
     runner.on(leverageStrategyV2Contract, {
       getStrategyProxy: ([ vault, user ]) => {
@@ -356,7 +311,15 @@ describe('lock', () => {
   })
 
   it.for(encodeCases)('$name', async (encodeCase, { sdk, graphql, mockLock }) => {
-    const { values, extra, contractName, calls, hasApprove, hasUpgrade, strategyRequests } = encodeCase
+    const {
+      calls,
+      extra = {},
+      values = {},
+      hasApprove = false,
+      hasUpgrade = false,
+      strategyRequests = [],
+      contractName = 'leverageStrategyV2',
+    } = encodeCase
 
     mockLock(values)
 
@@ -388,7 +351,7 @@ describe('lock', () => {
       mintTokenContract.getAddress(),
     ])
     const { approveTxData } = tx
-    const calls = getCalls(mintTokenContract, approveTxData)
+    const calls = getCalls(mintTokenContract, approveTxData!)
 
     expect(approveTxData!.to).toBe(address)
     expect(calls).toEqual([ { name: 'approve', args: approveArgs } ])
@@ -470,9 +433,7 @@ describe('lock', () => {
     expect(runner.sent).toHaveLength(0)
   })
 
-  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk, mockLock }) => {
-    mockLock()
-
+  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk }) => {
     const request = sdk.boost.lock.encode(invalidInput as Input)
 
     await expect(request).rejects.toThrow(message)

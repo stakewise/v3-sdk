@@ -25,10 +25,10 @@ type MockClaimQueueInput = {
 
 type EncodeCase = {
   name: string
-  values: Partial<Input>
-  positions: Positions
+  values?: Partial<Input>
+  positions?: Positions
   contractName: 'leverageStrategy' | 'leverageStrategyV2'
-  strategyRequests: Array<Record<string, unknown>>
+  strategyRequests?: Array<Record<string, unknown>>
 }
 
 const position = { timestamp: '22', positionTicket: '11', exitQueueIndex: '33' }
@@ -48,17 +48,12 @@ const strategyRequest = {
 const encodeCases: EncodeCase[] = [
   {
     name: 'encode',
-    values: {},
-    positions: [],
     contractName: 'leverageStrategyV2',
-    strategyRequests: [],
   },
   {
     name: 'v1 strategy',
     values: { leverageStrategyVersion: 1 },
-    positions: [],
     contractName: 'leverageStrategy',
-    strategyRequests: [],
   },
   {
     name: 'fetched v2',
@@ -111,16 +106,12 @@ const invalidCases = [
 ]
 
 const it = baseIt.extend('mockClaimQueue', ({ mockLeverageStrategy }) => (
-  (values: MockClaimQueueInput = {}) => {
-    const { canHarvest = false, positions = [] } = values
-
-    return mockLeverageStrategy({ positions, canHarvest, answers: { claimExitedAssets: [] } })
-  }
+  (values: MockClaimQueueInput = {}) => mockLeverageStrategy({ ...values, answers: { claimExitedAssets: [] } })
 ))
 
 describe('claimQueue', () => {
   it.for(encodeCases)('$name', async (encodeCase, { sdk, graphql, mockClaimQueue }) => {
-    const { values, positions, contractName, strategyRequests } = encodeCase
+    const { contractName, values = {}, positions = [], strategyRequests = [] } = encodeCase
 
     mockClaimQueue({ positions })
 
@@ -172,9 +163,7 @@ describe('claimQueue', () => {
     await expect(request).rejects.toBeInstanceOf(ContractError)
   })
 
-  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk, mockClaimQueue }) => {
-    mockClaimQueue()
-
+  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk }) => {
     const request = sdk.boost.claimQueue.encode(invalidInput as Input)
 
     await expect(request).rejects.toThrow(message)

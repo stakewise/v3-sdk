@@ -28,11 +28,11 @@ type MockUnlockInput = {
 type EncodeCase = {
   name: string
   values: Partial<Input>
-  positions: Positions
-  contractName: 'leverageStrategy' | 'leverageStrategyV2'
   positionPercent: bigint
-  hasUpgrade: boolean
-  strategyRequests: Array<Record<string, unknown>>
+  positions?: Positions
+  hasUpgrade?: boolean
+  strategyRequests?: Array<Record<string, unknown>>
+  contractName?: 'leverageStrategy' | 'leverageStrategyV2'
 }
 
 const v2Data = { version: 2, isUpgradeRequired: false }
@@ -63,17 +63,13 @@ const encodeCases: EncodeCase[] = [
   {
     name: 'v1 strategy',
     values: { leverageStrategyData: v1Data },
-    positions: [],
     contractName: 'leverageStrategy',
     positionPercent: parseEther('0.5'),
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'fetched upgrade',
     values: { leverageStrategyData: undefined },
     positions: [ { version: '1', exitingPercent: '0' } ],
-    contractName: 'leverageStrategyV2',
     positionPercent: parseEther('0.5'),
     hasUpgrade: true,
     strategyRequests: [ strategyRequest ],
@@ -81,20 +77,12 @@ const encodeCases: EncodeCase[] = [
   {
     name: 'fractional percent',
     values: { percent: 12.5 },
-    positions: [],
-    contractName: 'leverageStrategyV2',
     positionPercent: parseEther('0.125'),
-    hasUpgrade: false,
-    strategyRequests: [],
   },
   {
     name: 'full percent',
     values: { percent: 100 },
-    positions: [],
-    contractName: 'leverageStrategyV2',
     positionPercent: parseEther('1'),
-    hasUpgrade: false,
-    strategyRequests: [],
   },
 ]
 
@@ -143,16 +131,19 @@ const invalidCases = [
 ]
 
 const it = baseIt.extend('mockUnlock', ({ mockLeverageStrategy }) => (
-  (values: MockUnlockInput = {}) => {
-    const { canHarvest = false, positions = [] } = values
-
-    return mockLeverageStrategy({ positions, canHarvest, answers: { enterExitQueue: [ 1n ] } })
-  }
+  (values: MockUnlockInput = {}) => mockLeverageStrategy({ ...values, answers: { enterExitQueue: [ 1n ] } })
 ))
 
 describe('unlock', () => {
   it.for(encodeCases)('$name', async (encodeCase, { sdk, graphql, mockUnlock }) => {
-    const { values, positions, contractName, positionPercent, hasUpgrade, strategyRequests } = encodeCase
+    const {
+      values,
+      positionPercent,
+      positions = [],
+      hasUpgrade = false,
+      strategyRequests = [],
+      contractName = 'leverageStrategyV2',
+    } = encodeCase
 
     mockUnlock({ positions })
 
@@ -208,9 +199,7 @@ describe('unlock', () => {
     expect(graphql.calls).toContainEqual(expect.objectContaining(harvestRequest))
   })
 
-  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk, mockUnlock }) => {
-    mockUnlock()
-
+  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk }) => {
     const request = sdk.boost.unlock.encode(invalidInput as Input)
 
     await expect(request).rejects.toThrow(message)

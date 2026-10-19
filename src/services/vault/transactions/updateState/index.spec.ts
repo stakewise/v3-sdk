@@ -73,10 +73,8 @@ describe('updateState', () => {
     expect(runner.estimated).toHaveLength(0)
   })
 
-  it('invalid vault address', async ({ sdk, mockUpdateState }) => {
+  it('invalid vault address', async ({ sdk }) => {
     const { input: invalidInput, message } = baseInputWiringCase
-
-    mockUpdateState()
 
     const request = sdk.vault.updateState.encode(invalidInput as Input)
 

@@ -39,7 +39,6 @@ const it = baseIt.extend('mockWithdraw', ({ sdk, runner, graphql, vaultContract 
       convertToShares: ([ assets ]) => [ assets * 2n ],
       updateState: [],
       enterExitQueue: [ 0n ],
-      redeem: [ 0n ],
     })
     runner.on(sdk.contracts.base.keeper, { isCollateralized: [ isCollateralized ] })
 
@@ -82,9 +81,7 @@ describe('withdraw', () => {
     })
   })
 
-  it('invalid vault address', async ({ sdk, mockWithdraw }) => {
-    mockWithdraw()
-
+  it('invalid vault address', async ({ sdk }) => {
     const request = sdk.vault.withdraw.encode({ ...input, vaultAddress: '0x123' })
 
     await expect(request).rejects.toThrow('The "vaultAddress" argument')

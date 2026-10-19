@@ -13,14 +13,15 @@ import {
 import { baseInputWiringCase } from '../../../../../test/mocks/invalidCases'
 
 import type { BurnAndWithdrawInput } from './types'
-import type { MaxExitSharesInput } from '../../../../../test'
 import type { AllocatorsQueryPayload } from '../../../../graphql/subgraph/allocator'
 
 
 type Input = StakeWise.ExtractInput<BurnAndWithdrawInput>
 
-type MockBurnAndWithdrawInput = MaxExitSharesInput & {
+type MockBurnAndWithdrawInput = {
+  stakeShares?: bigint
   walletShares?: bigint
+  osTokenShares?: bigint
 }
 
 const assets = parseEther('4')
@@ -128,16 +129,10 @@ const invalidCases = [
 
 const it = baseIt.extend('mockBurnAndWithdraw', ({ sdk, runner, graphql, vaultContract, mockMaxExitShares }) => (
   (values: MockBurnAndWithdrawInput = {}) => {
-    const {
-      walletShares = mintedShares,
-      stakeShares = stakeAmount,
-      osTokenShares = mintedShares,
-      ...position
-    } = values
+    const { walletShares = mintedShares, stakeShares = stakeAmount, osTokenShares = mintedShares } = values
 
-    mockMaxExitShares({ ...position, osTokenShares, stakeShares })
+    mockMaxExitShares({ osTokenShares, stakeShares })
 
-    graphql.mockHarvestParams({ canHarvest: false })
     graphql.mock<AllocatorsQueryPayload>({ name: 'Allocators', data: allocatorsPayload(stakeShares) })
 
     runner.on(sdk.contracts.tokens.mintToken, {

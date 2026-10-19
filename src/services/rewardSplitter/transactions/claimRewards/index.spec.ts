@@ -52,15 +52,8 @@ const it = baseIt.extend('mockClaimRewards', ({ sdk, runner, graphql, vaultContr
   () => {
     const rewardSplitterContract = sdk.contracts.helpers.createRewardSplitter(rewardSplitterAddress)
 
-    runner.on(vaultContract, {
-      updateState: [],
-      convertToShares: ([ amount ]) => [ amount * 2n ],
-    })
-    runner.on(rewardSplitterContract, {
-      syncRewards: [],
-      updateVaultState: [],
-      enterExitQueue: [ 0n ],
-    })
+    runner.on(vaultContract, { convertToShares: ([ amount ]) => [ amount * 2n ] })
+    runner.on(rewardSplitterContract, { syncRewards: [], enterExitQueue: [ 0n ] })
 
     graphql.mockHarvestParams({ canHarvest: false })
 

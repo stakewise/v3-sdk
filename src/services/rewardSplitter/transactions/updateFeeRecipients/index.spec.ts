@@ -172,11 +172,7 @@ const it = baseIt.extend('mockUpdateFeeRecipients', ({ sdk, runner, graphql, vau
     const rewardSplitterContract = sdk.contracts.helpers.createRewardSplitter(rewardSplitterAddress)
 
     runner.on(vaultContract, { admin: [ admin ] })
-    runner.on(rewardSplitterContract, {
-      increaseShares: [],
-      decreaseShares: [],
-      updateVaultState: [],
-    })
+    runner.on(rewardSplitterContract, { increaseShares: [], decreaseShares: [] })
 
     graphql.mockHarvestParams({ canHarvest })
 

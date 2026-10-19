@@ -23,16 +23,12 @@ const input = { ...baseInput, referrerAddress: spenderAddress }
 
 const it = baseIt.extend('mockDepositAndMint', ({ runner, graphql, gnosisSdk }) => (
   (values: HarvestInput = {}) => {
-    const { canHarvest = false, isMetaVault = false } = values
+    const { canHarvest = false } = values
     const vaultContract = gnosisSdk.contracts.helpers.createVault({ vaultAddress })
 
-    runner.on(vaultContract, {
-      deposit: [ 0n ],
-      updateState: [],
-      mintOsToken: [ 0n ],
-    })
+    runner.on(vaultContract, { deposit: [ 0n ], mintOsToken: [ 0n ] })
 
-    graphql.mockHarvestParams({ canHarvest, isMetaVault })
+    graphql.mockHarvestParams({ canHarvest })
 
     return vaultContract
   }
@@ -82,9 +78,7 @@ describe('depositAndMint', () => {
     await transaction.checkEstimateGas({ method: gnosisSdk.vault.depositAndMint, input })
   })
 
-  it('invalid vault address', async ({ gnosisSdk, mockDepositAndMint }) => {
-    mockDepositAndMint()
-
+  it('invalid vault address', async ({ gnosisSdk }) => {
     const request = gnosisSdk.vault.depositAndMint.encode({ ...input, vaultAddress: '0x123' })
 
     await expect(request).rejects.toThrow('The "vaultAddress" argument must be a valid address')

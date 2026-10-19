@@ -17,10 +17,7 @@ const delegateTo = {
 const it = baseIt.extend('eigenPodOwnerCall', ({ sdk, runner }) => {
   const eigenPodOwnerContract = sdk.contracts.helpers.createEigenPodOwner(eigenPodOwnerAddress)
 
-  runner.on(eigenPodOwnerContract, {
-    undelegate: [],
-    delegateTo: [],
-  })
+  runner.on(eigenPodOwnerContract, { undelegate: [] })
 
   const run = (request: MulticallRequestInput) => eigenPodOwnerMulticall({
     userAddress,

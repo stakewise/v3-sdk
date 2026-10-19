@@ -92,9 +92,7 @@ describe('claimExitQueue', () => {
     await transaction.checkEstimateGas({ method: sdk.vault.claimExitQueue, input })
   })
 
-  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk, mockClaimExitQueue }) => {
-    mockClaimExitQueue()
-
+  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk }) => {
     const encode = async () => sdk.vault.claimExitQueue.encode(invalidInput as Input)
     const request = encode()
 

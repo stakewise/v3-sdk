@@ -55,10 +55,7 @@ const it = baseIt.extend('mockMint', ({ runner, graphql, vaultContract }) => (
   (values: HarvestInput = {}) => {
     const { canHarvest = false } = values
 
-    runner.on(vaultContract, {
-      updateState: [],
-      mintOsToken: [ 1n ],
-    })
+    runner.on(vaultContract, { mintOsToken: [ 1n ] })
 
     graphql.mockHarvestParams({ canHarvest })
   }
@@ -99,9 +96,7 @@ describe('mint', () => {
     })
   })
 
-  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk, mockMint }) => {
-    mockMint()
-
+  it.for(invalidCases)('$name', async ({ input: invalidInput, message }, { sdk }) => {
     const request = sdk.osToken.mint.encode(invalidInput as Input)
 
     await expect(request).rejects.toThrow(message)
