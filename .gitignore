@@ -1,4 +1,5 @@
 .idea
+.DS_Store
 .turbo
 .vscode
 .rollup.cache
@@ -7,6 +8,7 @@ tsconfig.tsbuildinfo
 dist
 cache
 coverage
+.vitest
 
 # dependencies
 node_modules

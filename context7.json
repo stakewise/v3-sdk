@@ -20,9 +20,8 @@
     "tsconfig.json",
     "pnpm-lock.yaml",
     "rollup.config.js",
-    "jest.config.ts",
+    "vitest.config.ts",
     "codegen.ts",
-    "hardhat.config.js",
     "eslint.config.mjs",
     "LICENSE",
     "CHANGELOG.md"

@@ -1,68 +1,44 @@
+import { describe, expect } from 'vitest'
 import { MaxUint256 } from 'ethers'
 
+import { it } from '../../../../../test'
+import vaultQuery from '../../../../../test/mocks/vaultQuery'
+
 import modifyVault from './modifyVault'
-import type { ModifiedVault } from './types'
 import { Network, configs } from '../../../../helpers'
+
+import type { ModifiedVault } from './types'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
+type VaultCase = {
+  name: string
+  overrides: Partial<VaultQueryPayload['vault']>
+  expected: Partial<ModifiedVault>
+}
+
 const network = Network.Mainnet
 
-describe('modifyVault', () => {
-  const mockVaultQueryPayload: VaultQueryPayload = {
-    vault: {
-      isErc20: true,
-      feePercent: 200,
-      isPrivate: false,
-      isGenesis: true,
-      isMetaVault: false,
-      isBlocklist: false,
-      canHarvest: false,
-      version: '1',
-      performance: '10',
-      tokenSymbol: 'mTKN',
-      imageUrl: 'mockUrl',
-      lastFeePercent: 0,
-      lastFeeUpdateTimestamp: '0',
-      tokenName: 'mockToken',
-      createdAt: '1693395816',
-      displayName: 'Mock Vault',
-      allocatorMaxBoostApy: '123.2',
-      apy: '2.80',
-      baseApy: '0.80',
-      queuedShares: '0',
-      subVaultsCurator: '',
-      subVaultsCount: 0,
-      blocklistCount: '0',
-      whitelistCount: '0',
-      totalAssets: '150000000000',
-      exitingTickets: '150000000000',
-      exitingAssets: '150000000000',
-      capacity: '1000000000000000',
-      isStateUpdateRequired: false,
-      depositDataRoot: 'mockValidators',
-      description: 'This is a mock vault',
-      isCollateralized: true,
-      admin: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      address: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      mevEscrow: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      whitelister: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      feeRecipient: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      ejectingSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      blocklistManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      subVaultsRegistry: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      validatorsManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      depositDataManager: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      pendingMetaSubVault: '0xeefffd4c23d2e8c845870e273861e7d60df49663',
-      lastUpdateStateTimestamp: null,
-      osTokenConfig: {
-        ltvPercent: '0',
-        liqThresholdPercent: '0',
-      },
-    },
-  }
+const cases: VaultCase[] = [
+  {
+    name: 'empty mevEscrow',
+    overrides: { mevEscrow: '' },
+    expected: { mevRecipient: configs[network].addresses.base.sharedMevEscrow },
+  },
+  {
+    name: 'zero feePercent',
+    overrides: { feePercent: 0 },
+    expected: { feePercent: 0 },
+  },
+  {
+    name: 'max capacity',
+    overrides: { capacity: MaxUint256.toString() },
+    expected: { capacity: '∞' },
+  },
+]
 
-  it('should correctly transform the vault data', () => {
+describe('modifyVault', () => {
+  it('transform', () => {
     const expectedModifiedVault: ModifiedVault = {
       apy: 2.80,
       baseApy: 0.80,
@@ -115,62 +91,19 @@ describe('modifyVault', () => {
       lastUpdateStateTimestamp: null,
     }
 
-    const result = modifyVault({
-      data: mockVaultQueryPayload,
-      network,
-    })
+    const result = modifyVault({ data: vaultQuery, network })
 
     expect(result).toEqual(expectedModifiedVault)
   })
 
-  it('should handle missing mevEscrow correctly', () => {
-    const mockDataWithoutMevEscrow: VaultQueryPayload = {
-      ...mockVaultQueryPayload,
-      vault: {
-        ...mockVaultQueryPayload.vault,
-        mevEscrow: '',
-      },
+  it.for(cases)('$name', ({ overrides, expected }) => {
+    const data: VaultQueryPayload = {
+      ...vaultQuery,
+      vault: { ...vaultQuery.vault, ...overrides },
     }
 
-    const result = modifyVault({
-      data: mockDataWithoutMevEscrow,
-      network,
-    })
+    const result = modifyVault({ data, network })
 
-    expect(result.mevRecipient).toEqual(configs[network].addresses.base.sharedMevEscrow)
-  })
-
-  it('should handle feePercent being 0', () => {
-    const mockDataWithZeroFee: VaultQueryPayload = {
-      ...mockVaultQueryPayload,
-      vault: {
-        ...mockVaultQueryPayload.vault,
-        feePercent: 0,
-      },
-    }
-
-    const result = modifyVault({
-      data: mockDataWithZeroFee,
-      network,
-    })
-
-    expect(result.feePercent).toEqual(0)
-  })
-
-  it('should handle max capacity with ∞ symbol', () => {
-    const mockDataWithZeroFee: VaultQueryPayload = {
-      ...mockVaultQueryPayload,
-      vault: {
-        ...mockVaultQueryPayload.vault,
-        capacity: MaxUint256.toString(),
-      },
-    }
-
-    const result = modifyVault({
-      data: mockDataWithZeroFee,
-      network,
-    })
-
-    expect(result.capacity).toEqual('∞')
+    expect(result).toMatchObject(expected)
   })
 })
