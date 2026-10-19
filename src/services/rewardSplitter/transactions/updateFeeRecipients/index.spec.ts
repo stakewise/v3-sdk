@@ -208,6 +208,7 @@ describe('updateFeeRecipients', () => {
         shares: shares.toString(),
       })),
     }
+
     const splittersRequest = {
       url: subgraphUrl,
       operationName: 'RewardSplitters',
