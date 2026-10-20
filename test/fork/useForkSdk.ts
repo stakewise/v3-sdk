@@ -1,9 +1,11 @@
 import { afterAll, afterEach, beforeAll } from 'vitest'
 import { JsonRpcProvider, JsonRpcSigner } from 'ethers'
+import type { TransactionReceipt } from 'ethers'
 
 import StakeWiseSDK from '../../src/StakeWiseSDK'
 import { Network } from '../../src/helpers'
 
+import wait from '../wait'
 import { userAddress } from '../constants'
 import { resetGraphql, checkGraphqlRequests } from '../mockGraphql'
 
@@ -14,6 +16,8 @@ import type { ForkSnapshot } from './snapshots'
 import type { ForkNetwork } from './constants'
 
 
+const receiptTimeoutMs = 30_000
+
 class ForkProvider extends JsonRpcProvider {
   async getSigner(address?: number | string): Promise<JsonRpcSigner> {
     if (typeof address === 'string') {
@@ -21,6 +25,22 @@ class ForkProvider extends JsonRpcProvider {
     }
 
     return super.getSigner(address)
+  }
+
+  async waitForTransaction(hash: string): Promise<TransactionReceipt | null> {
+    const deadline = Date.now() + receiptTimeoutMs
+
+    while (Date.now() < deadline) {
+      const receipt = await this.getTransactionReceipt(hash)
+
+      if (receipt) {
+        return receipt
+      }
+
+      await wait(this.pollingInterval)
+    }
+
+    throw new Error(`anvil has no receipt for ${hash} after ${receiptTimeoutMs} ms`)
   }
 }
 

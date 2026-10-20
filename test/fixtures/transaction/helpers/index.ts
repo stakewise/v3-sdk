@@ -3,6 +3,7 @@ export { default as checkSentTransaction } from './checkSentTransaction'
 export { default as checkRecordedTransaction } from './checkRecordedTransaction'
 
 export type {
+  ListMethod,
   EncodedList,
   CheckGasInput,
   CheckSendInput,

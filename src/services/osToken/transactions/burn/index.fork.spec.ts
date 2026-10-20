@@ -9,8 +9,6 @@ import type { Fork } from '../../../../../test/fork'
 
 const depositAssets = parseEther('1')
 const mintShares = parseEther('0.1')
-const burnDelaySeconds = 60
-const halfOfMinted = mintShares / 2n
 
 const depositAndMint = async (setupFork: Fork) => {
   const vaultAddress = getAddress(setupFork.snapshot.vaultAddress)
@@ -24,12 +22,9 @@ describe('burn', () => {
   const { sdk, provider, snapshot } = useForkSdk({ setup: depositAndMint })
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
-  const burnInput = { userAddress, vaultAddress, shares: halfOfMinted }
+  const burnInput = { userAddress, vaultAddress, shares: mintShares }
 
   it('burn', async () => {
-    await provider.send('evm_increaseTime', [ burnDelaySeconds ])
-    await provider.send('evm_mine', [])
-
     const positionBefore = await vaultContract.osTokenPositions(userAddress)
 
     await sendForkTransaction({
@@ -37,7 +32,7 @@ describe('burn', () => {
       input: burnInput,
       contract: vaultContract,
       method: sdk.osToken.burn,
-      calls: [ { name: 'burnOsToken', args: [ halfOfMinted ] } ],
+      calls: [ { name: 'burnOsToken', args: [ mintShares ] } ],
     })
 
     const positionAfter = await vaultContract.osTokenPositions(userAddress)

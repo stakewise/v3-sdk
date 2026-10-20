@@ -42,6 +42,16 @@ const forkAbis = {
   rewardSplitterFactory: [
     'event RewardSplitterCreated(address owner, address vault, address rewardSplitter)',
   ],
+  leverageStrategy: [
+    'function isStrategyProxyExiting(address proxy) view returns (bool)',
+    'event StrategyProxyUpgraded(address indexed vault, address indexed user, address strategy)',
+    'event Deposited(address indexed vault, address indexed user, uint256 osTokenShares, uint256, address)',
+    'function getBorrowState(address proxy) view returns (uint256 borrowedAssets, uint256 suppliedOsTokenShares)',
+    'event ExitedAssetsClaimed(address indexed vault, address indexed user, uint256 osTokenShares, uint256 assets)',
+  ],
+  strategyProxy: [
+    'function owner() view returns (address)',
+  ],
 }
 
 
