@@ -74,7 +74,6 @@ const invalidCases = [
 const it = baseIt.extend('mockSetDepositDataRoot', ({ sdk, runner, vaultContract }) => (
   (values: MockSetDepositDataRootInput = {}) => {
     const { manager = userAddress, version = 2n } = values
-    const { depositDataRegistry: depositDataRegistryContract } = sdk.contracts.base
     const isV1Vault = version === 1n
 
     runner.on(vaultContract, {
@@ -82,12 +81,12 @@ const it = baseIt.extend('mockSetDepositDataRoot', ({ sdk, runner, vaultContract
       keysManager: [ isV1Vault ? manager : spenderAddress ],
       setValidatorsRoot: [],
     })
-    runner.on(depositDataRegistryContract, {
+    runner.on(sdk.contracts.base.depositDataRegistry, {
       getDepositDataManager: ([ vault ]) => [ isV1Vault || vault !== vaultAddress ? spenderAddress : manager ],
       setDepositDataRoot: [],
     })
 
-    return isV1Vault ? vaultContract : depositDataRegistryContract
+    return isV1Vault ? vaultContract : sdk.contracts.base.depositDataRegistry
   }
 ))
 

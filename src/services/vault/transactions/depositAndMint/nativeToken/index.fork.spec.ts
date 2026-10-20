@@ -21,8 +21,6 @@ const receiveShares = parseEther('0.1')
 describe('depositAndMint', () => {
   const { sdk, provider, snapshot } = useForkSdk()
   const harvestArgs = getForkHarvestArgs(snapshot)
-  const { keeper: keeperContract } = sdk.contracts.base
-  const { mintToken: mintTokenContract } = sdk.contracts.tokens
 
   const depositCases = [
     {
@@ -58,7 +56,7 @@ describe('depositAndMint', () => {
       forkAbis.vault
     )
 
-    const canHarvestBefore = await keeperContract.canHarvest(vaultAddress)
+    const canHarvestBefore = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
 
     expect(canHarvestBefore, 'fixture does not match the fork block').toBe(canHarvest)
 
@@ -73,9 +71,9 @@ describe('depositAndMint', () => {
     })
 
     const [ canHarvestAfter, stakeShares, mintedShares, vaultEvents ] = await Promise.all([
-      keeperContract.canHarvest(vaultAddress),
+      sdk.contracts.base.keeper.canHarvest(vaultAddress),
       vaultContract.getShares(userAddress),
-      mintTokenContract.balanceOf(userAddress),
+      sdk.contracts.tokens.mintToken.balanceOf(userAddress),
       parseEvents(vaultContract, receipt),
     ])
 

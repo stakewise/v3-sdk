@@ -64,8 +64,6 @@ describe('lock', () => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
   const leverageStrategyContract = extendContract(sdk.contracts.special.leverageStrategyV2, forkAbis.leverageStrategy)
-  const { mintToken: mintTokenContract } = sdk.contracts.tokens
-  const { keeper: keeperContract } = sdk.contracts.base
 
   const harvestCall = { name: 'updateVaultState', args: [ vaultAddress, getForkHarvestArgs(snapshot) ] }
   const depositCall = { name: 'deposit', args: [ vaultAddress, amount, ZeroAddress ] }
@@ -95,8 +93,8 @@ describe('lock', () => {
     })
 
     const [ canHarvest, allowance, proxyShares, strategyEvents ] = await Promise.all([
-      keeperContract.canHarvest(vaultAddress),
-      mintTokenContract.allowance(userAddress, proxyAddress),
+      sdk.contracts.base.keeper.canHarvest(vaultAddress),
+      sdk.contracts.tokens.mintToken.allowance(userAddress, proxyAddress),
       vaultContract.getShares(proxyAddress),
       parseEvents(leverageStrategyContract, receipt),
     ])
@@ -133,7 +131,7 @@ describe('lock', () => {
     const proxyAddress = await leverageStrategyContract.getStrategyProxy(vaultAddress, permitOwnerAddress)
 
     const signature = await sdk.utils.getPermitSignature({
-      contract: mintTokenContract,
+      contract: sdk.contracts.tokens.mintToken,
       spenderAddress: proxyAddress,
       ownerAddress: permitOwnerAddress,
     })
@@ -185,7 +183,7 @@ describe('lock', () => {
 
     const [ proxyAddress, mintTokenAddress, leverageStrategyAddress ] = await Promise.all([
       leverageStrategyContract.getStrategyProxy(vaultAddress, userAddress),
-      mintTokenContract.getAddress(),
+      sdk.contracts.tokens.mintToken.getAddress(),
       leverageStrategyContract.getAddress(),
     ])
 
@@ -196,7 +194,7 @@ describe('lock', () => {
 
     const sentTargets = receipts.map((receipt) => receipt?.to)
     const sentStatuses = receipts.map((receipt) => receipt?.status)
-    const approveCalldata = mintTokenContract.interface.encodeFunctionData('approve', [ proxyAddress, amount ])
+    const approveCalldata = sdk.contracts.tokens.mintToken.interface.encodeFunctionData('approve', [ proxyAddress, amount ])
     const lockCalls = decodeCalls(leverageStrategyContract, lockData)
       .map(({ name, args }) => ({ name, args: args.toArray() }))
 

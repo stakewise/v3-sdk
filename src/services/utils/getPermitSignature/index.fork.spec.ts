@@ -16,28 +16,27 @@ const permitCases = [
 
 describe('getPermitSignature', () => {
   const { sdk, provider } = useForkSdk()
-  const { mintToken: mintTokenContract } = sdk.contracts.tokens
 
   it.for(permitCases)('$name', async ({ amount, allowance }) => {
-    const nonceBefore = await mintTokenContract.nonces(ownerAddress)
+    const nonceBefore = await sdk.contracts.tokens.mintToken.nonces(ownerAddress)
 
     const signature = await sdk.utils.getPermitSignature({
       amount,
       ownerAddress,
       spenderAddress,
-      contract: mintTokenContract,
+      contract: sdk.contracts.tokens.mintToken,
     })
 
     const { amount: signedAmount, deadline, v, r, s } = signature
 
     const signer = await provider.getSigner(userAddress)
-    const signedMintTokenContract = mintTokenContract.connect(signer)
+    const signedMintTokenContract = sdk.contracts.tokens.mintToken.connect(signer)
     const permitTx = await signedMintTokenContract.permit(ownerAddress, spenderAddress, signedAmount, deadline, v, r, s)
     const permitReceipt = await permitTx.wait()
 
     const [ allowanceAfter, nonceAfter ] = await Promise.all([
-      mintTokenContract.allowance(ownerAddress, spenderAddress),
-      mintTokenContract.nonces(ownerAddress),
+      sdk.contracts.tokens.mintToken.allowance(ownerAddress, spenderAddress),
+      sdk.contracts.tokens.mintToken.nonces(ownerAddress),
     ])
 
     expect(signedAmount).toBe(allowance)

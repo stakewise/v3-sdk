@@ -22,7 +22,6 @@ describe('getData', () => {
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress: boostVaultAddress })
   const leverageStrategyContract = extendContract(sdk.contracts.special.leverageStrategyV2, forkAbis.leverageStrategy)
   const mintTokenConfigContract = sdk.contracts.base.mintTokenConfig.v2
-  const { mintTokenController: mintTokenControllerContract } = sdk.contracts.base
 
   it('boost position', async () => {
     const [ proxyAddress, stakeShares, osTokenConfig ] = await Promise.all([
@@ -71,8 +70,8 @@ describe('getData', () => {
     const boostData = await sdk.boost.getData({ userAddress: boosterAddress, vaultAddress: boostVaultAddress })
 
     const [ maxMintShares, rewardShares ] = await Promise.all([
-      mintTokenControllerContract.convertToShares(maxMintAssets),
-      mintTokenControllerContract.convertToShares(boostRewardAssets),
+      sdk.contracts.base.mintTokenController.convertToShares(maxMintAssets),
+      sdk.contracts.base.mintTokenController.convertToShares(boostRewardAssets),
     ])
 
     expect(borrowedAssets).toBeGreaterThan(0n)

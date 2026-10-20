@@ -13,10 +13,9 @@ const depositDataRoot = `0x${'11'.repeat(32)}`
 
 const fundManagers = async ({ sdk, provider, snapshot }: Fork) => {
   const v1VaultContract = sdk.contracts.helpers.createVault({ vaultAddress: v1VaultAddress })
-  const { depositDataRegistry: depositDataRegistryContract } = sdk.contracts.base
 
   const managerAddresses = await Promise.all([
-    depositDataRegistryContract.getDepositDataManager(snapshot.vaultAddress),
+    sdk.contracts.base.depositDataRegistry.getDepositDataManager(snapshot.vaultAddress),
     v1VaultContract.keysManager(),
   ])
 

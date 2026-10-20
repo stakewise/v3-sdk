@@ -33,10 +33,9 @@ describe('claimQueue', () => {
     const { sdk, provider, snapshot } = setupFork
     const vaultAddress = getAddress(snapshot.vaultAddress)
     const rewardsSlot = getRewardsSlot(vaultAddress)
-    const { keeper: keeperContract } = sdk.contracts.base
     const vaultContract = extendContract(sdk.contracts.helpers.createVault({ vaultAddress }), forkAbis.vault)
 
-    const keeperAddress = await keeperContract.getAddress()
+    const keeperAddress = await sdk.contracts.base.keeper.getAddress()
     const rewards = await provider.getStorage(keeperAddress, rewardsSlot)
 
     await lockToFork(setupFork, { amount: lockAmount, userAddress: lockerAddress })
@@ -62,7 +61,7 @@ describe('claimQueue', () => {
 
     await provider.send('anvil_setStorageAt', [ keeperAddress, rewardsSlot, rewards ])
 
-    const canHarvest = await keeperContract.canHarvest(vaultAddress)
+    const canHarvest = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
 
     expect(canHarvest, 'the restored keeper rewards must allow a new harvest').toBe(true)
 
@@ -81,7 +80,6 @@ describe('claimQueue', () => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
   const leverageStrategyContract = extendContract(sdk.contracts.special.leverageStrategyV2, forkAbis.leverageStrategy)
-  const { mintToken: mintTokenContract } = sdk.contracts.tokens
 
   it('claim', async () => {
     mockForkHarvestParams(snapshot, false)
@@ -99,7 +97,7 @@ describe('claimQueue', () => {
       leverageStrategyVersion: 2,
     }
 
-    const balanceBefore = await mintTokenContract.balanceOf(lockerAddress)
+    const balanceBefore = await sdk.contracts.tokens.mintToken.balanceOf(lockerAddress)
 
     const { receipt } = await sendForkTransaction({
       input,
@@ -115,7 +113,7 @@ describe('claimQueue', () => {
     })
 
     const [ balanceAfter, strategyEvents ] = await Promise.all([
-      mintTokenContract.balanceOf(lockerAddress),
+      sdk.contracts.tokens.mintToken.balanceOf(lockerAddress),
       parseEvents(leverageStrategyContract, receipt),
     ])
 

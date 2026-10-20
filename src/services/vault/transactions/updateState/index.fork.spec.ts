@@ -14,12 +14,11 @@ describe('updateState', () => {
   const { sdk, provider, snapshot } = useForkSdk()
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
-  const { keeper: keeperContract } = sdk.contracts.base
   const harvestArgs = getForkHarvestArgs(snapshot)
   const input = { userAddress, vaultAddress }
 
   it('harvest', async () => {
-    const canHarvestBefore = await keeperContract.canHarvest(vaultAddress)
+    const canHarvestBefore = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
 
     expect(canHarvestBefore, 'fixture does not match the fork block').toBe(true)
 
@@ -33,7 +32,7 @@ describe('updateState', () => {
       calls: [ { name: 'updateState', args: [ harvestArgs ] } ],
     })
 
-    const canHarvestAfter = await keeperContract.canHarvest(vaultAddress)
+    const canHarvestAfter = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
 
     expect(canHarvestAfter).toBe(false)
   })

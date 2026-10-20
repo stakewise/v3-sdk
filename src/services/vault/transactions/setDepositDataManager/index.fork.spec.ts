@@ -25,25 +25,24 @@ describe('setDepositDataManager', () => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
   const v1VaultContract = sdk.contracts.helpers.createVault({ vaultAddress: v1VaultAddress })
-  const { depositDataRegistry: depositDataRegistryContract } = sdk.contracts.base
 
   it('vault admin', async () => {
     const adminAddress = await vaultContract.admin()
     const input = { userAddress: adminAddress, vaultAddress, managerAddress }
 
-    const managerBefore = await depositDataRegistryContract.getDepositDataManager(vaultAddress)
+    const managerBefore = await sdk.contracts.base.depositDataRegistry.getDepositDataManager(vaultAddress)
 
     expect(managerBefore, 'the manager must differ from the new one').not.toBe(managerAddress)
 
     await sendForkTransaction({
       input,
       provider,
-      contract: depositDataRegistryContract,
+      contract: sdk.contracts.base.depositDataRegistry,
       method: sdk.vault.setDepositDataManager,
       calls: [ { name: 'setDepositDataManager', args: [ vaultAddress, managerAddress ] } ],
     })
 
-    const managerAfter = await depositDataRegistryContract.getDepositDataManager(vaultAddress)
+    const managerAfter = await sdk.contracts.base.depositDataRegistry.getDepositDataManager(vaultAddress)
 
     expect(managerAfter).toBe(managerAddress)
   })
