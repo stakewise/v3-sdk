@@ -24,7 +24,20 @@ const forkAbis = {
   ],
   rewardSplitter: [
     'function vault() view returns (address)',
+    'function claimer() view returns (address)',
     'function sharesOf(address account) view returns (uint256)',
+  ],
+  subVaultsRegistry: [
+    'function getSubVaults() view returns (address[])',
+    'function pendingMetaSubVault() view returns (address)',
+  ],
+  osTokenRedeemer: [
+    'function processExitQueue()',
+    'function queuedShares() view returns (uint128)',
+    'function getExitQueueIndex(uint256 positionTicket) view returns (int256)',
+    'function swapAssetsToOsTokenShares(address receiver) payable returns (uint256)',
+    'function calculateExitedAssets(address, uint256, uint256) view returns (uint256, uint256, uint256 exitedAssets)',
+    'event ExitQueueEntered(address indexed owner, address indexed receiver, uint256 positionTicket, uint256 shares)',
   ],
   rewardSplitterFactory: [
     'event RewardSplitterCreated(address owner, address vault, address rewardSplitter)',
