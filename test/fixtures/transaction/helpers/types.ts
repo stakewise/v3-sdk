@@ -35,7 +35,7 @@ export type CheckGasInput<Input> = {
 
 export type EncodedList = Record<string, EncodedTransaction | null>
 
-type ListMethod<Input, Encoded> = {
+export type ListMethod<Input, Encoded> = {
   (input: Input): Promise<StakeWise.TransactionHash>
   encode: (input: Input) => Promise<Encoded>
   estimateGas: (input: Input) => Promise<bigint>

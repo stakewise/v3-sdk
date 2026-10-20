@@ -1,3 +1,8 @@
 sh ./scripts/pre-push.sh
 pnpm run check:docLinks
 pnpm run lint
+changed=$(git diff --cached --name-only)
+networks=""
+echo "$changed" | grep -qx 'src/helpers/configs/mainnet.ts' && networks="$networks mainnet"
+echo "$changed" | grep -qx 'src/helpers/configs/gnosis.ts' && networks="$networks gnosis"
+[ -z "$networks" ] || pnpm run check:forkAddresses $networks

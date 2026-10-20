@@ -54,11 +54,10 @@ const invalidCases = [
 
 const it = baseIt.extend('mockClaim', ({ sdk, runner }) => (
   () => {
-    const { merkleDistributorV2: merkleDistributorContract } = sdk.contracts.special
 
-    runner.on(merkleDistributorContract, { claim: [] })
+    runner.on(sdk.contracts.special.merkleDistributorV2, { claim: [] })
 
-    return merkleDistributorContract
+    return sdk.contracts.special.merkleDistributorV2
   }
 ))
 

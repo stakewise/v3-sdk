@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
 
-import { userAddress, it, vaultAddress } from '../../../../../test'
+import { it, userAddress, vaultAddress, estimatedGas } from '../../../../../test'
 import { baseInputWiringCase } from '../../../../../test/mocks/invalidCases'
 
 import type { BurnInput } from './types'
@@ -10,6 +10,7 @@ type Input = StakeWise.ExtractInput<BurnInput>
 
 const shares = 10n
 const input = { userAddress, vaultAddress, shares }
+const burnGasLimit = estimatedGas * 130n / 100n
 
 const invalidCases = [
   baseInputWiringCase,
@@ -41,7 +42,7 @@ describe('burn', () => {
   })
 
   it('send', async ({ sdk, transaction }) => {
-    await transaction.checkSend({ method: sdk.osToken.burn, input })
+    await transaction.checkSend({ input, method: sdk.osToken.burn, gasLimit: burnGasLimit })
   })
 
   it('estimateGas', async ({ sdk, transaction }) => {

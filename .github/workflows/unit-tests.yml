@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
         contents: read
+        pull-requests: write
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
@@ -30,18 +31,10 @@ jobs:
         run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Checking
-        run: pnpm prepare && pnpm lint && pnpm typecheck:test && pnpm test:coverage
+        run: pnpm prepare && pnpm lint && pnpm typecheck:test && pnpm test:coverage --reporter=default --reporter=json --outputFile=unit-report.json
 
-      - name: Coverage summary
-        run: |
-          node -e "
-            const { total } = require('./coverage/coverage-summary.json')
-            const title = '## Coverage (reported, not enforced)'
-            const head = [ title, '', '| Metric | % | Covered |', '| --- | --- | --- |' ]
-            const rows = [ 'lines', 'branches', 'functions', 'statements' ].map((key) => {
-              const { pct, covered, total: count } = total[key]
-
-              return '| ' + key + ' | ' + pct + '% | ' + covered + ' / ' + count + ' |'
-            })
-            console.log([ ...head, ...rows ].join('\n'))
-          " >> "$GITHUB_STEP_SUMMARY"
+      - name: Tests summary
+        if: always()
+        run: pnpm tests:comment unit
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

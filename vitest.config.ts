@@ -26,7 +26,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           include: [ 'src/**/*.spec.ts', 'test/**/*.spec.ts' ],
-          exclude: [ ...configDefaults.exclude, 'test/fork/**' ],
+          exclude: [ ...configDefaults.exclude, '**/*.fork.spec.ts' ],
           setupFiles: [ 'test/setup.ts' ],
         },
       },
@@ -34,7 +34,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: 'fork',
-          include: [ 'test/fork/**/*.spec.ts' ],
+          include: [ 'src/**/*.fork.spec.ts', 'test/fork/**/*.fork.spec.ts' ],
           globalSetup: [ 'test/fork/globalSetup.ts' ],
           setupFiles: [ 'test/setup.ts' ],
           testTimeout: 120_000,

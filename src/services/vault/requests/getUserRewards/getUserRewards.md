@@ -37,7 +37,7 @@ type Output = {
 
 | Name                | Description                     |
 |---------------------|---------------------------------|
-| `date`              | Сurrent rate date               |
+| `date`              | Current rate date               |
 | `dailyRewards`      | Daily reward asset in ETH       |
 | `dailyRewardsUsd`   | Daily reward asset in USD       |
 | `dailyRewardsEur`   | Daily reward asset in EUR       |
