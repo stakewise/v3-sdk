@@ -16,7 +16,8 @@ const maxAttempts = 5
 const retryDelay = 1000
 const tooManyRequests = 429
 
-const getCode = async ({ rpcUrl, address, block }: GetCodeInput, attempt = 1): Promise<string> => {
+const getCode = async (input: GetCodeInput, attempt = 1): Promise<string> => {
+  const { rpcUrl, address, block } = input
   const response = await fetch(rpcUrl, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -34,7 +35,7 @@ const getCode = async ({ rpcUrl, address, block }: GetCodeInput, attempt = 1): P
   if (response.status === tooManyRequests && attempt < maxAttempts) {
     await wait(retryDelay * attempt)
 
-    return getCode({ rpcUrl, address, block }, attempt + 1)
+    return getCode(input, attempt + 1)
   }
 
   if (!response.ok) {

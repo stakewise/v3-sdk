@@ -1,13 +1,11 @@
-import configs from '../src/helpers/configs'
 import getCode from '../test/fork/getCode'
+import configs from '../src/helpers/configs'
 import { getSnapshot } from '../test/fork/snapshots'
 import type { ForkNetwork } from '../test/fork/constants'
 import collectAddresses from '../test/fork/collectAddresses'
 import { forkNetworks, getForkNetworkName } from '../test/fork/constants'
 import parseForkNetwork, { forkNetworkNames } from '../test/fork/parseForkNetwork'
 
-
-const getHint = (names: string[]) => `Run: ${names.map((name) => `pnpm fork:snapshot ${name}`).join(' && ')}`
 
 const getRpcUrl = (network: ForkNetwork) => {
   const { rpcEnv } = forkNetworks[network]
@@ -35,7 +33,10 @@ const findEmptyAddresses = async (network: ForkNetwork) => {
     }
   }
 
-  if (!failures.length) {
+  if (failures.length) {
+    failures.push(`Run: pnpm fork:snapshot ${name}`)
+  }
+  else {
     console.log(`${name}: ${addresses.length} addresses have a contract at block ${block}`)
   }
 
@@ -52,19 +53,13 @@ const main = async (names: string[]) => {
   networks.forEach(getRpcUrl)
 
   const failures: string[] = []
-  const failedNames: string[] = []
 
   for (const network of networks) {
-    const networkFailures = await findEmptyAddresses(network)
-
-    if (networkFailures.length) {
-      failures.push(...networkFailures)
-      failedNames.push(getForkNetworkName(network))
-    }
+    failures.push(...await findEmptyAddresses(network))
   }
 
   if (failures.length) {
-    console.error([ ...failures, getHint(failedNames) ].join('\n'))
+    console.error(failures.join('\n'))
     process.exitCode = 1
   }
 }

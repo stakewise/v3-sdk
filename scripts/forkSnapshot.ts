@@ -1,16 +1,15 @@
-import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { readFile, writeFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 
 import configs from '../src/helpers/configs'
+import { snapshots } from '../test/fork/snapshots'
 import createSnapshot from '../test/fork/createSnapshot'
 import getVaultFilter from '../test/fork/getVaultFilter'
-import type { ForkSnapshot } from '../test/fork/snapshots'
 import type { SnapshotResponse } from '../test/fork/createSnapshot'
 import parseForkNetwork, { forkNetworkNames } from '../test/fork/parseForkNetwork'
 
 
-type FetchResponseInput = {
+type FetchSnapshotDataInput = {
   url: string
   where: ReturnType<typeof getVaultFilter>
 }
@@ -35,7 +34,7 @@ const query = `
   }
 `
 
-const fetchResponse = async ({ url, where }: FetchResponseInput) => {
+const fetchSnapshotData = async ({ url, where }: FetchSnapshotDataInput) => {
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -62,16 +61,6 @@ const fetchResponse = async ({ url, where }: FetchResponseInput) => {
   return data
 }
 
-const readSavedVault = async (filePath: string) => {
-  if (!existsSync(filePath)) {
-    return undefined
-  }
-
-  const { vaultAddress }: ForkSnapshot = JSON.parse(await readFile(filePath, 'utf8'))
-
-  return vaultAddress
-}
-
 const main = async ([ name, vault ]: string[]) => {
   if (!name) {
     throw new Error(`Pass a network: ${forkNetworkNames.join(', ')}`)
@@ -80,10 +69,9 @@ const main = async ([ name, vault ]: string[]) => {
   const network = parseForkNetwork(name)
   const [ url ] = configs[network].api.subgraph
   const filePath = fileURLToPath(new URL(`../test/fork/mocks/${name}.json`, import.meta.url))
-  const savedVault = await readSavedVault(filePath)
-  const where = getVaultFilter({ vault, savedVault })
-  const response = await fetchResponse({ url, where })
-  const snapshot = createSnapshot(response)
+  const where = getVaultFilter({ vault, savedVault: snapshots[network]?.vaultAddress })
+  const data = await fetchSnapshotData({ url, where })
+  const snapshot = createSnapshot(data)
 
   await writeFile(filePath, `${JSON.stringify(snapshot, null, 2)}\n`)
 

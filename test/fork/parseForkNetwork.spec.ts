@@ -3,7 +3,7 @@ import { describe, expect } from 'vitest'
 import { Network } from '../../src/helpers/enums'
 
 import { it } from '..'
-import parseForkNetwork from './parseForkNetwork'
+import parseForkNetwork, { forkNetworkNames } from './parseForkNetwork'
 
 
 const cases = [
@@ -19,6 +19,8 @@ describe('parseForkNetwork', () => {
   })
 
   it('unknown name', () => {
-    expect(() => parseForkNetwork('hoodi')).toThrow('Unknown network "hoodi", expected one of: mainnet, gnosis')
+    const message = `Unknown network "unknown", expected one of: ${forkNetworkNames.join(', ')}`
+
+    expect(() => parseForkNetwork('unknown')).toThrow(message)
   })
 })

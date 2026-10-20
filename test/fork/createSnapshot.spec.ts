@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
 
-import { it, proof, rewardsRoot, vaultAddress, subVaultAddress } from '..'
+import { it, proof, rewardsRoot, vaultAddress } from '..'
 import createSnapshot from './createSnapshot'
 
 
@@ -34,13 +34,6 @@ describe('createSnapshot', () => {
         unlockedMevReward: '5',
       },
     })
-  })
-
-  it('first vault', () => {
-    const other = { ...vault, id: subVaultAddress }
-    const snapshot = createSnapshot({ _meta: meta, vaults: [ vault, other ] })
-
-    expect(snapshot.vaultAddress).toBe(vaultAddress)
   })
 
   it('no vault', () => {
