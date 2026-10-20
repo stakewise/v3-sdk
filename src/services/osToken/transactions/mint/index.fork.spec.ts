@@ -1,8 +1,8 @@
 import { describe, expect } from 'vitest'
-import { getAddress, parseEther } from 'ethers'
+import { getAddress, parseEther, ZeroAddress } from 'ethers'
 
-import { it, userAddress, decodeCalls } from '../../../../../test'
-import { useForkSdk, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
+import { it, userAddress } from '../../../../../test'
+import { useForkSdk, depositToFork, sendForkTransaction, mockForkHarvestParams } from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 
@@ -25,25 +25,16 @@ describe('mint', () => {
   it('mint', async () => {
     mockForkHarvestParams(snapshot, false)
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.osToken.mint.encode(mintInput),
-      sdk.osToken.mint.estimateGas(mintInput),
-    ])
+    await sendForkTransaction({
+      provider,
+      input: mintInput,
+      contract: vaultContract,
+      method: sdk.osToken.mint,
+      calls: [ { name: 'mintOsToken', args: [ userAddress, mintShares, ZeroAddress ] } ],
+    })
 
-    const hash = await sdk.osToken.mint(mintInput)
+    const position = await vaultContract.osTokenPositions(userAddress)
 
-    const [ receipt, sentTx, position ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      vaultContract.osTokenPositions(userAddress),
-    ])
-
-    const [ call ] = decodeCalls(vaultContract, encoded.data)
-
-    expect(call.name).toBe('mintOsToken')
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(position).toBeGreaterThanOrEqual(mintInput.shares)
   })
 })

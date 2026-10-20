@@ -1,8 +1,8 @@
 import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
-import { it, userAddress, decodeCalls } from '../../../../../test'
-import { useForkSdk, mintToFork, depositToFork } from '../../../../../test/fork'
+import { it, userAddress } from '../../../../../test'
+import { useForkSdk, mintToFork, depositToFork, sendForkTransaction } from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 
@@ -32,25 +32,16 @@ describe('burn', () => {
 
     const positionBefore = await vaultContract.osTokenPositions(userAddress)
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.osToken.burn.encode(burnInput),
-      sdk.osToken.burn.estimateGas(burnInput),
-    ])
+    await sendForkTransaction({
+      provider,
+      input: burnInput,
+      contract: vaultContract,
+      method: sdk.osToken.burn,
+      calls: [ { name: 'burnOsToken', args: [ halfOfMinted ] } ],
+    })
 
-    const hash = await sdk.osToken.burn(burnInput)
+    const positionAfter = await vaultContract.osTokenPositions(userAddress)
 
-    const [ receipt, sentTx, positionAfter ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      vaultContract.osTokenPositions(userAddress),
-    ])
-
-    const [ call ] = decodeCalls(vaultContract, encoded.data)
-
-    expect(call.name).toBe('burnOsToken')
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(positionAfter).toBeLessThan(positionBefore)
   })
 })

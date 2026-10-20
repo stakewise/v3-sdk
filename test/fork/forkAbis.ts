@@ -12,7 +12,7 @@ const forkAbis = {
     'function blockedAccounts(address account) view returns (bool)',
     'function whitelistedAccounts(address account) view returns (bool)',
     'event MetadataUpdated(address indexed caller, string metadataIpfsHash)',
-    'event Deposited(address indexed caller, address indexed receiver, uint256 assets, uint256 shares, address)',
+    'event Deposited(address indexed caller, address indexed receiver, uint256 assets, uint256 shares, address referrer)',
     'event ExitQueueEntered(address indexed owner, address indexed receiver, uint256 positionTicket, uint256 shares)',
   ],
   vaultFactory: [

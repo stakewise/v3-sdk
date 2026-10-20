@@ -1,8 +1,14 @@
 import { describe, expect } from 'vitest'
-import { getAddress, parseEther } from 'ethers'
+import { getAddress, parseEther, ZeroAddress } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../../test'
-import { useForkSdk, depositToFork, mockForkHarvestParams } from '../../../../../../test/fork'
+import {
+  useForkSdk,
+  depositToFork,
+  getForkHarvestArgs,
+  sendForkTransaction,
+  mockForkHarvestParams,
+} from '../../../../../../test/fork'
 
 
 describe('deposit', () => {
@@ -10,6 +16,7 @@ describe('deposit', () => {
   const { sdk, provider, snapshot } = fork
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
+  const harvestArgs = getForkHarvestArgs(snapshot)
   const input = { userAddress, vaultAddress, assets: parseEther('1') }
 
   it('with updateState', async () => {
@@ -19,25 +26,15 @@ describe('deposit', () => {
 
     mockForkHarvestParams(snapshot, true)
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.vault.deposit.encode(input),
-      sdk.vault.deposit.estimateGas(input),
-    ])
+    const { sentTx } = await sendForkTransaction({
+      input,
+      provider,
+      contract: vaultContract,
+      method: sdk.vault.deposit,
+      calls: [ { name: 'updateStateAndDeposit', args: [ userAddress, ZeroAddress, harvestArgs ] } ],
+    })
 
-    const hash = await sdk.vault.deposit(input)
-
-    const [ receipt, sentTx ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-    ])
-
-    const [ call ] = decodeCalls(vaultContract, encoded.data)
-
-    expect(call.name).toBe('updateStateAndDeposit')
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
     expect(sentTx?.value).toBe(input.assets)
-    expect(receipt?.status).toBe(1)
   })
 
   it('without updateState', async () => {

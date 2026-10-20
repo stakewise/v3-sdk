@@ -1,8 +1,8 @@
 import { describe, expect } from 'vitest'
 import { getAddress } from 'ethers'
 
-import { it, userAddress, decodeCalls } from '../../../../../test'
-import { forkAbis, useForkSdk, parseEvents, extendContract } from '../../../../../test/fork'
+import { it, userAddress } from '../../../../../test'
+import { forkAbis, useForkSdk, parseEvents, extendContract, sendForkTransaction } from '../../../../../test/fork'
 
 
 describe('createRewardSplitter', () => {
@@ -13,17 +13,13 @@ describe('createRewardSplitter', () => {
   it('create', async () => {
     const factoryContract = extendContract(sdk.contracts.base.rewardSplitterFactory, forkAbis.rewardSplitterFactory)
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.rewardSplitter.create.encode(input),
-      sdk.rewardSplitter.create.estimateGas(input),
-    ])
-
-    const hash = await sdk.rewardSplitter.create(input)
-
-    const [ receipt, sentTx ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-    ])
+    const { receipt } = await sendForkTransaction({
+      input,
+      provider,
+      contract: factoryContract,
+      method: sdk.rewardSplitter.create,
+      calls: [ { name: 'createRewardSplitter', args: [ vaultAddress ] } ],
+    })
 
     const events = await parseEvents(factoryContract, receipt)
 
@@ -36,12 +32,7 @@ describe('createRewardSplitter', () => {
     )
 
     const rewardSplitterVault = await rewardSplitterContract.vault()
-    const [ call ] = decodeCalls(factoryContract, encoded.data)
 
-    expect(call.name).toBe('createRewardSplitter')
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(owner).toBe(userAddress)
     expect(vault).toBe(vaultAddress)
     expect(rewardSplitterVault).toBe(vaultAddress)

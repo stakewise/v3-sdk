@@ -11,35 +11,23 @@ import {
   extendContract,
   fundVaultAdmin,
   getForkHarvestArgs,
+  sendForkTransaction,
   mockForkHarvestParams,
 } from '../../../../../test/fork'
 
 import { VaultType } from '../../../../helpers'
 
-import type { OperateInput } from './types'
 import type { Fork } from '../../../../../test/fork'
-import type { TransactionFixture } from '../../../../../test/fixtures/transaction'
 import type { UploadMetadataMutationPayload } from '../../../../graphql/backend/vault'
 
 
 type FactoryName = 'privateVault' | 'blocklistVault'
 
-type Call = {
-  name: string
-  args: unknown[]
-}
-
-type SendOperateInput = {
-  calls: Call[]
-  input: StakeWise.ExtractInput<OperateInput>
-  transaction: TransactionFixture
-  vaultContract: ReturnType<typeof extendContract>
-}
-
 const managerAddress = spenderAddress
 const listedAddress = '0x3333333333333333333333333333333333333333'
 const newAdminAddress = '0x6666666666666666666666666666666666666666'
 const feePercent = 5
+const feeBasisPoints = BigInt(feePercent * 100)
 
 describe('operate', () => {
   let adminAddress = ''
@@ -52,9 +40,16 @@ describe('operate', () => {
 
     const hash = await sdk.vault.create({ userAddress, type })
     const receipt = await provider.waitForTransaction(hash)
+
+    expect(receipt?.status, 'the setup vault creation must succeed').toBe(1)
+
     const [ created ] = await parseEvents(factoryContract, receipt)
 
-    return created!.args.vault
+    if (!created) {
+      throw new Error('the setup vault creation must emit VaultCreated')
+    }
+
+    return created.args.vault
   }
 
   const createVaults = async (setupFork: Fork) => {
@@ -72,34 +67,7 @@ describe('operate', () => {
     forkAbis.vault
   )
 
-  const sendOperate = async (values: SendOperateInput) => {
-    const { calls, input, transaction, vaultContract } = values
-
-    const [ encoded, gas ] = await Promise.all([
-      transaction.checkEncode({
-        input,
-        calls,
-        contract: vaultContract,
-        method: sdk.vault.operate,
-      }),
-      sdk.vault.operate.estimateGas(input),
-    ])
-
-    const hash = await sdk.vault.operate(input)
-
-    const [ receipt, sentTx ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-    ])
-
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
-
-    return receipt
-  }
-
-  it('vault admin', async ({ transaction }) => {
+  it('vault admin', async () => {
     const vaultContract = getVaultContract(vaultAddress)
 
     const input = {
@@ -119,16 +87,17 @@ describe('operate', () => {
       data: { uploadMetadata: { ipfsHash } },
     })
 
-    const receipt = await sendOperate({
+    const { receipt } = await sendForkTransaction({
       input,
-      transaction,
-      vaultContract,
+      provider,
+      contract: vaultContract,
+      method: sdk.vault.operate,
       calls: [
         { name: 'updateState', args: [ harvestArgs ] },
         { name: 'setFeeRecipient', args: [ userAddress ] },
         { name: 'setMetadata', args: [ ipfsHash ] },
         { name: 'setValidatorsManager', args: [ managerAddress ] },
-        { name: 'setFeePercent', args: [ BigInt(feePercent * 100) ] },
+        { name: 'setFeePercent', args: [ feeBasisPoints ] },
         { name: 'setAdmin', args: [ newAdminAddress ] },
       ],
     })
@@ -146,10 +115,10 @@ describe('operate', () => {
     const metadataUpdated = vaultEvents.find((event) => event?.name === 'MetadataUpdated')
 
     expect(metadataUpdated?.args.metadataIpfsHash).toBe(ipfsHash)
-    expect(vaultState).toEqual([ userAddress, managerAddress, BigInt(feePercent * 100), newAdminAddress ])
+    expect(vaultState).toEqual([ userAddress, managerAddress, feeBasisPoints, newAdminAddress ])
   })
 
-  it('private vault', async ({ transaction }) => {
+  it('private vault', async () => {
     const vaultContract = getVaultContract(privateVaultAddress)
 
     const input = {
@@ -159,10 +128,11 @@ describe('operate', () => {
       whitelist: [ { address: listedAddress, isNew: true } ],
     }
 
-    await sendOperate({
+    await sendForkTransaction({
       input,
-      transaction,
-      vaultContract,
+      provider,
+      contract: vaultContract,
+      method: sdk.vault.operate,
       calls: [
         { name: 'updateWhitelist', args: [ listedAddress, true ] },
         { name: 'setWhitelister', args: [ managerAddress ] },
@@ -177,7 +147,7 @@ describe('operate', () => {
     expect(vaultState).toEqual([ true, managerAddress ])
   })
 
-  it('blocklist vault', async ({ transaction }) => {
+  it('blocklist vault', async () => {
     const vaultContract = getVaultContract(blocklistVaultAddress)
 
     const input = {
@@ -187,10 +157,11 @@ describe('operate', () => {
       blocklist: [ { address: listedAddress, isNew: true } ],
     }
 
-    await sendOperate({
+    await sendForkTransaction({
       input,
-      transaction,
-      vaultContract,
+      provider,
+      contract: vaultContract,
+      method: sdk.vault.operate,
       calls: [
         { name: 'updateBlocklist', args: [ listedAddress, true ] },
         { name: 'setBlocklistManager', args: [ managerAddress ] },

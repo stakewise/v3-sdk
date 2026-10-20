@@ -30,18 +30,12 @@ describe('multicall', () => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = extendContract(sdk.contracts.helpers.createVault({ vaultAddress }), forkAbis.vault)
   const harvestArgs = getForkHarvestArgs(snapshot)
-  const { keeper } = sdk.contracts.base
-
-  const multicallInput = {
-    vaultAddress,
-    userAddress: stakerAddress,
-    params: [ { method: 'enterExitQueue', args: [ exitShares, stakerAddress ] } ],
-  }
+  const { keeper: keeperContract } = sdk.contracts.base
+  const baseInput = { userAddress: stakerAddress, vaultAddress }
+  const params = [ { method: 'enterExitQueue', args: [ exitShares, stakerAddress ] } ]
 
   it('with updateState', async () => {
-    const { params, ...baseInput } = multicallInput
-
-    const canHarvestBefore = await keeper.canHarvest(vaultAddress)
+    const canHarvestBefore = await keeperContract.canHarvest(vaultAddress)
 
     expect(canHarvestBefore, 'fixture does not match the fork block').toBe(true)
 
@@ -70,7 +64,7 @@ describe('multicall', () => {
     const [ receipt, sentTx, canHarvestAfter, sharesAfter ] = await Promise.all([
       provider.waitForTransaction(response.hash),
       provider.getTransaction(response.hash),
-      keeper.canHarvest(vaultAddress),
+      keeperContract.canHarvest(vaultAddress),
       vaultContract.getShares(stakerAddress),
     ])
 

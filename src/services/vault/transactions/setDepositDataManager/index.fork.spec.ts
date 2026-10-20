@@ -1,8 +1,8 @@
 import { describe, expect } from 'vitest'
 import { getAddress } from 'ethers'
 
-import { useForkSdk, fundAccount, fundVaultAdmin } from '../../../../../test/fork'
-import { it, userAddress, decodeCalls, spenderAddress, adminRoleError } from '../../../../../test'
+import { it, userAddress, spenderAddress, adminRoleError } from '../../../../../test'
+import { useForkSdk, fundAccount, fundVaultAdmin, sendForkTransaction } from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 
@@ -25,39 +25,30 @@ describe('setDepositDataManager', () => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
   const v1VaultContract = sdk.contracts.helpers.createVault({ vaultAddress: v1VaultAddress })
-  const { depositDataRegistry } = sdk.contracts.base
+  const { depositDataRegistry: depositDataRegistryContract } = sdk.contracts.base
 
   it('vault admin', async () => {
     const adminAddress = await vaultContract.admin()
     const input = { userAddress: adminAddress, vaultAddress, managerAddress }
 
-    const managerBefore = await depositDataRegistry.getDepositDataManager(vaultAddress)
+    const managerBefore = await depositDataRegistryContract.getDepositDataManager(vaultAddress)
 
     expect(managerBefore, 'the manager must differ from the new one').not.toBe(managerAddress)
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.vault.setDepositDataManager.encode(input),
-      sdk.vault.setDepositDataManager.estimateGas(input),
-    ])
+    await sendForkTransaction({
+      input,
+      provider,
+      contract: depositDataRegistryContract,
+      method: sdk.vault.setDepositDataManager,
+      calls: [ { name: 'setDepositDataManager', args: [ vaultAddress, managerAddress ] } ],
+    })
 
-    const hash = await sdk.vault.setDepositDataManager(input)
+    const managerAfter = await depositDataRegistryContract.getDepositDataManager(vaultAddress)
 
-    const [ receipt, sentTx, managerAfter ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      depositDataRegistry.getDepositDataManager(vaultAddress),
-    ])
-
-    const [ call ] = decodeCalls(depositDataRegistry, encoded.data)
-
-    expect(call.name).toBe('setDepositDataManager')
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(managerAfter).toBe(managerAddress)
   })
 
-  it('v1 vault', async ({ transaction }) => {
+  it('v1 vault', async () => {
     const adminAddress = await v1VaultContract.admin()
     const input = { userAddress: adminAddress, vaultAddress: v1VaultAddress, managerAddress }
 
@@ -65,27 +56,16 @@ describe('setDepositDataManager', () => {
 
     expect(managerBefore, 'the manager must differ from the new one').not.toBe(managerAddress)
 
-    const [ encoded, gas ] = await Promise.all([
-      transaction.checkEncode({
-        input,
-        method: sdk.vault.setDepositDataManager,
-        contract: v1VaultContract,
-        calls: [ { name: 'setKeysManager', args: [ managerAddress ] } ],
-      }),
-      sdk.vault.setDepositDataManager.estimateGas(input),
-    ])
+    await sendForkTransaction({
+      input,
+      provider,
+      contract: v1VaultContract,
+      method: sdk.vault.setDepositDataManager,
+      calls: [ { name: 'setKeysManager', args: [ managerAddress ] } ],
+    })
 
-    const hash = await sdk.vault.setDepositDataManager(input)
+    const managerAfter = await v1VaultContract.keysManager()
 
-    const [ receipt, sentTx, managerAfter ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      v1VaultContract.keysManager(),
-    ])
-
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(managerAfter).toBe(managerAddress)
   })
 

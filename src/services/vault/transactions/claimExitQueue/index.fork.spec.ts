@@ -8,6 +8,7 @@ import {
   fundAccount,
   parseEvents,
   extendContract,
+  sendForkTransaction,
   mockForkHarvestParams,
 } from '../../../../../test/fork'
 
@@ -45,8 +46,12 @@ describe('claimExitQueue', () => {
 
     const exitQueueEntered = exitEvents.find((event) => event?.name === 'ExitQueueEntered')
 
-    positionTicket = String(exitQueueEntered?.args.positionTicket)
-    timestamp = String(withdrawBlock?.timestamp)
+    if (!exitQueueEntered || !withdrawBlock) {
+      throw new Error('the setup withdraw must enter the exit queue in a mined block')
+    }
+
+    positionTicket = String(exitQueueEntered.args.positionTicket)
+    timestamp = String(withdrawBlock.timestamp)
 
     mockForkHarvestParams(snapshot, true)
 
@@ -63,7 +68,7 @@ describe('claimExitQueue', () => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
-  it('claim', async ({ transaction }) => {
+  it('claim', async () => {
     mockForkHarvestParams(snapshot, false)
 
     const exitQueueIndex = await vaultContract.getExitQueueIndex(positionTicket)
@@ -78,36 +83,24 @@ describe('claimExitQueue', () => {
       vaultContract.calculateExitedAssets(stakerAddress, positionTicket, timestamp, exitQueueIndex),
     ])
 
-    const [ encoded, gas ] = await Promise.all([
-      transaction.checkEncode({
-        input,
-        method: sdk.vault.claimExitQueue,
-        contract: vaultContract,
-        calls: [
-          {
-            name: 'claimExitedAssets',
-            args: [ BigInt(positionTicket), BigInt(timestamp), exitQueueIndex ],
-          },
-        ],
-      }),
-      sdk.vault.claimExitQueue.estimateGas(input),
-    ])
+    const { receipt } = await sendForkTransaction({
+      input,
+      provider,
+      contract: vaultContract,
+      method: sdk.vault.claimExitQueue,
+      calls: [
+        {
+          name: 'claimExitedAssets',
+          args: [ BigInt(positionTicket), BigInt(timestamp), exitQueueIndex ],
+        },
+      ],
+    })
 
-    const hash = await sdk.vault.claimExitQueue(input)
-
-    const [ receipt, sentTx, balanceAfter ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      provider.getBalance(stakerAddress),
-    ])
-
+    const balanceAfter = await provider.getBalance(stakerAddress)
     const claimedAssets = balanceAfter - balanceBefore + (receipt?.fee || 0n)
 
     expect(exited.leftTickets).toBe(0n)
     expect(exited.exitedAssets).toBeGreaterThan(0n)
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(claimedAssets).toBe(exited.exitedAssets)
   })
 })

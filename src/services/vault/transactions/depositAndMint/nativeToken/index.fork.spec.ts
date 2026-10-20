@@ -8,6 +8,7 @@ import {
   parseEvents,
   extendContract,
   getForkHarvestArgs,
+  sendForkTransaction,
   mockForkHarvestParams,
 } from '../../../../../../test/fork'
 
@@ -20,8 +21,8 @@ const receiveShares = parseEther('0.1')
 describe('depositAndMint', () => {
   const { sdk, provider, snapshot } = useForkSdk()
   const harvestArgs = getForkHarvestArgs(snapshot)
-  const { keeper } = sdk.contracts.base
-  const { mintToken } = sdk.contracts.tokens
+  const { keeper: keeperContract } = sdk.contracts.base
+  const { mintToken: mintTokenContract } = sdk.contracts.tokens
 
   const depositCases = [
     {
@@ -44,7 +45,7 @@ describe('depositAndMint', () => {
     },
   ]
 
-  it.for(depositCases)('$name', async ({ canHarvest, vaultAddress, call }, { transaction }) => {
+  it.for(depositCases)('$name', async ({ canHarvest, vaultAddress, call }) => {
     const input = {
       assets,
       userAddress,
@@ -57,39 +58,30 @@ describe('depositAndMint', () => {
       forkAbis.vault
     )
 
-    const canHarvestBefore = await keeper.canHarvest(vaultAddress)
+    const canHarvestBefore = await keeperContract.canHarvest(vaultAddress)
 
     expect(canHarvestBefore, 'fixture does not match the fork block').toBe(canHarvest)
 
     mockForkHarvestParams(snapshot, canHarvest)
 
-    const [ encoded, gas ] = await Promise.all([
-      transaction.checkEncode({
-        input,
-        method: sdk.vault.depositAndMint,
-        contract: vaultContract,
-        calls: [ call ],
-      }),
-      sdk.vault.depositAndMint.estimateGas(input),
-    ])
+    const { receipt, sentTx } = await sendForkTransaction({
+      input,
+      provider,
+      calls: [ call ],
+      contract: vaultContract,
+      method: sdk.vault.depositAndMint,
+    })
 
-    const hash = await sdk.vault.depositAndMint(input)
-
-    const [ receipt, sentTx, canHarvestAfter, stakeShares, mintedShares ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      keeper.canHarvest(vaultAddress),
+    const [ canHarvestAfter, stakeShares, mintedShares, vaultEvents ] = await Promise.all([
+      keeperContract.canHarvest(vaultAddress),
       vaultContract.getShares(userAddress),
-      mintToken.balanceOf(userAddress),
+      mintTokenContract.balanceOf(userAddress),
+      parseEvents(vaultContract, receipt),
     ])
 
-    const vaultEvents = await parseEvents(vaultContract, receipt)
     const deposited = vaultEvents.find((event) => event?.name === 'Deposited')
 
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
     expect(sentTx?.value).toBe(assets)
-    expect(receipt?.status).toBe(1)
     expect(canHarvestAfter).toBe(false)
     expect(deposited?.args.assets).toBe(assets)
     expect(stakeShares).toBe(deposited?.args.shares)

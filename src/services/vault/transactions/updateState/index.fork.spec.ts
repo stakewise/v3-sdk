@@ -2,46 +2,39 @@ import { describe, expect } from 'vitest'
 import { getAddress } from 'ethers'
 
 import { it, userAddress } from '../../../../../test'
-import { useForkSdk, getForkHarvestArgs, mockForkHarvestParams } from '../../../../../test/fork'
+import {
+  useForkSdk,
+  getForkHarvestArgs,
+  sendForkTransaction,
+  mockForkHarvestParams,
+} from '../../../../../test/fork'
 
 
 describe('updateState', () => {
   const { sdk, provider, snapshot } = useForkSdk()
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
-  const { keeper } = sdk.contracts.base
+  const { keeper: keeperContract } = sdk.contracts.base
+  const harvestArgs = getForkHarvestArgs(snapshot)
   const input = { userAddress, vaultAddress }
 
-  it('harvest', async ({ transaction }) => {
-    const harvestArgs = getForkHarvestArgs(snapshot)
-
-    const canHarvestBefore = await keeper.canHarvest(vaultAddress)
+  it('harvest', async () => {
+    const canHarvestBefore = await keeperContract.canHarvest(vaultAddress)
 
     expect(canHarvestBefore, 'fixture does not match the fork block').toBe(true)
 
     mockForkHarvestParams(snapshot, true)
 
-    const [ encoded, gas ] = await Promise.all([
-      transaction.checkEncode({
-        input,
-        method: sdk.vault.updateState,
-        contract: vaultContract,
-        calls: [ { name: 'updateState', args: [ harvestArgs ] } ],
-      }),
-      sdk.vault.updateState.estimateGas(input),
-    ])
+    await sendForkTransaction({
+      input,
+      provider,
+      contract: vaultContract,
+      method: sdk.vault.updateState,
+      calls: [ { name: 'updateState', args: [ harvestArgs ] } ],
+    })
 
-    const hash = await sdk.vault.updateState(input)
+    const canHarvestAfter = await keeperContract.canHarvest(vaultAddress)
 
-    const [ receipt, sentTx, canHarvestAfter ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      keeper.canHarvest(vaultAddress),
-    ])
-
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
     expect(canHarvestAfter).toBe(false)
   })
 })
