@@ -41,6 +41,11 @@ jobs:
       - name: Generate types
         run: pnpm prepare
 
+      - name: Check fork addresses
+        run: pnpm check:forkAddresses mainnet
+        env:
+          MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
+
       - name: Fork tests
         run: pnpm test:fork
         env:
