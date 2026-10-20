@@ -2,7 +2,7 @@ name: Fork tests
 
 on:
   pull_request:
-    branches: [ main, prod, tests-3 ]
+    branches: [ main, prod ]
   workflow_dispatch:
 
 permissions: {}
