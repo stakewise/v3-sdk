@@ -1,12 +1,13 @@
 import { describe, expect } from 'vitest'
 import { parseEther } from 'ethers'
 
-import { forkAbis, useForkSdk, parseEvents, extendContract } from '../../../../../test/fork'
+import { forkAbis, useForkSdk, parseEvents, extendContract, fundDepositToken } from '../../../../../test/fork'
 import { it, userAddress, decodeCalls } from '../../../../../test'
 
-import { configs, Network, VaultType } from '../../../../helpers'
+import { configs, Network, VaultType, constants } from '../../../../helpers'
 
 import type StakeWiseSDK from '../../../../StakeWiseSDK'
+import type { ForkNetwork } from '../../../../../test/fork'
 
 
 type FactoryName = keyof StakeWise.Contracts['factories']
@@ -24,6 +25,13 @@ type CreateCase = {
   mevEscrow?: string
   vaultToken?: VaultToken
   isOwnMevEscrow?: boolean
+}
+
+type NetworkCase = {
+  name: string
+  value: bigint
+  network: ForkNetwork
+  cases: CreateCase[]
 }
 
 type ReadVaultInput = {
@@ -47,7 +55,9 @@ const keysManagerFee = 5.55
 const feePercent = 555n
 const erc20Token = { name: 'Fork vault token', symbol: 'FVT' }
 const mainnetCurator = configs[Network.Mainnet].addresses.base.curator.v2
+const securityDeposit = constants.blockchain.gwei
 const sharedMevEscrow = configs[Network.Mainnet].addresses.base.sharedMevEscrow
+const gnosisSharedMevEscrow = configs[Network.Gnosis].addresses.base.sharedMevEscrow
 
 const createCases: CreateCase[] = [
   {
@@ -123,6 +133,28 @@ const createCases: CreateCase[] = [
   },
 ]
 
+const gnosisCases = createCases
+  .filter(({ curator }) => !curator)
+  .map((createCase) => ({
+    ...createCase,
+    mevEscrow: createCase.isOwnMevEscrow ? undefined : gnosisSharedMevEscrow,
+  }))
+
+const networkCases: NetworkCase[] = [
+  {
+    name: 'mainnet',
+    cases: createCases,
+    value: securityDeposit,
+    network: Network.Mainnet,
+  },
+  {
+    name: 'gnosis',
+    cases: gnosisCases,
+    value: 0n,
+    network: Network.Gnosis,
+  },
+]
+
 const readVault = async (values: ReadVaultInput) => {
   const { sdk, vaultAddress, isErc20, isMetaVault } = values
 
@@ -159,63 +191,126 @@ const readVault = async (values: ReadVaultInput) => {
 }
 
 describe('createVault', () => {
-  const { sdk, provider } = useForkSdk()
+  describe.for(networkCases)('$name', ({ network, value, cases }) => {
+    const fork = useForkSdk({ network })
+    const { sdk, provider } = fork
 
-  it.for(createCases)('$name', async (createCase) => {
-    const { type, factory, curator, mevEscrow, vaultToken, isOwnMevEscrow } = createCase
+    it.for(cases)('$name', async (createCase) => {
+      const { type, factory, curator, mevEscrow, vaultToken, isOwnMevEscrow } = createCase
 
-    const input = {
-      type,
-      capacity,
-      vaultToken,
-      userAddress,
-      keysManagerFee,
-      isOwnMevEscrow,
-    }
+      const input = {
+        type,
+        capacity,
+        vaultToken,
+        userAddress,
+        keysManagerFee,
+        isOwnMevEscrow,
+      }
 
-    const factoryContract = extendContract(sdk.contracts.factories[factory], forkAbis.vaultFactory)
-    const factoryAddress = await factoryContract.getAddress()
+      const factoryContract = extendContract(sdk.contracts.factories[factory], forkAbis.vaultFactory)
+      const factoryAddress = await factoryContract.getAddress()
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.vault.create.encode(input),
-      sdk.vault.create.estimateGas(input),
-    ])
+      await fundDepositToken(fork, { assets: securityDeposit, userAddress, spenderAddress: factoryAddress })
 
-    const hash = await sdk.vault.create(input)
+      const [ encoded, gas ] = await Promise.all([
+        sdk.vault.create.encode(input),
+        sdk.vault.create.estimateGas(input),
+      ])
 
-    const [ receipt, sentTx ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-    ])
+      const hash = await sdk.vault.create(input)
 
-    const createdEvents = await parseEvents(factoryContract, receipt)
-    const [ vaultCreated ] = createdEvents
+      const [ receipt, sentTx ] = await Promise.all([
+        provider.waitForTransaction(hash),
+        provider.getTransaction(hash),
+      ])
 
-    expect(createdEvents).toHaveLength(1)
+      const createdEvents = await parseEvents(factoryContract, receipt)
+      const [ vaultCreated ] = createdEvents
 
-    const { vault, ownMevEscrow } = vaultCreated!.args
+      expect(createdEvents).toHaveLength(1)
 
-    const created = await readVault({
-      sdk,
-      vaultAddress: vault,
-      isErc20: Boolean(vaultToken),
-      isMetaVault: Boolean(curator),
+      const { vault, ownMevEscrow } = vaultCreated!.args
+
+      const created = await readVault({
+        sdk,
+        vaultAddress: vault,
+        isErc20: Boolean(vaultToken),
+        isMetaVault: Boolean(curator),
+      })
+
+      const [ call ] = decodeCalls(factoryContract, encoded.data)
+
+      expect(call.name).toBe('createVault')
+      expect(encoded.to).toBe(factoryAddress)
+      expect(gas).toBeGreaterThan(0n)
+      expect(sentTx?.data).toBe(encoded.data)
+      expect(sentTx?.value).toBe(value)
+      expect(receipt?.status).toBe(1)
+      expect(created).toEqual({
+        admin: userAddress,
+        capacity,
+        feePercent,
+        curator,
+        vaultToken,
+        mevEscrow: mevEscrow || ownMevEscrow,
+      })
+    })
+  })
+
+  describe('gnosis deposit token', () => {
+    const fork = useForkSdk({ network: Network.Gnosis })
+    const { sdk, provider } = fork
+    const input = { userAddress, capacity, keysManagerFee }
+    const depositTokenContract = sdk.contracts.helpers.createErc20(sdk.config.addresses.tokens.depositToken)
+
+    it('without approval', async () => {
+      const factoryAddress = await sdk.contracts.factories.vault.getAddress()
+      const userSigner = await provider.getSigner(userAddress)
+
+      await fundDepositToken(fork, { assets: securityDeposit, userAddress, spenderAddress: factoryAddress })
+
+      const approveTx = await depositTokenContract.connect(userSigner).approve(factoryAddress, 0n)
+      const approveReceipt = await approveTx.wait()
+
+      const [ balance, allowance ] = await Promise.all([
+        depositTokenContract.balanceOf(userAddress),
+        depositTokenContract.allowance(userAddress, factoryAddress),
+      ])
+
+      expect(approveReceipt?.status, 'the setup approve must succeed').toBe(1)
+      expect(balance, 'the user must hold the security deposit').toBeGreaterThanOrEqual(securityDeposit)
+      expect(allowance, 'the factory must have no allowance').toBe(0n)
+
+      const gas = sdk.vault.create.estimateGas(input)
+
+      await expect(gas).rejects.toThrow(/execution reverted/)
     })
 
-    const [ call ] = decodeCalls(factoryContract, encoded.data)
+    it('security deposit', async () => {
+      const factoryContract = extendContract(sdk.contracts.factories.vault, forkAbis.vaultFactory)
+      const factoryAddress = await factoryContract.getAddress()
 
-    expect(call.name).toBe('createVault')
-    expect(encoded.to).toBe(factoryAddress)
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
-    expect(created).toEqual({
-      admin: userAddress,
-      capacity,
-      feePercent,
-      curator,
-      vaultToken,
-      mevEscrow: mevEscrow || ownMevEscrow,
+      await fundDepositToken(fork, { assets: securityDeposit, userAddress, spenderAddress: factoryAddress })
+
+      const balanceBefore = await depositTokenContract.balanceOf(userAddress)
+
+      const hash = await sdk.vault.create(input)
+      const receipt = await provider.waitForTransaction(hash)
+      const [ vaultCreated ] = await parseEvents(factoryContract, receipt)
+
+      if (!vaultCreated) {
+        throw new Error('the factory must emit VaultCreated')
+      }
+
+      const { vault } = vaultCreated.args
+
+      const [ balanceAfter, vaultBalance ] = await Promise.all([
+        depositTokenContract.balanceOf(userAddress),
+        depositTokenContract.balanceOf(vault),
+      ])
+
+      expect(balanceBefore - balanceAfter).toBe(securityDeposit)
+      expect(vaultBalance).toBe(securityDeposit)
     })
   })
 })

@@ -50,10 +50,11 @@ const getForkUrl = (network: ForkNetwork) => {
   return forkUrl
 }
 
-const startAnvil = async ({ network, forkUrl }: StartInput): Promise<Stop> => {
-  const { port } = forkNetworks[network]
+const launchAnvil = async ({ network, forkUrl }: StartInput): Promise<Stop> => {
+  const { port, computeUnitsPerSecond } = forkNetworks[network]
   const { block } = getSnapshot(network)
   const rpcUrl = getForkRpcUrl(network)
+  const rateLimitArgs = computeUnitsPerSecond ? [ '--compute-units-per-second', String(computeUnitsPerSecond) ] : []
 
   if (await checkIsAnvilReady(rpcUrl)) {
     throw new Error(`Port ${port} is busy - stop the node listening on it, fork tests start their own anvil`)
@@ -67,8 +68,13 @@ const startAnvil = async ({ network, forkUrl }: StartInput): Promise<Stop> => {
     '--timeout', String(rpcTimeoutMs),
     '--fork-retry-backoff', String(rpcRetryBackoffMs),
     '--auto-impersonate',
+    ...rateLimitArgs,
     '--silent',
-  ], { stdio: 'inherit' })
+  ], { stdio: [ 'ignore', 'inherit', 'pipe' ] })
+
+  anvil.stderr?.on('data', (chunk) => {
+    process.stderr.write(String(chunk).replaceAll(forkUrl, '<rpc url>'))
+  })
 
   let failure: string | null = null
 
@@ -106,6 +112,15 @@ const startAnvil = async ({ network, forkUrl }: StartInput): Promise<Stop> => {
   await stop()
 
   throw new Error(`anvil for ${getForkNetworkName(network)} did not start in 30 seconds`)
+}
+
+const startAnvil = async (input: StartInput): Promise<Stop> => {
+  try {
+    return await launchAnvil(input)
+  }
+  catch {
+    return launchAnvil(input)
+  }
 }
 
 const setup = async () => {

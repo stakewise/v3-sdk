@@ -3,7 +3,13 @@ import { getAddress, parseEther } from 'ethers'
 
 import mockGraphql from '../../../../../test/mockGraphql'
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { useForkSdk, mintToFork, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
+import {
+  useForkSdk,
+  mintToFork,
+  depositToFork,
+  forkNetworkCases,
+  mockForkHarvestParams,
+} from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 import type { AllocatorsQueryPayload } from '../../../../graphql/subgraph/allocator'
@@ -75,53 +81,55 @@ const depositAndMintMax = async (setupFork: Fork) => {
 }
 
 describe('burnAndWithdraw', () => {
-  const forkSdk = useForkSdk({ setup: depositAndMintMax })
-  const { sdk, provider, snapshot } = forkSdk
-  const vaultAddress = getAddress(snapshot.vaultAddress)
-  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
-  const baseInput = { userAddress, vaultAddress }
+  describe.for(forkNetworkCases)('$name', ({ network }) => {
+    const forkSdk = useForkSdk({ network, setup: depositAndMintMax })
+    const { sdk, provider, snapshot } = forkSdk
+    const vaultAddress = getAddress(snapshot.vaultAddress)
+    const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
+    const baseInput = { userAddress, vaultAddress }
 
-  it.for(withdrawCases)('$name', async ({ amount }) => {
-    const input = { ...baseInput, ...amount }
+    it.for(withdrawCases)('$name', async ({ amount }) => {
+      const input = { ...baseInput, ...amount }
 
-    await mockSubgraph(forkSdk)
+      await mockSubgraph(forkSdk)
 
-    const latestBlock = await provider.getBlock('latest')
-    const [ positionBefore, sharesBefore ] = await Promise.all([
-      vaultContract.osTokenPositions(userAddress),
-      vaultContract.getShares(userAddress),
-    ])
+      const latestBlock = await provider.getBlock('latest')
+      const [ positionBefore, sharesBefore ] = await Promise.all([
+        vaultContract.osTokenPositions(userAddress),
+        vaultContract.getShares(userAddress),
+      ])
 
-    await provider.send('evm_setNextBlockTimestamp', [ latestBlock?.timestamp ])
+      await provider.send('evm_setNextBlockTimestamp', [ latestBlock?.timestamp ])
 
-    const [ encoded, gas ] = await Promise.all([
-      sdk.vault.burnAndWithdraw.encode(input),
-      sdk.vault.burnAndWithdraw.estimateGas(input),
-    ])
+      const [ encoded, gas ] = await Promise.all([
+        sdk.vault.burnAndWithdraw.encode(input),
+        sdk.vault.burnAndWithdraw.estimateGas(input),
+      ])
 
-    const hash = await sdk.vault.burnAndWithdraw(input)
+      const hash = await sdk.vault.burnAndWithdraw(input)
 
-    const [ receipt, sentTx, positionAfter, sharesAfter ] = await Promise.all([
-      provider.waitForTransaction(hash),
-      provider.getTransaction(hash),
-      vaultContract.osTokenPositions(userAddress),
-      vaultContract.getShares(userAddress),
-    ])
+      const [ receipt, sentTx, positionAfter, sharesAfter ] = await Promise.all([
+        provider.waitForTransaction(hash),
+        provider.getTransaction(hash),
+        vaultContract.osTokenPositions(userAddress),
+        vaultContract.getShares(userAddress),
+      ])
 
-    const calls = decodeCalls(vaultContract, encoded.data)
-    const callNames = calls.map(({ name }) => name)
+      const calls = decodeCalls(vaultContract, encoded.data)
+      const callNames = calls.map(({ name }) => name)
 
-    expect(callNames).toEqual([ 'burnOsToken', 'enterExitQueue' ])
+      expect(callNames).toEqual([ 'burnOsToken', 'enterExitQueue' ])
 
-    const [ burnCall, exitCall ] = calls
-    const [ burnShares ] = burnCall.args
-    const [ exitShares, receiver ] = exitCall.args
+      const [ burnCall, exitCall ] = calls
+      const [ burnShares ] = burnCall.args
+      const [ exitShares, receiver ] = exitCall.args
 
-    expect(receiver).toBe(userAddress)
-    expect(gas).toBeGreaterThan(0n)
-    expect(sentTx?.data).toBe(encoded.data)
-    expect(receipt?.status).toBe(1)
-    expect(positionBefore - positionAfter).toBe(burnShares)
-    expect(sharesBefore - sharesAfter).toBe(exitShares)
+      expect(receiver).toBe(userAddress)
+      expect(gas).toBeGreaterThan(0n)
+      expect(sentTx?.data).toBe(encoded.data)
+      expect(receipt?.status).toBe(1)
+      expect(positionBefore - positionAfter).toBe(burnShares)
+      expect(sharesBefore - sharesAfter).toBe(exitShares)
+    })
   })
 })

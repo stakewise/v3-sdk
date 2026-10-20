@@ -52,6 +52,9 @@ const forkAbis = {
   strategyProxy: [
     'function owner() view returns (address)',
   ],
+  mintTokenController: [
+    'function setAvgRewardPerSecond(uint256 avgRewardPerSecond)',
+  ],
 }
 
 

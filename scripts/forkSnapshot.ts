@@ -3,20 +3,27 @@ import { writeFile } from 'node:fs/promises'
 
 import configs from '../src/helpers/configs'
 import { snapshots } from '../test/fork/snapshots'
-import createSnapshot from '../test/fork/createSnapshot'
-import getVaultFilter from '../test/fork/getVaultFilter'
-import type { SnapshotResponse } from '../test/fork/createSnapshot'
+import type { ForkSnapshot } from '../test/fork/snapshots'
 import parseForkNetwork, { forkNetworkNames } from '../test/fork/parseForkNetwork'
 
 
-type FetchSnapshotDataInput = {
-  url: string
-  where: ReturnType<typeof getVaultFilter>
+type SnapshotVault = ForkSnapshot['harvestParams'] & {
+  id: string
 }
 
 type GraphqlResponse = {
-  data?: SnapshotResponse
+  data?: {
+    _meta: { block: { number: number } }
+    vaults: SnapshotVault[]
+  }
   errors?: Array<{ message: string }>
+}
+
+const harvestableVaultFilter = {
+  canHarvest: true,
+  isPrivate: false,
+  isMetaVault: false,
+  isBlocklist: false,
 }
 
 const query = `
@@ -34,7 +41,9 @@ const query = `
   }
 `
 
-const fetchSnapshotData = async ({ url, where }: FetchSnapshotDataInput) => {
+const fetchSnapshot = async (url: string, vault?: string): Promise<ForkSnapshot> => {
+  const where = vault ? { id: vault.toLowerCase() } : harvestableVaultFilter
+
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -58,7 +67,31 @@ const fetchSnapshotData = async ({ url, where }: FetchSnapshotDataInput) => {
     throw new Error('Subgraph returned no data')
   }
 
-  return data
+  const { number: block } = data._meta.block
+  const [ snapshotVault ] = data.vaults
+
+  if (!snapshotVault) {
+    throw new Error(`No vault found at block ${block}`)
+  }
+
+  const { id, proof, canHarvest, rewardsRoot, isMetaVault, reward, unlockedMevReward } = snapshotVault
+
+  if (!canHarvest) {
+    throw new Error(`${id} cannot harvest at block ${block}, retry later or pass another vault`)
+  }
+
+  return {
+    block,
+    vaultAddress: id,
+    harvestParams: {
+      proof,
+      canHarvest,
+      rewardsRoot,
+      isMetaVault,
+      reward,
+      unlockedMevReward,
+    },
+  }
 }
 
 const main = async ([ name, vault ]: string[]) => {
@@ -69,9 +102,7 @@ const main = async ([ name, vault ]: string[]) => {
   const network = parseForkNetwork(name)
   const [ url ] = configs[network].api.subgraph
   const filePath = fileURLToPath(new URL(`../test/fork/mocks/${name}.json`, import.meta.url))
-  const where = getVaultFilter({ vault, savedVault: snapshots[network]?.vaultAddress })
-  const data = await fetchSnapshotData({ url, where })
-  const snapshot = createSnapshot(data)
+  const snapshot = await fetchSnapshot(url, vault || snapshots[network]?.vaultAddress)
 
   await writeFile(filePath, `${JSON.stringify(snapshot, null, 2)}\n`)
 
