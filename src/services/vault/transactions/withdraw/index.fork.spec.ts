@@ -2,9 +2,7 @@ import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, depositToFork } from '../../../../../test/fork'
-
-import type { HarvestParamsQueryPayload } from '../../../../graphql/subgraph/vault'
+import { fork, useForkSdk, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
 
 
 const vaultAddress = getAddress(fork.vaultAddress)
@@ -12,29 +10,12 @@ const depositInput = { userAddress, vaultAddress, assets: parseEther('1') }
 const withdrawInput = { userAddress, vaultAddress, assets: parseEther('0.5') }
 
 describe('withdraw', () => {
-  const { sdk, provider } = useForkSdk()
+  const { sdk, provider } = useForkSdk((setupFork) => depositToFork({ ...setupFork, input: depositInput }))
+  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
-  it('deposit', async ({ graphql }) => {
-    const receipt = await depositToFork({
-      sdk,
-      graphql,
-      provider,
-      input: depositInput,
-    })
+  it('enters the exit queue', async () => {
+    mockForkHarvestParams(false)
 
-    expect(receipt?.status).toBe(1)
-  })
-
-  it('enters the exit queue', async ({ graphql }) => {
-    const canHarvest = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
-
-    expect(canHarvest, 'the vault must be harvested by the previous test').toBe(false)
-
-    const harvestParams = { ...fork.harvestParams, canHarvest: false }
-
-    graphql.mock<HarvestParamsQueryPayload>({ name: 'HarvestParams', data: { harvestParams } })
-
-    const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
     const sharesBefore = await vaultContract.getShares(userAddress)
 
     const [ encoded, gas ] = await Promise.all([

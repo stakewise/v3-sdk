@@ -1,20 +1,18 @@
 import { describe, expect } from 'vitest'
-import { Contract, getAddress } from 'ethers'
+import { getAddress } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, parseRewardSplitterCreated } from '../../../../../test/fork'
+import { fork, forkAbis, useForkSdk, parseEvents, extendContract } from '../../../../../test/fork'
 
 
 const vaultAddress = getAddress(fork.vaultAddress)
 const input = { userAddress, vaultAddress }
-const rewardSplitterViews = [ 'function vault() view returns (address)' ]
 
 describe('createRewardSplitter', () => {
   const { sdk, provider } = useForkSdk()
 
   it('create', async () => {
-    const rewardSplitterFactoryContract = sdk.contracts.base.rewardSplitterFactory
-    const factoryAddress = await rewardSplitterFactoryContract.getAddress()
+    const factoryContract = extendContract(sdk.contracts.base.rewardSplitterFactory, forkAbis.rewardSplitterFactory)
 
     const [ encoded, gas ] = await Promise.all([
       sdk.rewardSplitter.create.encode(input),
@@ -28,11 +26,18 @@ describe('createRewardSplitter', () => {
       provider.getTransaction(hash),
     ])
 
-    const { owner, vault, rewardSplitter } = parseRewardSplitterCreated(receipt, factoryAddress)
-    const rewardSplitterContract = new Contract(rewardSplitter, rewardSplitterViews, provider)
-    const rewardSplitterVault = await rewardSplitterContract.vault()
+    const events = await parseEvents(factoryContract, receipt)
 
-    const [ call ] = decodeCalls(rewardSplitterFactoryContract, encoded.data)
+    expect(events).toHaveLength(1)
+
+    const { owner, vault, rewardSplitter } = events[0]!.args
+    const rewardSplitterContract = extendContract(
+      sdk.contracts.helpers.createRewardSplitter(rewardSplitter),
+      forkAbis.rewardSplitter
+    )
+
+    const rewardSplitterVault = await rewardSplitterContract.vault()
+    const [ call ] = decodeCalls(factoryContract, encoded.data)
 
     expect(call.name).toBe('createRewardSplitter')
     expect(gas).toBeGreaterThan(0n)

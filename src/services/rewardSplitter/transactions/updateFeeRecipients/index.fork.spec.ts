@@ -1,18 +1,30 @@
-import { describe, expect, beforeAll } from 'vitest'
-import { Contract, getAddress, parseEther, toQuantity } from 'ethers'
+import { describe, expect } from 'vitest'
+import { getAddress, parseEther } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, parseRewardSplitterCreated } from '../../../../../test/fork'
+import {
+  fork,
+  forkAbis,
+  useForkSdk,
+  parseEvents,
+  extendContract,
+  fundVaultAdmin,
+  mockForkHarvestParams,
+} from '../../../../../test/fork'
 
-import type { HarvestParamsQueryPayload } from '../../../../graphql/subgraph/vault'
+import type { Fork } from '../../../../../test/fork'
 
+
+type FeeRecipient = {
+  address: string
+  shares: bigint
+}
 
 const vaultAddress = getAddress(fork.vaultAddress)
 const keptAddress = '0x3333333333333333333333333333333333333333'
 const removedAddress = '0x6666666666666666666666666666666666666666'
 const addedAddress = '0x9999999999999999999999999999999999999999'
 const holderAddresses = [ keptAddress, removedAddress, addedAddress ]
-const rewardSplitterViews = [ 'function sharesOf(address account) view returns (uint256)' ]
 
 const initialRecipients = [
   { address: keptAddress, shares: parseEther('30') },
@@ -44,38 +56,53 @@ const updateCases = [
 ]
 
 describe('updateFeeRecipients', () => {
-  const { sdk, provider } = useForkSdk()
-  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
-
+  let adminAddress = ''
   let rewardSplitterAddress = ''
 
-  beforeAll(async () => {
-    const adminAddress = await vaultContract.admin()
-    const factoryAddress = await sdk.contracts.base.rewardSplitterFactory.getAddress()
+  const createRewardSplitter = async (setupFork: Fork) => {
+    const { sdk, provider } = setupFork
+    const factoryContract = extendContract(sdk.contracts.base.rewardSplitterFactory, forkAbis.rewardSplitterFactory)
 
-    await provider.send('anvil_setBalance', [ adminAddress, toQuantity(parseEther('10')) ])
+    adminAddress = await fundVaultAdmin(setupFork)
 
     const hash = await sdk.rewardSplitter.create({ userAddress, vaultAddress })
     const receipt = await provider.waitForTransaction(hash)
+    const [ created ] = await parseEvents(factoryContract, receipt)
 
-    rewardSplitterAddress = parseRewardSplitterCreated(receipt, factoryAddress).rewardSplitter
-  })
+    rewardSplitterAddress = created!.args.rewardSplitter
+  }
 
-  it.for(updateCases)('$name', async (updateCase, { graphql }) => {
-    const { canHarvest, oldFeeRecipients, feeRecipients, names, shares } = updateCase
+  const { sdk, provider } = useForkSdk(createRewardSplitter)
 
-    const canHarvestBefore = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
+  const setRecipients = async (feeRecipients: FeeRecipient[]) => {
+    if (feeRecipients.length === 0) {
+      return
+    }
 
-    expect(canHarvestBefore, 'the harvest state left by the fixture or the previous test').toBe(canHarvest)
+    mockForkHarvestParams(true)
 
-    graphql.mock<HarvestParamsQueryPayload>({
-      name: 'HarvestParams',
-      data: { harvestParams: { ...fork.harvestParams, canHarvest } },
+    const hash = await sdk.rewardSplitter.updateFeeRecipients({
+      vaultAddress,
+      feeRecipients,
+      oldFeeRecipients: [],
+      rewardSplitterAddress,
+      userAddress: adminAddress,
     })
 
-    const adminAddress = await vaultContract.admin()
-    const rewardSplitterContract = sdk.contracts.helpers.createRewardSplitter(rewardSplitterAddress)
-    const rewardSplitterViewsContract = new Contract(rewardSplitterAddress, rewardSplitterViews, provider)
+    await provider.waitForTransaction(hash)
+  }
+
+  it.for(updateCases)('$name', async (updateCase) => {
+    const { canHarvest, oldFeeRecipients, feeRecipients, names, shares } = updateCase
+
+    await setRecipients(oldFeeRecipients)
+
+    mockForkHarvestParams(canHarvest)
+
+    const rewardSplitterContract = extendContract(
+      sdk.contracts.helpers.createRewardSplitter(rewardSplitterAddress),
+      forkAbis.rewardSplitter
+    )
 
     const input = {
       userAddress: adminAddress,
@@ -96,7 +123,7 @@ describe('updateFeeRecipients', () => {
       provider.waitForTransaction(hash),
       provider.getTransaction(hash),
       sdk.contracts.base.keeper.canHarvest(vaultAddress),
-      Promise.all(holderAddresses.map((address) => rewardSplitterViewsContract.sharesOf(address))),
+      Promise.all(holderAddresses.map((address) => rewardSplitterContract.sharesOf(address))),
     ])
 
     const callNames = decodeCalls(rewardSplitterContract, encoded.data).map(({ name }) => name)

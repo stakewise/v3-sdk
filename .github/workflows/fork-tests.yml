@@ -3,14 +3,6 @@ name: Fork tests
 on:
   pull_request:
     branches: [ main, prod ]
-    paths:
-      - 'src/services/**/transactions/**'
-      - 'src/contracts/**'
-      - 'test/**'
-      - 'vitest.config.ts'
-      - '.github/workflows/fork-tests.yml'
-  schedule:
-    - cron: '0 3 * * *'
   workflow_dispatch:
 
 permissions: {}

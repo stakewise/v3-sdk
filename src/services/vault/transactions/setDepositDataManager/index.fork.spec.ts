@@ -1,7 +1,7 @@
-import { describe, expect, beforeAll } from 'vitest'
-import { getAddress, parseEther, toQuantity } from 'ethers'
+import { describe, expect } from 'vitest'
+import { getAddress } from 'ethers'
 
-import { fork, useForkSdk } from '../../../../../test/fork'
+import { fork, useForkSdk, fundVaultAdmin } from '../../../../../test/fork'
 import { it, userAddress, decodeCalls, spenderAddress, adminRoleError } from '../../../../../test'
 
 
@@ -9,15 +9,9 @@ const vaultAddress = getAddress(fork.vaultAddress)
 const managerAddress = spenderAddress
 
 describe('setDepositDataManager', () => {
-  const { sdk, provider } = useForkSdk()
+  const { sdk, provider } = useForkSdk(fundVaultAdmin)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
   const { depositDataRegistry } = sdk.contracts.base
-
-  beforeAll(async () => {
-    const adminAddress = await vaultContract.admin()
-
-    await provider.send('anvil_setBalance', [ adminAddress, toQuantity(parseEther('10')) ])
-  })
 
   it('vault admin', async () => {
     const adminAddress = await vaultContract.admin()

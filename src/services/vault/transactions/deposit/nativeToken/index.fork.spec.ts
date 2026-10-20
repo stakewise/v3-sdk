@@ -1,10 +1,8 @@
 import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
-import { fork, useForkSdk } from '../../../../../../test/fork'
 import { it, userAddress, decodeCalls } from '../../../../../../test'
-
-import type { HarvestParamsQueryPayload } from '../../../../../graphql/subgraph/vault'
+import { fork, useForkSdk, depositToFork, mockForkHarvestParams } from '../../../../../../test/fork'
 
 
 const vaultAddress = getAddress(fork.vaultAddress)
@@ -12,15 +10,15 @@ const input = { userAddress, vaultAddress, assets: parseEther('1') }
 
 describe('deposit', () => {
   const { sdk, provider } = useForkSdk()
+  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
-  it('with updateState', async ({ graphql }) => {
+  it('with updateState', async () => {
     const canHarvest = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
 
     expect(canHarvest, 'fixture does not match the fork block').toBe(true)
 
-    graphql.mock<HarvestParamsQueryPayload>({ name: 'HarvestParams', data: { harvestParams: fork.harvestParams } })
+    mockForkHarvestParams(true)
 
-    const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
     const [ encoded, gas ] = await Promise.all([
       sdk.vault.deposit.encode(input),
       sdk.vault.deposit.estimateGas(input),
@@ -42,16 +40,11 @@ describe('deposit', () => {
     expect(receipt?.status).toBe(1)
   })
 
-  it('without updateState', async ({ graphql }) => {
-    const canHarvest = await sdk.contracts.base.keeper.canHarvest(vaultAddress)
+  it('without updateState', async () => {
+    await depositToFork({ sdk, provider, input })
 
-    expect(canHarvest, 'the vault must be harvested by the previous test').toBe(false)
+    mockForkHarvestParams(false)
 
-    const harvestParams = { ...fork.harvestParams, canHarvest: false }
-
-    graphql.mock<HarvestParamsQueryPayload>({ name: 'HarvestParams', data: { harvestParams } })
-
-    const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
     const [ encoded, hash ] = await Promise.all([
       sdk.vault.deposit.encode(input),
       sdk.vault.deposit(input),

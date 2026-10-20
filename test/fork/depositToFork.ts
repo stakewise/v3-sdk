@@ -1,33 +1,26 @@
 import { expect } from 'vitest'
-import type { JsonRpcProvider } from 'ethers'
 
 import type StakeWiseSDK from '../../src/StakeWiseSDK'
-import type { HarvestParamsQueryPayload } from '../../src/graphql/subgraph/vault'
 
-import type { GraphqlFixture } from '../fixtures/graphql'
-
-import fork from './mocks/fork.json'
+import mockForkHarvestParams from './mockForkHarvestParams'
+import type { Fork } from './useForkSdk'
 
 
-type Input = {
-  sdk: StakeWiseSDK
-  provider: JsonRpcProvider
-  graphql: GraphqlFixture
+type Input = Fork & {
   input: Parameters<StakeWiseSDK['vault']['deposit']>[0]
 }
 
-const depositToFork = async (values: Input) => {
-  const { sdk, provider, graphql, input } = values
-
+const depositToFork = async ({ sdk, provider, input }: Input) => {
   const canHarvest = await sdk.contracts.base.keeper.canHarvest(input.vaultAddress)
 
   expect(canHarvest, 'fixture does not match the fork block').toBe(true)
 
-  graphql.mock<HarvestParamsQueryPayload>({ name: 'HarvestParams', data: { harvestParams: fork.harvestParams } })
+  mockForkHarvestParams(true)
 
   const hash = await sdk.vault.deposit(input)
+  const receipt = await provider.waitForTransaction(hash)
 
-  return provider.waitForTransaction(hash)
+  expect(receipt?.status, 'the setup deposit must succeed').toBe(1)
 }
 
 

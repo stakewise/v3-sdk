@@ -1,7 +1,7 @@
 import { describe, expect } from 'vitest'
-import { Contract, Interface, parseEther } from 'ethers'
+import { parseEther } from 'ethers'
 
-import { useForkSdk } from '../../../../../test/fork'
+import { forkAbis, useForkSdk, parseEvents, extendContract } from '../../../../../test/fork'
 import { it, userAddress, decodeCalls } from '../../../../../test'
 
 import { configs, Network, VaultType } from '../../../../helpers'
@@ -44,20 +44,6 @@ const keysManagerFee = 5.55
 const feePercent = 555n
 const erc20Token = { name: 'Fork vault token', symbol: 'FVT' }
 const mainnetCurator = configs[Network.Mainnet].addresses.base.curator.v2
-
-const vaultViews = [
-  'function admin() view returns (address)',
-  'function capacity() view returns (uint256)',
-  'function feePercent() view returns (uint16)',
-  'function name() view returns (string)',
-  'function symbol() view returns (string)',
-  'function subVaultsRegistry() view returns (address)',
-]
-
-const factoryEvents = new Interface([
-  'event VaultCreated(address indexed admin, address indexed vault, address ownMevEscrow, bytes params)',
-  'event MetaVaultCreated(address indexed caller, address indexed admin, address indexed vault, bytes params)',
-])
 
 const createCases: CreateCase[] = [
   { name: 'vault', type: VaultType.Default, factory: 'vault' },
@@ -112,7 +98,7 @@ const createCases: CreateCase[] = [
 const readVault = async (values: ReadVaultInput) => {
   const { sdk, vaultAddress, isErc20, isMetaVault } = values
 
-  const createdVaultContract = new Contract(vaultAddress, vaultViews, sdk.provider)
+  const createdVaultContract = extendContract(sdk.contracts.helpers.createVault({ vaultAddress }), forkAbis.vault)
 
   const [ admin, vaultCapacity, vaultFeePercent ] = await Promise.all([
     createdVaultContract.admin(),
@@ -152,7 +138,8 @@ describe('createVault', () => {
       userAddress,
       keysManagerFee,
     }
-    const factoryContract = sdk.contracts.factories[factory]
+
+    const factoryContract = extendContract(sdk.contracts.factories[factory], forkAbis.vaultFactory)
     const factoryAddress = await factoryContract.getAddress()
 
     const [ encoded, gas ] = await Promise.all([
@@ -167,10 +154,7 @@ describe('createVault', () => {
       provider.getTransaction(hash),
     ])
 
-    const createdEvents = (receipt?.logs || [])
-      .filter((log) => log.address === factoryAddress)
-      .map((log) => factoryEvents.parseLog(log))
-
+    const createdEvents = await parseEvents(factoryContract, receipt)
     const [ vaultCreated ] = createdEvents
 
     expect(createdEvents).toHaveLength(1)

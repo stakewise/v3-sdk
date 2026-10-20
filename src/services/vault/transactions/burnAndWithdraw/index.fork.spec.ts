@@ -1,12 +1,13 @@
 import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
+import mockGraphql from '../../../../../test/mockGraphql'
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, mintToFork, depositToFork } from '../../../../../test/fork'
+import { fork, useForkSdk, mintToFork, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
 
-import type { GraphqlFixture } from '../../../../../test/fixtures/graphql'
+import type { Fork } from '../../../../../test/fork'
 import type { AllocatorsQueryPayload } from '../../../../graphql/subgraph/allocator'
-import type { HarvestParamsQueryPayload, VaultOsTokenConfigQueryPayload } from '../../../../graphql/subgraph/vault'
+import type { VaultOsTokenConfigQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
 const vaultAddress = getAddress(fork.vaultAddress)
@@ -18,80 +19,66 @@ const withdrawCases = [
   { name: 'assets', input: { ...baseInput, assets: parseEther('1') } },
 ]
 
-describe('burnAndWithdraw', () => {
-  const { sdk, provider } = useForkSdk()
+const mockSubgraph = async ({ sdk }: Fork) => {
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
-  const mockSubgraph = async (graphql: GraphqlFixture) => {
-    const [ canHarvest, osTokenConfig, stakeShares ] = await Promise.all([
-      sdk.contracts.base.keeper.canHarvest(vaultAddress),
-      sdk.contracts.base.mintTokenConfig.v2.getConfig(vaultAddress),
-      vaultContract.getShares(userAddress),
-    ])
+  const [ canHarvest, osTokenConfig, stakeShares ] = await Promise.all([
+    sdk.contracts.base.keeper.canHarvest(vaultAddress),
+    sdk.contracts.base.mintTokenConfig.v2.getConfig(vaultAddress),
+    vaultContract.getShares(userAddress),
+  ])
 
-    expect(canHarvest, 'the vault must be harvested by the setup deposit').toBe(false)
+  expect(canHarvest, 'the setup deposit must harvest the vault').toBe(false)
 
-    const stakeAssets = await vaultContract.convertToAssets(stakeShares)
-    const { ltvPercent, liqThresholdPercent } = osTokenConfig
+  const stakeAssets = await vaultContract.convertToAssets(stakeShares)
+  const { ltvPercent, liqThresholdPercent } = osTokenConfig
 
-    graphql.mock<HarvestParamsQueryPayload>({
-      name: 'HarvestParams',
-      data: { harvestParams: { ...fork.harvestParams, canHarvest } },
-    })
-    graphql.mock<VaultOsTokenConfigQueryPayload>({
-      name: 'VaultOsTokenConfig',
-      data: {
-        vault: {
-          osTokenConfig: {
-            ltvPercent: String(ltvPercent),
-            liqThresholdPercent: String(liqThresholdPercent),
-          },
+  mockForkHarvestParams(canHarvest)
+
+  mockGraphql<VaultOsTokenConfigQueryPayload>({
+    name: 'VaultOsTokenConfig',
+    data: {
+      vault: {
+        osTokenConfig: {
+          ltvPercent: String(ltvPercent),
+          liqThresholdPercent: String(liqThresholdPercent),
         },
       },
-    })
-    graphql.mock<AllocatorsQueryPayload>({
-      name: 'Allocators',
-      data: {
-        allocators: [
-          {
-            apy: '0',
-            assets: String(stakeAssets),
-            totalEarnedAssets: '0',
-            totalStakeEarnedAssets: '0',
-            totalBoostEarnedAssets: '0',
-          },
-        ],
-      },
-    })
-  }
-
-  it('deposit', async ({ graphql }) => {
-    const receipt = await depositToFork({
-      sdk,
-      graphql,
-      provider,
-      input: depositInput,
-    })
-
-    expect(receipt?.status).toBe(1)
+    },
   })
 
-  it('mint max', async ({ graphql }) => {
-    await mockSubgraph(graphql)
-
-    const shares = await sdk.osToken.getMaxMintAmount(baseInput)
-    const receipt = await mintToFork({
-      sdk,
-      graphql,
-      provider,
-      input: { ...baseInput, shares },
-    })
-
-    expect(receipt?.status).toBe(1)
+  mockGraphql<AllocatorsQueryPayload>({
+    name: 'Allocators',
+    data: {
+      allocators: [
+        {
+          apy: '0',
+          assets: String(stakeAssets),
+          totalEarnedAssets: '0',
+          totalStakeEarnedAssets: '0',
+          totalBoostEarnedAssets: '0',
+        },
+      ],
+    },
   })
+}
 
-  it.for(withdrawCases)('$name', async ({ input }, { graphql }) => {
-    await mockSubgraph(graphql)
+const depositAndMintMax = async (setupFork: Fork) => {
+  await depositToFork({ ...setupFork, input: depositInput })
+  await mockSubgraph(setupFork)
+
+  const shares = await setupFork.sdk.osToken.getMaxMintAmount(baseInput)
+
+  await mintToFork({ ...setupFork, input: { ...baseInput, shares } })
+}
+
+describe('burnAndWithdraw', () => {
+  const forkSdk = useForkSdk(depositAndMintMax)
+  const { sdk, provider } = forkSdk
+  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
+
+  it.for(withdrawCases)('$name', async ({ input }) => {
+    await mockSubgraph(forkSdk)
 
     const latestBlock = await provider.getBlock('latest')
     const [ positionBefore, sharesBefore ] = await Promise.all([

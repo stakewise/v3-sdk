@@ -1,35 +1,26 @@
 import { expect } from 'vitest'
-import type { JsonRpcProvider } from 'ethers'
 
 import type StakeWiseSDK from '../../src/StakeWiseSDK'
-import type { HarvestParamsQueryPayload } from '../../src/graphql/subgraph/vault'
 
-import type { GraphqlFixture } from '../fixtures/graphql'
-
-import fork from './mocks/fork.json'
+import mockForkHarvestParams from './mockForkHarvestParams'
+import type { Fork } from './useForkSdk'
 
 
-type Input = {
-  sdk: StakeWiseSDK
-  provider: JsonRpcProvider
-  graphql: GraphqlFixture
+type Input = Fork & {
   input: Parameters<StakeWiseSDK['osToken']['mint']>[0]
 }
 
-const mintToFork = async (values: Input) => {
-  const { sdk, provider, graphql, input } = values
-
+const mintToFork = async ({ sdk, provider, input }: Input) => {
   const canHarvest = await sdk.contracts.base.keeper.canHarvest(input.vaultAddress)
 
-  expect(canHarvest, 'the vault must be harvested by the setup deposit').toBe(false)
+  expect(canHarvest, 'the setup deposit must harvest the vault').toBe(false)
 
-  const harvestParams = { ...fork.harvestParams, canHarvest: false }
-
-  graphql.mock<HarvestParamsQueryPayload>({ name: 'HarvestParams', data: { harvestParams } })
+  mockForkHarvestParams(false)
 
   const hash = await sdk.osToken.mint(input)
+  const receipt = await provider.waitForTransaction(hash)
 
-  return provider.waitForTransaction(hash)
+  expect(receipt?.status, 'the setup mint must succeed').toBe(1)
 }
 
 

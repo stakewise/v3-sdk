@@ -4,6 +4,8 @@ import { getAddress, parseEther } from 'ethers'
 import { it, userAddress, decodeCalls } from '../../../../../test'
 import { fork, useForkSdk, mintToFork, depositToFork } from '../../../../../test/fork'
 
+import type { Fork } from '../../../../../test/fork'
+
 
 const vaultAddress = getAddress(fork.vaultAddress)
 const depositInput = { userAddress, vaultAddress, assets: parseEther('1') }
@@ -12,36 +14,19 @@ const burnDelaySeconds = 60
 const halfOfMinted = mintInput.shares / 2n
 const burnInput = { userAddress, vaultAddress, shares: halfOfMinted }
 
+const depositAndMint = async (setupFork: Fork) => {
+  await depositToFork({ ...setupFork, input: depositInput })
+  await mintToFork({ ...setupFork, input: mintInput })
+}
+
 describe('burn', () => {
-  const { sdk, provider } = useForkSdk()
-
-  it('deposit', async ({ graphql }) => {
-    const receipt = await depositToFork({
-      sdk,
-      graphql,
-      provider,
-      input: depositInput,
-    })
-
-    expect(receipt?.status).toBe(1)
-  })
-
-  it('mint', async ({ graphql }) => {
-    const receipt = await mintToFork({
-      sdk,
-      graphql,
-      provider,
-      input: mintInput,
-    })
-
-    expect(receipt?.status).toBe(1)
-  })
+  const { sdk, provider } = useForkSdk(depositAndMint)
+  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
   it('burn', async () => {
     await provider.send('evm_increaseTime', [ burnDelaySeconds ])
     await provider.send('evm_mine', [])
 
-    const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
     const positionBefore = await vaultContract.osTokenPositions(userAddress)
 
     const [ encoded, gas ] = await Promise.all([
