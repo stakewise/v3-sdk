@@ -28,6 +28,7 @@
     "rollup": "rollup --config rollup.config.js",
     "check:docLinks": "node ./scripts/checkDocLinks.js",
     "check:forkAddresses": "tsx ./scripts/checkForkAddresses.ts",
+    "fork:snapshot": "tsx ./scripts/forkSnapshot.ts",
     "lint": "eslint ./src ./test vitest.config.ts --ext .ts,.tsx,.js,.jsx",
     "release": "pnpm build && pnpm publish --tag=latest",
     "sync:docs": "tsx ./scripts/syncDocs/index.ts"

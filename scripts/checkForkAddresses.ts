@@ -1,35 +1,13 @@
 import configs from '../src/helpers/configs'
+import getCode from '../test/fork/getCode'
 import { getSnapshot } from '../test/fork/snapshots'
+import type { ForkNetwork } from '../test/fork/constants'
 import collectAddresses from '../test/fork/collectAddresses'
 import { forkNetworks, getForkNetworkName } from '../test/fork/constants'
-import type { ForkNetwork } from '../test/fork/constants'
+import parseForkNetwork, { forkNetworkNames } from '../test/fork/parseForkNetwork'
 
 
-type GetCodeInput = {
-  rpcUrl: string
-  block: number
-  address: string
-}
-
-type RpcResponse = {
-  result?: unknown
-  error?: { code: number, message: string }
-}
-
-const hint = 'перезакрепи блок (вики stakewise/v3-sdk, „Как обновить снимок форк-тестов“) или проверь адрес'
-
-const supportedNetworks = Object.keys(forkNetworks).map(Number) as ForkNetwork[]
-const supportedNames = supportedNetworks.map(getForkNetworkName)
-
-const parseNetwork = (name: string) => {
-  const network = supportedNetworks.find((item) => getForkNetworkName(item) === name)
-
-  if (!network) {
-    throw new Error(`Unknown network "${name}", expected one of: ${supportedNames.join(', ')}`)
-  }
-
-  return network
-}
+const getHint = (names: string[]) => `Run: ${names.map((name) => `pnpm fork:snapshot ${name}`).join(' && ')}`
 
 const getRpcUrl = (network: ForkNetwork) => {
   const { rpcEnv } = forkNetworks[network]
@@ -40,37 +18,6 @@ const getRpcUrl = (network: ForkNetwork) => {
   }
 
   return rpcUrl
-}
-
-const getCode = async ({ rpcUrl, address, block }: GetCodeInput) => {
-  const response = await fetch(rpcUrl, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      jsonrpc: '2.0',
-      id: 1,
-      method: 'eth_getCode',
-      params: [ address, `0x${block.toString(16)}` ],
-    }),
-  }).catch(() => {
-    throw new Error('RPC request failed')
-  })
-
-  if (!response.ok) {
-    throw new Error(`RPC responded with HTTP ${response.status}`)
-  }
-
-  const { result, error }: RpcResponse = await response.json()
-
-  if (error) {
-    throw new Error(`RPC error ${error.code}: ${error.message.replaceAll(rpcUrl, '<rpc url>')}`)
-  }
-
-  if (typeof result !== 'string') {
-    throw new Error('RPC returned no code')
-  }
-
-  return result
 }
 
 const findEmptyAddresses = async (network: ForkNetwork) => {
@@ -97,21 +44,27 @@ const findEmptyAddresses = async (network: ForkNetwork) => {
 
 const main = async (names: string[]) => {
   if (!names.length) {
-    throw new Error(`Pass at least one network: ${supportedNames.join(', ')}`)
+    throw new Error(`Pass at least one network: ${forkNetworkNames.join(', ')}`)
   }
 
-  const networks = names.map(parseNetwork)
+  const networks = names.map(parseForkNetwork)
 
   networks.forEach(getRpcUrl)
 
   const failures: string[] = []
+  const failedNames: string[] = []
 
   for (const network of networks) {
-    failures.push(...await findEmptyAddresses(network))
+    const networkFailures = await findEmptyAddresses(network)
+
+    if (networkFailures.length) {
+      failures.push(...networkFailures)
+      failedNames.push(getForkNetworkName(network))
+    }
   }
 
   if (failures.length) {
-    console.error([ ...failures, hint ].join('\n'))
+    console.error([ ...failures, getHint(failedNames) ].join('\n'))
     process.exitCode = 1
   }
 }
