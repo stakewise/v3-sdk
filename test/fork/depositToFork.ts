@@ -10,12 +10,12 @@ type Input = Fork & {
   input: Parameters<StakeWiseSDK['vault']['deposit']>[0]
 }
 
-const depositToFork = async ({ sdk, provider, input }: Input) => {
+const depositToFork = async ({ sdk, provider, snapshot, input }: Input) => {
   const canHarvest = await sdk.contracts.base.keeper.canHarvest(input.vaultAddress)
 
   expect(canHarvest, 'fixture does not match the fork block').toBe(true)
 
-  mockForkHarvestParams(true)
+  mockForkHarvestParams(snapshot, true)
 
   const hash = await sdk.vault.deposit(input)
   const receipt = await provider.waitForTransaction(hash)

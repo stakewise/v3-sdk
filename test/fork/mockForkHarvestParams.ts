@@ -2,12 +2,12 @@ import mockGraphql from '../mockGraphql'
 
 import type { HarvestParamsQueryPayload } from '../../src/graphql/subgraph/vault'
 
-import fork from './mocks/fork.json'
+import type { ForkSnapshot } from './snapshots'
 
 
-const mockForkHarvestParams = (canHarvest: boolean) => mockGraphql<HarvestParamsQueryPayload>({
+const mockForkHarvestParams = (snapshot: ForkSnapshot, canHarvest: boolean) => mockGraphql<HarvestParamsQueryPayload>({
   name: 'HarvestParams',
-  data: { harvestParams: { ...fork.harvestParams, canHarvest } },
+  data: { harvestParams: { ...snapshot.harvestParams, canHarvest } },
 })
 
 

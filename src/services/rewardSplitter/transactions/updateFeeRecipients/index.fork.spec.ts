@@ -3,7 +3,6 @@ import { getAddress, parseEther } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
 import {
-  fork,
   forkAbis,
   useForkSdk,
   parseEvents,
@@ -20,7 +19,6 @@ type FeeRecipient = {
   shares: bigint
 }
 
-const vaultAddress = getAddress(fork.vaultAddress)
 const keptAddress = '0x3333333333333333333333333333333333333333'
 const removedAddress = '0x6666666666666666666666666666666666666666'
 const addedAddress = '0x9999999999999999999999999999999999999999'
@@ -60,7 +58,8 @@ describe('updateFeeRecipients', () => {
   let rewardSplitterAddress = ''
 
   const createRewardSplitter = async (setupFork: Fork) => {
-    const { sdk, provider } = setupFork
+    const { sdk, provider, snapshot } = setupFork
+    const vaultAddress = getAddress(snapshot.vaultAddress)
     const factoryContract = extendContract(sdk.contracts.base.rewardSplitterFactory, forkAbis.rewardSplitterFactory)
 
     adminAddress = await fundVaultAdmin(setupFork)
@@ -72,14 +71,15 @@ describe('updateFeeRecipients', () => {
     rewardSplitterAddress = created!.args.rewardSplitter
   }
 
-  const { sdk, provider } = useForkSdk(createRewardSplitter)
+  const { sdk, provider, snapshot } = useForkSdk({ setup: createRewardSplitter })
+  const vaultAddress = getAddress(snapshot.vaultAddress)
 
   const setRecipients = async (feeRecipients: FeeRecipient[]) => {
     if (feeRecipients.length === 0) {
       return
     }
 
-    mockForkHarvestParams(true)
+    mockForkHarvestParams(snapshot, true)
 
     const hash = await sdk.rewardSplitter.updateFeeRecipients({
       vaultAddress,
@@ -97,7 +97,7 @@ describe('updateFeeRecipients', () => {
 
     await setRecipients(oldFeeRecipients)
 
-    mockForkHarvestParams(canHarvest)
+    mockForkHarvestParams(snapshot, canHarvest)
 
     const rewardSplitterContract = extendContract(
       sdk.contracts.helpers.createRewardSplitter(rewardSplitterAddress),

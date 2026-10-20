@@ -10,12 +10,12 @@ type Input = Fork & {
   input: Parameters<StakeWiseSDK['osToken']['mint']>[0]
 }
 
-const mintToFork = async ({ sdk, provider, input }: Input) => {
+const mintToFork = async ({ sdk, provider, snapshot, input }: Input) => {
   const canHarvest = await sdk.contracts.base.keeper.canHarvest(input.vaultAddress)
 
   expect(canHarvest, 'the setup deposit must harvest the vault').toBe(false)
 
-  mockForkHarvestParams(false)
+  mockForkHarvestParams(snapshot, false)
 
   const hash = await sdk.osToken.mint(input)
   const receipt = await provider.waitForTransaction(hash)

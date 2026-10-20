@@ -1,15 +1,15 @@
 import { describe, expect } from 'vitest'
 import { getAddress } from 'ethers'
 
-import { fork, useForkSdk, fundVaultAdmin } from '../../../../../test/fork'
+import { useForkSdk, fundVaultAdmin } from '../../../../../test/fork'
 import { it, userAddress, decodeCalls, spenderAddress, adminRoleError } from '../../../../../test'
 
 
-const vaultAddress = getAddress(fork.vaultAddress)
 const managerAddress = spenderAddress
 
 describe('setDepositDataManager', () => {
-  const { sdk, provider } = useForkSdk(fundVaultAdmin)
+  const { sdk, provider, snapshot } = useForkSdk({ setup: fundVaultAdmin })
+  const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
   const { depositDataRegistry } = sdk.contracts.base
 

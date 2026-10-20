@@ -2,14 +2,13 @@ import { describe, expect } from 'vitest'
 import { getAddress } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, forkAbis, useForkSdk, parseEvents, extendContract } from '../../../../../test/fork'
+import { forkAbis, useForkSdk, parseEvents, extendContract } from '../../../../../test/fork'
 
-
-const vaultAddress = getAddress(fork.vaultAddress)
-const input = { userAddress, vaultAddress }
 
 describe('createRewardSplitter', () => {
-  const { sdk, provider } = useForkSdk()
+  const { sdk, provider, snapshot } = useForkSdk()
+  const vaultAddress = getAddress(snapshot.vaultAddress)
+  const input = { userAddress, vaultAddress }
 
   it('create', async () => {
     const factoryContract = extendContract(sdk.contracts.base.rewardSplitterFactory, forkAbis.rewardSplitterFactory)

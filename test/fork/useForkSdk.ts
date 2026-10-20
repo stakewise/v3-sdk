@@ -7,7 +7,10 @@ import { Network } from '../../src/helpers'
 import { userAddress } from '../constants'
 import { resetGraphql, checkGraphqlRequests } from '../mockGraphql'
 
-import { forkRpcUrl } from './constants'
+import { getSnapshot } from './snapshots'
+import { getForkRpcUrl } from './constants'
+import type { ForkSnapshot } from './snapshots'
+import type { ForkNetwork } from './constants'
 
 
 class ForkProvider extends JsonRpcProvider {
@@ -23,9 +26,16 @@ class ForkProvider extends JsonRpcProvider {
 export type Fork = {
   sdk: StakeWiseSDK
   provider: ForkProvider
+  network: ForkNetwork
+  snapshot: ForkSnapshot
 }
 
-type Setup = (fork: Fork) => Promise<unknown>
+export type Setup = (fork: Fork) => Promise<unknown>
+
+type Options = {
+  network?: ForkNetwork
+  setup?: Setup
+}
 
 const takeSnapshot = (provider: ForkProvider): Promise<string> => provider.send('evm_snapshot', [])
 
@@ -37,18 +47,30 @@ const revertSnapshot = async (provider: ForkProvider, snapshotId: string) => {
   }
 }
 
-const useForkSdk = (setup?: Setup): Fork => {
-  const provider = new ForkProvider(forkRpcUrl, Network.Mainnet, {
+const useForkSdk = (options: Options = {}): Fork => {
+  const { network = Network.Mainnet, setup } = options
+
+  const snapshot = getSnapshot(network)
+  const forkRpcUrl = getForkRpcUrl(network)
+
+  const provider = new ForkProvider(forkRpcUrl, network, {
     cacheTimeout: -1,
     staticNetwork: true,
     pollingInterval: 100,
   })
 
   const sdk = new StakeWiseSDK({
-    network: Network.Mainnet,
+    network,
     provider,
     endpoints: { web3: forkRpcUrl },
   })
+
+  const fork: Fork = {
+    sdk,
+    provider,
+    network,
+    snapshot,
+  }
 
   let fileSnapshotId = ''
   let testSnapshotId = ''
@@ -59,7 +81,7 @@ const useForkSdk = (setup?: Setup): Fork => {
     resetGraphql()
 
     await provider.send('anvil_setBalance', [ userAddress, toQuantity(parseEther('10')) ])
-    await setup?.({ sdk, provider })
+    await setup?.(fork)
 
     checkGraphqlRequests()
 
@@ -76,7 +98,7 @@ const useForkSdk = (setup?: Setup): Fork => {
     await revertSnapshot(provider, fileSnapshotId)
   })
 
-  return { sdk, provider }
+  return fork
 }
 
 

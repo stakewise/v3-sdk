@@ -1,13 +1,25 @@
 import { spawn } from 'node:child_process'
 
 import wait from '../wait'
-import fork from './mocks/fork.json'
-import { forkRpcUrl, forkPort } from './constants'
+import { getSnapshot } from './snapshots'
+import { activeForkNetworks, forkNetworks, getForkRpcUrl, getForkNetworkName } from './constants'
+import type { ForkNetwork } from './constants'
 
 
-const isAnvilReady = async () => {
+type Stop = () => Promise<void>
+
+type StartInput = {
+  forkUrl: string
+  network: ForkNetwork
+}
+
+const rpcRetries = 10
+const rpcTimeoutMs = 30_000
+const rpcRetryBackoffMs = 1_000
+
+const checkIsAnvilReady = async (rpcUrl: string) => {
   try {
-    const response = await fetch(forkRpcUrl, {
+    const response = await fetch(rpcUrl, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
@@ -25,21 +37,35 @@ const isAnvilReady = async () => {
   }
 }
 
-const setup = async () => {
-  const forkUrl = process.env.MAINNET_RPC_URL
+const getForkUrl = (network: ForkNetwork) => {
+  const { rpcEnv } = forkNetworks[network]
+  const forkUrl = process.env[rpcEnv]
 
   if (!forkUrl) {
-    throw new Error('MAINNET_RPC_URL is required for fork tests (archive access to the block in fork.json)')
+    const name = getForkNetworkName(network)
+
+    throw new Error(`${rpcEnv} is required for fork tests (archive access to the block in mocks/${name}.json)`)
   }
 
-  if (await isAnvilReady()) {
-    throw new Error(`Port ${forkPort} is busy - stop the node listening on it, fork tests start their own anvil`)
+  return forkUrl
+}
+
+const startAnvil = async ({ network, forkUrl }: StartInput): Promise<Stop> => {
+  const { port } = forkNetworks[network]
+  const { block } = getSnapshot(network)
+  const rpcUrl = getForkRpcUrl(network)
+
+  if (await checkIsAnvilReady(rpcUrl)) {
+    throw new Error(`Port ${port} is busy - stop the node listening on it, fork tests start their own anvil`)
   }
 
   const anvil = spawn('anvil', [
     '--fork-url', forkUrl,
-    '--fork-block-number', String(fork.block),
-    '--port', String(forkPort),
+    '--fork-block-number', String(block),
+    '--port', String(port),
+    '--retries', String(rpcRetries),
+    '--timeout', String(rpcTimeoutMs),
+    '--fork-retry-backoff', String(rpcRetryBackoffMs),
     '--auto-impersonate',
     '--silent',
   ], { stdio: 'inherit' })
@@ -70,7 +96,7 @@ const setup = async () => {
       throw new Error(failure)
     }
 
-    if (await isAnvilReady()) {
+    if (await checkIsAnvilReady(rpcUrl)) {
       return stop
     }
 
@@ -79,7 +105,29 @@ const setup = async () => {
 
   await stop()
 
-  throw new Error('anvil did not start in 30 seconds')
+  throw new Error(`anvil for ${getForkNetworkName(network)} did not start in 30 seconds`)
+}
+
+const setup = async () => {
+  const starts = activeForkNetworks.map((network) => ({ network, forkUrl: getForkUrl(network) }))
+  const stops: Stop[] = []
+
+  const stopAll = async () => {
+    await Promise.all(stops.map((stop) => stop()))
+  }
+
+  try {
+    for (const start of starts) {
+      stops.push(await startAnvil(start))
+    }
+  }
+  catch (error) {
+    await stopAll()
+
+    throw error
+  }
+
+  return stopAll
 }
 
 

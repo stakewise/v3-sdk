@@ -34,7 +34,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: 'fork',
-          include: [ 'src/**/*.fork.spec.ts' ],
+          include: [ 'src/**/*.fork.spec.ts', 'test/fork/**/*.fork.spec.ts' ],
           globalSetup: [ 'test/fork/globalSetup.ts' ],
           setupFiles: [ 'test/setup.ts' ],
           testTimeout: 120_000,

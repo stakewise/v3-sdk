@@ -3,23 +3,22 @@ import { getAddress, parseEther } from 'ethers'
 
 import mockGraphql from '../../../../../test/mockGraphql'
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, mintToFork, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
+import { useForkSdk, mintToFork, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 import type { AllocatorsQueryPayload } from '../../../../graphql/subgraph/allocator'
 import type { VaultOsTokenConfigQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-const vaultAddress = getAddress(fork.vaultAddress)
-const baseInput = { userAddress, vaultAddress }
-const depositInput = { ...baseInput, assets: parseEther('1') }
+const depositAssets = parseEther('1')
 
 const withdrawCases = [
-  { name: 'shares', input: { ...baseInput, shares: parseEther('0.4') } },
-  { name: 'assets', input: { ...baseInput, assets: parseEther('1') } },
+  { name: 'shares', amount: { shares: parseEther('0.4') } },
+  { name: 'assets', amount: { assets: parseEther('1') } },
 ]
 
-const mockSubgraph = async ({ sdk }: Fork) => {
+const mockSubgraph = async ({ sdk, snapshot }: Fork) => {
+  const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
   const [ canHarvest, osTokenConfig, stakeShares ] = await Promise.all([
@@ -33,7 +32,7 @@ const mockSubgraph = async ({ sdk }: Fork) => {
   const stakeAssets = await vaultContract.convertToAssets(stakeShares)
   const { ltvPercent, liqThresholdPercent } = osTokenConfig
 
-  mockForkHarvestParams(canHarvest)
+  mockForkHarvestParams(snapshot, canHarvest)
 
   mockGraphql<VaultOsTokenConfigQueryPayload>({
     name: 'VaultOsTokenConfig',
@@ -64,7 +63,10 @@ const mockSubgraph = async ({ sdk }: Fork) => {
 }
 
 const depositAndMintMax = async (setupFork: Fork) => {
-  await depositToFork({ ...setupFork, input: depositInput })
+  const vaultAddress = getAddress(setupFork.snapshot.vaultAddress)
+  const baseInput = { userAddress, vaultAddress }
+
+  await depositToFork({ ...setupFork, input: { ...baseInput, assets: depositAssets } })
   await mockSubgraph(setupFork)
 
   const shares = await setupFork.sdk.osToken.getMaxMintAmount(baseInput)
@@ -73,11 +75,15 @@ const depositAndMintMax = async (setupFork: Fork) => {
 }
 
 describe('burnAndWithdraw', () => {
-  const forkSdk = useForkSdk(depositAndMintMax)
-  const { sdk, provider } = forkSdk
+  const forkSdk = useForkSdk({ setup: depositAndMintMax })
+  const { sdk, provider, snapshot } = forkSdk
+  const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
+  const baseInput = { userAddress, vaultAddress }
 
-  it.for(withdrawCases)('$name', async ({ input }) => {
+  it.for(withdrawCases)('$name', async ({ amount }) => {
+    const input = { ...baseInput, ...amount }
+
     await mockSubgraph(forkSdk)
 
     const latestBlock = await provider.getBlock('latest')

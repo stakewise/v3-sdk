@@ -1,11 +1,10 @@
 import { parseEther, toQuantity } from 'ethers'
 
-import fork from './mocks/fork.json'
 import type { Fork } from './useForkSdk'
 
 
-const fundVaultAdmin = async ({ sdk, provider }: Fork) => {
-  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress: fork.vaultAddress })
+const fundVaultAdmin = async ({ sdk, provider, snapshot }: Fork) => {
+  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress: snapshot.vaultAddress })
   const adminAddress = await vaultContract.admin()
 
   await provider.send('anvil_setBalance', [ adminAddress, toQuantity(parseEther('10')) ])

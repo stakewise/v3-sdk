@@ -2,26 +2,29 @@ import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, mintToFork, depositToFork } from '../../../../../test/fork'
+import { useForkSdk, mintToFork, depositToFork } from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 
 
-const vaultAddress = getAddress(fork.vaultAddress)
-const depositInput = { userAddress, vaultAddress, assets: parseEther('1') }
-const mintInput = { userAddress, vaultAddress, shares: parseEther('0.1') }
+const depositAssets = parseEther('1')
+const mintShares = parseEther('0.1')
 const burnDelaySeconds = 60
-const halfOfMinted = mintInput.shares / 2n
-const burnInput = { userAddress, vaultAddress, shares: halfOfMinted }
+const halfOfMinted = mintShares / 2n
 
 const depositAndMint = async (setupFork: Fork) => {
-  await depositToFork({ ...setupFork, input: depositInput })
-  await mintToFork({ ...setupFork, input: mintInput })
+  const vaultAddress = getAddress(setupFork.snapshot.vaultAddress)
+  const baseInput = { userAddress, vaultAddress }
+
+  await depositToFork({ ...setupFork, input: { ...baseInput, assets: depositAssets } })
+  await mintToFork({ ...setupFork, input: { ...baseInput, shares: mintShares } })
 }
 
 describe('burn', () => {
-  const { sdk, provider } = useForkSdk(depositAndMint)
+  const { sdk, provider, snapshot } = useForkSdk({ setup: depositAndMint })
+  const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
+  const burnInput = { userAddress, vaultAddress, shares: halfOfMinted }
 
   it('burn', async () => {
     await provider.send('evm_increaseTime', [ burnDelaySeconds ])

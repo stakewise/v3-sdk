@@ -2,19 +2,28 @@ import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
 import { it, userAddress, decodeCalls } from '../../../../../test'
-import { fork, useForkSdk, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
+import { useForkSdk, depositToFork, mockForkHarvestParams } from '../../../../../test/fork'
+
+import type { Fork } from '../../../../../test/fork'
 
 
-const vaultAddress = getAddress(fork.vaultAddress)
-const depositInput = { userAddress, vaultAddress, assets: parseEther('1') }
-const mintInput = { userAddress, vaultAddress, shares: parseEther('0.1') }
+const depositAssets = parseEther('1')
+const mintShares = parseEther('0.1')
+
+const deposit = (setupFork: Fork) => {
+  const vaultAddress = getAddress(setupFork.snapshot.vaultAddress)
+
+  return depositToFork({ ...setupFork, input: { userAddress, vaultAddress, assets: depositAssets } })
+}
 
 describe('mint', () => {
-  const { sdk, provider } = useForkSdk((setupFork) => depositToFork({ ...setupFork, input: depositInput }))
+  const { sdk, provider, snapshot } = useForkSdk({ setup: deposit })
+  const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
+  const mintInput = { userAddress, vaultAddress, shares: mintShares }
 
   it('mint', async () => {
-    mockForkHarvestParams(false)
+    mockForkHarvestParams(snapshot, false)
 
     const [ encoded, gas ] = await Promise.all([
       sdk.osToken.mint.encode(mintInput),
