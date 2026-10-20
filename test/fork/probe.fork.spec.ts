@@ -34,6 +34,10 @@ type ProbeCase = {
 
 type SendCall = [ string, Array<{ to?: string }> ]
 
+type ProbeError = Error & {
+  shortMessage?: string
+}
+
 const snapshot = getSnapshot(Network.Mainnet)
 const vaultAddress = getAddress(snapshot.vaultAddress)
 
@@ -48,6 +52,10 @@ const redeemerUserAddress = '0xC15E66eA086c82553859A2C62DB47e5270A137Ec'
 const subVaultsRegistryAddress = '0x66343A85D2b6CE97EBb09C07f8b711B27bc300B0'
 const vaultRewardSplitterAddress = '0x34AcBC432CbdaaBAE388b4D1BAcB4eDB3abBeB27'
 const rewardSplitterHolderAddress = '0xc2cda2413e17009fcf72b1F5C3A591c2A2787371'
+
+const splitterClaimAssets = parseEther('0.001')
+const redeemerAllowedShares = parseEther('0.007')
+const rewardSplitterHolderShares = parseEther('100')
 
 const unboostTicket = {
   timestamp: '1790711291',
@@ -267,7 +275,7 @@ const probeCases: ProbeCase[] = [
   {
     name: 'W19 redeemerWithdraw',
     call: ({ sdk }) => sdk.osToken.redeemerWithdraw.estimateGas({
-      shares: parseEther('0.007'),
+      shares: redeemerAllowedShares,
       userAddress: redeemerUserAddress,
     }),
     expected: 'success',
@@ -335,7 +343,7 @@ const probeCases: ProbeCase[] = [
     name: 'W26 updateFeeRecipients',
     call: async (fork) => {
       const adminInput = await getAdminInput(fork)
-      const holder = { address: rewardSplitterHolderAddress, shares: parseEther('100') }
+      const holder = { address: rewardSplitterHolderAddress, shares: rewardSplitterHolderShares }
 
       return fork.sdk.rewardSplitter.updateFeeRecipients.estimateGas({
         ...adminInput,
@@ -363,7 +371,7 @@ const probeCases: ProbeCase[] = [
     name: 'W28 claimRewards',
     call: ({ sdk }) => sdk.rewardSplitter.claimRewards.estimateGas({
       vaultAddress,
-      assets: parseEther('0.001'),
+      assets: splitterClaimAssets,
       userAddress: rewardSplitterHolderAddress,
       rewardSplitterAddress: vaultRewardSplitterAddress,
     }),
@@ -421,7 +429,7 @@ const probeCases: ProbeCase[] = [
   },
   {
     name: 'R9 getMaxExitShares',
-    call: ({ sdk }) => getMaxExitShares({ ...sdk.vault.params, ...stakeInput, burnShares: 0n }),
+    call: async ({ sdk }) => getMaxExitShares({ ...sdk.vault.params, ...stakeInput, burnShares: 0n }),
     expected: 'success',
   },
   {
@@ -446,7 +454,7 @@ const probeCases: ProbeCase[] = [
   },
   {
     name: 'R14 getPermitSignature',
-    call: ({ sdk }) => sdk.utils.getPermitSignature({
+    call: async ({ sdk }) => sdk.utils.getPermitSignature({
       spenderAddress: userAddress,
       ownerAddress: anvilAccountAddress,
       contract: sdk.contracts.tokens.mintToken,
@@ -458,9 +466,20 @@ const probeCases: ProbeCase[] = [
 const getCallTargets = (calls: SendCall[]) => {
   const targets = calls
     .filter(([ method ]) => method === 'eth_call' || method === 'eth_estimateGas')
-    .map(([ , [ transaction ] ]) => String(transaction.to).toLowerCase())
+    .flatMap(([ , [ { to } ] ]) => (to ? [ to.toLowerCase() ] : []))
 
   return [ ...new Set(targets) ]
+}
+
+const getErrorText = (error: unknown) => {
+  if (error instanceof Error) {
+    const { name, message, shortMessage, cause } = error as ProbeError
+    const text = `${name}: ${shortMessage || message}`
+
+    return cause instanceof Error ? `${text} (cause: ${cause.message})` : text
+  }
+
+  return String(error)
 }
 
 describe('mainnet', () => {
@@ -480,7 +499,10 @@ describe('mainnet', () => {
     const codes = await Promise.all(targets.map((target) => provider.getCode(target)))
     const emptyTargets = targets.filter((_, index) => codes[index] === '0x')
 
-    expect(classifyProbe(result)).toEqual(expected)
+    const outcome = classifyProbe(result)
+    const cause = 'error' in result ? getErrorText(result.error) : ''
+
+    expect({ outcome, cause }).toEqual({ outcome: expected, cause: expect.any(String) })
     expect(emptyTargets).toEqual([])
   })
 })

@@ -41,6 +41,11 @@ const cases = [
     expected: 'empty revert',
   },
   {
+    name: 'falsy rejection',
+    result: { error: undefined },
+    expected: 'empty revert',
+  },
+  {
     name: 'unknown selector',
     result: { error: createRevertError('0x12345678') },
     expected: 'empty revert',
