@@ -21,7 +21,9 @@ type CreateCase = {
   type: VaultType
   factory: FactoryName
   curator?: string
+  mevEscrow?: string
   vaultToken?: VaultToken
+  isOwnMevEscrow?: boolean
 }
 
 type ReadVaultInput = {
@@ -36,6 +38,7 @@ type CreatedVault = {
   capacity: bigint
   feePercent: bigint
   curator?: string
+  mevEscrow?: string
   vaultToken?: VaultToken
 }
 
@@ -44,27 +47,52 @@ const keysManagerFee = 5.55
 const feePercent = 555n
 const erc20Token = { name: 'Fork vault token', symbol: 'FVT' }
 const mainnetCurator = configs[Network.Mainnet].addresses.base.curator.v2
+const sharedMevEscrow = configs[Network.Mainnet].addresses.base.sharedMevEscrow
 
 const createCases: CreateCase[] = [
-  { name: 'vault', type: VaultType.Default, factory: 'vault' },
+  {
+    name: 'vault',
+    type: VaultType.Default,
+    factory: 'vault',
+    mevEscrow: sharedMevEscrow,
+  },
+  {
+    name: 'own mev escrow',
+    type: VaultType.Default,
+    factory: 'vault',
+    isOwnMevEscrow: true,
+  },
   {
     name: 'erc20 vault',
     type: VaultType.Default,
     factory: 'erc20Vault',
+    mevEscrow: sharedMevEscrow,
     vaultToken: erc20Token,
   },
-  { name: 'private vault', type: VaultType.Private, factory: 'privateVault' },
+  {
+    name: 'private vault',
+    type: VaultType.Private,
+    factory: 'privateVault',
+    mevEscrow: sharedMevEscrow,
+  },
   {
     name: 'erc20 private vault',
     type: VaultType.Private,
     factory: 'erc20PrivateVault',
+    mevEscrow: sharedMevEscrow,
     vaultToken: erc20Token,
   },
-  { name: 'blocklist vault', type: VaultType.Blocklist, factory: 'blocklistVault' },
+  {
+    name: 'blocklist vault',
+    type: VaultType.Blocklist,
+    factory: 'blocklistVault',
+    mevEscrow: sharedMevEscrow,
+  },
   {
     name: 'erc20 blocklist vault',
     type: VaultType.Blocklist,
     factory: 'erc20BlocklistVault',
+    mevEscrow: sharedMevEscrow,
     vaultToken: erc20Token,
   },
   {
@@ -123,6 +151,9 @@ const readVault = async (values: ReadVaultInput) => {
 
     result.curator = await subVaultsRegistryContract.subVaultsCurator()
   }
+  else {
+    result.mevEscrow = await createdVaultContract.mevEscrow()
+  }
 
   return result
 }
@@ -130,13 +161,16 @@ const readVault = async (values: ReadVaultInput) => {
 describe('createVault', () => {
   const { sdk, provider } = useForkSdk()
 
-  it.for(createCases)('$name', async ({ type, factory, curator, vaultToken }) => {
+  it.for(createCases)('$name', async (createCase) => {
+    const { type, factory, curator, mevEscrow, vaultToken, isOwnMevEscrow } = createCase
+
     const input = {
       type,
       capacity,
       vaultToken,
       userAddress,
       keysManagerFee,
+      isOwnMevEscrow,
     }
 
     const factoryContract = extendContract(sdk.contracts.factories[factory], forkAbis.vaultFactory)
@@ -159,9 +193,11 @@ describe('createVault', () => {
 
     expect(createdEvents).toHaveLength(1)
 
+    const { vault, ownMevEscrow } = vaultCreated!.args
+
     const created = await readVault({
       sdk,
-      vaultAddress: vaultCreated?.args.vault,
+      vaultAddress: vault,
       isErc20: Boolean(vaultToken),
       isMetaVault: Boolean(curator),
     })
@@ -179,6 +215,7 @@ describe('createVault', () => {
       feePercent,
       curator,
       vaultToken,
+      mevEscrow: mevEscrow || ownMevEscrow,
     })
   })
 })

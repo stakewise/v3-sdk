@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll } from 'vitest'
-import { JsonRpcProvider, JsonRpcSigner, parseEther, toQuantity } from 'ethers'
+import { JsonRpcProvider, JsonRpcSigner } from 'ethers'
 
 import StakeWiseSDK from '../../src/StakeWiseSDK'
 import { Network } from '../../src/helpers'
@@ -7,6 +7,7 @@ import { Network } from '../../src/helpers'
 import { userAddress } from '../constants'
 import { resetGraphql, checkGraphqlRequests } from '../mockGraphql'
 
+import fundAccount from './fundAccount'
 import { getSnapshot } from './snapshots'
 import { getForkRpcUrl } from './constants'
 import type { ForkSnapshot } from './snapshots'
@@ -80,7 +81,7 @@ const useForkSdk = (options: Options = {}): Fork => {
 
     resetGraphql()
 
-    await provider.send('anvil_setBalance', [ userAddress, toQuantity(parseEther('10')) ])
+    await fundAccount(provider, userAddress)
     await setup?.(fork)
 
     checkGraphqlRequests()
