@@ -15,11 +15,11 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const { v1BoostUserAddress, v1BoostVaultAddress } = mainnetAccounts
+const { leverageStrategyV1UserAddress, leverageStrategyV1VaultAddress } = mainnetAccounts
 
 const v1ProxyAddress = '0xFe715B49aa7f68cFC40051BBecA1b9Ab81d2DcA2'
 
-const fundV1User = ({ provider }: Fork) => fundAccount(provider, v1BoostUserAddress)
+const fundV1User = ({ provider }: Fork) => fundAccount(provider, leverageStrategyV1UserAddress)
 
 describe('upgradeLeverageStrategy', () => {
   const { sdk, provider } = useForkSdk({ setup: fundV1User })
@@ -27,7 +27,7 @@ describe('upgradeLeverageStrategy', () => {
   const strategyProxyContract = new Contract(v1ProxyAddress, forkAbis.strategyProxy, provider)
 
   it('upgrade', async () => {
-    const input = { userAddress: v1BoostUserAddress, vaultAddress: v1BoostVaultAddress }
+    const input = { userAddress: leverageStrategyV1UserAddress, vaultAddress: leverageStrategyV1VaultAddress }
 
     const [ ownerBefore, leverageStrategyAddress, leverageStrategyV2Address ] = await Promise.all([
       strategyProxyContract.owner(),
@@ -40,7 +40,7 @@ describe('upgradeLeverageStrategy', () => {
       provider,
       contract: leverageStrategyContract,
       method: sdk.boost.upgradeLeverageStrategy,
-      calls: [ { name: 'upgradeProxy', args: [ v1BoostVaultAddress ] } ],
+      calls: [ { name: 'upgradeProxy', args: [ leverageStrategyV1VaultAddress ] } ],
     })
 
     const [ ownerAfter, strategyEvents ] = await Promise.all([
@@ -52,7 +52,7 @@ describe('upgradeLeverageStrategy', () => {
 
     expect(ownerBefore).toBe(leverageStrategyAddress)
     expect(ownerAfter).toBe(leverageStrategyV2Address)
-    expect(upgraded?.args.user).toBe(v1BoostUserAddress)
+    expect(upgraded?.args.user).toBe(leverageStrategyV1UserAddress)
     expect(upgraded?.args.strategy).toBe(leverageStrategyV2Address)
   })
 })

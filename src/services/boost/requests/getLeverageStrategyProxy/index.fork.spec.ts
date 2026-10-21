@@ -12,7 +12,7 @@ type ProxyCase = {
   strategy: 'leverageStrategy' | 'leverageStrategyV2'
 }
 
-const { boosterAddress, boostVaultAddress, v1BoostUserAddress, v1BoostVaultAddress } = mainnetAccounts
+const { boosterAddress, boostVaultAddress, leverageStrategyV1UserAddress, leverageStrategyV1VaultAddress } = mainnetAccounts
 
 const proxyCases: ProxyCase[] = [
   {
@@ -23,8 +23,8 @@ const proxyCases: ProxyCase[] = [
   },
   {
     name: 'v1 position',
-    userAddress: v1BoostUserAddress,
-    vaultAddress: v1BoostVaultAddress,
+    userAddress: leverageStrategyV1UserAddress,
+    vaultAddress: leverageStrategyV1VaultAddress,
     strategy: 'leverageStrategy',
   },
 ]

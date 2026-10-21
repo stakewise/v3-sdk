@@ -205,23 +205,33 @@ const sendInput = {
 const estimateGasCases = [
   {
     name: 'estimateGas',
-    values: { ...metadata, feePercent: 5, admin: adminAddress },
+    uploads: 1,
     canHarvest: true,
+    values: { ...metadata, feePercent: 5, admin: adminAddress },
   },
   {
     name: 'estimateGas image only',
-    values: { image: metadata.image },
+    uploads: 1,
     canHarvest: false,
+    values: { image: metadata.image },
   },
   {
     name: 'estimateGas name only',
-    values: { displayName: metadata.displayName },
+    uploads: 1,
     canHarvest: false,
+    values: { displayName: metadata.displayName },
   },
   {
     name: 'estimateGas description only',
-    values: { description: metadata.description },
+    uploads: 1,
     canHarvest: false,
+    values: { description: metadata.description },
+  },
+  {
+    name: 'estimateGas without metadata',
+    uploads: 0,
+    canHarvest: false,
+    values: { admin: adminAddress },
   },
 ]
 
@@ -536,14 +546,16 @@ describe('operate', () => {
     await transaction.checkMulticallSend({ method: sdk.vault.operate, input: sendInput })
   })
 
-  it.for(estimateGasCases)('$name', async ({ values, canHarvest }, { sdk, graphql, transaction, mockOperate }) => {
+  it.for(estimateGasCases)('$name', async (estimateGasCase, { sdk, graphql, transaction, mockOperate }) => {
+    const { values, uploads, canHarvest } = estimateGasCase
+
     mockOperate({ canHarvest, uploadedHash: placeholderIpfsHash })
 
     await transaction.checkEstimateGas({ method: sdk.vault.operate, input: { ...input, ...values } })
 
-    const uploads = graphql.calls.filter(({ operationName }) => operationName === 'UploadMetadata')
+    const uploadCalls = graphql.calls.filter(({ operationName }) => operationName === 'UploadMetadata')
 
-    expect(uploads).toHaveLength(1)
+    expect(uploadCalls).toHaveLength(uploads)
   })
 
   it.for(roleCases)('$name', async (roleCase, { sdk, runner, mockOperate }) => {
