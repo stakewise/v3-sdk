@@ -13,6 +13,11 @@ type SendCall = [ string, Array<{ to?: string }> ]
 
 type ProbeError = Error & {
   shortMessage?: string
+  info?: {
+    error?: {
+      message?: string
+    }
+  }
 }
 
 const getCallTargets = (calls: SendCall[]) => {
@@ -25,8 +30,10 @@ const getCallTargets = (calls: SendCall[]) => {
 
 const getErrorText = (error: unknown) => {
   if (error instanceof Error) {
-    const { name, message, shortMessage, cause } = error as ProbeError
-    const text = `${name}: ${shortMessage || message}`
+    const { name, message, shortMessage, cause, info } = error as ProbeError
+    const rpcMessage = info?.error?.message?.replace(/https?:\/\/\S+/g, '<rpc url>')
+    const errorText = `${name}: ${shortMessage || message}`
+    const text = rpcMessage ? `${errorText} (rpc: ${rpcMessage})` : errorText
 
     return cause instanceof Error ? `${text} (cause: ${cause.message})` : text
   }

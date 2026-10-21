@@ -32,15 +32,10 @@ const buildMarkdown = () => {
     return [ title, '', counts ].join('\n')
   }
 
-  const rows = [ 'lines', 'branches', 'functions', 'statements' ].map((metric) => {
-    const { pct, covered, total } = coverage.total[metric]
+  const { pct, covered, total } = coverage.total.lines
+  const coverageLine = `Coverage: ${pct}% (${covered} of ${total} lines of code)`
 
-    return `| ${metric} | ${pct}% | ${covered} / ${total} |`
-  })
-
-  const head = [ '', '### Coverage (reported, not enforced)', '', '| Metric | % | Covered |', '| --- | --- | --- |' ]
-
-  return [ title, '', counts, ...head, ...rows ].join('\n')
+  return [ title, '', counts, '', coverageLine ].join('\n')
 }
 
 const {
