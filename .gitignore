@@ -9,6 +9,8 @@ dist
 cache
 coverage
 .vitest
+unit-report.json
+fork-report.json
 
 # dependencies
 node_modules

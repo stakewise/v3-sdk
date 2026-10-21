@@ -1,0 +1,19 @@
+{
+  "block": 48853487,
+  "vaultAddress": "0x2cd404d9d75436e7d6ddbccc2fb9cf7c06941bf1",
+  "harvestParams": {
+    "proof": [
+      "0x92ca62391760adc81933c7350625d21e04f530e570f15702ffdcbb68a8038631",
+      "0x2279b5f8bd2eba4d100a30dfa719966bcf85963b5a0a019a9603c4d1239e7a3b",
+      "0x2fd109fa8a5f17e75c4ec1e32f020bc6d515b4a5c64fedc63907f272f9dac153",
+      "0x3fd9d0437e48cf04a2ae220dce3b1533f7301651cc9d4b63cf4e6e4ede4e18fc",
+      "0x79af6d7492ef9d4f0dfa8d65caf85d3604d2a812b16196f44d0d617da072228f",
+      "0x3050e9b832c2d23f02ffb7cb838ea59ae31987f1b707af8508bd2dfe10169afd"
+    ],
+    "canHarvest": true,
+    "rewardsRoot": "0xf9400084a5ae21cb530c9e3d8960cea3f21f722b378755ad3f2f8fb31ed00d84",
+    "isMetaVault": false,
+    "reward": "2697233254551281250000",
+    "unlockedMevReward": "0"
+  }
+}

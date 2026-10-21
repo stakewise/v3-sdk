@@ -25,12 +25,11 @@ const input = { userAddress, vaultAddress }
 const it = baseIt.extend('mockCreateRewardSplitter', ({ sdk, runner, vaultContract }) => (
   (values: MockCreateRewardSplitterInput = {}) => {
     const { admin = userAddress } = values
-    const { rewardSplitterFactory: rewardSplitterFactoryContract } = sdk.contracts.base
 
     runner.on(vaultContract, { admin: [ admin ] })
-    runner.on(rewardSplitterFactoryContract, { createRewardSplitter: [ rewardSplitterAddress ] })
+    runner.on(sdk.contracts.base.rewardSplitterFactory, { createRewardSplitter: [ rewardSplitterAddress ] })
 
-    return rewardSplitterFactoryContract
+    return sdk.contracts.base.rewardSplitterFactory
   }
 ))
 

@@ -91,6 +91,19 @@ export const takeUnknownOperations = () => unknownOperations.splice(0)
 
 export const takeUnmockedRequests = () => unmockedRequests.splice(0)
 
+export const checkGraphqlRequests = () => {
+  const unknown = takeUnknownOperations()
+  const unmocked = takeUnmockedRequests()
+
+  if (unknown.length > 0) {
+    throw new Error(`mockGraphql got operations without a payload: ${unknown.join(', ')}`)
+  }
+
+  if (unmocked.length > 0) {
+    throw new Error(`fetch without mockGraphql: ${unmocked.join(', ')}`)
+  }
+}
+
 export const mockGraphqlError = ({ name, message, status, code }: MockGraphqlErrorInput) => {
   answers.set(name, createErrorAnswer(message, status, code))
 }

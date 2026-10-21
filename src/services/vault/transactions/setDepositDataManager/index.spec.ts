@@ -75,16 +75,15 @@ const invalidCases = [
 const it = baseIt.extend('mockSetDepositDataManager', ({ sdk, runner, vaultContract }) => (
   (values: MockSetDepositDataManagerInput = {}) => {
     const { admin = userAddress, version = 2n } = values
-    const { depositDataRegistry: depositDataRegistryContract } = sdk.contracts.base
 
     runner.on(vaultContract, {
       admin: [ admin ],
       version: [ version ],
       setKeysManager: [],
     })
-    runner.on(depositDataRegistryContract, { setDepositDataManager: [] })
+    runner.on(sdk.contracts.base.depositDataRegistry, { setDepositDataManager: [] })
 
-    return version === 1n ? vaultContract : depositDataRegistryContract
+    return version === 1n ? vaultContract : sdk.contracts.base.depositDataRegistry
   }
 ))
 

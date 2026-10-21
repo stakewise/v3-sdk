@@ -6,7 +6,13 @@ type Input = {
 
 
 const getMetadataHashMock = ({ image, displayName, description }: Input) => {
-  if (image || displayName || description) {
+  const values = [ image, displayName, description ]
+
+  if (values.every((value) => typeof value === 'undefined')) {
+    return
+  }
+
+  if (values.some(Boolean)) {
     return '00000000000000000000000000000000000000000000000000000000000'
   }
 
