@@ -10,6 +10,9 @@ type Tx = {
 }
 
 interface OriginalError extends Error {
+  code?: string | number
+  reason?: string | null
+  shortMessage?: string
   info?: { error: { data: string } }
   error?: { data: string }
   transaction: Tx
@@ -17,6 +20,10 @@ interface OriginalError extends Error {
 }
 
 class ContractError extends Error {
+  code?: string | number
+  reason?: string | null
+  shortMessage?: string
+
   constructor(error: OriginalError, prefix?: string) {
     let name = error?.name || ''
     let message = error?.message || ''
@@ -58,6 +65,9 @@ class ContractError extends Error {
     this.name = name
     this.stack = error.stack
     this.cause = error.cause
+    this.code = error.code
+    this.reason = error.reason
+    this.shortMessage = error.shortMessage
   }
 }
 
