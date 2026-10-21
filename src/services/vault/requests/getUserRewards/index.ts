@@ -1,14 +1,8 @@
 import type * as z from 'zod/mini'
 
-import {
-  apiUrls,
-  Network,
-  configs,
-  MergedReward,
-  calculateLimit,
-  mergeRewardsFiat,
-} from '../../../../helpers'
+import { apiUrls, MergedReward, calculateLimit, mergeRewardsFiat } from '../../../../helpers'
 import { wrapAbortPromise } from '../../../../modules/gql-module'
+import fetchFiatRates from '../../helpers/fetchFiatRates'
 import graphql from '../../../../graphql'
 
 import { validate, validateSchema } from './validate'
@@ -21,15 +15,6 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
 
   const { dateFrom, dateTo, vaultAddress, userAddress } = validate(input)
 
-  const isGnosis = Network.Gnosis === options.network
-
-  const subgraphUrl = apiUrls.getSubgraphqlUrl(options)
-
-  // We can't fetch GPB rates from gnosis subgraph
-  const ratesUrl = isGnosis
-    ? configs[Network.Mainnet].api.subgraph
-    : subgraphUrl
-
   const limit = calculateLimit(dateTo, dateFrom)
 
   if (limit > 1_000) {
@@ -39,9 +24,9 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
   const timestampTo = String(dateTo * 1_000)
   const timestampFrom = String(dateFrom * 1_000)
 
-  const [ rewards, networkFiatRates, gnosisFiatRates ] = await Promise.all([
+  const [ rewards, fiatRates ] = await Promise.all([
     graphql.subgraph.vault.fetchUserRewardsQuery({
-      url: subgraphUrl,
+      url: apiUrls.getSubgraphqlUrl(options),
       variables: {
         limit,
         where: {
@@ -55,38 +40,13 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
       },
       modifyResult: (data) => data?.allocator || [],
     }),
-    graphql.subgraph.stats.fetchFiatByDayQuery({
-      url: ratesUrl,
-      variables: {
-        limit,
-        dateTo: timestampTo,
-        dateFrom: timestampFrom,
-      },
-      modifyResult: (data) => data.exchangeRate || [],
+    fetchFiatRates({
+      limit,
+      options,
+      timestampTo,
+      timestampFrom,
     }),
-    isGnosis
-      ? graphql.subgraph.stats.fetchFiatByDayQuery({
-        url: subgraphUrl,
-        variables: {
-          limit,
-          dateTo: timestampTo,
-          dateFrom: timestampFrom,
-        },
-        modifyResult: (data) => (data.exchangeRate || [])
-          .reduce((acc, { timestamp, assetsUsdRate }) => ({
-            ...acc,
-            [timestamp]: assetsUsdRate,
-          }), {}),
-      })
-      : Promise.resolve({}),
   ])
-
-  const fiatRates = isGnosis
-    ? networkFiatRates.map((data) => ({
-      ...data,
-      assetsUsdRate: gnosisFiatRates[data.timestamp as keyof typeof gnosisFiatRates] || 0,
-    }))
-    : networkFiatRates
 
   return mergeRewardsFiat({
     rewards,

@@ -1,0 +1,14 @@
+query StakerRewards(
+  $where: StakerSnapshot_filter
+  $limit: Int
+) {
+  stakerSnapshots(
+    first: $limit
+    where: $where
+    orderBy: timestamp
+    orderDirection: desc
+  ) {
+    timestamp
+    earnedAssets
+  }
+}

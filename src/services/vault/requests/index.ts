@@ -35,6 +35,9 @@ export type { GetStakeBalanceInput } from './getStakeBalance'
 export { default as getUserRewards } from './getUserRewards'
 export type { GetUserRewardsInput } from './getUserRewards'
 
+export { default as getStakerRewards } from './getStakerRewards'
+export type { GetStakerRewardsInput } from './getStakerRewards'
+
 export { default as getValidators } from './getValidators'
 export type { GetValidatorsInput } from './getValidators'
 
