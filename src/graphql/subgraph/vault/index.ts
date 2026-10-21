@@ -16,6 +16,9 @@ export type { UserRewardsQueryPayload, UserRewardsQueryVariables } from './userR
 export { fetchPositionDataQuery } from './positionDataQuery.graphql'
 export type { PositionDataQueryPayload, PositionDataQueryVariables } from './positionDataQuery.graphql'
 
+export { fetchStakerRewardsQuery } from './stakerRewardsQuery.graphql'
+export type { StakerRewardsQueryPayload, StakerRewardsQueryVariables } from './stakerRewardsQuery.graphql'
+
 export { fetchHarvestParamsQuery } from './harvestParamsQuery.graphql'
 export type { HarvestParamsQueryPayload, HarvestParamsQueryVariables } from './harvestParamsQuery.graphql'
 
