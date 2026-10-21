@@ -20,7 +20,7 @@ const fetchFiatRates = async (values: FetchFiatRatesInput): Promise<FiatRates> =
 
   const subgraphUrl = apiUrls.getSubgraphqlUrl(options)
 
-  // We can't fetch GPB rates from gnosis subgraph
+  // We can't fetch GBP rates from gnosis subgraph
   const ratesUrl = isGnosis
     ? configs[Network.Mainnet].api.subgraph
     : subgraphUrl
