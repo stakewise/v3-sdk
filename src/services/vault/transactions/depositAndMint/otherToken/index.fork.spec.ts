@@ -7,6 +7,7 @@ import {
   forkAbis,
   useForkSdk,
   parseEvents,
+  gnosisAccounts,
   extendContract,
   fundDepositToken,
   getForkHarvestArgs,
@@ -15,7 +16,7 @@ import {
 } from '../../../../../../test/fork'
 
 
-const harvestedVaultAddress = '0x4b4406Ed8659D03423490D8b62a1639206dA0A7a'
+const { harvestedVaultAddress } = gnosisAccounts
 
 const assets = parseEther('1')
 const receiveShares = parseEther('0.1')

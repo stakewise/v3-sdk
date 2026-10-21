@@ -66,9 +66,16 @@ describe('updateFeeRecipients', () => {
 
     const hash = await sdk.rewardSplitter.create({ userAddress, vaultAddress })
     const receipt = await provider.waitForTransaction(hash)
+
+    expect(receipt?.status, 'the setup reward splitter creation must succeed').toBe(1)
+
     const [ created ] = await parseEvents(factoryContract, receipt)
 
-    rewardSplitterAddress = created!.args.rewardSplitter
+    if (!created) {
+      throw new Error('the setup reward splitter creation must emit RewardSplitterCreated')
+    }
+
+    rewardSplitterAddress = created.args.rewardSplitter
   }
 
   const { sdk, provider, snapshot } = useForkSdk({ setup: createRewardSplitter })

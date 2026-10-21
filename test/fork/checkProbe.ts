@@ -4,6 +4,7 @@ import { getAddress } from 'ethers'
 import classifyProbe from './classifyProbe'
 import mockForkHarvestParams from './mockForkHarvestParams'
 import type { Fork } from './useForkSdk'
+import type { ProbeResult } from './classifyProbe'
 
 
 export type ProbeCall = (fork: Fork) => Promise<unknown>
@@ -40,7 +41,7 @@ const checkProbe = async (fork: Fork, call: ProbeCall) => {
   mockForkHarvestParams(snapshot, canHarvest)
 
   const send = vi.spyOn(provider, 'send')
-  const result = await call(fork).then((value) => ({ value }), (error: unknown) => ({ error }))
+  const result: ProbeResult = await call(fork).then((value) => ({ value }), (error: unknown) => ({ error }))
   const targets = getCallTargets(send.mock.calls as SendCall[])
 
   send.mockRestore()
@@ -49,7 +50,7 @@ const checkProbe = async (fork: Fork, call: ProbeCall) => {
   const emptyTargets = targets.filter((_, index) => codes[index] === '0x')
 
   const outcome = classifyProbe(result)
-  const cause = 'error' in result ? getErrorText(result.error) : ''
+  const cause = outcome === 'success' ? '' : getErrorText(result.error)
 
   return { outcome, cause, emptyTargets }
 }

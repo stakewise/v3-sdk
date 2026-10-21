@@ -1,7 +1,14 @@
 import { describe, expect } from 'vitest'
 import { parseEther } from 'ethers'
 
-import { forkAbis, useForkSdk, parseEvents, extendContract, fundDepositToken } from '../../../../../test/fork'
+import {
+  forkAbis,
+  useForkSdk,
+  parseEvents,
+  extendContract,
+  fundDepositToken,
+  forkNetworkCases,
+} from '../../../../../test/fork'
 import { it, userAddress, decodeCalls } from '../../../../../test'
 
 import { configs, Network, VaultType, constants } from '../../../../helpers'
@@ -28,9 +35,7 @@ type CreateCase = {
 }
 
 type NetworkCase = {
-  name: string
   value: bigint
-  network: ForkNetwork
   cases: CreateCase[]
 }
 
@@ -140,20 +145,10 @@ const gnosisCases = createCases
     mevEscrow: createCase.isOwnMevEscrow ? undefined : gnosisSharedMevEscrow,
   }))
 
-const networkCases: NetworkCase[] = [
-  {
-    name: 'mainnet',
-    cases: createCases,
-    value: securityDeposit,
-    network: Network.Mainnet,
-  },
-  {
-    name: 'gnosis',
-    cases: gnosisCases,
-    value: 0n,
-    network: Network.Gnosis,
-  },
-]
+const networkCases: Record<ForkNetwork, NetworkCase> = {
+  [Network.Mainnet]: { cases: createCases, value: securityDeposit },
+  [Network.Gnosis]: { cases: gnosisCases, value: 0n },
+}
 
 const readVault = async (values: ReadVaultInput) => {
   const { sdk, vaultAddress, isErc20, isMetaVault } = values
@@ -191,9 +186,10 @@ const readVault = async (values: ReadVaultInput) => {
 }
 
 describe('createVault', () => {
-  describe.for(networkCases)('$name', ({ network, value, cases }) => {
+  describe.for(forkNetworkCases)('$name', ({ network }) => {
     const fork = useForkSdk({ network })
     const { sdk, provider } = fork
+    const { value, cases } = networkCases[network]
 
     it.for(cases)('$name', async (createCase) => {
       const { type, factory, curator, mevEscrow, vaultToken, isOwnMevEscrow } = createCase
@@ -229,7 +225,11 @@ describe('createVault', () => {
 
       expect(createdEvents).toHaveLength(1)
 
-      const { vault, ownMevEscrow } = vaultCreated!.args
+      if (!vaultCreated) {
+        throw new Error('the factory must emit VaultCreated')
+      }
+
+      const { vault, ownMevEscrow } = vaultCreated.args
 
       const created = await readVault({
         sdk,

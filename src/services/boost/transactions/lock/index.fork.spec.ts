@@ -9,6 +9,7 @@ import {
   fundAccount,
   parseEvents,
   extendContract,
+  mainnetAccounts,
   pickTransaction,
   getForkHarvestArgs,
   sendForkTransaction,
@@ -28,7 +29,8 @@ type Call = {
 
 type SendCall = [ string, Array<{ data: string }> ]
 
-const lockerAddress = '0x3f294e22455ecFcE652E2CFE1610ab7bFB4e87C9'
+const { lockerAddress } = mainnetAccounts
+
 const permitOwnerAddress = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
 
 const amount = parseEther('0.1')

@@ -18,7 +18,6 @@ const swapperAddress = '0x3333333333333333333333333333333333333333'
 
 const redeemShares = parseEther('0.1')
 const swapperGas = parseEther('1')
-const swapGasLimit = 300_000n
 
 describe('claimRedeemerExitQueue', () => {
   let positionTicket = 0n
@@ -26,7 +25,6 @@ describe('claimRedeemerExitQueue', () => {
   const processRedeemerQueue = async (setupFork: Fork) => {
     const { sdk, provider } = setupFork
     const swapperSigner = await provider.getSigner(swapperAddress)
-    const redeemerContract = extendContract(sdk.contracts.base.osTokenRedeemer, forkAbis.osTokenRedeemer)
 
     const swapperRedeemerContract = extendContract(
       sdk.contracts.base.osTokenRedeemer.connect(swapperSigner),
@@ -51,8 +49,7 @@ describe('claimRedeemerExitQueue', () => {
 
     await provider.send('anvil_setBalance', [ swapperAddress, toQuantity(swapAssets + swapperGas) ])
 
-    const swapOverrides = { value: swapAssets, gasLimit: swapGasLimit }
-    const swapTx = await swapperRedeemerContract.swapAssetsToOsTokenShares(swapperAddress, swapOverrides)
+    const swapTx = await swapperRedeemerContract.swapAssetsToOsTokenShares(swapperAddress, { value: swapAssets })
     const swapReceipt = await swapTx.wait()
 
     expect(swapReceipt?.status, 'the setup swap must succeed').toBe(1)

@@ -6,6 +6,7 @@ import {
   useForkSdk,
   fundAccount,
   extendContract,
+  mainnetAccounts,
   mockForkMetaVault,
   sendForkTransaction,
 } from '../../../../../test/fork'
@@ -13,10 +14,7 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const metaVault = {
-  metaVaultAddress: '0x03f9e15680F0164F9c1d5FBF6EAc822d6dA40F5f',
-  subVaultsRegistryAddress: '0x66343A85D2b6CE97EBb09C07f8b711B27bc300B0',
-}
+const { metaVault } = mainnetAccounts
 
 const ejectedSubVaultAddress = '0xA8cB2e35F594b308726b242136f0a8995BF19E97'
 const remainingSubVaultAddress = '0xB36Fc5e542cb4fC562a624912f55dA2758998113'

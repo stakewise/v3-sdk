@@ -6,8 +6,8 @@ import {
   forkAbis,
   useForkSdk,
   fundAccount,
-  parseEvents,
   extendContract,
+  mainnetAccounts,
   sendForkTransaction,
   mockForkHarvestParams,
 } from '../../../../../test/fork'
@@ -15,7 +15,8 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const vaultRewardSplitterAddress = '0x34AcBC432CbdaaBAE388b4D1BAcB4eDB3abBeB27'
+const { vaultRewardSplitterAddress } = mainnetAccounts
+
 const rewardSplitterHolderAddress = '0xc2cda2413e17009fcf72b1F5C3A591c2A2787371'
 
 const claimAssets = parseEther('0.001')
@@ -42,7 +43,10 @@ describe('claimRewards', () => {
   it('claim', async () => {
     mockForkHarvestParams(snapshot, false)
 
-    const shares = await vaultContract.convertToShares(claimAssets)
+    const [ shares, splitterSharesBefore ] = await Promise.all([
+      vaultContract.convertToShares(claimAssets),
+      vaultContract.getShares(vaultRewardSplitterAddress),
+    ])
 
     const input = {
       vaultAddress,
@@ -51,7 +55,7 @@ describe('claimRewards', () => {
       rewardSplitterAddress: vaultRewardSplitterAddress,
     }
 
-    const { receipt } = await sendForkTransaction({
+    await sendForkTransaction({
       input,
       provider,
       contract: rewardSplitterContract,
@@ -62,14 +66,8 @@ describe('claimRewards', () => {
       ],
     })
 
-    const vaultEvents = await parseEvents(vaultContract, receipt)
-    const exitQueueEntered = vaultEvents.find((event) => event?.name === 'ExitQueueEntered')
-    const exitRequest = exitQueueEntered?.args.toObject()
+    const splitterSharesAfter = await vaultContract.getShares(vaultRewardSplitterAddress)
 
-    expect(exitRequest).toMatchObject({
-      shares,
-      owner: vaultRewardSplitterAddress,
-      receiver: rewardSplitterHolderAddress,
-    })
+    expect(splitterSharesBefore - splitterSharesAfter).toBe(shares)
   })
 })

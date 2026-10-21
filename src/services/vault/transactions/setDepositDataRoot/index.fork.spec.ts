@@ -47,8 +47,8 @@ describe('setDepositDataRoot', () => {
     await sendForkTransaction({
       input,
       provider,
-      contract: depositDataRegistryContract,
       method: sdk.vault.setDepositDataRoot,
+      contract: depositDataRegistryContract,
       calls: [ { name: 'setDepositDataRoot', args: [ vaultAddress, depositDataRoot ] } ],
     })
 

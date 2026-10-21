@@ -9,6 +9,7 @@ import {
   lockToFork,
   parseEvents,
   extendContract,
+  mainnetAccounts,
   pickTransaction,
   sendForkTransaction,
   mockForkHarvestParams,
@@ -18,7 +19,7 @@ import type { Fork } from '../../../../../test/fork'
 import type { LeverageStrategyDataQueryPayload } from '../../../../graphql/subgraph/boost'
 
 
-const lockerAddress = '0x3f294e22455ecFcE652E2CFE1610ab7bFB4e87C9'
+const { lockerAddress } = mainnetAccounts
 
 const lockAmount = parseEther('0.1')
 const fullPositionPercent = parseEther('1')

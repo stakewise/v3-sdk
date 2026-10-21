@@ -11,11 +11,11 @@ import {
   sendForkTransaction,
 } from '../../../../../test/fork'
 
-import type { Fork } from '../../../../../test/fork'
+import type { Fork, ForkMetaVault } from '../../../../../test/fork'
 
 
 describe('addSubVault', () => {
-  let metaVault = { metaVaultAddress: '', subVaultsRegistryAddress: '' }
+  let metaVault: ForkMetaVault
 
   const createMetaVault = async (setupFork: Fork) => {
     metaVault = await createForkMetaVault(setupFork)

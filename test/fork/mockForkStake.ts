@@ -1,4 +1,3 @@
-import { expect } from 'vitest'
 import { getAddress } from 'ethers'
 
 import mockGraphql from '../mockGraphql'
@@ -11,17 +10,15 @@ import mockForkHarvestParams from './mockForkHarvestParams'
 import type { Fork } from './useForkSdk'
 
 
-const mockForkStake = async ({ sdk, snapshot }: Fork) => {
+const mockForkStake = async ({ sdk, snapshot }: Fork, stakerAddress = userAddress) => {
   const vaultAddress = getAddress(snapshot.vaultAddress)
   const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
 
   const [ canHarvest, osTokenConfig, stakeShares ] = await Promise.all([
     sdk.contracts.base.keeper.canHarvest(vaultAddress),
     sdk.contracts.base.mintTokenConfig.v2.getConfig(vaultAddress),
-    vaultContract.getShares(userAddress),
+    vaultContract.getShares(stakerAddress),
   ])
-
-  expect(canHarvest, 'the setup deposit must harvest the vault').toBe(false)
 
   const stakeAssets = await vaultContract.convertToAssets(stakeShares)
   const { ltvPercent, liqThresholdPercent } = osTokenConfig

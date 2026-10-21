@@ -7,6 +7,8 @@ import { it, userAddress } from '..'
 
 import useForkSdk from './useForkSdk'
 import checkProbe from './checkProbe'
+import { mainnetAccounts } from './accounts'
+import { forkNetworkCases } from './constants'
 import mockForkMetaVault from './mockForkMetaVault'
 
 import type { Fork } from './useForkSdk'
@@ -21,15 +23,8 @@ type ContractErrorCase = {
   expected: Extract<ProbeExpected, { error: string }>
 }
 
-type NetworkCase = {
-  name: string
-  network: ForkNetwork
-  cases: ContractErrorCase[]
-}
+const { lockerAddress, metaVault } = mainnetAccounts
 
-const lockerAddress = '0x3f294e22455ecFcE652E2CFE1610ab7bFB4e87C9'
-const metaVaultAddress = '0x03f9e15680F0164F9c1d5FBF6EAc822d6dA40F5f'
-const subVaultsRegistryAddress = '0x66343A85D2b6CE97EBb09C07f8b711B27bc300B0'
 const gnosisHolderAddress = '0xb5814811dC4fC2aC127A1F8Fb708460bF9Fad619'
 
 const shares = parseEther('0.1')
@@ -40,10 +35,8 @@ const getBaseInput = ({ snapshot }: Fork) => ({ userAddress, vaultAddress: getAd
 const getMetaVaultInput = (fork: Fork) => {
   const { vaultAddress } = getBaseInput(fork)
 
-  return { userAddress, vaultAddress: metaVaultAddress, subVaultAddress: vaultAddress }
+  return { userAddress, vaultAddress: metaVault.metaVaultAddress, subVaultAddress: vaultAddress }
 }
-
-const mockMetaVault = () => mockForkMetaVault({ metaVaultAddress, subVaultsRegistryAddress })
 
 const sharedCases: ContractErrorCase[] = [
   {
@@ -77,7 +70,7 @@ const mainnetCases: ContractErrorCase[] = [
   {
     name: 'W13 addSubVault',
     call: (fork) => {
-      mockMetaVault()
+      mockForkMetaVault(metaVault)
 
       return fork.sdk.vault.addSubVault.estimateGas(getMetaVaultInput(fork))
     },
@@ -86,7 +79,7 @@ const mainnetCases: ContractErrorCase[] = [
   {
     name: 'W14 rejectSubVault',
     call: (fork) => {
-      mockMetaVault()
+      mockForkMetaVault(metaVault)
 
       return fork.sdk.vault.rejectSubVault.estimateGas(getMetaVaultInput(fork))
     },
@@ -95,7 +88,7 @@ const mainnetCases: ContractErrorCase[] = [
   {
     name: 'W15 ejectSubVault',
     call: (fork) => {
-      mockMetaVault()
+      mockForkMetaVault(metaVault)
 
       return fork.sdk.vault.ejectSubVault.estimateGas(getMetaVaultInput(fork))
     },
@@ -129,16 +122,16 @@ const gnosisCases: ContractErrorCase[] = [
   },
 ]
 
-const networkCases: NetworkCase[] = [
-  { name: 'mainnet', network: Network.Mainnet, cases: [ ...sharedCases, ...mainnetCases ] },
-  { name: 'gnosis', network: Network.Gnosis, cases: [ ...sharedCases, ...gnosisCases ] },
-]
+const networkCases: Record<ForkNetwork, ContractErrorCase[]> = {
+  [Network.Mainnet]: [ ...sharedCases, ...mainnetCases ],
+  [Network.Gnosis]: [ ...sharedCases, ...gnosisCases ],
+}
 
 describe('contract errors', () => {
-  describe.for(networkCases)('$name', ({ network, cases }) => {
+  describe.for(forkNetworkCases)('$name', ({ network }) => {
     const fork = useForkSdk({ network })
 
-    it.for(cases)('$name', async ({ call, expected }) => {
+    it.for(networkCases[network])('$name', async ({ call, expected }) => {
       const probed = await checkProbe(fork, call)
 
       expect(probed).toEqual({ outcome: expected, cause: expect.any(String), emptyTargets: [] })
