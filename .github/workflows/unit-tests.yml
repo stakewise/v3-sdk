@@ -37,10 +37,11 @@ jobs:
 
       - name: Upload coverage
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/lcov.info
+          disable_search: true
 
       - name: Tests summary
         if: always()
