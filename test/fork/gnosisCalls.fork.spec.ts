@@ -13,17 +13,14 @@ import useForkSdk from './useForkSdk'
 import checkProbe from './checkProbe'
 import { getSnapshot } from './snapshots'
 import fundAccount from './fundAccount'
+import { gnosisAccounts } from './accounts'
 import fundVaultAdmin from './fundVaultAdmin'
+import mockForkStake from './mockForkStake'
 import mockForkHarvestParams from './mockForkHarvestParams'
 
 import type { Fork } from './useForkSdk'
 import type { ProbeCall } from './checkProbe'
-import type { AllocatorsQueryPayload } from '../../src/graphql/subgraph/allocator'
-import type {
-  VaultQueryPayload,
-  PositionDataQueryPayload,
-  VaultOsTokenConfigQueryPayload,
-} from '../../src/graphql/subgraph/vault'
+import type { VaultQueryPayload, PositionDataQueryPayload } from '../../src/graphql/subgraph/vault'
 
 
 type GnosisCase = {
@@ -33,10 +30,10 @@ type GnosisCase = {
 
 const snapshot = getSnapshot(Network.Gnosis)
 const vaultAddress = getAddress(snapshot.vaultAddress)
+const { harvestedVaultAddress } = gnosisAccounts
 
 const stakerAddress = '0x458cD345B4C05e8DF39d0A07220feb4Ec19F5e6f'
 const plainStakerAddress = '0x39D787fdf7384597C7208644dBb6FDa1CcA4eBdf'
-const splitterVaultAddress = '0x4b4406Ed8659D03423490D8b62a1639206dA0A7a'
 const splitterOwnerAddress = '0x6Da6B1EfCCb7216078B9004535941b71EeD30b0F'
 const rewardSplitterAddress = '0xcB5d7a903158e563810849b7672e064E3B8D01a3'
 const splitterHolderAddress = '0x907180814C494EA77bD7c4691f2212F563E88ff5'
@@ -53,50 +50,6 @@ const mockVault = (vault: Partial<VaultQueryPayload['vault']>) => mockGraphql<Va
   data: { vault: { ...vaultQuery.vault, ...vault } },
 })
 
-const mockStake = async ({ sdk }: Fork) => {
-  const vaultContract = sdk.contracts.helpers.createVault({ vaultAddress })
-
-  const [ osTokenConfig, stakeShares ] = await Promise.all([
-    sdk.contracts.base.mintTokenConfig.v2.getConfig(vaultAddress),
-    vaultContract.getShares(stakerAddress),
-  ])
-
-  const stakeAssets = String(await vaultContract.convertToAssets(stakeShares))
-  const { ltvPercent, liqThresholdPercent } = osTokenConfig
-
-  mockGraphql<VaultOsTokenConfigQueryPayload>({
-    name: 'VaultOsTokenConfig',
-    data: {
-      vault: {
-        osTokenConfig: {
-          ltvPercent: String(ltvPercent),
-          liqThresholdPercent: String(liqThresholdPercent),
-        },
-      },
-    },
-  })
-
-  mockGraphql<AllocatorsQueryPayload>({
-    name: 'Allocators',
-    data: {
-      allocators: [
-        {
-          apy: '0',
-          assets: stakeAssets,
-          totalEarnedAssets: '0',
-          totalStakeEarnedAssets: '0',
-          totalBoostEarnedAssets: '0',
-        },
-      ],
-    },
-  })
-
-  mockGraphql<PositionDataQueryPayload>({
-    name: 'PositionData',
-    data: { ...allocatorPosition.positionData, leverageStrategyPositions: [] },
-  })
-}
-
 const getAdminInput = async (fork: Fork) => {
   const adminAddress = await fundVaultAdmin(fork)
 
@@ -108,7 +61,7 @@ const getSplitterInput = async ({ provider }: Fork) => {
 
   mockForkHarvestParams(snapshot, false)
 
-  return { userAddress: splitterOwnerAddress, vaultAddress: splitterVaultAddress }
+  return { userAddress: splitterOwnerAddress, vaultAddress: harvestedVaultAddress }
 }
 
 const gnosisCases: GnosisCase[] = [
@@ -240,7 +193,14 @@ const gnosisCases: GnosisCase[] = [
   },
   {
     name: 'R11 getPositionData',
-    call: async ({ sdk }) => sdk.vault.getPositionData(stakeInput),
+    call: async ({ sdk }) => {
+      mockGraphql<PositionDataQueryPayload>({
+        name: 'PositionData',
+        data: { ...allocatorPosition.positionData, leverageStrategyPositions: [] },
+      })
+
+      return sdk.vault.getPositionData(stakeInput)
+    },
   },
 ]
 
@@ -248,7 +208,7 @@ describe('gnosis calls', () => {
   const fork = useForkSdk({ network: Network.Gnosis })
 
   it.for(gnosisCases)('$name', async ({ call }) => {
-    await mockStake(fork)
+    await mockForkStake(fork, stakerAddress)
 
     const probed = await checkProbe(fork, call)
 

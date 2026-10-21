@@ -10,7 +10,12 @@ import extendContract from './extendContract'
 import type { Fork } from './useForkSdk'
 
 
-const createForkMetaVault = async ({ sdk, provider }: Fork) => {
+export type ForkMetaVault = {
+  metaVaultAddress: string
+  subVaultsRegistryAddress: string
+}
+
+const createForkMetaVault = async ({ sdk, provider }: Fork): Promise<ForkMetaVault> => {
   const factoryContract = extendContract(sdk.contracts.factories.metavault, forkAbis.vaultFactory)
 
   const hash = await sdk.vault.create({ userAddress, type: VaultType.MetaVault })

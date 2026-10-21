@@ -8,6 +8,7 @@ import {
   lockToFork,
   parseEvents,
   extendContract,
+  mainnetAccounts,
   sendForkTransaction,
   mockForkHarvestParams,
 } from '../../../../../test/fork'
@@ -15,7 +16,7 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const lockerAddress = '0x3f294e22455ecFcE652E2CFE1610ab7bFB4e87C9'
+const { lockerAddress } = mainnetAccounts
 
 const keeperRewardsSlot = 6
 const claimDelaySeconds = 57_600

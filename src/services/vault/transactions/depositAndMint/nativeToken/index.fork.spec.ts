@@ -7,13 +7,14 @@ import {
   useForkSdk,
   parseEvents,
   extendContract,
+  mainnetAccounts,
   getForkHarvestArgs,
   sendForkTransaction,
   mockForkHarvestParams,
 } from '../../../../../../test/fork'
 
 
-const harvestedVaultAddress = '0xAC0F906E433d58FA868F936E8A43230473652885'
+const { boostVaultAddress } = mainnetAccounts
 
 const assets = parseEther('1')
 const receiveShares = parseEther('0.1')
@@ -35,7 +36,7 @@ describe('depositAndMint', () => {
     {
       name: 'without updateState',
       canHarvest: false,
-      vaultAddress: harvestedVaultAddress,
+      vaultAddress: boostVaultAddress,
       call: {
         name: 'depositAndMintOsToken',
         args: [ userAddress, receiveShares, ZeroAddress ],

@@ -2,10 +2,17 @@ import { describe, expect } from 'vitest'
 import { getAddress } from 'ethers'
 
 import { it, userAddress } from '../../../../../test'
-import { forkAbis, useForkSdk, extendContract, fundVaultAdmin, sendForkTransaction } from '../../../../../test/fork'
+import {
+  forkAbis,
+  useForkSdk,
+  extendContract,
+  fundVaultAdmin,
+  mainnetAccounts,
+  sendForkTransaction,
+} from '../../../../../test/fork'
 
 
-const vaultRewardSplitterAddress = '0x34AcBC432CbdaaBAE388b4D1BAcB4eDB3abBeB27'
+const { vaultRewardSplitterAddress } = mainnetAccounts
 
 describe('setClaimer', () => {
   const { sdk, provider, snapshot } = useForkSdk({ setup: fundVaultAdmin })

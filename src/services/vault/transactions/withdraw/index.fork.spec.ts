@@ -5,6 +5,7 @@ import { it, userAddress } from '../../../../../test'
 import {
   useForkSdk,
   depositToFork,
+  mainnetAccounts,
   forkNetworkCases,
   sendForkTransaction,
   mockForkHarvestParams,
@@ -13,7 +14,7 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const v1VaultAddress = '0x475064D69bE1933C3EC0301A7397b0a667993f95'
+const { v1VaultAddress } = mainnetAccounts
 
 const depositAssets = parseEther('1')
 const withdrawAssets = parseEther('0.5')

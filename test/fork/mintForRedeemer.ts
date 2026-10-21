@@ -1,22 +1,15 @@
 import { expect } from 'vitest'
-import { getAddress, parseEther } from 'ethers'
 
 import { userAddress } from '../constants'
 
-import mintToFork from './mintToFork'
-import depositToFork from './depositToFork'
+import depositAndMintToFork from './depositAndMintToFork'
 import type { Fork } from './useForkSdk'
 
 
-const depositAssets = parseEther('1')
-
 const mintForRedeemer = async (fork: Fork, shares: bigint) => {
-  const { sdk, provider, snapshot } = fork
-  const vaultAddress = getAddress(snapshot.vaultAddress)
-  const baseInput = { userAddress, vaultAddress }
+  const { sdk, provider } = fork
 
-  await depositToFork({ ...fork, input: { ...baseInput, assets: depositAssets } })
-  await mintToFork({ ...fork, input: { ...baseInput, shares } })
+  await depositAndMintToFork(fork, shares)
 
   const signer = await provider.getSigner(userAddress)
   const redeemerAddress = await sdk.contracts.base.osTokenRedeemer.getAddress()

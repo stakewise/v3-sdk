@@ -2,21 +2,14 @@ import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
 import { it, userAddress } from '../../../../../test'
-import { useForkSdk, mintToFork, depositToFork, forkNetworkCases, sendForkTransaction } from '../../../../../test/fork'
+import { useForkSdk, forkNetworkCases, sendForkTransaction, depositAndMintToFork } from '../../../../../test/fork'
 
 import type { Fork } from '../../../../../test/fork'
 
 
-const depositAssets = parseEther('1')
 const mintShares = parseEther('0.1')
 
-const depositAndMint = async (setupFork: Fork) => {
-  const vaultAddress = getAddress(setupFork.snapshot.vaultAddress)
-  const baseInput = { userAddress, vaultAddress }
-
-  await depositToFork({ ...setupFork, input: { ...baseInput, assets: depositAssets } })
-  await mintToFork({ ...setupFork, input: { ...baseInput, shares: mintShares } })
-}
+const depositAndMint = (setupFork: Fork) => depositAndMintToFork(setupFork, mintShares)
 
 describe('burn', () => {
   describe.for(forkNetworkCases)('$name', ({ network }) => {

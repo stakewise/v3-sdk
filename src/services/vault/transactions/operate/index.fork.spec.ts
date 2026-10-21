@@ -30,7 +30,6 @@ const feePercent = 5
 const feeBasisPoints = BigInt(feePercent * 100)
 
 describe('operate', () => {
-  let adminAddress = ''
   let privateVaultAddress = ''
   let blocklistVaultAddress = ''
 
@@ -53,7 +52,7 @@ describe('operate', () => {
   }
 
   const createVaults = async (setupFork: Fork) => {
-    adminAddress = await fundVaultAdmin(setupFork)
+    await fundVaultAdmin(setupFork)
     privateVaultAddress = await createVault(setupFork, VaultType.Private, 'privateVault')
     blocklistVaultAddress = await createVault(setupFork, VaultType.Blocklist, 'blocklistVault')
   }
@@ -69,6 +68,7 @@ describe('operate', () => {
 
   it('vault admin', async () => {
     const vaultContract = getVaultContract(vaultAddress)
+    const adminAddress = await vaultContract.admin()
 
     const input = {
       ...metadata,

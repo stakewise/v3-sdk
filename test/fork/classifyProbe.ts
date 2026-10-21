@@ -6,7 +6,7 @@ import ContractError from '../../src/helpers/wrapErrorHandler/ContractError'
 
 export type ProbeExpected = 'success' | { error: string }
 
-type ProbeResult = {
+export type ProbeResult = {
   value?: unknown
   error?: unknown
 }

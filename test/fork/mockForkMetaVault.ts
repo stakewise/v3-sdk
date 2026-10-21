@@ -3,13 +3,10 @@ import vaultQuery from '../mocks/vaultQuery'
 
 import type { VaultQueryPayload } from '../../src/graphql/subgraph/vault'
 
+import type { ForkMetaVault } from './createForkMetaVault'
 
-type Input = {
-  metaVaultAddress: string
-  subVaultsRegistryAddress: string
-}
 
-const mockForkMetaVault = ({ metaVaultAddress, subVaultsRegistryAddress }: Input) => mockGraphql<VaultQueryPayload>({
+const mockForkMetaVault = ({ metaVaultAddress, subVaultsRegistryAddress }: ForkMetaVault) => mockGraphql<VaultQueryPayload>({
   name: 'Vault',
   data: {
     vault: {

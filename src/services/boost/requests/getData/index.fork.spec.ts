@@ -3,13 +3,12 @@ import { parseEther } from 'ethers'
 
 import { it } from '../../../../../test'
 import mockGraphql from '../../../../../test/mockGraphql'
-import { forkAbis, useForkSdk, extendContract } from '../../../../../test/fork'
+import { forkAbis, useForkSdk, extendContract, mainnetAccounts } from '../../../../../test/fork'
 
 import type { AavePositionsQueryPayload, BoostMainDataQueryPayload } from '../../../../graphql/subgraph/boost'
 
 
-const boosterAddress = '0xf04D6930c42cb324D350ab85ec61cf65EC6EffE1'
-const boostVaultAddress = '0xAC0F906E433d58FA868F936E8A43230473652885'
+const { boosterAddress, boostVaultAddress } = mainnetAccounts
 
 const borrowLtv = '0.93'
 const vaultApy = '3.5'

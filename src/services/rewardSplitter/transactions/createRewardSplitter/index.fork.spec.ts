@@ -22,10 +22,15 @@ describe('createRewardSplitter', () => {
     })
 
     const events = await parseEvents(factoryContract, receipt)
+    const [ created ] = events
 
     expect(events).toHaveLength(1)
 
-    const { owner, vault, rewardSplitter } = events[0]!.args
+    if (!created) {
+      throw new Error('the factory must emit RewardSplitterCreated')
+    }
+
+    const { owner, vault, rewardSplitter } = created.args
     const rewardSplitterContract = extendContract(
       sdk.contracts.helpers.createRewardSplitter(rewardSplitter),
       forkAbis.rewardSplitter

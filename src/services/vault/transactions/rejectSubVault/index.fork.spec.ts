@@ -6,18 +6,19 @@ import {
   forkAbis,
   useForkSdk,
   extendContract,
+  mainnetAccounts,
   mockForkMetaVault,
   createForkMetaVault,
   sendForkTransaction,
 } from '../../../../../test/fork'
 
-import type { Fork } from '../../../../../test/fork'
+import type { Fork, ForkMetaVault } from '../../../../../test/fork'
 
 
-const proposedMetaVaultAddress = '0x03f9e15680F0164F9c1d5FBF6EAc822d6dA40F5f'
+const proposedMetaVaultAddress = mainnetAccounts.metaVault.metaVaultAddress
 
 describe('rejectSubVault', () => {
-  let metaVault = { metaVaultAddress: '', subVaultsRegistryAddress: '' }
+  let metaVault: ForkMetaVault
 
   const proposeMetaSubVault = async (setupFork: Fork) => {
     const { sdk, provider } = setupFork
