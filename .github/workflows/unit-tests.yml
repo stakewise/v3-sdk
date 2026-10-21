@@ -3,6 +3,8 @@ name: Unit tests
 on:
   pull_request:
     branches: [ main, prod ]
+  push:
+    branches: [ main ]
 
 jobs:
   audit:
@@ -10,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
         contents: read
+        id-token: write
         pull-requests: write
     steps:
       - name: Checkout 🛎️
@@ -32,6 +35,14 @@ jobs:
 
       - name: Checking
         run: pnpm prepare && pnpm lint && pnpm typecheck:test && pnpm test:coverage --reporter=default --reporter=json --outputFile=unit-report.json
+
+      - name: Upload coverage
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5
+        with:
+          use_oidc: true
+          files: coverage/lcov.info
+          disable_search: true
 
       - name: Tests summary
         if: always()

@@ -9,7 +9,7 @@ export default defineConfig({
     unstubGlobals: true,
     coverage: {
       provider: 'v8',
-      reporter: [ 'text', 'json-summary' ],
+      reporter: [ 'text', 'lcovonly', 'json-summary' ],
       include: [ 'src/**/*.ts' ],
       exclude: [
         'src/**/*.spec.ts',

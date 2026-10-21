@@ -13,6 +13,7 @@ The official SDK designed for effortless data retrieval from the StakeWise platf
 ![Size](https://img.shields.io/bundlephobia/min/@stakewise/v3-sdk?label=Size)
 ![Ethers version](https://img.shields.io/badge/ethers-%5E6.14.3-purple)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
+![Coverage](https://codecov.io/gh/stakewise/v3-sdk/graph/badge.svg)
 ![GitHub issues](https://img.shields.io/github/issues-raw/stakewise/v3-sdk)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/stakewise/v3-sdk)
 ![GitHub forks](https://img.shields.io/github/forks/stakewise/v3-sdk)
