@@ -13,9 +13,9 @@ type StartInput = {
   network: ForkNetwork
 }
 
-const rpcRetries = 10
+const rpcRetries = 30
 const rpcTimeoutMs = 30_000
-const rpcRetryBackoffMs = 1_000
+const rpcRetryBackoffMs = 2_000
 
 const checkIsAnvilReady = async (rpcUrl: string) => {
   try {
