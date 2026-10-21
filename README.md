@@ -10,7 +10,7 @@
 The official SDK designed for effortless data retrieval from the StakeWise platform. This SDK provides a streamlined interface over GraphQL requests and contract interactions.
 
 ![Version](https://img.shields.io/npm/v/@stakewise/v3-sdk)
-![Size](https://img.shields.io/bundlephobia/min/@stakewise/v3-sdk?label=Size)
+![Size](https://img.shields.io/npm/unpacked-size/@stakewise/v3-sdk?label=Size)
 ![Ethers version](https://img.shields.io/badge/ethers-%5E6.14.3-purple)
 ![Unit Tests](https://github.com/stakewise/v3-sdk/actions/workflows/unit-tests.yml/badge.svg)
 ![Coverage](https://codecov.io/gh/stakewise/v3-sdk/graph/badge.svg)
