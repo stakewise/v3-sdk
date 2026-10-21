@@ -13,7 +13,7 @@ type StartInput = {
   network: ForkNetwork
 }
 
-const rpcRetries = 30
+const rpcRetries = 15
 const rpcTimeoutMs = 30_000
 const rpcRetryBackoffMs = 1_000
 
