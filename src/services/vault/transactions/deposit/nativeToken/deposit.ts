@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { DepositInput } from '../types'
-import { wrapErrorHandler } from '../../../../../helpers'
+import { sendWithGasMargin } from '../../../../../helpers'
 
 
 const deposit = async (values: DepositInput) => {
@@ -12,18 +12,12 @@ const deposit = async (values: DepositInput) => {
   const signedContract = vaultContract.connect(signer)
 
   if (canHarvest) {
-    const response = await wrapErrorHandler(
-      signedContract.updateStateAndDeposit(...updateStateParams),
-      'transaction'
-    )
+    const response = await sendWithGasMargin(signedContract.updateStateAndDeposit, updateStateParams)
 
     return response.hash
   }
   else {
-    const response = await  wrapErrorHandler(
-      signedContract.deposit(...baseParams),
-      'transaction'
-    )
+    const response = await sendWithGasMargin(signedContract.deposit, baseParams)
 
     return response.hash
   }

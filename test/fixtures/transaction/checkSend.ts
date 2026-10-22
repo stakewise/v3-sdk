@@ -1,10 +1,10 @@
 import { expect } from 'vitest'
 
-import { estimatedGas } from '../../constants'
+import { sendGasLimit } from '../../constants'
 
 import type { FixtureMethod } from '../types'
 
-import { checkSentTransaction } from './helpers'
+import { checkSentTransaction, checkRecordedTransaction } from './helpers'
 import type { CheckSendInput } from './helpers'
 
 
@@ -17,8 +17,13 @@ type CheckSendValues<Input> = CheckSendInput<Input> & {
 export type CheckSend = <Input>(values: CheckSendValues<Input>) => Promise<void>
 
 export const createCheckSend: Wrapper = ({ runner }) => async (values) => {
-  const { gasLimit = estimatedGas } = values
-  const { sent } = await checkSentTransaction({ ...values, runner })
+  const { gasLimit = sendGasLimit } = values
+  const { sent, encoded } = await checkSentTransaction({ ...values, runner })
 
   expect(sent.gasLimit).toBe(gasLimit)
+  expect(runner.estimated).toHaveLength(1)
+
+  const [ estimated ] = runner.estimated
+
+  checkRecordedTransaction(estimated, encoded)
 }

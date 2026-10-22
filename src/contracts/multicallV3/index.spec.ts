@@ -3,7 +3,7 @@ import type { Mock } from 'vitest'
 import { Interface } from 'ethers'
 import type { Signer } from 'ethers'
 
-import { it } from '../../../test'
+import { it, estimatedGas } from '../../../test'
 
 import createMulticallV3 from './index'
 import type { MulticallV3Call } from './types'
@@ -37,7 +37,7 @@ type Result = {
 
 type MulticallContract = {
   connect: Mock
-  aggregate3: Mock & { staticCall: Mock }
+  aggregate3: Mock & { staticCall: Mock, estimateGas: Mock, getFragment: Mock }
 }
 
 type ResultCase = {
@@ -51,6 +51,8 @@ const createMulticallContract = (results: Result[]): MulticallContract => {
   const aggregate3 = vi.fn(async () => ({ hash: txHash })) as MulticallContract['aggregate3']
 
   aggregate3.staticCall = vi.fn(async () => results)
+  aggregate3.estimateGas = vi.fn(async () => estimatedGas)
+  aggregate3.getFragment = vi.fn(() => ({ inputs: [ 'calls' ] }))
 
   const contract: MulticallContract = {
     aggregate3,
@@ -71,6 +73,7 @@ const failure = (): Result => ({
 })
 
 const signer = {} as Signer
+const gasLimit = estimatedGas * 130n / 100n
 
 const resultCases: ResultCase[] = [
   {
@@ -225,7 +228,7 @@ describe('createMulticallV3', () => {
         allowFailure: false,
         callData: updateStateData,
       },
-    ])
+    ], { gasLimit })
   })
 
   it('forward allowFailure', async () => {
@@ -248,7 +251,7 @@ describe('createMulticallV3', () => {
         allowFailure: true,
         callData: updateStateData,
       },
-    ])
+    ], { gasLimit })
   })
 
   it('failure not allowed', async () => {

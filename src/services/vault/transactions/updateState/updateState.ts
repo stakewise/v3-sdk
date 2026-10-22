@@ -1,5 +1,5 @@
 import { commonLogic } from './common'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 import type { UpdateStateInput } from './types'
 
 
@@ -16,10 +16,7 @@ const updateState = async (values: UpdateStateInput) => {
     return ''
   }
 
-  const response = await wrapErrorHandler(
-    signedContract.updateState(harvestArgs),
-    'transaction'
-  )
+  const response = await sendWithGasMargin(signedContract.updateState, [ harvestArgs ])
 
   return response.hash
 }

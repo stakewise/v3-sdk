@@ -1,6 +1,6 @@
 import { expect } from 'vitest'
 
-import { estimatedGas, sendGasLimit } from '../../constants'
+import { sendGasLimit } from '../../constants'
 
 import type { FixtureMethod } from '../types'
 
@@ -22,20 +22,11 @@ export const createCheckSendList: Wrapper = ({ runner }) => async ({ method, inp
   expect(hash).toBe(lastHash)
   expect(runner.sent).toHaveLength(expected.length)
 
-  const sent = [ ...runner.sent ]
-  const last = sent.pop()!
-  const lastExpected = expected.pop()!
+  expect(runner.estimated).toHaveLength(expected.length)
 
-  sent.forEach((transaction, index) => {
+  runner.sent.forEach((transaction, index) => {
     checkRecordedTransaction(transaction, expected[index])
-    expect(transaction.gasLimit).toBe(estimatedGas)
+    checkRecordedTransaction(runner.estimated[index], expected[index])
+    expect(transaction.gasLimit).toBe(sendGasLimit)
   })
-
-  checkRecordedTransaction(last, lastExpected)
-  expect(last.gasLimit).toBe(sendGasLimit)
-  expect(runner.estimated).toHaveLength(1)
-
-  const [ estimated ] = runner.estimated
-
-  checkRecordedTransaction(estimated, lastExpected)
 }

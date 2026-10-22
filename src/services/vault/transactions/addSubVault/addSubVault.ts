@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import { checkAccess } from '../util'
 import type { AddSubVaultInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 
 
 const addSubVault = checkAccess<AddSubVaultInput>(async (values) => {
@@ -12,10 +12,7 @@ const addSubVault = checkAccess<AddSubVaultInput>(async (values) => {
   const contract = await commonLogic(values)
   const signedContract = contract.connect(signer)
 
-  const result = await wrapErrorHandler(
-    signedContract.addSubVault(subVaultAddress),
-    'transaction'
-  )
+  const result = await sendWithGasMargin(signedContract.addSubVault, [ subVaultAddress ])
 
   return result?.hash
 })
