@@ -34,3 +34,19 @@ type Call = {
 Lets a single call revert without reverting the whole batch. The batch simulation no longer throws for
 such a call, and its result is omitted from the decoded output. Intended for permissionless calls that
 another party may have already performed — the user gets a successful transaction instead of a revert
+
+### 2. sdk.contracts.helpers.createMulticall
+
+When created with a signer, the batch is sent with a gas limit of the estimate plus 30%
+
+## Gas limit
+
+Every transaction method now sends the transaction with a gas limit of the estimate plus 10%
+(`osToken.burn` keeps 30%). Before, only the methods built on the own multicalls had the margin,
+the direct contract calls (`vault.deposit` and `vault.depositAndMint` with the native token, `vault.updateState`,
+`vault.createVault`, `osToken.redeemerWithdraw`, `distributorRewards.claim` and others) were sent with the bare estimate.
+
+## Contract errors
+
+The errors thrown by the transaction methods keep the `code`, `reason` and `shortMessage` fields of the ethers error,
+so a wallet rejection can be detected by `code === 'ACTION_REJECTED'`
