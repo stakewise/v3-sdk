@@ -13,6 +13,7 @@ import {
   getVaultFactory, GetVaultFactoryInput,
   getPositionData, GetPositionDataInput,
   getStakerActions, GetStakerActionsInput,
+  getStakerRewards, GetStakerRewardsInput,
   getOsTokenConfig, GetOsTokenConfigInput,
   getHarvestParams, GetHarvestParamsInput,
   getRewardSplitters, GetRewardSplittersInput,
@@ -104,6 +105,14 @@ class Vault extends VaultTransactions {
    */
   public getUserRewards(values: StakeWise.ExtractInput<GetUserRewardsInput>) {
     return getUserRewards({ ...this.params, ...values })
+  }
+
+  /**
+   * Daily net rewards for the staker across wallet, mint and boost.
+   * @see https://docs.stakewise.io/sdk/api/vault/requests/getstakerrewards
+   */
+  public getStakerRewards(values: StakeWise.ExtractInput<GetStakerRewardsInput>) {
+    return getStakerRewards({ ...this.params, ...values })
   }
 
   /**

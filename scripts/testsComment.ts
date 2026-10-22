@@ -15,9 +15,55 @@ const readJson = (filePath = '') => {
   }
 }
 
+const readLcov = () => {
+  try {
+    return readFileSync('coverage/lcov.info', 'utf-8')
+  }
+  catch {
+    return ''
+  }
+}
+
+const getCoveredLines = (record: string) => {
+  const counts = new Map<string, number>()
+  const branches = new Map<string, number[]>()
+
+  record.split('\n').forEach((row) => {
+    const [ type, data = '' ] = row.split(':')
+    const [ line, ...values ] = data.split(',')
+
+    if (type === 'DA') {
+      counts.set(line, Number(values[0]))
+    }
+
+    if (type === 'BRDA') {
+      const taken = values[2] === '-' ? 0 : Number(values[2])
+
+      branches.set(line, [ ...(branches.get(line) || []), taken ])
+    }
+  })
+
+  const lines = new Set([ ...counts.keys(), ...branches.keys() ])
+
+  return [ ...lines ].map((line) => {
+    const lineBranches = branches.get(line)
+
+    return lineBranches ? lineBranches.every(Boolean) : Boolean(counts.get(line))
+  })
+}
+
+const getCoverage = () => {
+  const lines = readLcov().split('end_of_record').flatMap(getCoveredLines)
+  const covered = lines.filter(Boolean).length
+  const total = lines.length
+  const percent = total ? (Math.floor(covered / total * 10_000) / 100).toFixed(2) : ''
+
+  return { covered, total, percent }
+}
+
 const buildMarkdown = () => {
   const report = readJson(`${kind}-report.json`)
-  const coverage = readJson('coverage/coverage-summary.json')
+  const { covered, total, percent } = getCoverage()
 
   if (!report) {
     return `${title}\n\nNo report: the tests did not run.`
@@ -28,12 +74,11 @@ const buildMarkdown = () => {
   const seconds = ((finishTime - report.startTime) / 1000).toFixed(1)
   const counts = `${report.numPassedTests} passed, ${report.numFailedTests} failed, ${skipped} skipped, ${seconds}s`
 
-  if (kind === 'fork' || !coverage) {
+  if (kind === 'fork' || !total) {
     return [ title, '', counts ].join('\n')
   }
 
-  const { pct, covered, total } = coverage.total.lines
-  const coverageLine = `Coverage: ${pct}% (${covered} of ${total} lines of code)`
+  const coverageLine = `Coverage: ${percent}% (${covered} of ${total} lines of code)`
 
   return [ title, '', counts, '', coverageLine ].join('\n')
 }

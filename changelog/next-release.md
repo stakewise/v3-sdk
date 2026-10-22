@@ -1,6 +1,7 @@
 ## Added methods
 
 - [sdk.vault.getPositionData](https://docs.stakewise.io/sdk/api/vault/requests/getpositiondata)
+- [sdk.vault.getStakerRewards](https://docs.stakewise.io/sdk/api/vault/requests/getstakerrewards)
 - [sdk.vault.helpers.calculateStakerPosition](https://docs.stakewise.io/sdk/api/vault/helpers/calculatestakerposition)
 - [sdk.vault.helpers.calculateAllocatorPosition](https://docs.stakewise.io/sdk/api/vault/helpers/calculateallocatorposition)
 - [sdk.osToken.redeemerWithdraw](https://docs.stakewise.io/sdk/api/osToken/transactions/redeemerwithdraw)
