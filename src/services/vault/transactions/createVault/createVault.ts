@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import { uploadMetadata } from '../util'
 import type { CreateVaultInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 
 
 const create = async (values: CreateVaultInput) => {
@@ -15,10 +15,7 @@ const create = async (values: CreateVaultInput) => {
 
   const signedContract = vaultFactory.connect(signer)
 
-  const response = await wrapErrorHandler(
-    signedContract.createVault(...params),
-    'transaction'
-  )
+  const response = await sendWithGasMargin(signedContract.createVault, params)
 
   return response.hash
 }

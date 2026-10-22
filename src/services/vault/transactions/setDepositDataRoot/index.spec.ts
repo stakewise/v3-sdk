@@ -121,7 +121,7 @@ describe('setDepositDataRoot', () => {
 
     const request = sdk.vault.setDepositDataRoot(input)
 
-    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: '[transaction call failed]:' })
+    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: '[estimate gas failed]:' })
   })
 
   it('not manager', async ({ sdk, runner, mockSetDepositDataRoot }) => {

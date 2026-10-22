@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { ClaimRedeemerExitQueueInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 
 
 const claimRedeemerExitQueue = async (values: ClaimRedeemerExitQueueInput) => {
@@ -11,10 +11,7 @@ const claimRedeemerExitQueue = async (values: ClaimRedeemerExitQueueInput) => {
   const signer = await provider.getSigner(userAddress)
   const signedContract = redeemerContract.connect(signer)
 
-  const result = await wrapErrorHandler(
-    signedContract.multicall(data),
-    'transaction'
-  )
+  const result = await sendWithGasMargin(signedContract.multicall, [ data ])
 
   return result.hash
 }

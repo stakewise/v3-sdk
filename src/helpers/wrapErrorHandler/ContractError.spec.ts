@@ -89,6 +89,27 @@ describe('ContractError', () => {
     expect(error.cause).toBe(cause)
   })
 
+  it('ethers error fields', () => {
+    const original = createError({
+      data,
+      code: 'CALL_EXCEPTION',
+      reason: 'require(false)',
+      shortMessage: 'execution reverted',
+    })
+
+    const error = new ContractError(original, 'prefix')
+
+    expect(error.code).toBe('CALL_EXCEPTION')
+    expect(error.reason).toBe('require(false)')
+    expect(error.shortMessage).toBe('execution reverted')
+  })
+
+  it('wallet rejection code', () => {
+    const error = new ContractError(createError({ code: 'ACTION_REJECTED' }), 'prefix')
+
+    expect(error.code).toBe('ACTION_REJECTED')
+  })
+
   it('error without name', () => {
     const original = { stack: 'stack' } as unknown as OriginalError
 

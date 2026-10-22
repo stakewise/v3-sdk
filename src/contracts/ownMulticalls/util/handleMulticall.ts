@@ -1,5 +1,5 @@
 import getMulticallCalls from './getMulticallCalls'
-import { wrapErrorHandler } from '../../../helpers'
+import { sendWithGasMargin } from '../../../helpers'
 import { ContractAbi, MulticallParameter } from '../types'
 
 
@@ -8,29 +8,19 @@ type Input = {
   multicallParams: MulticallParameter[]
 }
 
-const handleMulticall = async ({ contract, multicallParams }: Input) => {
+const handleMulticall = async ({ contract, multicallParams }: Input): Promise<unknown> => {
   const calls = getMulticallCalls({ multicallParams, contract })
 
   const isSoloCall = calls.length === 1
 
-  // Even though ethers tries to find the best price for gas, sometimes it's
-  // not enough and the transaction breaks down and users lose money for gas.
-  // Adding 10% to the gas limit
   if (isSoloCall) {
     const { method, args } = multicallParams[0]
 
     // @ts-ignore: no types to describe
-    const estimatedGas = await wrapErrorHandler<bigint>(contract[method].estimateGas(...args), 'transaction')
-    const gasLimit = estimatedGas * 110n / 100n
-
-    // @ts-ignore: no types to describe
-    return wrapErrorHandler<any>(contract[method](...args, { gasLimit }), 'transaction')
+    return sendWithGasMargin(contract[method], args)
   }
 
-  const estimatedGas = await wrapErrorHandler<bigint>(contract.multicall.estimateGas(calls), 'transaction')
-  const gasLimit = estimatedGas * 110n / 100n
-
-  return wrapErrorHandler(contract.multicall(calls, { gasLimit }), 'transaction')
+  return sendWithGasMargin(contract.multicall, [ calls ])
 }
 
 

@@ -50,7 +50,7 @@ const revertCases = [
   {
     name: 'send revert',
     run: (method: ExtractSetDepositDataManager) => method(input),
-    message: '[transaction call failed]:',
+    message: '[estimate gas failed]:',
   },
   {
     name: 'estimateGas revert',

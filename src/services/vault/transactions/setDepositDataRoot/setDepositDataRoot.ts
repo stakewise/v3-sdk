@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import { checkAccess } from '../util'
 import type { SetDepositDataRootInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 
 
@@ -20,10 +20,7 @@ const setDepositDataRoot = checkAccess<SetDepositDataRootInput>(
 
       const signedVaultContract = vaultContract.connect(signer)
 
-      const result = await wrapErrorHandler(
-        signedVaultContract.setValidatorsRoot(depositDataRoot),
-        'transaction'
-      )
+      const result = await sendWithGasMargin(signedVaultContract.setValidatorsRoot, [ depositDataRoot ])
 
       return result.hash
     }
@@ -31,10 +28,7 @@ const setDepositDataRoot = checkAccess<SetDepositDataRootInput>(
     const contract = commonLogic(values)
     const signedDepositDataRegistryContract = contract.connect(signer)
 
-    const result = await wrapErrorHandler(
-      signedDepositDataRegistryContract.setDepositDataRoot(vaultAddress, depositDataRoot),
-      'transaction'
-    )
+    const result = await sendWithGasMargin(signedDepositDataRegistryContract.setDepositDataRoot, [ vaultAddress, depositDataRoot ])
 
     return result?.hash
   },

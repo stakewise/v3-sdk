@@ -16,6 +16,7 @@ export {
   createProvider,
   mergeRewardsFiat,
   wrapErrorHandler,
+  sendWithGasMargin,
   calculateUserStats,
   getDefaultHarvestParams,
 } from './helpers'

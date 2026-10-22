@@ -1,5 +1,5 @@
 import type { UpgradeLeverageStrategyInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 import { commonLogic } from './common'
 
 
@@ -11,10 +11,7 @@ const upgradeLeverageStrategy = async (values: UpgradeLeverageStrategyInput) => 
   const signer = await provider.getSigner(userAddress)
   const signedContract = leverageStrategyContract.connect(signer)
 
-  const result = await wrapErrorHandler(
-    signedContract.upgradeProxy(vaultAddress),
-    'transaction'
-  )
+  const result = await sendWithGasMargin(signedContract.upgradeProxy, [ vaultAddress ])
 
   return result.hash
 }

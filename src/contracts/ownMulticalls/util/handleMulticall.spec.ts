@@ -21,7 +21,8 @@ const cases = [
   },
 ]
 
-const failedMessage = '[transaction call failed]:'
+const estimateFailedMessage = '[estimate gas failed]:'
+const sendFailedMessage = '[transaction call failed]:'
 
 const createHandler = (contract: ContractAbi) => ({
   contract,
@@ -46,7 +47,7 @@ describe('handleMulticall', () => {
 
     const request = createHandler(signedVaultContract).run({ params })
 
-    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: failedMessage })
+    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: estimateFailedMessage })
     expect(runner.sent).toHaveLength(0)
   })
 
@@ -55,7 +56,7 @@ describe('handleMulticall', () => {
 
     const request = createHandler(signedVaultContract).run({ params })
 
-    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: failedMessage })
+    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: sendFailedMessage })
     expect(runner.sent).toHaveLength(0)
   })
 })

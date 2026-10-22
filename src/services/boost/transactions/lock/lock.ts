@@ -1,6 +1,6 @@
 import { commonLogic } from './common'
 import type { LockInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 import { boostMulticall } from '../../../../contracts'
 import upgradeLeverageStrategy from '../upgradeLeverageStrategy/upgradeLeverageStrategy'
 
@@ -18,10 +18,7 @@ const lock = async (values: LockInput) => {
     const signer = await provider.getSigner(userAddress)
     const signedContract = approveData.contract.connect(signer)
 
-    const { hash } = await wrapErrorHandler(
-      signedContract.approve(...approveData.approveArgs),
-      'transaction'
-    )
+    const { hash } = await sendWithGasMargin(signedContract.approve, approveData.approveArgs)
 
     await provider.waitForTransaction(hash)
   }

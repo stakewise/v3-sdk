@@ -78,7 +78,7 @@ const boostMulticall = async <T extends unknown>(values: BoostMulticallInput): P
     return handleTransactionData(commonInput) as Promise<T>
   }
 
-  return handleMulticall(commonInput)
+  return handleMulticall(commonInput) as Promise<T>
 }
 
 

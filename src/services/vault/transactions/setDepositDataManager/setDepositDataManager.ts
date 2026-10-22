@@ -1,7 +1,7 @@
 import { commonLogic } from './common'
 import { checkAccess } from '../util'
 import type { SetDepositDataManagerInput } from './types'
-import { wrapErrorHandler } from '../../../../helpers'
+import { sendWithGasMargin } from '../../../../helpers'
 import getVaultVersion from '../../requests/getVaultVersion'
 
 
@@ -18,10 +18,7 @@ const setDepositDataManager = checkAccess<SetDepositDataManagerInput>(async (val
     })
     const signedContract = vaultContract.connect(signer)
 
-    const result = await wrapErrorHandler(
-      signedContract.setKeysManager(managerAddress),
-      'transaction'
-    )
+    const result = await sendWithGasMargin(signedContract.setKeysManager, [ managerAddress ])
 
     return result.hash
   }
@@ -29,10 +26,7 @@ const setDepositDataManager = checkAccess<SetDepositDataManagerInput>(async (val
   const contract = commonLogic(values)
   const signedContract = contract.connect(signer)
 
-  const result = await wrapErrorHandler(
-    signedContract.setDepositDataManager(vaultAddress, managerAddress),
-    'transaction'
-  )
+  const result = await sendWithGasMargin(signedContract.setDepositDataManager, [ vaultAddress, managerAddress ])
 
   return result?.hash
 })
