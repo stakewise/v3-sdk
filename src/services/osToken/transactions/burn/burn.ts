@@ -3,7 +3,7 @@ import type { BurnInput } from './types'
 import { sendWithGasMargin } from '../../../../helpers'
 
 
-const gasMarginPercent = 30
+const gasMarginPercent = 30n
 
 const burn = async (values: BurnInput) => {
   const { shares, provider, userAddress } = values

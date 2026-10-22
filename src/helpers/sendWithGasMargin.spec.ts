@@ -43,7 +43,7 @@ describe('sendWithGasMargin', () => {
   it('custom margin', async () => {
     const method = createMethod()
 
-    await sendWithGasMargin(method, [ receiver ], 30)
+    await sendWithGasMargin(method, [ receiver ], 30n)
 
     expect(method).toHaveBeenCalledWith(receiver, { gasLimit: estimatedGas * 130n / 100n })
   })
@@ -73,7 +73,7 @@ describe('sendWithGasMargin', () => {
 
     const request = sendWithGasMargin(method, [ receiver ])
 
-    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: '[transaction call failed]:' })
+    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: '[estimate gas failed]:' })
     expect(method).not.toHaveBeenCalled()
   })
 

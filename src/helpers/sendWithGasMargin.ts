@@ -9,15 +9,19 @@ type ContractMethod = {
   getFragment: (...args: any[]) => FunctionFragment
 }
 
-const defaultPercent = 10
+const defaultPercent = 10n
 
+/**
+ * Sends a contract method with a gas limit of the estimate plus `percent` (10% by default).
+ * Errors of the estimate and of the send are wrapped into ContractError.
+ */
 const sendWithGasMargin = async <M extends ContractMethod>(
   method: M,
   args: Parameters<M['estimateGas']>,
-  percent: number = defaultPercent
+  percent: bigint = defaultPercent
 ) => {
   const estimatedGas = await wrapErrorHandler(method.estimateGas(...args), 'gas')
-  const gasLimit = estimatedGas * BigInt(100 + percent) / 100n
+  const gasLimit = estimatedGas * (100n + percent) / 100n
 
   // The overrides (e.g. the deposit value) go after the method inputs, the gas limit is added to them
   const { inputs } = method.getFragment(...args)

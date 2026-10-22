@@ -8,8 +8,7 @@ type Input = {
   multicallParams: MulticallParameter[]
 }
 
-// The callers type the result themselves (solo call or multicall)
-const handleMulticall = async ({ contract, multicallParams }: Input): Promise<any> => {
+const handleMulticall = async ({ contract, multicallParams }: Input): Promise<unknown> => {
   const calls = getMulticallCalls({ multicallParams, contract })
 
   const isSoloCall = calls.length === 1

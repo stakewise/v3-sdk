@@ -6,7 +6,7 @@ import type { MulticallV3, MulticallV3Call } from './types'
 
 
 // The batch can call any contracts, so its gas usage can change a lot by the time the tx is mined
-const gasMarginPercent = 30
+const gasMarginPercent = 30n
 
 const createMulticallV3 = <S extends Signer | undefined = undefined>(
   multicallContract: StakeWise.ABI.Multicall,

@@ -51,3 +51,8 @@ the direct contract calls (`vault.deposit` and `vault.depositAndMint` with the n
 
 The errors thrown by the transaction methods keep the `code`, `reason` and `shortMessage` fields of the ethers error,
 so a wallet rejection can be detected by `code === 'ACTION_REJECTED'`
+
+## Added helpers
+
+- `sendWithGasMargin(method, args, percent?)` — sends a contract method with a gas limit of the estimate plus `percent`
+(10% by default) and wraps the errors into `ContractError`

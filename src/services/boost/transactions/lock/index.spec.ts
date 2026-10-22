@@ -429,7 +429,7 @@ describe('lock', () => {
 
     const request = sdk.boost.lock(input)
 
-    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: '[transaction call failed]:' })
+    await expect(request).rejects.toMatchObject({ name: 'AccessDenied', message: '[estimate gas failed]:' })
     expect(runner.sent).toHaveLength(0)
   })
 
