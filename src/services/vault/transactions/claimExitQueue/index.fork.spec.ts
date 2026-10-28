@@ -17,7 +17,7 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const stakerAddress = getAddress(getSnapshot(Network.Mainnet).stakerAddress)
+const { stakerAddress } = getSnapshot(Network.Mainnet)
 
 const exitAssets = parseEther('1')
 const claimDelaySeconds = 86_400

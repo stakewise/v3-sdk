@@ -32,12 +32,12 @@ const snapshot = getSnapshot(Network.Gnosis)
 const vaultAddress = getAddress(snapshot.vaultAddress)
 const { harvestedVaultAddress } = gnosisAccounts
 
-if (!snapshot.osTokenStakerAddress) {
+const { stakerAddress, osTokenStakerAddress } = snapshot
+
+if (!osTokenStakerAddress) {
   throw new Error('the Gnosis snapshot vault has no staker with osToken, re-pin with another vault')
 }
 
-const stakerAddress = getAddress(snapshot.stakerAddress)
-const osTokenStakerAddress = getAddress(snapshot.osTokenStakerAddress)
 const splitterOwnerAddress = '0x6Da6B1EfCCb7216078B9004535941b71EeD30b0F'
 const rewardSplitterAddress = '0xcB5d7a903158e563810849b7672e064E3B8D01a3'
 const splitterHolderAddress = '0x907180814C494EA77bD7c4691f2212F563E88ff5'

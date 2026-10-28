@@ -21,7 +21,7 @@ import type { Fork } from '../../../../../test/fork'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-const stakerAddress = getAddress(getSnapshot(Network.Mainnet).stakerAddress)
+const { stakerAddress } = getSnapshot(Network.Mainnet)
 
 const exitShares = parseEther('1')
 

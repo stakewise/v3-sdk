@@ -1,3 +1,4 @@
+import { getAddress } from 'ethers'
 import { fileURLToPath } from 'node:url'
 import { writeFile } from 'node:fs/promises'
 
@@ -102,8 +103,8 @@ const fetchSnapshot = async (url: string, vault?: string): Promise<ForkSnapshot>
   return {
     block,
     vaultAddress: id,
-    stakerAddress: staker.address,
-    osTokenStakerAddress: osTokenStaker?.address || null,
+    stakerAddress: getAddress(staker.address),
+    osTokenStakerAddress: osTokenStaker ? getAddress(osTokenStaker.address) : null,
     harvestParams: {
       proof,
       canHarvest,
