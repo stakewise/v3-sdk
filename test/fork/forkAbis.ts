@@ -37,7 +37,7 @@ const forkAbis = {
     'function getExitQueueIndex(uint256 positionTicket) view returns (int256)',
     'function swapAssetsToOsTokenShares(address receiver) payable returns (uint256)',
     'function calculateExitedAssets(address, uint256, uint256) view returns (uint256, uint256, uint256 exitedAssets)',
-    'event ExitQueueEntered(address indexed owner, address indexed receiver, uint256 positionTicket, uint256 shares)',
+    'event ExitQueueEntered(address indexed owner, address indexed receiver, uint256 positionTicket, uint256 shares, uint256 fee)',
   ],
   rewardSplitterFactory: [
     'event RewardSplitterCreated(address owner, address vault, address rewardSplitter)',

@@ -32,8 +32,12 @@ const snapshot = getSnapshot(Network.Gnosis)
 const vaultAddress = getAddress(snapshot.vaultAddress)
 const { harvestedVaultAddress } = gnosisAccounts
 
-const stakerAddress = '0x458cD345B4C05e8DF39d0A07220feb4Ec19F5e6f'
-const plainStakerAddress = '0x39D787fdf7384597C7208644dBb6FDa1CcA4eBdf'
+if (!snapshot.osTokenStakerAddress) {
+  throw new Error('the Gnosis snapshot vault has no staker with osToken, re-pin with another vault')
+}
+
+const stakerAddress = getAddress(snapshot.stakerAddress)
+const osTokenStakerAddress = getAddress(snapshot.osTokenStakerAddress)
 const splitterOwnerAddress = '0x6Da6B1EfCCb7216078B9004535941b71EeD30b0F'
 const rewardSplitterAddress = '0xcB5d7a903158e563810849b7672e064E3B8D01a3'
 const splitterHolderAddress = '0x907180814C494EA77bD7c4691f2212F563E88ff5'
@@ -43,7 +47,7 @@ const assets = parseEther('1')
 const shares = parseEther('0.1')
 const baseInput = { userAddress, vaultAddress }
 const stakeInput = { userAddress: stakerAddress, vaultAddress }
-const plainStakeInput = { userAddress: plainStakerAddress, vaultAddress }
+const osTokenStakeInput = { userAddress: osTokenStakerAddress, vaultAddress }
 
 const mockVault = (vault: Partial<VaultQueryPayload['vault']>) => mockGraphql<VaultQueryPayload>({
   name: 'Vault',
@@ -105,10 +109,10 @@ const gnosisCases: GnosisCase[] = [
       })
 
       return sdk.vault.multicall({
-        ...plainStakeInput,
+        ...stakeInput,
         request: {
           estimateGas: true,
-          params: [ { method: 'enterExitQueue', args: [ shares, plainStakerAddress ] } ],
+          params: [ { method: 'enterExitQueue', args: [ shares, stakerAddress ] } ],
         },
       })
     },
@@ -157,11 +161,11 @@ const gnosisCases: GnosisCase[] = [
   },
   {
     name: 'R1 getMaxMintAmount',
-    call: async ({ sdk }) => sdk.osToken.getMaxMintAmount(stakeInput),
+    call: async ({ sdk }) => sdk.osToken.getMaxMintAmount(osTokenStakeInput),
   },
   {
     name: 'R2 getBalance',
-    call: async ({ sdk }) => sdk.osToken.getBalance(stakeInput),
+    call: async ({ sdk }) => sdk.osToken.getBalance(osTokenStakeInput),
   },
   {
     name: 'R4 getSharesFromAssets',
@@ -173,19 +177,19 @@ const gnosisCases: GnosisCase[] = [
   },
   {
     name: 'R6 getBurnAmountForUnstake',
-    call: async ({ sdk }) => sdk.osToken.getBurnAmountForUnstake({ ...stakeInput, assets }),
+    call: async ({ sdk }) => sdk.osToken.getBurnAmountForUnstake({ ...osTokenStakeInput, assets }),
   },
   {
     name: 'R7 getUnstakeAmountForBurn',
-    call: async ({ sdk }) => sdk.osToken.getUnstakeAmountForBurn({ ...stakeInput, shares }),
+    call: async ({ sdk }) => sdk.osToken.getUnstakeAmountForBurn({ ...osTokenStakeInput, shares }),
   },
   {
     name: 'R8 getMaxWithdrawAmount',
-    call: async ({ sdk }) => sdk.vault.getMaxWithdrawAmount({ ...stakeInput, withBurn: true }),
+    call: async ({ sdk }) => sdk.vault.getMaxWithdrawAmount({ ...osTokenStakeInput, withBurn: true }),
   },
   {
     name: 'R9 getMaxExitShares',
-    call: async ({ sdk }) => getMaxExitShares({ ...sdk.vault.params, ...stakeInput, burnShares: 0n }),
+    call: async ({ sdk }) => getMaxExitShares({ ...sdk.vault.params, ...osTokenStakeInput, burnShares: 0n }),
   },
   {
     name: 'R10 getVaultVersion',
@@ -199,7 +203,7 @@ const gnosisCases: GnosisCase[] = [
         data: { ...allocatorPosition.positionData, leverageStrategyPositions: [] },
       })
 
-      return sdk.vault.getPositionData(stakeInput)
+      return sdk.vault.getPositionData(osTokenStakeInput)
     },
   },
 ]
@@ -208,7 +212,7 @@ describe('gnosis calls', () => {
   const fork = useForkSdk({ network: Network.Gnosis })
 
   it.for(gnosisCases)('$name', async ({ call }) => {
-    await mockForkStake(fork, stakerAddress)
+    await mockForkStake(fork, osTokenStakerAddress)
 
     const probed = await checkProbe(fork, call)
 

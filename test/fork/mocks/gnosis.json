@@ -1,6 +1,8 @@
 {
-  "block": 48985603,
+  "block": 48987172,
   "vaultAddress": "0x00025c729a3364faef02c7d1f577068d87e90ba6",
+  "stakerAddress": "0x9009b4411d0e1171cc042b77d7701f46b737fdb9",
+  "osTokenStakerAddress": "0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f",
   "harvestParams": {
     "proof": [
       "0x6f15e4f792e31f9609097cb427f8aa585bb1f5662d0afdf620516515f5e873fa",
