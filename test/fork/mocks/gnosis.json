@@ -1,19 +1,21 @@
 {
-  "block": 48853487,
-  "vaultAddress": "0x2cd404d9d75436e7d6ddbccc2fb9cf7c06941bf1",
+  "block": 48987172,
+  "vaultAddress": "0x00025c729a3364faef02c7d1f577068d87e90ba6",
+  "stakerAddress": "0x9009B4411D0e1171cc042b77D7701f46B737Fdb9",
+  "osTokenStakerAddress": "0x458cD345B4C05e8DF39d0A07220feb4Ec19F5e6f",
   "harvestParams": {
     "proof": [
-      "0x92ca62391760adc81933c7350625d21e04f530e570f15702ffdcbb68a8038631",
-      "0x2279b5f8bd2eba4d100a30dfa719966bcf85963b5a0a019a9603c4d1239e7a3b",
-      "0x2fd109fa8a5f17e75c4ec1e32f020bc6d515b4a5c64fedc63907f272f9dac153",
-      "0x3fd9d0437e48cf04a2ae220dce3b1533f7301651cc9d4b63cf4e6e4ede4e18fc",
-      "0x79af6d7492ef9d4f0dfa8d65caf85d3604d2a812b16196f44d0d617da072228f",
-      "0x3050e9b832c2d23f02ffb7cb838ea59ae31987f1b707af8508bd2dfe10169afd"
+      "0x6f15e4f792e31f9609097cb427f8aa585bb1f5662d0afdf620516515f5e873fa",
+      "0xbfc08628985d06f02b06cd8c90f5cd75549f555fbfa7f2b7678eeafec05f9aac",
+      "0x27564dcde4049996f23dfa386e179d6fa67751cda1400f63ed8da57168877a28",
+      "0x30256f85eb0c7754eca549c3e78cb37fc7b2f04cec040367ddc1a0932b0bb3ae",
+      "0x06b8509cb3d86974e97a85a782c3a3d76567ed44090cfaadf33f98f065d180b2",
+      "0xc27fb508de0dd4831b6334f6fc3906e20d7e6d14d288f7adc1ad8998189ff1f0"
     ],
     "canHarvest": true,
-    "rewardsRoot": "0xf9400084a5ae21cb530c9e3d8960cea3f21f722b378755ad3f2f8fb31ed00d84",
+    "rewardsRoot": "0xfd3b5a57135a5de6a05829fdc270f196fac160f2ca7b7797bf7cad397b50aa30",
     "isMetaVault": false,
-    "reward": "2697233254551281250000",
-    "unlockedMevReward": "0"
+    "reward": "2232696822559843750000",
+    "unlockedMevReward": "8442103317453538090794"
   }
 }

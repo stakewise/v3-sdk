@@ -1,6 +1,7 @@
 import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
+import { Network } from '../../../../helpers/enums'
 import { it, decodeCalls } from '../../../../../test'
 import mockGraphql from '../../../../../test/mockGraphql'
 import vaultQuery from '../../../../../test/mocks/vaultQuery'
@@ -9,6 +10,7 @@ import {
   useForkSdk,
   fundAccount,
   parseEvents,
+  getSnapshot,
   extendContract,
   getForkHarvestArgs,
   mockForkHarvestParams,
@@ -19,7 +21,7 @@ import type { Fork } from '../../../../../test/fork'
 import type { VaultQueryPayload } from '../../../../graphql/subgraph/vault'
 
 
-const stakerAddress = '0x5Bf2956120FafeC9B1444A0fbcd6799B24a3D350'
+const { stakerAddress } = getSnapshot(Network.Mainnet)
 
 const exitShares = parseEther('1')
 

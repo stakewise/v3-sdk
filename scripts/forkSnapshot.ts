@@ -1,3 +1,4 @@
+import { getAddress } from 'ethers'
 import { fileURLToPath } from 'node:url'
 import { writeFile } from 'node:fs/promises'
 
@@ -7,8 +8,14 @@ import type { ForkSnapshot } from '../test/fork/snapshots'
 import parseForkNetwork, { forkNetworkNames } from '../test/fork/parseForkNetwork'
 
 
+type Allocator = {
+  address: string
+}
+
 type SnapshotVault = ForkSnapshot['harvestParams'] & {
   id: string
+  stakers: Allocator[]
+  osTokenStakers: Allocator[]
 }
 
 type GraphqlResponse = {
@@ -37,6 +44,12 @@ const query = `
       isMetaVault
       reward: proofReward
       unlockedMevReward: proofUnlockedMevReward
+      stakers: allocators(where: { mintedOsTokenShares: "0" }, orderBy: shares, orderDirection: desc, first: 1) {
+        address
+      }
+      osTokenStakers: allocators(where: { mintedOsTokenShares_gt: "0" }, orderBy: mintedOsTokenShares, orderDirection: desc, first: 1) {
+        address
+      }
     }
   }
 `
@@ -74,15 +87,24 @@ const fetchSnapshot = async (url: string, vault?: string): Promise<ForkSnapshot>
     throw new Error(`No vault found at block ${block}`)
   }
 
-  const { id, proof, canHarvest, rewardsRoot, isMetaVault, reward, unlockedMevReward } = snapshotVault
+  const { id, proof, canHarvest, rewardsRoot, isMetaVault, reward, unlockedMevReward, stakers, osTokenStakers } = snapshotVault
+
+  const [ staker ] = stakers
+  const [ osTokenStaker ] = osTokenStakers
 
   if (!canHarvest) {
     throw new Error(`${id} cannot harvest at block ${block}, retry later or pass another vault`)
   }
 
+  if (!staker) {
+    throw new Error(`${id} has no staker without osToken at block ${block}, pass another vault`)
+  }
+
   return {
     block,
     vaultAddress: id,
+    stakerAddress: getAddress(staker.address),
+    osTokenStakerAddress: osTokenStaker ? getAddress(osTokenStaker.address) : null,
     harvestParams: {
       proof,
       canHarvest,

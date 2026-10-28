@@ -2,11 +2,13 @@ import { describe, expect } from 'vitest'
 import { getAddress, parseEther } from 'ethers'
 
 import { it } from '../../../../../test'
+import { Network } from '../../../../helpers/enums'
 import {
   forkAbis,
   useForkSdk,
   fundAccount,
   parseEvents,
+  getSnapshot,
   extendContract,
   sendForkTransaction,
   mockForkHarvestParams,
@@ -15,7 +17,7 @@ import {
 import type { Fork } from '../../../../../test/fork'
 
 
-const stakerAddress = '0x08e1D3d83d8F1b7051eACd978a0F073b7Fa22B73'
+const { stakerAddress } = getSnapshot(Network.Mainnet)
 
 const exitAssets = parseEther('1')
 const claimDelaySeconds = 86_400

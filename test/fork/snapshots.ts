@@ -10,6 +10,8 @@ import type { ForkNetwork } from './constants'
 export type ForkSnapshot = {
   block: number
   vaultAddress: string
+  stakerAddress: string
+  osTokenStakerAddress: string | null
   harvestParams: HarvestParamsQueryPayload['harvestParams']
 }
 
