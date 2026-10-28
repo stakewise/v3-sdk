@@ -31,7 +31,7 @@ export default {
       priceOracle: '0x9B1b13afA6a57e54C03AD0428a4766C39707D272',
       vaultsRegistry: '0x7d014B3C6ee446563d4e0cB6fBD8C3D0419867cB',
       sharedMevEscrow: '0x30db0d10d3774e78f8cB214b9e8B72D4B402488a',
-      osTokenRedeemer: '0xB790391ee99b9193Ebb80022bf127d24Bac586c4',
+      osTokenRedeemer: '0x5d12A024a8807d1B511eaF194d5B17ae57fB8c97',
       mintTokenConfigV1: ZeroAddress,
       mintTokenConfigV2: '0xd6672fbE1D28877db598DC0ac2559A15745FC3ec',
       depositDataRegistry: '0x58e16621B5c0786D6667D2d54E28A20940269E16',
