@@ -12,7 +12,7 @@ const getUserApy = (input: GetUserApyInput) => {
   const { vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchUserApyQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       userAddress: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),

@@ -1,7 +1,7 @@
 import { describe, expect } from 'vitest'
 import { parseEther } from 'ethers'
 
-import { it, apyData, checksumAddress } from '../../../../test'
+import { it, rpcUrl, apyData, checksumAddress } from '../../../../test'
 
 import { configs, Network } from '../../../helpers'
 
@@ -9,8 +9,12 @@ import fetchLeverageReward from './fetchLeverageReward'
 import type { BoostProxyApyDataQueryPayload } from '../../../graphql/subgraph/vault'
 
 
-const url = configs[Network.Mainnet].api.subgraph
-const [ primaryUrl ] = url
+const [ primaryUrl ] = configs[Network.Mainnet].api.subgraph
+
+const options = {
+  network: Network.Mainnet,
+  endpoints: { web3: rpcUrl },
+}
 
 const vaultAddress = checksumAddress
 const proxyAddress = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B'
@@ -100,7 +104,7 @@ describe('fetchLeverageReward', () => {
   it.for(cases)('$name', async ({ leverage, proxyData, expected }, { graphql }) => {
     graphql.mock<BoostProxyApyDataQueryPayload>({ name: 'BoostProxyApyData', data: proxyData })
 
-    const reward = await fetchLeverageReward({ ...apyData, url, leverage, vaultAddress })
+    const reward = await fetchLeverageReward({ ...apyData, options, leverage, vaultAddress })
 
     const request = {
       url: primaryUrl,

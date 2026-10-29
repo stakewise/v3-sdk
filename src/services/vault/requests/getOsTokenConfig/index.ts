@@ -14,7 +14,7 @@ const getOsTokenConfig = (input: GetOsTokenConfigInput) => {
   const { vaultAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchVaultOsTokenConfigQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       address: vaultAddress,
     },

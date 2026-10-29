@@ -1,4 +1,5 @@
 import AbortPromise from './abortPromise'
+import type { SubgraphErrorPolicy, SubgraphErrorEvent } from './types'
 
 
 type ModifyCallback<Data, ModifiedData = Data> = (value: Data) => ModifiedData | PromiseLike<ModifiedData>
@@ -8,8 +9,14 @@ type FirstCallback<Data> = (value: Data) => Data | any
 type EmptyCallback = () => void
 
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
+  subgraphError?: SubgraphErrorPolicy
   onSuccess?: ModifyCallback<Data, ModifiedData>
   onError?: (error: any) => Promise<any> | AbortRequest<Data, ModifiedData>
+  onSubgraphError?: (event: Pick<SubgraphErrorEvent, 'errors' | 'isAllowed'>) => void
+}
+
+type GraphqlError = {
+  message: string
 }
 
 type PendingRequest = {
@@ -20,6 +27,26 @@ type PendingRequest = {
 const requestsQueue: Record<string, PendingRequest | undefined> = {}
 
 const dummyPromise = new Promise(() => {})
+
+const indexingErrorMessage = 'indexing_error'
+
+// Returns errors if the subgraph responded with indexing errors only
+const getIndexingErrors = (json: any): GraphqlError[] | null => {
+  const errors: GraphqlError[] | undefined = json?.errors
+
+  if (errors?.length) {
+    const isIndexingErrors = errors.every(({ message }) => message === indexingErrorMessage)
+
+    return isIndexingErrors ? errors : null
+  }
+
+  // Subgraph encountered indexing errors at some past block
+  if (json?.data?._meta?.hasIndexingErrors) {
+    return [ { message: indexingErrorMessage } ]
+  }
+
+  return null
+}
 
 // Returns fetch promise that can be aborted
 // If we create several promises, only one request will be executed
@@ -32,7 +59,7 @@ class AbortRequest<Data, ModifiedData = Data> {
   requestId: string
 
   constructor(url: RequestInfo | URL, abortRequestInit: AbortRequestInit<Data, ModifiedData>) {
-    const { onSuccess, onError, ...init } = abortRequestInit
+    const { subgraphError, onSuccess, onError, onSubgraphError, ...init } = abortRequestInit
 
     this.body = init.body as string
     this.isAborted = false
@@ -58,6 +85,25 @@ class AbortRequest<Data, ModifiedData = Data> {
         })
         .then((json) => {
           requestsQueue[this.requestId] = undefined
+
+          const indexingErrors = getIndexingErrors(json)
+
+          if (indexingErrors) {
+            const isAllowed = subgraphError === 'allow' && Boolean(json?.data)
+
+            if (typeof onSubgraphError === 'function' && !this.isAborted) {
+              try {
+                onSubgraphError({ errors: indexingErrors, isAllowed })
+              }
+              catch (error) {
+                console.error(error)
+              }
+            }
+
+            if (isAllowed) {
+              return json.data as Data
+            }
+          }
 
           if (json?.errors) {
             throw new Error(json.errors[0].message)

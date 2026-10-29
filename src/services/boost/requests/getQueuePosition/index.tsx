@@ -16,7 +16,7 @@ const getQueuePosition = (input: GetQueuePositionInput) => {
   const { vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.boost.fetchBoostQueuePositionsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       userAddress: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),

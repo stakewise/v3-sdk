@@ -6,14 +6,16 @@ const queryImport = [
 const queryTemplate = `
 
 const fetch{QueryName} = <ModifiedData = {QueryName}Payload>(
-  { variables, url, withTime, modifyResult }: FetchCodegenInput<{QueryName}Payload, {QueryName}Variables, ModifiedData>
+  { variables, url, withTime, subgraphError, modifyResult, onSubgraphError }: FetchCodegenInput<{QueryName}Payload, {QueryName}Variables, ModifiedData>
 ) => (
   graphqlFetch<{QueryName}Payload, {QueryName}Variables, ModifiedData>({
     url,
     query,
     withTime,
     variables,
+    subgraphError,
     modifyResult,
+    onSubgraphError,
   })
 )
 `

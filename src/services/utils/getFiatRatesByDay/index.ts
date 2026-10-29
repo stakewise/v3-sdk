@@ -32,13 +32,14 @@ const fetchFiatRatesByDay = async (input: GetFiatRatesByDayInput): Promise<Outpu
   const [ fiatRates, gnosisRates ] = await Promise.all([
     graphql.subgraph.stats.fetchFiatByDayQuery({
       variables,
+      ...apiUrls.getSubgraphParams(options),
       url: configs[Network.Mainnet].api.subgraph,
       modifyResult: (data) => data.exchangeRate,
     }),
     isGnosis
       ? graphql.subgraph.stats.fetchFiatByDayQuery({
         variables,
-        url: apiUrls.getSubgraphqlUrl(options),
+        ...apiUrls.getSubgraphParams(options),
         modifyResult: (data) => data.exchangeRate.reduce((acc, { timestamp, assetsUsdRate }) => ({
           ...acc,
           [timestamp]: assetsUsdRate,

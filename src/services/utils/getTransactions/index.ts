@@ -15,7 +15,7 @@ export const getTransactions = (input: GetTransactionsInput) => {
   const { hash } = validate(input)
 
   return graphql.subgraph.transactions.fetchTransactionsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       where: {
         id: hash.toLowerCase(),

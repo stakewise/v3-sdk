@@ -32,7 +32,7 @@ const getRewardSplitters = (input: GetRewardSplittersInput) => {
   }
 
   return fetchRewardSplittersQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       where,
     },

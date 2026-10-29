@@ -14,7 +14,7 @@ const getUserStats = (input: GetUserStatsInput) => {
   const { daysCount, userAddress, vaultAddress } = validate(input)
 
   return graphql.subgraph.vault.fetchUserRewardsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       limit: daysCount,
       where: {

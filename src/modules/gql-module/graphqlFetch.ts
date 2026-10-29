@@ -1,6 +1,6 @@
 import AbortRequest from './abortRequest'
 import type { FetchInput } from './types'
-import { getRequestUrl, saveErrorUrlToSessionStorage } from './utils'
+import { getRequestUrl, saveErrorUrlToSessionStorage, applySubgraphErrorPolicy } from './utils'
 
 
 type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variables, ModifiedData> & {
@@ -10,7 +10,7 @@ type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variab
 const graphqlFetch = <Data, Variables, ModifiedData>(
   options: ExtendedFetchInput<Data, Variables, ModifiedData>
 ): AbortRequest<Data, ModifiedData> => {
-  const { url, query, variables, withTime, retryCount = 0, modifyResult } = options
+  const { url, query, variables, withTime, retryCount = 0, subgraphError, modifyResult, onSubgraphError } = options
 
   const operationName = query
     .replace(/^(query|mutation)\s/, '')
@@ -34,10 +34,14 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
       'content-type': 'application/json; charset=utf-8',
     },
     body: JSON.stringify({
-      query,
+      query: applySubgraphErrorPolicy(query, subgraphError),
       variables,
       operationName,
     }),
+    subgraphError,
+    onSubgraphError: typeof onSubgraphError === 'function'
+      ? (event) => onSubgraphError({ ...event, url: currentUrl, operationName, variables })
+      : undefined,
     onSuccess: (data: Data) => typeof modifyResult === 'function'
       ? modifyResult(data)
       : data as unknown as ModifiedData,

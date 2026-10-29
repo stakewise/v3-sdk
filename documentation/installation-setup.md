@@ -144,6 +144,8 @@ const useStakeWiseSDK = async () => {
 | **endpoints.web3** | `string` or `Array<string>` or `Array<{ url: string, headers: Headers }>` | No | Custom RPC endpoints for blockchain access. Required if `provider` is not provided. Multiple URLs are used as fallbacks. |
 | **endpoints.subgraph** | `string` | No | Optional custom URL for the StakeWise subgraph. |
 | **endpoints.api** | `string` | No | Optional custom URL for the StakeWise backend API. |
+| **allowSubgraphError** | `boolean` | No | Returns subgraph data even if the subgraph has indexing errors (`subgraphError: allow`). Defaults to `false` — requests fail with `indexing_error`. ⚠️ With `true` the data may be inconsistent: entity changes from the failed handlers are missing. |
+| **onSubgraphError** | `(event: SubgraphErrorEvent) => void` | No | Called when the subgraph responds with indexing errors, in both modes. `event` contains `url`, `operationName`, `variables`, `errors` and `isAllowed` (`true` — data was returned to the caller, `false` — the request was rejected). Errors thrown inside the handler are ignored. |
 
 ---
 

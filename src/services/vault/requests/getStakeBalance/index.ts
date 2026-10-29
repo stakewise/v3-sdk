@@ -12,7 +12,7 @@ const getStakeBalance = (values: GetStakeBalanceInput) => {
   const { userAddress, vaultAddress } = validate(values)
 
   return graphql.subgraph.allocator.fetchAllocatorsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),
       address: userAddress.toLowerCase(),

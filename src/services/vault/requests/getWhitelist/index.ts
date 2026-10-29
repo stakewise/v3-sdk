@@ -17,7 +17,7 @@ const getWhitelist = (values: GetWhitelistInput) => {
   const variables = utils.getListVariables<WhitelistAccountsQueryVariables>(rest)
 
   return graphql.subgraph.vault.fetchWhitelistAccountsQuery<ModifiedWhitelist>({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables,
     modifyResult: (data: WhitelistAccountsQueryPayload) => modifyWhitelist({ data }),
   })

@@ -15,7 +15,7 @@ const getRewards = (input: GetRewardsInput) => {
   const { userAddress } = validate(input)
 
   return graphql.subgraph.distributorRewards.fetchDistributorRewardsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       address: userAddress,
     },

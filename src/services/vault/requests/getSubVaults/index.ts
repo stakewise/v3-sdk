@@ -18,7 +18,7 @@ const getSubVaults = (input: GetSubVaultsInput) => {
   const metaVaultId = vaultAddress
 
   return graphql.subgraph.vault.fetchSubVaultsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       skip,
       first: limit,

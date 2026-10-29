@@ -15,7 +15,7 @@ const getRedeemerExitQueuePositions = (input: GetRedeemerExitQueuePositionsInput
   const { isClaimed, userAddress } = validate(input)
 
   return graphql.subgraph.redeemerExitQueue.fetchRedeemerExitQueueQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       where: {
         isClaimed,

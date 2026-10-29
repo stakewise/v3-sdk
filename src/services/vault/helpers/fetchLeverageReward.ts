@@ -1,4 +1,5 @@
 import graphql from '../../../graphql'
+import { apiUrls } from '../../../helpers'
 
 import getLeverageReward from './getLeverageReward'
 import convertOsTokenSharesToAssets from './convertOsTokenSharesToAssets'
@@ -10,18 +11,18 @@ import type { PositionDataQueryPayload } from '../../../graphql/subgraph/vault'
 type LeveragePosition = PositionDataQueryPayload['leverageStrategyPositions'][number]
 
 type FetchLeverageRewardInput = PositionApyData & {
-  url: string | ReadonlyArray<string>
+  options: StakeWise.Options
   leverage: LeveragePosition
   vaultAddress: string
 }
 
 const fetchLeverageReward = async (values: FetchLeverageRewardInput): Promise<bigint> => {
-  const { url, leverage, vaultApy, borrowApy, osTokenRate, vaultAddress, osTokenMintApy } = values
+  const { options, leverage, vaultApy, borrowApy, osTokenRate, vaultAddress, osTokenMintApy } = values
 
   const exitRequest = leverage.exitRequest
 
   const proxyData = await graphql.subgraph.vault.fetchBoostProxyApyDataQuery({
-    url,
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       vaultAddress: vaultAddress.toLowerCase(),
       proxyAddress: (leverage.proxy || '').toLowerCase(),

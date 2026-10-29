@@ -49,7 +49,7 @@ const getData = async (values: GetBoostDataInput) => {
 
   if ([ Network.Mainnet, Network.Hoodi ].includes(options.network)) {
     const boostMainData = await graphql.subgraph.boost.fetchBoostMainDataQuery({
-      url: apiUrls.getSubgraphqlUrl(options),
+      ...apiUrls.getSubgraphParams(options),
       variables: {
         userAddress: userAddress.toLowerCase(),
         vaultAddress: vaultAddress.toLowerCase(),
@@ -74,7 +74,7 @@ const getData = async (values: GetBoostDataInput) => {
 
     const aaveData = proxyAddress
       ? await graphql.subgraph.boost.fetchAavePositionsQuery({
-        url: apiUrls.getSubgraphqlUrl(options),
+        ...apiUrls.getSubgraphParams(options),
         variables: { proxyAddress },
       })
       : null

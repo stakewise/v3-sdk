@@ -26,7 +26,7 @@ const getUserRewards = async (input: GetUserRewardsInput): Promise<MergedReward[
 
   const [ rewards, fiatRates ] = await Promise.all([
     graphql.subgraph.vault.fetchUserRewardsQuery({
-      url: apiUrls.getSubgraphqlUrl(options),
+      ...apiUrls.getSubgraphParams(options),
       variables: {
         limit,
         where: {

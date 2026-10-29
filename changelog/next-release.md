@@ -56,3 +56,35 @@ so a wallet rejection can be detected by `code === 'ACTION_REJECTED'`
 
 - `sendWithGasMargin(method, args, percent?)` — sends a contract method with a gas limit of the estimate plus `percent`
 (10% by default) and wraps the errors into `ContractError`
+
+## Subgraph indexing errors
+
+### 1. New SDK constructor options
+
+```ts
+type Options = {
+  allowSubgraphError?: boolean
+  onSubgraphError?: (event: SubgraphErrorEvent) => void
+}
+
+type SubgraphErrorEvent = {
+  url: string
+  operationName: string
+  variables?: unknown
+  errors: Array<{ message: string }>
+  isAllowed: boolean
+}
+```
+
+- `allowSubgraphError` — adds `subgraphError: allow` to every subgraph request, so the methods return data even if
+the subgraph has indexing errors. Defaults to `false`: requests fail with `indexing_error` as before.
+With `true` the data may be inconsistent: entity changes from the failed handlers are missing
+- `onSubgraphError` — called when the subgraph responds with indexing errors, in both modes. `isAllowed` is `true`
+if the data was returned to the caller and `false` if the request was rejected. Errors thrown inside the handler are ignored,
+the handler is called once per network request
+
+## Added exports
+
+- `applySubgraphErrorPolicy(query, subgraphError?)` — adds `subgraphError: allow` to every root field of a GraphQL query
+(except `_meta` and `__typename`), returns the query unchanged for `deny`
+- `SubgraphErrorEvent`, `SubgraphErrorPolicy` types
