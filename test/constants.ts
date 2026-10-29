@@ -26,6 +26,7 @@ export const lowercaseBaseVariables = {
 }
 
 export const subgraphUrl = 'https://graphs.stakewise.io/mainnet/subgraphs/name/stakewise/prod'
+export const replicaSubgraphUrl = 'https://graphs-replica.stakewise.io/mainnet/subgraphs/name/stakewise/prod'
 export const gnosisSubgraphUrl = 'https://graphs.stakewise.io/gnosis/subgraphs/name/stakewise/prod'
 export const backendUrl = 'https://mainnet-api.stakewise.io/graphql'
 

@@ -49,11 +49,10 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
       const hasBackupUrl = Array.isArray(url) && url.length > 1
 
       if (hasBackupUrl && retryCount < 1) {
-        saveErrorUrlToSessionStorage(url[0])
+        saveErrorUrlToSessionStorage(currentUrl)
 
         return graphqlFetch({
           ...options,
-          url: url[1],
           retryCount: retryCount + 1,
         })
       }

@@ -51,7 +51,7 @@ class Utils {
   }
 
   /**
-   * Returns the subgraph lag behind the network and the indexing errors flag, to warn users about stale data
+   * Returns the subgraph lag behind the network and the indexing errors flag, switches to the replica if only the current url is unhealthy
    * @see https://docs.stakewise.io/sdk/api/utils/getsubgraphstatus
    */
   public getSubgraphStatus(values?: StakeWise.ExtractInput<GetSubgraphStatusInput>) {

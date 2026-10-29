@@ -88,4 +88,6 @@ the handler is called once per network request
 
 - `applySubgraphErrorPolicy(query, subgraphError?)` — adds `subgraphError: allow` to every root field of a GraphQL query
 (except `_meta` and `__typename`), returns the query unchanged for `deny`
+- `getRequestUrl(urls)` — returns the url for a request: the primary one, or the backup one if the primary is marked as failed
+- `saveErrorUrlToSessionStorage(url)` — marks the url as failed for an hour, the following requests go to the backup url
 - `SubgraphErrorEvent`, `SubgraphErrorPolicy` types
