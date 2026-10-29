@@ -6,3 +6,6 @@ export type { FiatRatesQueryPayload, FiatRatesQueryVariables } from './fiatRates
 
 export { fetchFiatByDayQuery } from './fiatByDayQuery.graphql'
 export type { FiatByDayQueryPayload, FiatByDayQueryVariables } from './fiatByDayQuery.graphql'
+
+export { fetchSubgraphMetaQuery } from './subgraphMetaQuery.graphql'
+export type { SubgraphMetaQueryPayload, SubgraphMetaQueryVariables } from './subgraphMetaQuery.graphql'

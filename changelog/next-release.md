@@ -7,6 +7,7 @@
 - [sdk.osToken.redeemerWithdraw](https://docs.stakewise.io/sdk/api/osToken/transactions/redeemerwithdraw)
 - [sdk.osToken.claimRedeemerExitQueue](https://docs.stakewise.io/sdk/api/osToken/transactions/claimredeemerexitqueue)
 - [sdk.osToken.getRedeemerExitQueuePositions](https://docs.stakewise.io/sdk/api/osToken/requests/getredeemerexitqueuepositions)
+- [sdk.utils.getSubgraphStatus](https://docs.stakewise.io/sdk/api/utils/getsubgraphstatus)
 
 ## Modified methods
 

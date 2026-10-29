@@ -1,6 +1,7 @@
 import { getFiatRates } from './getFiatRates'
 import { getStakewiseStats } from './getStakewiseStats'
 import { waitForSubgraph, WaitForSubgraphInput } from './waitForSubgraph'
+import { getSubgraphStatus, GetSubgraphStatusInput } from './getSubgraphStatus'
 import { getTransactions, GetTransactionsInput  } from './getTransactions'
 import { getListVariables, GetListVariablesInput } from './getListVariables'
 import { getFiatRatesByDay, GetFiatRatesByDayInput } from './getFiatRatesByDay'
@@ -47,6 +48,14 @@ class Utils {
    */
   public waitForSubgraph(values: StakeWise.ExtractInput<WaitForSubgraphInput>) {
     return waitForSubgraph({ ...this.params, ...values })
+  }
+
+  /**
+   * Returns the subgraph lag behind the network and the indexing errors flag, to warn users about stale data
+   * @see https://docs.stakewise.io/sdk/api/utils/getsubgraphstatus
+   */
+  public getSubgraphStatus(values?: StakeWise.ExtractInput<GetSubgraphStatusInput>) {
+    return getSubgraphStatus({ ...this.params, ...values })
   }
 
   /**

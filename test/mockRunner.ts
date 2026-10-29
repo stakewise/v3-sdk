@@ -8,6 +8,11 @@ type Answer = unknown[] | ((args: any[]) => unknown[])
 
 type RpcAnswer = (params: any[]) => unknown
 
+type Block = {
+  number: number
+  timestamp: number
+}
+
 type FeeData = {
   gasPrice: bigint | null
   maxFeePerGas: bigint | null
@@ -49,6 +54,7 @@ const createMockRunner = () => {
   const waited: string[] = []
 
   let baseFeePerGas: bigint | null = 1n
+  let block: Block = { number: 1, timestamp: 1 }
   let signingError: Error | null = null
   let feeData: FeeData = { gasPrice: 1n, maxFeePerGas: 2n, maxPriorityFeePerGas: 1n }
 
@@ -148,7 +154,7 @@ const createMockRunner = () => {
     call,
     estimateGas,
     getFeeData: async () => feeData,
-    getBlock: async () => ({ baseFeePerGas }),
+    getBlock: async () => ({ ...block, baseFeePerGas }),
     getCode: async (address: string) => codes.get(address.toLowerCase()) || '0x',
     waitForTransaction: async (hash: string) => {
       waited.push(hash)
@@ -205,6 +211,9 @@ const createMockRunner = () => {
     },
     setBaseFee: (value: bigint | null) => {
       baseFeePerGas = value
+    },
+    setBlock: (values: Partial<Block>) => {
+      block = { ...block, ...values }
     },
     rejectSigning: () => {
       signingError = makeError('user rejected action', 'ACTION_REJECTED', {
