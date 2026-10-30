@@ -97,5 +97,10 @@
   "dependencies": {
     "bignumber.js": "9.3.0",
     "zod": "4.4.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "graphql": "16.14.2"
+    }
   }
 }
