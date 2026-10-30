@@ -41,6 +41,16 @@ const cases = [
     query: 'query Data($where: Vault_filter = {}) { vaults(where: $where, orderBy: "{") { id } }',
     expected: 'query Data($where: Vault_filter = {}) { vaults(subgraphError: allow, where: $where, orderBy: "{") { id } }',
   },
+  {
+    name: 'skips comments',
+    query: 'query Data {\n  # it\'s { not a field\n  vaults { id }\n}',
+    expected: 'query Data {\n  # it\'s { not a field\n  vaults(subgraphError: allow) { id }\n}',
+  },
+  {
+    name: 'skips fragments defined before the operation',
+    query: 'fragment VaultFragment on Vault { id } query Data { vaults { ...VaultFragment } }',
+    expected: 'fragment VaultFragment on Vault { id } query Data { vaults(subgraphError: allow) { ...VaultFragment } }',
+  },
 ]
 
 describe('applySubgraphErrorPolicy', () => {

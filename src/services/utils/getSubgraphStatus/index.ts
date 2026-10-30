@@ -11,8 +11,8 @@ import { validate, validateSchema } from './validate'
 export type GetSubgraphStatusInput = StakeWise.CommonParams & z.input<typeof validateSchema>
 
 type Status = {
-  blockNumber: number
   lagSeconds: number
+  blockNumber: number
   hasIndexingErrors: boolean
   isOutdated: boolean
 }
@@ -32,9 +32,16 @@ const fetchSubgraphStatus = async (input: GetSubgraphStatusInput): Promise<Outpu
   const { url, ...params } = apiUrls.getSubgraphParams(options)
 
   const [ primaryUrl, replicaUrl ] = typeof url === 'string' ? [ url ] : url
+
   const currentUrl = getRequestUrl(url)
-  const otherUrl = currentUrl === primaryUrl ? replicaUrl : primaryUrl
-  const urls = otherUrl ? [ currentUrl, otherUrl ] : [ currentUrl ]
+
+  const otherUrl = currentUrl === primaryUrl
+    ? replicaUrl
+    : primaryUrl
+
+  const urls = otherUrl
+    ? [ currentUrl, otherUrl ]
+    : [ currentUrl ]
 
   const [ headBlock, results ] = await Promise.all([
     provider.getBlock('latest'),
@@ -42,7 +49,6 @@ const fetchSubgraphStatus = async (input: GetSubgraphStatusInput): Promise<Outpu
       graphql.subgraph.stats.fetchSubgraphMetaQuery({
         ...params,
         url,
-        // Lets AbortRequest return _meta with hasIndexingErrors instead of throwing
         subgraphError: 'allow',
         modifyResult: (data) => data._meta,
       })
@@ -69,14 +75,20 @@ const fetchSubgraphStatus = async (input: GetSubgraphStatusInput): Promise<Outpu
     }
   })
 
-  const isSwitched = Boolean(other) && (!current || (!isHealthy(current) && isHealthy(other as Status)))
+  const isSwitched = (
+    Boolean(other)
+    && (!current || (
+      !isHealthy(current)
+      && isHealthy(other as Status))
+    )
+  )
+
   const status = isSwitched ? other : current
 
   if (!status) {
     throw (results[0] as PromiseRejectedResult).reason
   }
 
-  // Following SDK and web requests go to the other url for an hour
   if (isSwitched) {
     saveErrorUrlToSessionStorage(currentUrl)
   }

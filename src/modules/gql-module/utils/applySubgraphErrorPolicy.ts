@@ -48,12 +48,21 @@ const addArgument = (query: string) => {
   let braceDepth = 0
   let parenDepth = 0
   let isStarted = false
+  let isFragment = false
 
   while (index < query.length) {
     const char = query[index]
 
     if (char === '"') {
       index = skipString(query, index)
+      continue
+    }
+
+    if (char === '#') {
+      while (index < query.length && query[index] !== '\n') {
+        index += 1
+      }
+
       continue
     }
 
@@ -66,13 +75,17 @@ const addArgument = (query: string) => {
     // Braces inside arguments are input objects, they don't change the selection depth
     else if (char === '{' && !parenDepth) {
       braceDepth += 1
-      isStarted = true
+      isStarted = !isFragment
     }
     else if (char === '}' && !parenDepth) {
       braceDepth -= 1
 
-      if (isStarted && !braceDepth) {
-        break
+      if (!braceDepth) {
+        if (isStarted) {
+          break
+        }
+
+        isFragment = false
       }
     }
     else if (char === '.' || char === '@') {
@@ -89,7 +102,15 @@ const addArgument = (query: string) => {
 
       continue
     }
-    else if (braceDepth === 1 && !parenDepth && nameRegExp.test(char)) {
+    // A fragment can be defined before the operation, its fields are not root fields
+    else if (!braceDepth && !parenDepth && nameRegExp.test(char)) {
+      const { name, end } = readName(query, index)
+
+      isFragment = isFragment || name === 'fragment'
+      index = end
+      continue
+    }
+    else if (braceDepth === 1 && !parenDepth && !isFragment && nameRegExp.test(char)) {
       let { name, end } = readName(query, index)
       let nextIndex = skipSpaces(query, end)
 
