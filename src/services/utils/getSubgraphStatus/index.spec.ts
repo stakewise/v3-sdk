@@ -3,7 +3,7 @@ import { describe, expect } from 'vitest'
 import { it, rpcUrl, subgraphUrl, replicaSubgraphUrl } from '../../../../test'
 import StakeWiseSDK from '../../../StakeWiseSDK'
 import { configs, Network } from '../../../helpers'
-import { getRequestUrl, saveErrorUrlToSessionStorage } from '../../../modules/gql-module/utils'
+import { saveErrorUrlToSessionStorage } from '../../../modules/gql-module/utils'
 
 import type { GetSubgraphStatusInput } from './index'
 import type { SubgraphMetaQueryPayload } from '../../../graphql/subgraph/stats'
@@ -30,10 +30,7 @@ const getStatus = (meta: Meta) => ({
   blockNumber: meta.block.number,
 })
 
-const bothCalls = [
-  expect.objectContaining({ url: subgraphUrl, operationName: name, variables: undefined }),
-  expect.objectContaining({ url: replicaSubgraphUrl, operationName: name, variables: undefined }),
-]
+const getCall = (url: string) => expect.objectContaining({ url, operationName: name, variables: undefined })
 
 const resultCases = [
   {
@@ -74,51 +71,6 @@ const resultCases = [
   },
 ]
 
-const switchCases = [
-  {
-    name: 'primary is outdated',
-    primary: getMeta(601),
-    replica: getMeta(12),
-    expected: { url: replicaSubgraphUrl, isSwitched: true, lagSeconds: 12, isOutdated: false, hasIndexingErrors: false },
-  },
-  {
-    name: 'primary has indexing errors',
-    primary: getMeta(12, true),
-    replica: getMeta(12),
-    expected: { url: replicaSubgraphUrl, isSwitched: true, lagSeconds: 12, isOutdated: false, hasIndexingErrors: false },
-  },
-  {
-    name: 'primary fails',
-    primary: null,
-    replica: getMeta(12),
-    expected: { url: replicaSubgraphUrl, isSwitched: true, lagSeconds: 12, isOutdated: false, hasIndexingErrors: false },
-  },
-  {
-    name: 'primary fails and replica is outdated',
-    primary: null,
-    replica: getMeta(601),
-    expected: { url: replicaSubgraphUrl, isSwitched: true, lagSeconds: 601, isOutdated: true, hasIndexingErrors: false },
-  },
-  {
-    name: 'both are outdated',
-    primary: getMeta(601),
-    replica: getMeta(700),
-    expected: { url: subgraphUrl, isSwitched: false, lagSeconds: 601, isOutdated: true, hasIndexingErrors: false },
-  },
-  {
-    name: 'replica is outdated',
-    primary: getMeta(12),
-    replica: getMeta(601),
-    expected: { url: subgraphUrl, isSwitched: false, lagSeconds: 12, isOutdated: false, hasIndexingErrors: false },
-  },
-  {
-    name: 'replica fails',
-    primary: getMeta(601),
-    replica: null,
-    expected: { url: subgraphUrl, isSwitched: false, lagSeconds: 601, isOutdated: true, hasIndexingErrors: false },
-  },
-]
-
 const invalidCases = [
   {
     name: 'invalid max lag',
@@ -135,32 +87,14 @@ describe('getSubgraphStatus', () => {
     const result = await sdk.utils.getSubgraphStatus(input)
 
     expect(result).toEqual({ ...expected, ...getStatus(meta), url: subgraphUrl, isSwitched: false })
-    expect(graphql.calls).toEqual(bothCalls)
+    expect(graphql.calls).toEqual([ getCall(subgraphUrl) ])
   })
 
-  it.for(switchCases)('$name', async ({ primary, replica, expected }, { sdk, graphql, runner }) => {
-    runner.setBlock(headBlock)
-
-    const mockUrl = (url: string, meta: Meta | null) => meta
-      ? graphql.mock<SubgraphMetaQueryPayload>({ name, url, data: { _meta: meta } })
-      : graphql.mockError({ name, url, message: 'Bad gateway' })
-
-    mockUrl(subgraphUrl, primary)
-    mockUrl(replicaSubgraphUrl, replica)
-
-    const result = await sdk.utils.getSubgraphStatus()
-    const meta = expected.isSwitched ? replica : primary
-
-    expect(result).toEqual({ ...expected, ...getStatus(meta as Meta) })
-    expect(graphql.calls).toEqual(bothCalls)
-    expect(getRequestUrl(configs[Network.Mainnet].api.subgraph)).toEqual(expected.url)
-  })
-
-  it('starts from the replica if the primary is marked as failed', async ({ sdk, graphql, runner }) => {
+  it('checks the backup url if the primary is marked as failed', async ({ sdk, graphql, runner }) => {
     const meta = getMeta(12)
 
     runner.setBlock(headBlock)
-    saveErrorUrlToSessionStorage(subgraphUrl)
+    saveErrorUrlToSessionStorage(configs[Network.Mainnet].api.subgraph, subgraphUrl)
     graphql.mock<SubgraphMetaQueryPayload>({ name, data: { _meta: meta } })
 
     const result = await sdk.utils.getSubgraphStatus()
@@ -168,35 +102,22 @@ describe('getSubgraphStatus', () => {
     expect(result).toEqual({
       ...getStatus(meta),
       url: replicaSubgraphUrl,
-      isSwitched: false,
+      isSwitched: true,
       lagSeconds: 12,
       isOutdated: false,
       hasIndexingErrors: false,
     })
-    expect(graphql.calls).toEqual([ ...bothCalls ].reverse())
+    expect(graphql.calls).toEqual([ getCall(replicaSubgraphUrl) ])
   })
 
-  it('switches back to the primary', async ({ sdk, graphql, runner }) => {
-    runner.setBlock(headBlock)
-    saveErrorUrlToSessionStorage(subgraphUrl)
-    graphql.mock<SubgraphMetaQueryPayload>({ name, url: subgraphUrl, data: { _meta: getMeta(12) } })
-    graphql.mock<SubgraphMetaQueryPayload>({ name, url: replicaSubgraphUrl, data: { _meta: getMeta(601) } })
-
-    const result = await sdk.utils.getSubgraphStatus()
-
-    expect(result).toEqual(expect.objectContaining({ url: subgraphUrl, isSwitched: true }))
-    expect(getRequestUrl(configs[Network.Mainnet].api.subgraph)).toEqual(subgraphUrl)
-  })
-
-  it('throws if all urls fail', async ({ sdk, graphql, runner }) => {
+  it('throws if the subgraph fails', async ({ sdk, graphql, runner }) => {
     runner.setBlock(headBlock)
     graphql.mockError({ name, message: 'Bad gateway' })
 
     await expect(sdk.utils.getSubgraphStatus()).rejects.toThrow('Bad gateway')
-    expect(getRequestUrl(configs[Network.Mainnet].api.subgraph)).toEqual(subgraphUrl)
   })
 
-  it('checks a single url without switching', async ({ graphql, runner }) => {
+  it('checks a single url', async ({ graphql, runner }) => {
     const meta = getMeta(601)
     const sdk = new StakeWiseSDK({
       network: Network.Mainnet,
@@ -217,7 +138,7 @@ describe('getSubgraphStatus', () => {
       isOutdated: true,
       hasIndexingErrors: false,
     })
-    expect(graphql.calls).toEqual([ bothCalls[0] ])
+    expect(graphql.calls).toEqual([ getCall(subgraphUrl) ])
   })
 
   it.for(invalidCases)('$name', async ({ input, message }, { sdk, graphql }) => {

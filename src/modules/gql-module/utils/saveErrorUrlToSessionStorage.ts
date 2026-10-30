@@ -1,19 +1,22 @@
 import { constants } from '../../../helpers'
 import localStorage from '../../local-storage'
 
-import type { ErrorRecord } from '../types'
+import type { ErrorRecords } from '../types'
 
 
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
-const expireTime = 60 * 60 * 1_000 // 1hr
+const defaultExpireTime = 60 * 60 * 1_000 // 1hr
 
-const saveErrorUrlToSessionStorage = (baseUrl: string): void => {
-  const record: ErrorRecord = {
-    url: baseUrl,
-    expiresAt: Date.now() + expireTime,
-  }
+const saveErrorUrlToSessionStorage = (urls: ReadonlyArray<string>, url: string, expireTime = defaultExpireTime): void => {
+  const records = localStorage.getSessionItem<ErrorRecords>(sessionErrorUrl)
 
-  localStorage.setSessionItem(sessionErrorUrl, record)
+  localStorage.setSessionItem(sessionErrorUrl, {
+    ...records,
+    [urls[0]]: {
+      url,
+      expiresAt: Date.now() + expireTime,
+    },
+  })
 }
 
 

@@ -1,25 +1,26 @@
 import { constants } from '../../../helpers'
 import localStorage from '../../local-storage'
 
-import type { ErrorRecord } from '../types'
+import type { ErrorRecords } from '../types'
 
 
 const sessionErrorUrl = constants.sessionStorageNames.moduleErrorUrl
 
-const getErroredUrlFromSessionStorage = (): string | null => {
-  const sessionRecord = localStorage.getSessionItem<ErrorRecord>(sessionErrorUrl)
+const getErroredUrlFromSessionStorage = (primary: string): string | null => {
+  const records = localStorage.getSessionItem<ErrorRecords>(sessionErrorUrl)
+  const record = records?.[primary]
 
-  if (!sessionRecord) {
+  if (!record) {
     return null
   }
 
-  if (sessionRecord.expiresAt <= Date.now()) {
-    localStorage.removeSessionItem(sessionErrorUrl)
+  if (record.expiresAt <= Date.now()) {
+    localStorage.setSessionItem(sessionErrorUrl, { ...records, [primary]: undefined })
 
     return null
   }
 
-  return sessionRecord.url
+  return record.url
 }
 
 const getRequestUrl = (urls: string | ReadonlyArray<string>): string => {
@@ -38,7 +39,7 @@ const getRequestUrl = (urls: string | ReadonlyArray<string>): string => {
   const primary = urls[0]
   const backup  = urls[1]
 
-  const errored = getErroredUrlFromSessionStorage()
+  const errored = getErroredUrlFromSessionStorage(primary)
 
   return errored === primary ? backup : primary
 }

@@ -84,10 +84,20 @@ With `true` the data may be inconsistent: entity changes from the failed handler
 if the data was returned to the caller and `false` if the request was rejected. Errors thrown inside the handler are ignored,
 the handler is called once per network request
 
+## Backup subgraph url
+
+When the subgraph url is a list (`[primary, backup]`, the default config has a replica), the urls are checked before the first
+subgraph request: both answer `_meta`, and if the current url is more than 5 minutes behind the other one, has indexing errors while
+the other one doesn't, or fails, it is marked as failed and requests go to the other url. Requests wait for the check, it takes up
+to 3 seconds. In the browser the check runs once per page load and the mark lives for an hour, on the server the check and the mark
+live for a minute (the result is shared between all requests of the process).
+
 ## Added exports
 
 - `applySubgraphErrorPolicy(query, subgraphError?)` — adds `subgraphError: allow` to every root field of a GraphQL query
 (except `_meta` and `__typename`), returns the query unchanged for `deny`
 - `getRequestUrl(urls)` — returns the url for a request: the primary one, or the backup one if the primary is marked as failed
-- `saveErrorUrlToSessionStorage(url)` — marks the url as failed for an hour, the following requests go to the backup url
+- `resolveRequestUrl(urls)` — the same, but checks the urls first (see "Backup subgraph url")
+- `saveErrorUrlToSessionStorage(urls, url, expireTime?)` — marks the url of the urls list as failed (for an hour by default), the
+following requests go to the other url. Marks are stored by the primary url, so different subgraphs don't overwrite each other
 - `SubgraphErrorEvent`, `SubgraphErrorPolicy` types

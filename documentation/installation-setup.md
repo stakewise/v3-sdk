@@ -142,7 +142,7 @@ const useStakeWiseSDK = async () => {
 | **network** | `Network` | ✅ Yes | Chain ID to connect the SDK instance to. |
 | **provider** | `BrowserProvider` or `JsonRpcProvider` | No | Custom ethers provider instance. Required to send transactions. |
 | **endpoints.web3** | `string` or `Array<string>` or `Array<{ url: string, headers: Headers }>` | No | Custom RPC endpoints for blockchain access. Required if `provider` is not provided. Multiple URLs are used as fallbacks. |
-| **endpoints.subgraph** | `string` | No | Optional custom URL for the StakeWise subgraph. |
+| **endpoints.subgraph** | `string` or `Array<string>` | No | Optional custom URL for the StakeWise subgraph. With `[primary, backup]` the urls are compared by `_meta` before the first request, and requests go to the backup if the primary fails, is behind or has indexing errors (see the changelog, "Backup subgraph url"). |
 | **endpoints.api** | `string` | No | Optional custom URL for the StakeWise backend API. |
 | **allowSubgraphError** | `boolean` | No | Returns subgraph data even if the subgraph has indexing errors (`subgraphError: allow`). Defaults to `false` — requests fail with `indexing_error`. ⚠️ With `true` the data may be inconsistent: entity changes from the failed handlers are missing. |
 | **onSubgraphError** | `(event: SubgraphErrorEvent) => void` | No | Called when the subgraph responds with indexing errors, in both modes. `event` contains `url`, `operationName`, `variables`, `errors` and `isAllowed` (`true` — data was returned to the caller, `false` — the request was rejected). Errors thrown inside the handler are ignored. |

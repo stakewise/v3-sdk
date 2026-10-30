@@ -12,6 +12,7 @@ export {
   AbortCallback,
   getRequestUrl,
   wrapAbortPromise,
+  resolveRequestUrl,
   applySubgraphErrorPolicy,
   saveErrorUrlToSessionStorage,
 } from './modules/gql-module'

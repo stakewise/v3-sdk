@@ -1,3 +1,5 @@
 export { default as getRequestUrl } from './getRequestUrl'
+export { default as checkRequestUrls } from './checkRequestUrls'
+export { default as resolveRequestUrl } from './resolveRequestUrl'
 export { default as applySubgraphErrorPolicy } from './applySubgraphErrorPolicy'
 export { default as saveErrorUrlToSessionStorage } from './saveErrorUrlToSessionStorage'
