@@ -20,7 +20,7 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
 
   const requestUrls = RequestUrls.get(url)
 
-  // Updated after the subgraph check, before the request
+  // Changes if the subgraph check switches the url
   let currentUrl = requestUrls.getUrl()
 
   const opName = operationName ? `?opName=${operationName}` : ''
@@ -48,16 +48,16 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
       variables,
       operationName,
     }),
-    getUrl: isList
-      ? async () => {
+    fetchResponse: isList
+      ? (requestInit) => {
         // Only the subgraph requests pass the error policy, other graphql servers don't answer _meta
         if (subgraphError) {
-          await requestUrls.subgraphCheck()
+          return requestUrls.subgraphFetch(params, requestInit, (checkedUrl) => {
+            currentUrl = checkedUrl
+          })
         }
 
-        currentUrl = requestUrls.getUrl()
-
-        return `${currentUrl}${params}`
+        return fetch(`${currentUrl}${params}`, requestInit)
       }
       : undefined,
     subgraphError,

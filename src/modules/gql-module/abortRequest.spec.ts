@@ -45,13 +45,14 @@ describe('AbortRequest', () => {
     expect(fetchMock.mock.calls.length).toBe(1)
   })
 
-  it('requests the url from getUrl', async () => {
+  it('sends the request with fetchResponse', async () => {
     const backupUrl = 'https://backup.example.com'
+    const fetchResponse = (requestInit: RequestInit) => fetch(backupUrl, requestInit)
 
     mockResponse(JSON.stringify({ data: 'response data' }))
 
-    const abortRequest1 = new AbortRequest(url, { ...sameBodyOptions, getUrl: async () => backupUrl })
-    const abortRequest2 = new AbortRequest(url, { ...sameBodyOptions, getUrl: async () => backupUrl })
+    const abortRequest1 = new AbortRequest(url, { ...sameBodyOptions, fetchResponse })
+    const abortRequest2 = new AbortRequest(url, { ...sameBodyOptions, fetchResponse })
 
     expect(abortRequest1.request).toBe(abortRequest2.request)
     expect(await abortRequest1).toEqual('response data')

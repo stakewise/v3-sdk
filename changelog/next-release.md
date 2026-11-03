@@ -87,9 +87,12 @@ the handler is called once per network request
 ## Backup subgraph urls
 
 When the subgraph url is a list (`[primary, ...backups]`, the default config has a replica), the urls are checked before the first
-subgraph request: all of them answer `_meta`, and a url is marked as failed if it fails, is more than 5 minutes behind the freshest
-one, or has indexing errors while another url doesn't. Requests go to the first url that is not marked, they wait for the check
-(up to 3 seconds). On a request error the url is marked and the request is retried on the next one, each url of the list once.
+subgraph request: all of them answer `_meta`, and a url is marked as failed if it fails, is more than 7.5 minutes behind the freshest
+one, or has indexing errors while another url doesn't. If the primary answers without indexing errors, the check waits for the
+other urls for 1 more second, the ones that didn't answer keep their marks; otherwise it waits for all of them (up to 4 seconds).
+Requests go to the first url that is not marked and are sent at the same time as the check, the response is returned only if the
+check keeps the url, otherwise the request is aborted and sent to the url chosen by the check. On a request error the url is marked
+and the request is retried on the next one, each url of the list once.
 In the browser the check runs once per page load and the marks live for an hour, on the server the check and the marks live for
 a minute (the result is shared between all requests of the process).
 
@@ -99,5 +102,6 @@ a minute (the result is shared between all requests of the process).
 (except `_meta` and `__typename`), returns the query unchanged for `deny`
 - `RequestUrls` — chooses the url for a request from a list (see "Backup subgraph urls"): `RequestUrls.get(url)` returns the
 instance for the url or list of urls, `getUrl()` — the first url that is not marked as failed, `markFailed(url)` marks the url,
-`subgraphCheck()` compares the subgraph urls by `_meta`. Marks are stored by url, so the same url is marked in all lists
+`subgraphCheck()` compares the subgraph urls by `_meta`, `subgraphFetch(params, init, onUrl)` requests the current url while
+the check runs and switches to the url chosen by the check. Marks are stored by url, so the same url is marked in all lists
 - `SubgraphErrorEvent`, `SubgraphErrorPolicy` types

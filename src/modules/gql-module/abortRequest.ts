@@ -10,8 +10,8 @@ type EmptyCallback = () => void
 
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
   subgraphError?: SubgraphErrorPolicy
-  // Resolves the url right before the request, the constructor url is used as the request id
-  getUrl?: () => Promise<string>
+  // Sends the request instead of fetch(url), the constructor url is used as the request id
+  fetchResponse?: (requestInit: RequestInit) => Promise<Response>
   onSuccess?: ModifyCallback<Data, ModifiedData>
   onError?: (error: any, type?: 'onsuccess') => Promise<any> | AbortRequest<Data, ModifiedData>
   onSubgraphError?: (event: Pick<SubgraphErrorEvent, 'errors' | 'isAllowed'>) => void
@@ -61,7 +61,7 @@ class AbortRequest<Data, ModifiedData = Data> {
   requestId: string
 
   constructor(url: RequestInfo | URL, abortRequestInit: AbortRequestInit<Data, ModifiedData>) {
-    const { subgraphError, getUrl, onSuccess, onError, onSubgraphError, ...init } = abortRequestInit
+    const { subgraphError, fetchResponse, onSuccess, onError, onSubgraphError, ...init } = abortRequestInit
 
     this.body = init.body as string
     this.isAborted = false
@@ -79,8 +79,8 @@ class AbortRequest<Data, ModifiedData = Data> {
         signal: this.controller.signal,
       }
 
-      const request = typeof getUrl === 'function'
-        ? getUrl().then((requestUrl) => fetch(requestUrl, requestInit))
+      const request = typeof fetchResponse === 'function'
+        ? fetchResponse(requestInit)
         : fetch(url, requestInit)
 
       this.request = request

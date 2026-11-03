@@ -13,8 +13,13 @@ type Meta = {
   }
 }
 
+type TestPayload = {
+  vaults: Array<{ id: string }>
+}
+
 const name = 'SubgraphUrlCheck'
 const maxLagSeconds = 450
+const answerTimeout = 1_000
 const timestamp = 1793262647
 
 const getMeta = (lagSeconds: number, hasIndexingErrors = false): Meta => ({
@@ -34,6 +39,26 @@ const getUrls = (count = 2) => {
 const mockUrl = (graphql: GraphqlFixture, url: string, meta: Meta | null) => meta
   ? graphql.mock<{ _meta: Meta }>({ name, url, data: { _meta: meta } })
   : graphql.mockError({ name, url, message: 'Bad gateway' })
+
+// The url answers after the delay or never
+const delayUrl = (url: string, delay = Infinity) => {
+  const graphqlFetch = globalThis.fetch
+
+  vi.stubGlobal('fetch', async (input: string, init?: RequestInit) => {
+    if (input.startsWith(url)) {
+      await new Promise((resolve) => delay < Infinity && setTimeout(resolve, delay))
+    }
+
+    return graphqlFetch(input, init)
+  })
+}
+
+const testName = 'Test'
+
+const testInit = {
+  method: 'POST',
+  body: JSON.stringify({ query: `query ${testName} { vaults { id } }`, operationName: testName }),
+}
 
 const subgraphCases = [
   {
@@ -247,6 +272,119 @@ describe('RequestUrls', () => {
       expect(requestUrls.getUrl()).toEqual(urls[0])
 
       dateSpy.mockRestore()
+    })
+
+    it('doesn\'t wait for a hanging backup if the primary is healthy', async ({ graphql, clock }) => {
+      const urls = getUrls()
+      const requestUrls = RequestUrls.get(urls)
+
+      requestUrls.markFailed(urls[1])
+      mockUrl(graphql, urls[0], getMeta(0))
+      delayUrl(urls[1])
+
+      const check = requestUrls.subgraphCheck()
+
+      await clock.advanceTimersByTimeAsync(answerTimeout)
+      await check
+
+      expect(requestUrls.getUrl()).toEqual(urls[0])
+      // The backup mark is kept
+      expect(RequestUrls.get([ urls[1], urls[0] ]).getUrl()).toEqual(urls[0])
+    })
+
+    it('compares the primary with the backup that answered in time', async ({ graphql, clock }) => {
+      const urls = getUrls()
+      const requestUrls = RequestUrls.get(urls)
+
+      mockUrl(graphql, urls[0], getMeta(maxLagSeconds + 1))
+      mockUrl(graphql, urls[1], getMeta(0))
+      delayUrl(urls[1], answerTimeout - 1)
+
+      const check = requestUrls.subgraphCheck()
+
+      await clock.advanceTimersByTimeAsync(answerTimeout)
+      await check
+
+      expect(requestUrls.getUrl()).toEqual(urls[1])
+    })
+
+    it('waits for the backup if the primary has indexing errors', async ({ graphql, clock }) => {
+      const urls = getUrls()
+      const requestUrls = RequestUrls.get(urls)
+      let isChecked = false
+
+      mockUrl(graphql, urls[0], getMeta(0, true))
+      mockUrl(graphql, urls[1], getMeta(0))
+      delayUrl(urls[1], answerTimeout * 2)
+
+      const check = requestUrls.subgraphCheck().then(() => {
+        isChecked = true
+      })
+
+      await clock.advanceTimersByTimeAsync(answerTimeout)
+      expect(isChecked).toBe(false)
+
+      await clock.advanceTimersByTimeAsync(answerTimeout)
+      await check
+
+      expect(requestUrls.getUrl()).toEqual(urls[1])
+    })
+  })
+
+  describe('subgraphFetch', () => {
+    it('uses the response of the url that passed the check', async ({ graphql }) => {
+      const urls = getUrls()
+      const requestUrls = RequestUrls.get(urls)
+      const onUrl = vi.fn()
+
+      mockUrl(graphql, urls[0], getMeta(0))
+      mockUrl(graphql, urls[1], getMeta(0))
+      graphql.mock<TestPayload>({ name: testName, url: urls[0], data: { vaults: [] } })
+
+      const response = await requestUrls.subgraphFetch(`?opName=${testName}`, testInit, onUrl)
+
+      expect(await response.json()).toEqual({ data: { vaults: [] } })
+      expect(onUrl.mock.calls).toEqual([ [ urls[0] ] ])
+      expect(graphql.calls.filter(({ operationName }) => operationName === testName)).toEqual([
+        expect.objectContaining({ url: urls[0] }),
+      ])
+    })
+
+    it('requests the url chosen by the check', async ({ graphql }) => {
+      const urls = getUrls()
+      const requestUrls = RequestUrls.get(urls)
+      const onUrl = vi.fn()
+      const fetchSpy = vi.spyOn(globalThis, 'fetch')
+
+      mockUrl(graphql, urls[0], getMeta(maxLagSeconds + 1))
+      mockUrl(graphql, urls[1], getMeta(0))
+      graphql.mock<TestPayload>({ name: testName, url: urls[0], data: { vaults: [] } })
+      graphql.mock<TestPayload>({ name: testName, url: urls[1], data: { vaults: [ { id: '0x1' } ] } })
+
+      const response = await requestUrls.subgraphFetch(`?opName=${testName}`, testInit, onUrl)
+      const [ , primaryInit ] = fetchSpy.mock.calls.find(([ input ]) => String(input) === `${urls[0]}?opName=${testName}`) || []
+
+      expect(await response.json()).toEqual({ data: { vaults: [ { id: '0x1' } ] } })
+      expect(onUrl.mock.calls).toEqual([ [ urls[0] ], [ urls[1] ] ])
+      expect(primaryInit?.signal?.aborted).toBe(true)
+    })
+
+    it('aborts the request with the passed signal', async ({ graphql }) => {
+      const urls = getUrls()
+      const requestUrls = RequestUrls.get(urls)
+      const controller = new AbortController()
+      const fetchSpy = vi.spyOn(globalThis, 'fetch')
+
+      mockUrl(graphql, urls[0], getMeta(0))
+      mockUrl(graphql, urls[1], getMeta(0))
+      graphql.mock<TestPayload>({ name: testName, url: urls[0], data: { vaults: [] } })
+
+      await requestUrls.subgraphFetch(`?opName=${testName}`, { ...testInit, signal: controller.signal }, vi.fn())
+      controller.abort()
+
+      const [ , init ] = fetchSpy.mock.calls.find(([ input ]) => String(input) === `${urls[0]}?opName=${testName}`) || []
+
+      expect(init?.signal?.aborted).toBe(true)
     })
   })
 })
