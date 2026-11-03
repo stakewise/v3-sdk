@@ -2,16 +2,15 @@ import { vi, afterEach, beforeEach } from 'vitest'
 
 import { constants } from '../src/helpers'
 import localStorage from '../src/modules/local-storage'
+import RequestUrls from '../src/modules/gql-module/requestUrls'
 
 import { resetGraphql, checkGraphqlRequests } from './mockGraphql'
 
 
-// The urls check has its own spec, other specs don't mock its requests
-vi.mock('../src/modules/gql-module/utils/checkRequestUrls', () => ({
-  default: () => Promise.resolve(),
-}))
-
 beforeEach(() => {
+  // The subgraph check has its own spec, other specs don't mock its requests
+  vi.spyOn(RequestUrls.prototype, 'subgraphCheck').mockResolvedValue()
+
   localStorage.removeSessionItem(constants.sessionStorageNames.moduleErrorUrl)
 
   resetGraphql()

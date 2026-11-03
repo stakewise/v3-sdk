@@ -29,10 +29,3 @@ export type FetchCodegenInput<Data, Variables, ModifiedData> = {
   modifyResult?: (data: Data) => ModifiedData
 }
 
-export type ErrorRecord = {
-  url: string
-  expiresAt: number
-}
-
-// Records by the primary url, so different subgraphs don't overwrite each other
-export type ErrorRecords = Record<string, ErrorRecord | undefined>

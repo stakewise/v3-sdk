@@ -1,6 +1,7 @@
+import RequestUrls from './requestUrls'
 import AbortRequest from './abortRequest'
 import type { FetchInput } from './types'
-import { getRequestUrl, resolveRequestUrl, applySubgraphErrorPolicy, saveErrorUrlToSessionStorage } from './utils'
+import { applySubgraphErrorPolicy } from './utils'
 
 
 type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variables, ModifiedData> & {
@@ -17,8 +18,10 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
     .replace(/[({].*/, '')
     .trim()
 
-  // Updated after the urls check, before the request
-  let currentUrl = getRequestUrl(url)
+  const requestUrls = RequestUrls.get(url)
+
+  // Updated after the subgraph check, before the request
+  let currentUrl = requestUrls.getUrl()
 
   const opName = operationName ? `?opName=${operationName}` : ''
 
@@ -29,10 +32,10 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
   }
 
   const params = `${opName}${time}`
-  const isUrlsList = Array.isArray(url) && url.length > 1
+  const { isList } = requestUrls
 
-  const requestId = isUrlsList
-    ? `${url.join(',')}${params}`
+  const requestId = isList
+    ? `${requestUrls.urls.join(',')}${params}`
     : `${currentUrl}${params}`
 
   return new AbortRequest<Data, ModifiedData>(requestId, {
@@ -45,9 +48,14 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
       variables,
       operationName,
     }),
-    getUrl: isUrlsList
+    getUrl: isList
       ? async () => {
-        currentUrl = await resolveRequestUrl(url)
+        // Only the subgraph requests pass the error policy, other graphql servers don't answer _meta
+        if (subgraphError) {
+          await requestUrls.subgraphCheck()
+        }
+
+        currentUrl = requestUrls.getUrl()
 
         return `${currentUrl}${params}`
       }
@@ -60,8 +68,9 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
       ? modifyResult(data)
       : data as unknown as ModifiedData,
     onError: (error: Error | any) => {
-      if (isUrlsList && retryCount < 1) {
-        saveErrorUrlToSessionStorage(url, currentUrl)
+      // Each url of the list is tried once
+      if (isList && retryCount < requestUrls.urls.length - 1) {
+        requestUrls.markFailed(currentUrl)
 
         return graphqlFetch({
           ...options,

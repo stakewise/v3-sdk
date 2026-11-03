@@ -3,7 +3,7 @@ import { describe, expect } from 'vitest'
 import { it, rpcUrl, subgraphUrl, replicaSubgraphUrl } from '../../../../test'
 import StakeWiseSDK from '../../../StakeWiseSDK'
 import { configs, Network } from '../../../helpers'
-import { saveErrorUrlToSessionStorage } from '../../../modules/gql-module/utils'
+import { RequestUrls } from '../../../modules/gql-module'
 
 import type { GetSubgraphStatusInput } from './index'
 import type { SubgraphMetaQueryPayload } from '../../../graphql/subgraph/stats'
@@ -94,7 +94,7 @@ describe('getSubgraphStatus', () => {
     const meta = getMeta(12)
 
     runner.setBlock(headBlock)
-    saveErrorUrlToSessionStorage(configs[Network.Mainnet].api.subgraph, subgraphUrl)
+    RequestUrls.get(configs[Network.Mainnet].api.subgraph).markFailed(subgraphUrl)
     graphql.mock<SubgraphMetaQueryPayload>({ name, data: { _meta: meta } })
 
     const result = await sdk.utils.getSubgraphStatus()

@@ -10,7 +10,7 @@ Returns the subgraph indexing status: the last indexed block, its lag behind the
 A subgraph that stopped indexing (fatal error) keeps answering with stale data and no errors, `isOutdated` detects this case.
 
 If the subgraph has a backup url (the default config has a replica), the url is chosen before the first subgraph request (see
-"Backup subgraph url" in the changelog), and the status of the chosen url is returned. With a single url (for example,
+"Backup subgraph urls" in the changelog), and the status of the chosen url is returned. With a single url (for example,
 `endpoints.subgraph` as a string) there is no backup.
 
 #### Arguments:

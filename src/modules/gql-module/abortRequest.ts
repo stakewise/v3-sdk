@@ -9,9 +9,9 @@ type FirstCallback<Data> = (value: Data) => Data | any
 type EmptyCallback = () => void
 
 type AbortRequestInit<Data, ModifiedData> = RequestInit & {
+  subgraphError?: SubgraphErrorPolicy
   // Resolves the url right before the request, the constructor url is used as the request id
   getUrl?: () => Promise<string>
-  subgraphError?: SubgraphErrorPolicy
   onSuccess?: ModifyCallback<Data, ModifiedData>
   onError?: (error: any) => Promise<any> | AbortRequest<Data, ModifiedData>
   onSubgraphError?: (event: Pick<SubgraphErrorEvent, 'errors' | 'isAllowed'>) => void
@@ -61,7 +61,7 @@ class AbortRequest<Data, ModifiedData = Data> {
   requestId: string
 
   constructor(url: RequestInfo | URL, abortRequestInit: AbortRequestInit<Data, ModifiedData>) {
-    const { getUrl, subgraphError, onSuccess, onError, onSubgraphError, ...init } = abortRequestInit
+    const { subgraphError, getUrl, onSuccess, onError, onSubgraphError, ...init } = abortRequestInit
 
     this.body = init.body as string
     this.isAborted = false

@@ -7,14 +7,12 @@ export { default as StakeWiseSDK } from './StakeWiseSDK'
 export { default as localStorage } from './modules/local-storage'
 export { createContract, createErc20Contract } from './contracts'
 export {
+  RequestUrls,
   AbortRequest,
   AbortPromise,
   AbortCallback,
-  getRequestUrl,
   wrapAbortPromise,
-  resolveRequestUrl,
   applySubgraphErrorPolicy,
-  saveErrorUrlToSessionStorage,
 } from './modules/gql-module'
 export type { SubgraphErrorEvent, SubgraphErrorPolicy } from './modules/gql-module'
 export type { Position, PositionData, PositionApyData } from './services/vault/requests'

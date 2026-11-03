@@ -2,8 +2,7 @@ import type * as z from 'zod/mini'
 
 import graphql from '../../../graphql'
 import { apiUrls } from '../../../helpers'
-import { wrapAbortPromise } from '../../../modules/gql-module'
-import { resolveRequestUrl } from '../../../modules/gql-module/utils'
+import { RequestUrls, wrapAbortPromise } from '../../../modules/gql-module'
 
 import { validate, validateSchema } from './validate'
 
@@ -26,7 +25,11 @@ const fetchSubgraphStatus = async (input: GetSubgraphStatusInput): Promise<Outpu
   const { maxLagSeconds } = validate(input)
   const { url, ...params } = apiUrls.getSubgraphParams(options)
 
-  const currentUrl = await resolveRequestUrl(url)
+  const requestUrls = RequestUrls.get(url)
+
+  await requestUrls.subgraphCheck()
+
+  const currentUrl = requestUrls.getUrl()
 
   const [ headBlock, meta ] = await Promise.all([
     provider.getBlock('latest'),
@@ -50,7 +53,7 @@ const fetchSubgraphStatus = async (input: GetSubgraphStatusInput): Promise<Outpu
     blockNumber: meta.block.number,
     headBlockNumber: headBlock.number,
     hasIndexingErrors: meta.hasIndexingErrors,
-    isSwitched: typeof url !== 'string' && currentUrl !== url[0],
+    isSwitched: currentUrl !== requestUrls.urls[0],
     isOutdated: lagSeconds > maxLagSeconds,
   }
 }
