@@ -7,10 +7,11 @@ import RequestUrls from '../src/modules/gql-module/requestUrls'
 import { resetGraphql, checkGraphqlRequests } from './mockGraphql'
 
 
-beforeEach(() => {
-  // The subgraph check has its own spec, other specs don't mock its requests
-  vi.spyOn(RequestUrls.prototype, 'subgraphCheck').mockResolvedValue()
+// The subgraph check has its own spec, other specs don't mock its requests
+// Mocked before any hook: fork specs make subgraph requests in beforeAll
+vi.spyOn(RequestUrls.prototype, 'subgraphCheck').mockResolvedValue()
 
+beforeEach(() => {
   localStorage.removeSessionItem(constants.sessionStorageNames.moduleErrorUrl)
 
   resetGraphql()

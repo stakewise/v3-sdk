@@ -1,4 +1,4 @@
-import { describe, expect, vi, beforeEach } from 'vitest'
+import { describe, expect, vi, beforeAll } from 'vitest'
 
 import { it } from '../../../test'
 import type { GraphqlFixture } from '../../../test/fixtures/graphql'
@@ -99,7 +99,7 @@ const subgraphCases = [
 ]
 
 describe('RequestUrls', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     // test/setup.ts mocks the subgraph check for other specs
     vi.mocked(RequestUrls.prototype.subgraphCheck).mockRestore()
   })
