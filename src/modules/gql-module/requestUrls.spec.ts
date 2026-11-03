@@ -14,6 +14,7 @@ type Meta = {
 }
 
 const name = 'SubgraphUrlCheck'
+const maxLagSeconds = 450
 const timestamp = 1793262647
 
 const getMeta = (lagSeconds: number, hasIndexingErrors = false): Meta => ({
@@ -42,17 +43,17 @@ const subgraphCases = [
   },
   {
     name: 'primary is behind',
-    metas: [ getMeta(301), getMeta(0) ],
+    metas: [ getMeta(maxLagSeconds + 1), getMeta(0) ],
     expected: 1,
   },
   {
     name: 'primary lag equals the limit',
-    metas: [ getMeta(300), getMeta(0) ],
+    metas: [ getMeta(maxLagSeconds), getMeta(0) ],
     expected: 0,
   },
   {
     name: 'backup is behind',
-    metas: [ getMeta(0), getMeta(301) ],
+    metas: [ getMeta(0), getMeta(maxLagSeconds + 1) ],
     expected: 0,
   },
   {
@@ -62,7 +63,7 @@ const subgraphCases = [
   },
   {
     name: 'backup fails',
-    metas: [ getMeta(301), null ],
+    metas: [ getMeta(maxLagSeconds + 1), null ],
     expected: 0,
   },
   {
@@ -82,7 +83,7 @@ const subgraphCases = [
   },
   {
     name: 'third url: primary and the second are behind',
-    metas: [ getMeta(301), getMeta(400), getMeta(0) ],
+    metas: [ getMeta(maxLagSeconds + 1), getMeta(maxLagSeconds + 100), getMeta(0) ],
     expected: 2,
   },
   {
@@ -203,7 +204,7 @@ describe('RequestUrls', () => {
 
       requestUrls.markFailed(urls[0])
       mockUrl(graphql, urls[0], getMeta(0))
-      mockUrl(graphql, urls[1], getMeta(301))
+      mockUrl(graphql, urls[1], getMeta(maxLagSeconds + 1))
 
       await requestUrls.subgraphCheck()
 
@@ -215,7 +216,7 @@ describe('RequestUrls', () => {
       const [ otherUrl ] = getUrls(1)
 
       RequestUrls.get(otherUrl).markFailed(otherUrl)
-      mockUrl(graphql, urls[0], getMeta(301))
+      mockUrl(graphql, urls[0], getMeta(maxLagSeconds + 1))
       mockUrl(graphql, urls[1], getMeta(0))
 
       await RequestUrls.get(urls).subgraphCheck()
@@ -229,7 +230,7 @@ describe('RequestUrls', () => {
       const now = Date.now()
       const dateSpy = vi.spyOn(Date, 'now').mockReturnValue(now)
 
-      mockUrl(graphql, urls[0], getMeta(301))
+      mockUrl(graphql, urls[0], getMeta(maxLagSeconds + 1))
       mockUrl(graphql, urls[1], getMeta(0))
 
       await Promise.all([ requestUrls.subgraphCheck(), requestUrls.subgraphCheck() ])
