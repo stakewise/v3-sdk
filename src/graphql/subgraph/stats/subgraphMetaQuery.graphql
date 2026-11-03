@@ -1,0 +1,9 @@
+query SubgraphMeta {
+  _meta {
+    hasIndexingErrors
+    block {
+      number
+      timestamp
+    }
+  }
+}

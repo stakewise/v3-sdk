@@ -15,7 +15,7 @@ const getExitQueuePositions = (input: GetExitQueuePositionsInput) => {
   const { isClaimed, vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.exitQueue.fetchExitQueueQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       where: {
         isClaimed,

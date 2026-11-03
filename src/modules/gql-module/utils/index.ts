@@ -1,2 +1,1 @@
-export { default as getRequestUrl } from './getRequestUrl'
-export { default as saveErrorUrlToSessionStorage } from './saveErrorUrlToSessionStorage'
+export { default as applySubgraphErrorPolicy } from './applySubgraphErrorPolicy'

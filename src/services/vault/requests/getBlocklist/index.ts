@@ -15,7 +15,7 @@ const getBlocklist = (values: GetBlocklistInput) => {
   const variables = utils.getListVariables<BlocklistAccountsQueryVariables>(rest)
 
   return graphql.subgraph.vault.fetchBlocklistAccountsQuery<ModifiedBlocklist>({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables,
     modifyResult: (data: BlocklistAccountsQueryPayload) => modifyBlocklist({ data }),
   })

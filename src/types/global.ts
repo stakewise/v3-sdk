@@ -10,6 +10,7 @@ import type DistributorRewards from '../services/distributorRewards'
 
 import { Network, configs, baseInputSchema } from '../helpers'
 import { createContracts } from '../contracts'
+import type { OnSubgraphError } from '../modules/gql-module'
 
 import type {
   Erc20Abi,
@@ -53,6 +54,8 @@ declare global {
         subgraph?: string | ReadonlyArray<string>
         web3: Web3Endpoints
       }
+      allowSubgraphError?: boolean // returns subgraph data even if the subgraph has indexing errors
+      onSubgraphError?: OnSubgraphError
     }
 
     namespace Services {

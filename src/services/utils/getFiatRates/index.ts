@@ -1,8 +1,9 @@
 import graphql from '../../../graphql'
-import { configs, Network } from '../../../helpers'
+import { configs, apiUrls, Network } from '../../../helpers'
 
 
-const getGnoRate = () => graphql.subgraph.stats.fetchFiatRatesQuery({
+const getGnoRate = (options: StakeWise.Options) => graphql.subgraph.stats.fetchFiatRatesQuery({
+  ...apiUrls.getSubgraphParams(options),
   url: configs[Network.Gnosis].api.subgraph,
   modifyResult: (data) => ({
     assetUsd: Number(data.exchangeRates[0].assetsUsdRate),
@@ -14,6 +15,7 @@ export const getFiatRates = (values: StakeWise.CommonParams) => {
   const { options } = values
 
   return graphql.subgraph.stats.fetchFiatRatesQuery({
+    ...apiUrls.getSubgraphParams(options),
     url: configs[Network.Mainnet].api.subgraph,
     modifyResult: async (data) => {
       const {
@@ -33,7 +35,7 @@ export const getFiatRates = (values: StakeWise.CommonParams) => {
       const isGnosis = Network.Gnosis === options.network
 
       const { assetUsd, osTokenRate } = isGnosis
-        ? await getGnoRate()
+        ? await getGnoRate(options)
         : { assetUsd: Number(assetsUsdRate), osTokenRate: Number(osTokenAssetsRate) }
 
       return {

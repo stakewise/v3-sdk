@@ -1,6 +1,7 @@
+import RequestUrls from './requestUrls'
 import AbortRequest from './abortRequest'
 import type { FetchInput } from './types'
-import { getRequestUrl, saveErrorUrlToSessionStorage } from './utils'
+import { applySubgraphErrorPolicy } from './utils'
 
 
 type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variables, ModifiedData> & {
@@ -10,14 +11,18 @@ type ExtendedFetchInput<Data, Variables, ModifiedData> = FetchInput<Data, Variab
 const graphqlFetch = <Data, Variables, ModifiedData>(
   options: ExtendedFetchInput<Data, Variables, ModifiedData>
 ): AbortRequest<Data, ModifiedData> => {
-  const { url, query, variables, withTime, retryCount = 0, modifyResult } = options
+  const { url, query, variables, withTime, retryCount = 0, subgraphError, modifyResult, onSubgraphError } = options
 
   const operationName = query
     .replace(/^(query|mutation)\s/, '')
     .replace(/[({].*/, '')
     .trim()
 
-  const currentUrl = getRequestUrl(url)
+  const requestUrls = RequestUrls.get(url)
+
+  // Changes if the subgraph check switches the url
+  let currentUrl = requestUrls.getUrl()
+
   const opName = operationName ? `?opName=${operationName}` : ''
 
   let time = withTime ? `t=${new Date().getTime()}` : ''
@@ -26,30 +31,49 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
     time = opName ? `&${time}` : `?${time}`
   }
 
-  const requestUrl = `${currentUrl}${opName}${time}`
+  const params = `${opName}${time}`
+  const { isList } = requestUrls
 
-  return new AbortRequest<Data, ModifiedData>(requestUrl, {
+  const requestId = isList
+    ? `${requestUrls.urls.join(',')}${params}`
+    : `${currentUrl}${params}`
+
+  return new AbortRequest<Data, ModifiedData>(requestId, {
     method: 'POST',
     headers: {
       'content-type': 'application/json; charset=utf-8',
     },
     body: JSON.stringify({
-      query,
+      query: applySubgraphErrorPolicy(query, subgraphError),
       variables,
       operationName,
     }),
+    fetchResponse: isList
+      ? (requestInit) => {
+        // Only the subgraph requests pass the error policy, other graphql servers don't answer _meta
+        if (subgraphError) {
+          return requestUrls.subgraphFetch(params, requestInit, (checkedUrl) => {
+            currentUrl = checkedUrl
+          })
+        }
+
+        return fetch(`${currentUrl}${params}`, requestInit)
+      }
+      : undefined,
+    subgraphError,
+    onSubgraphError: typeof onSubgraphError === 'function'
+      ? (event) => onSubgraphError({ ...event, url: currentUrl, operationName, variables })
+      : undefined,
     onSuccess: (data: Data) => typeof modifyResult === 'function'
       ? modifyResult(data)
       : data as unknown as ModifiedData,
-    onError: (error: Error | any) => {
-      const hasBackupUrl = Array.isArray(url) && url.length > 1
-
-      if (hasBackupUrl && retryCount < 1) {
-        saveErrorUrlToSessionStorage(url[0])
+    onError: (error: Error | any, type) => {
+      // Each url of the list is tried once
+      if (isList && retryCount < requestUrls.urls.length - 1 && type !== 'onsuccess') {
+        requestUrls.markFailed(currentUrl)
 
         return graphqlFetch({
           ...options,
-          url: url[1],
           retryCount: retryCount + 1,
         })
       }

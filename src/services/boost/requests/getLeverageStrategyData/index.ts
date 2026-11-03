@@ -13,7 +13,7 @@ const getLeverageStrategyData = (values: GetLeverageStrategyDataInput) => {
   const { userAddress, vaultAddress } = validate(values)
 
   return graphql.subgraph.boost.fetchLeverageStrategyDataQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       userAddress: userAddress.toLowerCase(),
       vaultAddress: vaultAddress.toLowerCase(),

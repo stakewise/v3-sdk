@@ -16,7 +16,7 @@ const getVault = (input: GetVaultInput) => {
   const { vaultAddress, withTime } = validate(input)
 
   return graphql.subgraph.vault.fetchVaultQuery<ModifiedVault>({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       address: vaultAddress,
     },

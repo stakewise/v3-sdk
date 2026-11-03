@@ -45,6 +45,20 @@ describe('AbortRequest', () => {
     expect(fetchMock.mock.calls.length).toBe(1)
   })
 
+  it('sends the request with fetchResponse', async () => {
+    const backupUrl = 'https://backup.example.com'
+    const fetchResponse = (requestInit: RequestInit) => fetch(backupUrl, requestInit)
+
+    mockResponse(JSON.stringify({ data: 'response data' }))
+
+    const abortRequest1 = new AbortRequest(url, { ...sameBodyOptions, fetchResponse })
+    const abortRequest2 = new AbortRequest(url, { ...sameBodyOptions, fetchResponse })
+
+    expect(abortRequest1.request).toBe(abortRequest2.request)
+    expect(await abortRequest1).toEqual('response data')
+    expect(fetchMock.mock.calls).toEqual([ [ backupUrl, expect.objectContaining({ body: 'sameBody' }) ] ])
+  })
+
   it('same body', async () => {
     const mock = 'response data'
 
@@ -196,5 +210,99 @@ describe('AbortRequest', () => {
 
     await expect(abortRequest).rejects.toThrow('Request failed')
     expect(onError).toHaveBeenCalledTimes(1)
+  })
+
+  describe('subgraph indexing errors', () => {
+    const data = { vaults: [] }
+    const indexingErrors = [ { message: 'indexing_error' } ]
+
+    const createRequest = (subgraphError: 'allow' | 'deny', onSubgraphError = vi.fn()) => (
+      new AbortRequest(url, {
+        method: 'POST',
+        body: `indexingErrors_${subgraphError}`,
+        subgraphError,
+        onSubgraphError,
+      })
+    )
+
+    it('returns data and notifies for allow policy', async () => {
+      mockResponse(JSON.stringify({ data, errors: indexingErrors }))
+
+      const onSubgraphError = vi.fn()
+      const result = await createRequest('allow', onSubgraphError)
+
+      expect(result).toEqual(data)
+      expect(onSubgraphError).toHaveBeenCalledTimes(1)
+      expect(onSubgraphError).toHaveBeenCalledWith({ errors: indexingErrors, isAllowed: true })
+    })
+
+    it('rejects and notifies for deny policy', async () => {
+      mockResponse(JSON.stringify({ errors: indexingErrors }))
+
+      const onSubgraphError = vi.fn()
+
+      await expect(createRequest('deny', onSubgraphError)).rejects.toThrow('indexing_error')
+      expect(onSubgraphError).toHaveBeenCalledWith({ errors: indexingErrors, isAllowed: false })
+    })
+
+    it('rejects allow policy without data', async () => {
+      mockResponse(JSON.stringify({ errors: indexingErrors }))
+
+      const onSubgraphError = vi.fn()
+
+      await expect(createRequest('allow', onSubgraphError)).rejects.toThrow('indexing_error')
+      expect(onSubgraphError).toHaveBeenCalledWith({ errors: indexingErrors, isAllowed: false })
+    })
+
+    it('returns data with _meta.hasIndexingErrors for allow policy', async () => {
+      const metaData = { ...data, _meta: { hasIndexingErrors: true } }
+
+      mockResponse(JSON.stringify({ data: metaData }))
+
+      const onSubgraphError = vi.fn()
+      const result = await createRequest('allow', onSubgraphError)
+
+      expect(result).toEqual(metaData)
+      expect(onSubgraphError).toHaveBeenCalledWith({ errors: indexingErrors, isAllowed: true })
+    })
+
+    it('rejects other errors for allow policy', async () => {
+      mockResponse(JSON.stringify({ data, errors: [ { message: 'Some error' } ] }))
+
+      const onSubgraphError = vi.fn()
+
+      await expect(createRequest('allow', onSubgraphError)).rejects.toThrow('Some error')
+      expect(onSubgraphError).not.toHaveBeenCalled()
+    })
+
+    it('ignores errors in onSubgraphError', async () => {
+      mockResponse(JSON.stringify({ data, errors: indexingErrors }))
+
+      const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const onSubgraphError = vi.fn(() => {
+        throw new Error('Handler error')
+      })
+
+      const result = await createRequest('allow', onSubgraphError)
+
+      expect(result).toEqual(data)
+      expect(consoleError).toHaveBeenCalled()
+
+      consoleError.mockRestore()
+    })
+
+    it('notifies once for deduplicated requests', async () => {
+      mockResponse(JSON.stringify({ data, errors: indexingErrors }))
+
+      const onSubgraphError = vi.fn()
+
+      await Promise.all([
+        createRequest('allow', onSubgraphError),
+        createRequest('allow', onSubgraphError),
+      ])
+
+      expect(onSubgraphError).toHaveBeenCalledTimes(1)
+      expect(fetchMock.mock.calls.length).toBe(1)
+    })
   })
 })

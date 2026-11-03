@@ -15,7 +15,7 @@ const getHarvestParams = (values: GetHarvestParamsInput) => {
   const { vaultAddress } = validate(values)
 
   return graphql.subgraph.vault.fetchHarvestParamsQuery({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       address: vaultAddress,
     },

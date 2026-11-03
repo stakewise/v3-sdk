@@ -21,7 +21,7 @@ const getStakerActions = (input: GetStakerActionsInput) => {
   const { skip, limit, types, vaultAddress, userAddress } = validate(input)
 
   return graphql.subgraph.allocatorActions.fetchAllocatorActionsQuery<ModifiedStakerActions>({
-    url: apiUrls.getSubgraphqlUrl(options),
+    ...apiUrls.getSubgraphParams(options),
     variables: {
       skip,
       first: limit,

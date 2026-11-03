@@ -72,8 +72,22 @@ describe('apiUrls', () => {
   })
 
   it.for(subgraphCases)('$name', ({ network, endpoints, expected }) => {
-    const url = apiUrls.getSubgraphqlUrl(getOptions(network, endpoints))
+    const { url } = apiUrls.getSubgraphParams(getOptions(network, endpoints))
 
     expect(url).toEqual(expected)
+  })
+
+  it('subgraph error policy', () => {
+    const onSubgraphError = () => {}
+
+    expect(apiUrls.getSubgraphParams(getOptions(Network.Mainnet))).toMatchObject({
+      subgraphError: 'deny',
+      onSubgraphError: undefined,
+    })
+
+    expect(apiUrls.getSubgraphParams({ ...getOptions(Network.Mainnet), allowSubgraphError: true, onSubgraphError })).toMatchObject({
+      subgraphError: 'allow',
+      onSubgraphError,
+    })
   })
 })

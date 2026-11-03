@@ -20,6 +20,7 @@ type MockGraphqlInput<T> = {
 
 type MockGraphqlErrorInput = {
   name: string
+  url?: string
   code?: string
   message: string
   status?: number
@@ -104,8 +105,8 @@ export const checkGraphqlRequests = () => {
   }
 }
 
-export const mockGraphqlError = ({ name, message, status, code }: MockGraphqlErrorInput) => {
-  answers.set(name, createErrorAnswer(message, status, code))
+export const mockGraphqlError = ({ name, url, message, status, code }: MockGraphqlErrorInput) => {
+  answers.set(getAnswerKey(name, url), createErrorAnswer(message, status, code))
 }
 
 const mockGraphql = <T = never>({ name, url, data }: MockGraphqlInput<T>) => {

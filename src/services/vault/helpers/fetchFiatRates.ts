@@ -18,12 +18,12 @@ const fetchFiatRates = async (values: FetchFiatRatesInput): Promise<FiatRates> =
 
   const isGnosis = Network.Gnosis === options.network
 
-  const subgraphUrl = apiUrls.getSubgraphqlUrl(options)
+  const subgraphParams = apiUrls.getSubgraphParams(options)
 
   // We can't fetch GBP rates from gnosis subgraph
   const ratesUrl = isGnosis
     ? configs[Network.Mainnet].api.subgraph
-    : subgraphUrl
+    : subgraphParams.url
 
   const variables = {
     limit,
@@ -33,13 +33,14 @@ const fetchFiatRates = async (values: FetchFiatRatesInput): Promise<FiatRates> =
 
   const [ networkFiatRates, gnosisFiatRates ] = await Promise.all([
     graphql.subgraph.stats.fetchFiatByDayQuery({
+      ...subgraphParams,
       url: ratesUrl,
       variables,
       modifyResult: (data) => data.exchangeRate || [],
     }),
     isGnosis
       ? graphql.subgraph.stats.fetchFiatByDayQuery({
-        url: subgraphUrl,
+        ...subgraphParams,
         variables,
         modifyResult: (data) => (data.exchangeRate || [])
           .reduce((acc, { timestamp, assetsUsdRate }) => ({

@@ -17,11 +17,9 @@ const getPositionData = async (values: GetPositionDataInput): Promise<PositionDa
   const { options, contracts } = values
   const { userAddress, vaultAddress } = validate(values)
 
-  const url = apiUrls.getSubgraphqlUrl(options)
-
   const [ data, osTokenRate ] = await Promise.all([
     graphql.subgraph.vault.fetchPositionDataQuery({
-      url,
+      ...apiUrls.getSubgraphParams(options),
       variables: {
         userId: userAddress.toLowerCase(),
         userAddress: userAddress.toLowerCase(),
@@ -61,7 +59,7 @@ const getPositionData = async (values: GetPositionDataInput): Promise<PositionDa
   })
 
   const leverageReward = leverage && hasBoostedPosition
-    ? await fetchLeverageReward({ ...apyData, url, leverage, vaultAddress })
+    ? await fetchLeverageReward({ ...apyData, options, leverage, vaultAddress })
     : 0n
 
   return {
