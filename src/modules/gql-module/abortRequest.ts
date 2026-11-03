@@ -13,7 +13,7 @@ type AbortRequestInit<Data, ModifiedData> = RequestInit & {
   // Resolves the url right before the request, the constructor url is used as the request id
   getUrl?: () => Promise<string>
   onSuccess?: ModifyCallback<Data, ModifiedData>
-  onError?: (error: any) => Promise<any> | AbortRequest<Data, ModifiedData>
+  onError?: (error: any, type?: 'onsuccess') => Promise<any> | AbortRequest<Data, ModifiedData>
   onSubgraphError?: (event: Pick<SubgraphErrorEvent, 'errors' | 'isAllowed'>) => void
 }
 
@@ -145,7 +145,18 @@ class AbortRequest<Data, ModifiedData = Data> {
         const result = await this.request
 
         if (typeof onSuccess === 'function') {
-          return resolve(onSuccess(result) as ModifiedData)
+          try {
+            const modifiedResult = onSuccess(result) as ModifiedData
+
+            return resolve(modifiedResult)
+          }
+          catch (error) {
+            if (typeof onError === 'function') {
+              return resolve(onError(error, 'onsuccess') as ModifiedData)
+            }
+
+            return reject(error)
+          }
         }
 
         return resolve(result as ModifiedData)

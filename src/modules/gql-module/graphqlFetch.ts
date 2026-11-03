@@ -67,9 +67,9 @@ const graphqlFetch = <Data, Variables, ModifiedData>(
     onSuccess: (data: Data) => typeof modifyResult === 'function'
       ? modifyResult(data)
       : data as unknown as ModifiedData,
-    onError: (error: Error | any) => {
+    onError: (error: Error | any, type) => {
       // Each url of the list is tried once
-      if (isList && retryCount < requestUrls.urls.length - 1) {
+      if (isList && retryCount < requestUrls.urls.length - 1 && type !== 'onsuccess') {
         requestUrls.markFailed(currentUrl)
 
         return graphqlFetch({
