@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import { glob } from 'glob'
 import { execSync } from 'child_process'
-import simpleGit from 'simple-git'
+import { simpleGit } from 'simple-git'
 import { execSync } from 'child_process'
 
 import log from './log'
