@@ -5,6 +5,7 @@ import { it, rpcUrl, secondRpcUrl } from '../../../test'
 
 import { Network } from '../enums'
 
+import CustomFallbackProvider from './CustomFallbackProvider'
 import getReadOnlyProvider from './getReadOnlyProvider'
 
 
@@ -52,6 +53,8 @@ const fallbackCases: FallbackCase[] = [
 
 const getConnection = (provider: unknown) => (provider as JsonRpcProvider)._getConnection()
 
+const getStaticNetwork = (provider: unknown) => (provider as JsonRpcProvider)._getOption('staticNetwork')
+
 const getFallbackProvider = (rpc: StakeWise.Web3Endpoints = [ rpcUrl, secondRpcUrl ]) => (
   getReadOnlyProvider({ network: Network.Mainnet, rpc }) as StakeWise.CustomFallbackProvider
 )
@@ -66,19 +69,27 @@ describe('getReadOnlyProvider', () => {
     expect(provider).toBeInstanceOf(JsonRpcProvider)
     expect(connection.url).toBe(rpcUrl)
     expect(apiKeyHeader).toBe(apiKey)
+    expect(getStaticNetwork(provider)).toBe(true)
+    expect(connection.timeout).toBe(300_000)
   })
 
   it('many urls', () => {
     const provider = getFallbackProvider()
 
+    const nodes = provider.providerConfigs.map(({ provider }) => provider)
     const priorities = provider.providerConfigs.map(({ priority }) => priority)
     const weights = provider.providerConfigs.map(({ weight }) => weight)
-    const urls = provider.providerConfigs.map((config) => getConnection(config.provider).url)
+    const urls = nodes.map((node) => getConnection(node).url)
+    const staticNetworks = nodes.map(getStaticNetwork)
+    const timeouts = nodes.map((node) => getConnection(node).timeout)
 
+    expect(provider).toBeInstanceOf(CustomFallbackProvider)
     expect(provider).toBeInstanceOf(FallbackProvider)
     expect(priorities).toEqual([ 1, 2 ])
     expect(weights).toEqual([ 1, 1 ])
     expect(urls).toEqual([ rpcUrl, secondRpcUrl ])
+    expect(staticNetworks).toEqual([ true, true ])
+    expect(timeouts).toEqual([ 10_000, 10_000 ])
   })
 
   it('many urls with headers', () => {
