@@ -1,8 +1,11 @@
-import { JsonRpcProvider, FallbackProvider } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 
 import { Network } from '../enums'
 import getFetchRequest from './getFetchRequest'
+import CustomFallbackProvider from './CustomFallbackProvider'
 
+
+const fallbackTimeoutMs = 10_000
 
 type GetReadOnlyProviderInput = {
   network: Network
@@ -14,33 +17,23 @@ const getReadOnlyProvider = (values: GetReadOnlyProviderInput) => {
 
   const arrayUrls = typeof rpc === 'string' ? [ rpc ] : rpc
 
+  const providerOptions = { staticNetwork: true }
+
   if (arrayUrls.length === 1) {
     const fetchRequest = getFetchRequest(arrayUrls[0])
 
-    return new JsonRpcProvider(fetchRequest, network)
+    return new JsonRpcProvider(fetchRequest, network, providerOptions)
   }
   else {
-    const providers: ConstructorParameters<typeof FallbackProvider>[0] = arrayUrls.map((url, index) => {
+    const providers = arrayUrls.map((url) => {
       const fetchRequest = getFetchRequest(url)
 
-      return {
-        provider: new JsonRpcProvider(fetchRequest, network),
-        priority: index + 1,
-        weight: 1,
-      }
+      fetchRequest.timeout = fallbackTimeoutMs
+
+      return new JsonRpcProvider(fetchRequest, network, providerOptions)
     })
 
-    const provider = new FallbackProvider(providers, network) as StakeWise.CustomFallbackProvider
-
-    provider.getSigner = () => {
-      throw new Error('Pass your provider to the SDK class instance to get a signer')
-    }
-
-    provider.send = () => {
-      throw new Error('Pass your provider to the SDK class instance to use send method')
-    }
-
-    return provider
+    return new CustomFallbackProvider(providers, network)
   }
 }
 
