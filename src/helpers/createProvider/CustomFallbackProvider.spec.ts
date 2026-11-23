@@ -22,9 +22,15 @@ const createCallError = (nodeMessage: string) => (
 const noDataRevertError = createCallError('execution reverted')
 const rateLimitError = createCallError('rate limit exceeded')
 
-const revertCases = [
+const insufficientFundsError = makeError('insufficient funds', 'INSUFFICIENT_FUNDS')
+
+const requestErrorCases = [
   { name: 'revert with data', error: revertError },
   { name: 'revert without data', error: noDataRevertError },
+  { name: 'insufficient funds', error: insufficientFundsError },
+  { name: 'nonce expired', error: makeError('nonce has already been used', 'NONCE_EXPIRED') },
+  { name: 'replacement underpriced', error: makeError('replacement fee too low', 'REPLACEMENT_UNDERPRICED') },
+  { name: 'invalid argument', error: makeError('invalid address', 'INVALID_ARGUMENT') },
 ]
 
 const hang = () => new Promise<number>(() => {})
@@ -70,11 +76,35 @@ describe('CustomFallbackProvider', () => {
     expect(primary.getBlockNumber).toHaveBeenCalledTimes(1)
   })
 
-  it.for(revertCases)('$name is not retried', async ({ error }) => {
+  it.for(requestErrorCases)('$name is not retried', async ({ error }) => {
     const { backup, getBlockNumber } = createProvider(async () => { throw error }, async () => 2)
 
     await expect(getBlockNumber()).rejects.toBe(error)
     expect(backup.getBlockNumber).not.toHaveBeenCalled()
+  })
+
+  it('request error does not count as a node failure', async () => {
+    const failWithRequestError = async () => { throw insufficientFundsError }
+    const { primary, backup, getBlockNumber } = createProvider(failWithRequestError, async () => 2)
+
+    await getBlockNumber().catch(() => {})
+    await getBlockNumber().catch(() => {})
+    await getBlockNumber().catch(() => {})
+
+    primary.getBlockNumber.mockResolvedValueOnce(1)
+
+    const result = await getBlockNumber()
+
+    expect(result).toBe(1)
+    expect(backup.getBlockNumber).not.toHaveBeenCalled()
+  })
+
+  it('failed fetch goes to the next node', async () => {
+    const { getBlockNumber } = createProvider(async () => { throw new TypeError('Failed to fetch') }, async () => 2)
+
+    const result = await getBlockNumber()
+
+    expect(result).toBe(2)
   })
 
   it('call error without revert goes to the next node', async () => {

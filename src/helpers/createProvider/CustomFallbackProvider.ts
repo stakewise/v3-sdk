@@ -5,6 +5,7 @@ import type { AbstractProvider, JsonRpcSigner, Networkish, PerformActionRequest,
 const stallTimeoutMs = 400
 const maxFailures = 3
 const cooldownMs = 60_000
+const requestErrorCodes = [ 'INSUFFICIENT_FUNDS', 'NONCE_EXPIRED', 'REPLACEMENT_UNDERPRICED', 'INVALID_ARGUMENT' ] as const
 
 type Node = {
   provider: AbstractProvider
@@ -21,6 +22,10 @@ const checkIsRevert = (error: unknown) => {
 
   return Boolean(error.data) || /revert/i.test(nodeMessage)
 }
+
+const checkIsRequestError = (error: unknown) => (
+  checkIsRevert(error) || requestErrorCodes.some((code) => isError(error, code))
+)
 
 class CustomFallbackProvider extends FallbackProvider {
   #nodes: Node[]
@@ -104,7 +109,7 @@ class CustomFallbackProvider extends FallbackProvider {
           (error) => {
             onSettled()
 
-            if (checkIsRevert(error)) {
+            if (checkIsRequestError(error)) {
               isSettled = true
               reject(error)
 
