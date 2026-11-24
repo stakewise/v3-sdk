@@ -86,8 +86,8 @@ class CustomFallbackProvider extends FallbackProvider {
   }
 
   #pause(node: Node) {
-    node.cooldownUntil = Date.now() + Math.min(maxCooldownMs, node.cooldownMs)
-    node.cooldownMs *= 2
+    node.cooldownUntil = Date.now() + node.cooldownMs
+    node.cooldownMs = Math.min(maxCooldownMs, node.cooldownMs * 2)
   }
 
   #handleFailure(node: Node, error: unknown) {
