@@ -29,6 +29,7 @@ const getReadOnlyProvider = (values: GetReadOnlyProviderInput) => {
       const fetchRequest = getFetchRequest(url)
 
       fetchRequest.timeout = fallbackTimeoutMs
+      fetchRequest.preflightFunc = null
 
       return new JsonRpcProvider(fetchRequest, network, providerOptions)
     })

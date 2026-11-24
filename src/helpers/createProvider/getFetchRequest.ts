@@ -1,5 +1,7 @@
 import { FetchRequest } from 'ethers'
 
+import getRetryAfterMs from './getRetryAfterMs'
+
 
 const baseCooldownMs = 10_000
 const maxCooldownMs = 60_000
@@ -51,11 +53,7 @@ const getFetchRequest = (_url: string | StakeWise.UrlWithHeaders) => {
 
   fetchRequest.retryFunc = async (_, response) => {
     if (response.statusCode === 429) {
-      const retryAfter = response.headers['retry-after']
-
-      const retryAfterMs = retryAfter
-        ? Number(retryAfter) * 1_000
-        : 0
+      const retryAfterMs = getRetryAfterMs(response.headers)
 
       if (retryAfterMs > 0) {
         throttledUntil = Date.now() + retryAfterMs

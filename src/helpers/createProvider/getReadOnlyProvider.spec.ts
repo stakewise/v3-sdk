@@ -71,6 +71,7 @@ describe('getReadOnlyProvider', () => {
     expect(apiKeyHeader).toBe(apiKey)
     expect(getStaticNetwork(provider)).toBe(true)
     expect(connection.timeout).toBe(300_000)
+    expect(connection.preflightFunc).toBeTypeOf('function')
   })
 
   it('many urls', () => {
@@ -82,6 +83,7 @@ describe('getReadOnlyProvider', () => {
     const urls = nodes.map((node) => getConnection(node).url)
     const staticNetworks = nodes.map(getStaticNetwork)
     const timeouts = nodes.map((node) => getConnection(node).timeout)
+    const preflights = nodes.map((node) => getConnection(node).preflightFunc)
 
     expect(provider).toBeInstanceOf(CustomFallbackProvider)
     expect(provider).toBeInstanceOf(FallbackProvider)
@@ -90,6 +92,7 @@ describe('getReadOnlyProvider', () => {
     expect(urls).toEqual([ rpcUrl, secondRpcUrl ])
     expect(staticNetworks).toEqual([ true, true ])
     expect(timeouts).toEqual([ 10_000, 10_000 ])
+    expect(preflights).toEqual([ null, null ])
   })
 
   it('many urls with headers', () => {
